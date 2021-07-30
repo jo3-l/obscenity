@@ -1,0 +1,10 @@
+# Deps
+node_modules
+
+# Build artifacts
+dist
+
+# Coverage
+coverage
+*.lcov
+.nyc_output

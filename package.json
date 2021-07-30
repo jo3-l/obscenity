@@ -1,0 +1,25 @@
+{
+	"name": "experiment",
+	"version": "1.0.0",
+	"description": "A stand-alone package for detecting and handling profanity in text.",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "tsc -b src",
+		"test": "jest",
+		"test:watch": "jest --watch",
+		"style": "prettier --write \"**/*.ts\""
+	},
+	"author": "Joe L. <https://github.com/jo3-l>",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/jest": "^26.0.24",
+		"jest": "^27.0.6",
+		"jest-circus": "^27.0.6",
+		"ts-jest": "^27.0.4",
+		"ts-node": "^10.1.0",
+		"typescript": "^4.3.5"
+	},
+	"dependencies": {
+		"prettier": "^2.3.2"
+	}
+}
