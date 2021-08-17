@@ -1,6 +1,6 @@
 {
-	"name": "experiment",
-	"version": "1.0.0",
+	"name": "obscenity",
+	"version": "0.1.0",
 	"description": "A stand-alone package for detecting and handling profanity in text.",
 	"main": "dist/index.js",
 	"scripts": {
