@@ -228,8 +228,10 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 				}
 
 				for (const metadata of forkedTraversalLink.forkedTraversals!) {
-					const hasPreviouslyBeenSpawned = spawned.add(metadata.patternId);
-					if (hasPreviouslyBeenSpawned) this.spawnForkedTraversal(metadata);
+					if (!spawned.has(metadata.patternId)) {
+						this.spawnForkedTraversal(metadata);
+						spawned.add(metadata.patternId);
+					}
 				}
 
 				forkedTraversalLink = forkedTraversalLink.forkedTraversalLink;
