@@ -153,7 +153,48 @@ describe('matching with optionals', () => {
 });
 
 describe('matching with wildcards', () => {
-	it.todo('tests');
+	it.each([
+		[
+			'should match a single pattern with an wildcard at the end',
+			['hello?'],
+			'hellom world',
+			{
+				0: [[0, 5]],
+			},
+		],
+		[
+			'should match a single pattern with a wildcard at the start',
+			['?world'],
+			'my world',
+			{
+				0: [[2, 7]],
+			},
+		],
+		[
+			'should match a single pattern with a wildcard in the middle',
+			['?world?'],
+			'the world!',
+			{
+				0: [[3, 9]],
+			},
+		],
+	])('%s', (_, pats, input, matches) => {
+		const expected: MatchPayload[] = [];
+		for (const [id, locs] of Object.entries(matches)) {
+			const idNum = Number(id);
+			for (const loc of locs) {
+				expected.push({
+					termId: idNum,
+					startIndex: loc[0],
+					endIndex: loc[1],
+					matchLength: [...pats[idNum]].length,
+				});
+			}
+		}
+
+		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(pats.map(parseRawPattern)) });
+		expectThatArrayIsPermutationOfOther(matcher.setInput(input).getAllMatches(), expected);
+	});
 });
 
 describe('matching with whitelisted terms', () => {
