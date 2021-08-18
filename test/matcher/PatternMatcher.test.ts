@@ -1,4 +1,5 @@
 import { assignIncrementingIds } from '../../src/matcher/BlacklistedTerm';
+import { ForkedTraversalLimitExceededError } from '../../src/matcher/ForkedTraversalLimitExceededError';
 import { MatchPayload } from '../../src/matcher/MatchPayload';
 import { PatternMatcher } from '../../src/matcher/PatternMatcher';
 import { parseRawPattern, pattern } from '../../src/pattern/Pattern';
@@ -47,14 +48,6 @@ describe('constructor', () => {
 });
 
 describe('PatternMatcher#setInput()', () => {
-	it('should reset the position', () => {
-		const matcher = new PatternMatcher({ blacklistedPatterns: [] });
-		matcher.setInput('hi');
-		matcher.next();
-		matcher.setInput('bye');
-		expect(matcher.position).toBe(-1);
-	});
-
 	it('should set the input', () => {
 		const matcher = new PatternMatcher({ blacklistedPatterns: [] });
 		matcher.setInput('hello');
@@ -64,7 +57,7 @@ describe('PatternMatcher#setInput()', () => {
 
 it('should match nothing if there are no patterns', () => {
 	const m = new PatternMatcher({ blacklistedPatterns: [] });
-	expect(m.setInput('').next()).toStrictEqual({ done: true, value: undefined });
+	expect(m.setInput('foo bar').getAllMatches()).toHaveLength(0);
 });
 
 describe('simple matching; no wildcards/optionals', () => {
@@ -584,27 +577,103 @@ describe('matching with whitelist transformers', () => {
 });
 
 describe('forked traversal limiting', () => {
-	it.todo('tests');
+	it('should throw an error if the number of forked traversals exceeds the limit', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 0, pattern: pattern`?` }],
+			forkedTraversalLimit: 0,
+		});
+		expect(() => matcher.setInput('hi').getAllMatches()).toThrow(new ForkedTraversalLimitExceededError('hi', 0, 1, 0));
+	});
+
+	it('should not throw an error if the number of forked traversals exceeds the limit', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: assignIncrementingIds([pattern`foobar`, pattern`barbuz`, pattern`buzbaz`, pattern`bazd`]),
+			forkedTraversalLimit: 0,
+		});
+		expectThatArrayIsPermutationOfOther(matcher.setInput('i really liked the foobarbuzbazd').getAllMatches(), [
+			{ termId: 0, startIndex: 19, endIndex: 24, matchLength: 6 },
+			{ termId: 1, startIndex: 22, endIndex: 27, matchLength: 6 },
+			{ termId: 2, startIndex: 25, endIndex: 30, matchLength: 6 },
+			{ termId: 3, startIndex: 28, endIndex: 31, matchLength: 4 },
+		]);
+	});
+});
+
+describe('PatternMatcher#getAllMatches()', () => {
+	describe('result match order', () => {
+		it('should be sorted if the sorted parameter is set to true', () => {
+			const matcher = new PatternMatcher({
+				blacklistedPatterns: assignIncrementingIds([pattern`sup`, pattern`u?`, pattern`dude`]),
+			});
+			expect(matcher.setInput('sup guys there are some dudes here').getAllMatches(true)).toStrictEqual([
+				{ termId: 0, startIndex: 0, endIndex: 2, matchLength: 3 },
+				{ termId: 1, startIndex: 1, endIndex: 2, matchLength: 2 },
+				{ termId: 1, startIndex: 5, endIndex: 6, matchLength: 2 },
+				{ termId: 2, startIndex: 24, endIndex: 27, matchLength: 4 },
+				{ termId: 1, startIndex: 25, endIndex: 26, matchLength: 2 },
+			]);
+		});
+	});
+
+	it('should work when called several times in a row', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: assignIncrementingIds([pattern`foobar`, pattern`hello`]),
+			whitelistedTerms: ['the foobar'],
+		});
+		matcher.setInput('the foobar is quite foobar hello yo');
+		expectThatArrayIsPermutationOfOther(matcher.getAllMatches(), [
+			{ termId: 0, startIndex: 20, endIndex: 25, matchLength: 6 },
+			{ termId: 1, startIndex: 27, endIndex: 31, matchLength: 5 },
+		]);
+		expectThatArrayIsPermutationOfOther(matcher.getAllMatches(), [
+			{ termId: 0, startIndex: 20, endIndex: 25, matchLength: 6 },
+			{ termId: 1, startIndex: 27, endIndex: 31, matchLength: 5 },
+		]);
+		expectThatArrayIsPermutationOfOther(matcher.getAllMatches(), [
+			{ termId: 0, startIndex: 20, endIndex: 25, matchLength: 6 },
+			{ termId: 1, startIndex: 27, endIndex: 31, matchLength: 5 },
+		]);
+	});
 });
 
 describe('PatternMatcher#hasMatch()', () => {
-	it.todo('tests');
-});
+	it('should be true if there is a match', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: assignIncrementingIds([pattern`yo there`]),
+			whitelistedTerms: ['the yo there'],
+		});
+		expect(matcher.setInput('the yo there has a yo there').hasMatch()).toBeTruthy();
+	});
 
-describe('PatternMatcher#next()', () => {
-	it.todo('tests');
+	it('should be falsy if there is no match', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: assignIncrementingIds([pattern`yo`]),
+		});
+		expect(matcher.setInput('no y-word here!').hasMatch()).toBeFalsy();
+	});
+
+	it('should work when called several times in a row', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: assignIncrementingIds([pattern`yo there`]),
+			whitelistedTerms: ['the yo there'],
+		});
+		matcher.setInput('the yo there has a yo there');
+		expect(matcher.hasMatch()).toBeTruthy();
+		expect(matcher.hasMatch()).toBeTruthy();
+		expect(matcher.hasMatch()).toBeTruthy();
+	});
 });
 
 describe('PatternMatcher#input', () => {
-	it.todo('tests');
-});
+	it('should default to the empty string', () => {
+		expect(new PatternMatcher({ blacklistedPatterns: [] }).input).toBe('');
+	});
 
-describe('PatternMatcher#position', () => {
-	it.todo('tests');
+	it('should be the input', () => {
+		const matcher = new PatternMatcher({ blacklistedPatterns: [] });
+		matcher.setInput('hi');
+		expect(matcher.input).toBe('hi');
+		matcher.setInput('bye');
+		expect(matcher.input).toBe('bye');
+	});
 });
-
-describe('PatternMatcher#done', () => {
-	it.todo('tests');
-});
-
-it.todo('should implement iterator protocol');
