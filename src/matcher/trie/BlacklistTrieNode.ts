@@ -29,4 +29,4 @@ export interface ForkedTraversalMetadata {
 	nodes: SimpleNode[];
 }
 
-export const LinkedFragmentFlag = SharedFlag;
+export const ForkedTraversalFlag = SharedFlag;

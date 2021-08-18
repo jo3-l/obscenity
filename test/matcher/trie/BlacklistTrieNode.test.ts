@@ -1,7 +1,7 @@
 import {
 	BlacklistTrieNode,
 	BlacklistTrieNodeFlag,
-	LinkedFragmentFlag,
+	ForkedTraversalFlag,
 	SharedFlag,
 } from '../../../src/matcher/trie/BlacklistTrieNode';
 
@@ -59,16 +59,16 @@ describe('BlacklistTrieNodeFlag', () => {
 	});
 });
 
-describe('LinkedFragmentFlag', () => {
-	describe('LinkedFragmentFlag.RequireWordBoundaryAtStart', () => {
+describe('ForkedTraversalFlag', () => {
+	describe('ForkedTraversalFlag.RequireWordBoundaryAtStart', () => {
 		it('should be equal to 1<<0', () => {
-			expect(LinkedFragmentFlag.RequireWordBoundaryAtStart).toBe(1 << 0);
+			expect(ForkedTraversalFlag.RequireWordBoundaryAtStart).toBe(1 << 0);
 		});
 	});
 
-	describe('LinkedFragmentFlag.RequireWordBoundaryAtEnd', () => {
+	describe('ForkedTraversalFlag.RequireWordBoundaryAtEnd', () => {
 		it('should be equal to 1<<1', () => {
-			expect(LinkedFragmentFlag.RequireWordBoundaryAtEnd).toBe(1 << 1);
+			expect(ForkedTraversalFlag.RequireWordBoundaryAtEnd).toBe(1 << 1);
 		});
 	});
 });
