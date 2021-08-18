@@ -518,7 +518,7 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 					// one another is connected by failure links. Given that our
 					// goal is to spawn all the forked traversals connected to
 					// suffixes of the representative string of a node, we can
-					// simply set the forked traver sal link of a node N to f(N)
+					// simply set the forked traversal link of a node N to f(N)
 					// if f(N) itself has a forked traversal link or f(N) spawns
 					// forked traversals directly.
 					//
