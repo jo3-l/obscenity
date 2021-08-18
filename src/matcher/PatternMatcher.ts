@@ -236,7 +236,7 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 			}
 
 			// Consume the current character on all forked traversals.
-			for (let i = 0; i < this.forkedTraversals.length; i++) {
+			for (let i = this.forkedTraversals.length - 1; i >= 0; i--) {
 				const fork = this.forkedTraversals[i];
 				switch (fork.consume(transformed)) {
 					case ForkedTraversalResponse.Pong:
@@ -406,13 +406,13 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 				if (term.pattern.requireWordBoundaryAtStart) endNode.flags |= BlacklistTrieNodeFlag.RequireWordBoundaryAtStart;
 				if (term.pattern.requireWordBoundaryAtEnd) endNode.flags |= BlacklistTrieNodeFlag.RequireWordBoundaryAtEnd;
 			} else {
-				// Extend the trie with the text before the wildcard.
+				// Extend the trie with the text of the literal before the wildcard, if it exists.
 				// Then, add the remaining nodes to the linked fragments of the resulting trie node.
-				const literalNode = pattern[0] as LiteralNode;
-				const endNode = wildcardIndex === 0 ? this.rootNode : this.extendTrie(literalNode.chars);
+				const hasLiteralBeforeWildcard = wildcardIndex === 1;
+				const endNode = hasLiteralBeforeWildcard ? this.extendTrie((pattern[0] as LiteralNode).chars) : this.rootNode;
 				const metadata: ForkedTraversalMetadata = {
 					patternId: uniqueId,
-					preFragmentMatchLength: literalNode.chars.length,
+					preFragmentMatchLength: hasLiteralBeforeWildcard ? (pattern[0] as LiteralNode).chars.length : 0,
 					flags: 0,
 					nodes: pattern.slice(wildcardIndex),
 				};
