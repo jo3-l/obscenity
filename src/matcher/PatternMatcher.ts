@@ -10,7 +10,7 @@ import {
 	ForkedTraversalMetadata,
 } from './trie/BlacklistTrieNode';
 import { BlacklistedTerm } from './BlacklistedTerm';
-import { MatchPayload } from './MatchPayload';
+import { comparingMatchByPositionAndId, MatchPayload } from './MatchPayload';
 import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
 import { Queue } from '../util/Queue';
 import { CharacterIterator } from '../util/CharacterIterator';
@@ -25,7 +25,7 @@ import { ForkedTraversalLimitExceededError } from './ForkedTraversalLimitExceede
  * Matches patterns on text, optionally ignoring portions of the text that are
  * matched by whitelisted terms.
  */
-export class PatternMatcher implements IterableIterator<MatchPayload> {
+export class PatternMatcher {
 	private forkedTraversalLimit = 0;
 
 	private readonly rootNode = new BlacklistTrieNode();
@@ -114,7 +114,7 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 	}
 
 	/**
-	 * Sets the input of the pattern matcher, resetting it in the process.
+	 * Sets the input of the pattern matcher.
 	 *
 	 * @param input - Input string to match against.
 	 */
@@ -126,54 +126,33 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 	}
 
 	/**
-	 * Resets the state of the pattern matcher. Calling this method on a pattern
-	 * matcher with some input `input` has the same effect as writing
-	 * `matcher.setInput(input)`.
-	 */
-	public reset() {
-		this.iter.reset();
-		this.currentNode = this.rootNode;
-		this.forkedTraversals.splice(0);
-		this.usedIndices.clear();
-		this.pendingMatches.splice(0);
-	}
-
-	/**
-	 * Returns all matches of the matcher on the text, resetting it afterward.
-	 * This is the most computationally expensive method, as it needs to process
-	 * the whole text. With that said, if you:
-	 * - only need the first match, use `getFirstMatch()`;
-	 * - only need to check whether there is a match, use `hasMatch()`.
+	 * Returns all matches of the matcher on the text.
 	 *
-	 * @returns A list of matches of the matcher on the text.
-	 * @throws [[ForkedTraversalLimitedExceededError]] if, in the process of matching
-	 * on the text, the number of forked traversals spawned was exceeded. To increase
-	 * the limit, see `forkedTraversalLimit` in the matcher options.
-	 */
-	public getAllMatches() {
-		const result = [...this];
-		this.reset();
-		return result;
-	}
-
-	/**
-	 * Results the first match of the matcher on the text, resetting the matcher afterward.
-	 * This is more efficient than calling `getAllMatches` and checking the result, but
-	 * is no more efficient than `hasMatch`, as both methods stop once they find a match.
+	 * If you only need to check for the presence of a match, and have no use
+	 * for more specific information about the matches, use the `hasMatch()`
+	 * method, which is more efficient.
 	 *
-	 * @returns The first match of the matcher on the text, or `undefined` if none.
-	 * @throws [[ForkedTraversalLimitedExceededError]] if, in the process of matching
-	 * on the text, the number of forked traversals spawned was exceeded. To increase
-	 * the limit, see `forkedTraversalLimit` in the matcher options.
+	 * @param sorted - Whether the resulting list of matches should be sorted
+	 * using [[comparingMatchByPositionAndId]]. Defaults to `false`.
+	 *
+	 * @returns A list of matches of the matcher on the text. The matches are
+	 * guaranteed to be sorted if and only if the `sorted` parameter is `true`,
+	 * otherwise, their order is unspecified.
+	 * @throws [[ForkedTraversalLimitedExceededError]] if, in the process of
+	 * matching on the text, the number of forked traversals spawned was
+	 * exceeded. To increase the limit, see `forkedTraversalLimit` in the
+	 * matcher options.
 	 */
-	public getFirstMatch() {
-		const result = this.next();
+	public getAllMatches(sorted = false) {
+		const matches: MatchPayload[] = [];
+		for (let payload = this.next(); payload; payload = this.next()) matches.push(payload);
 		this.reset();
-		return result.value;
+		return sorted ? matches.sort(comparingMatchByPositionAndId) : matches;
 	}
 
 	/**
-	 * Checks whether the matcher matches on the text, resetting the matcher afterward.
+	 * Checks whether the matcher matches on the text.
+	 *
 	 * This is more efficient than calling `getAllMatches` and checking the result,
 	 * as it stops once it finds a match.
 	 *
@@ -183,23 +162,29 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 	 * the limit, see `forkedTraversalLimit` in the matcher options.
 	 */
 	public hasMatch() {
-		const result = this.next();
+		const payload = this.next();
 		this.reset();
-		return !result.done!;
+		return payload !== undefined;
 	}
 
 	/**
-	 * Advances the position of the matcher until a match is found or if the EOF
-	 * is hit.
-	 *
-	 * @returns An iterator result of the first match found after the current position.
-	 * @throws [[ForkedTraversalLimitedExceededError]] if, in the process of matching
-	 * on the text, the number of forked traversals spawned was exceeded. To increase
-	 * the limit, see `forkedTraversalLimit` in the matcher options.
+	 * The input that is currently being matched on.
 	 */
-	public next(): IteratorResult<MatchPayload, undefined> {
-		if (this.done) return { done: true, value: undefined };
-		if (this.hasPendingMatches) return { done: false, value: this.pendingMatches.pop()! };
+	public get input() {
+		return this.iter.input;
+	}
+
+	private reset() {
+		this.iter.reset();
+		this.currentNode = this.rootNode;
+		this.forkedTraversals.splice(0);
+		this.usedIndices.clear();
+		this.pendingMatches.splice(0);
+	}
+
+	private next() {
+		if (this.done) return undefined;
+		if (this.hasPendingMatches) return this.pendingMatches.pop();
 
 		while (!this.done && !this.hasPendingMatches) {
 			const transformed = this.transformers.applyTo(this.iter.next().value!);
@@ -220,6 +205,7 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 			// Follow forked traversal links.
 			let forkedTraversalLink = this.currentNode.forkedTraversalLink;
 			while (forkedTraversalLink) {
+				/* istanbul ignore if: hitting this branch should technically be impossible, for reasons detailed in the comment below */
 				if (!(forkedTraversalLink.flags & BlacklistTrieNodeFlag.SpawnsForkedTraversalsDirectly)) {
 					// Path compression should make sure that the forked
 					// traversal links of a node spawn forked traversals
@@ -228,6 +214,7 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 				}
 
 				for (const metadata of forkedTraversalLink.forkedTraversals!) {
+					/* istanbul ignore else: not observable in tests */
 					if (!spawned.has(metadata.patternId)) {
 						this.spawnForkedTraversal(metadata);
 						spawned.add(metadata.patternId);
@@ -274,36 +261,14 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 			}
 		}
 
-		if (this.hasPendingMatches) return { done: false, value: this.pendingMatches.pop()! };
-		return { done: true, value: undefined };
+		if (this.hasPendingMatches) return this.pendingMatches.pop()!;
 	}
 
-	/**
-	 * Implements the iterator protocol for the pattern matcher.
-	 */
-	public [Symbol.iterator]() {
-		return this;
-	}
-
-	/**
-	 * The input that is currently being matched on.
-	 */
-	public get input() {
-		return this.iter.input;
-	}
-
-	/**
-	 * The current position of the matcher.
-	 * If nothing has been matched yet, the position is `-1`.
-	 */
-	public get position() {
+	private get position() {
 		return this.iter.position;
 	}
 
-	/**
-	 * Whether the matcher is done with the input.
-	 */
-	public get done() {
+	private get done() {
 		return this.iter.done && !this.hasPendingMatches;
 	}
 
@@ -314,6 +279,8 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 	private spawnForkedTraversal(data: ForkedTraversalMetadata) {
 		// We can skip spawning a forked traversal if it requires a word
 		// boundary at the start, but there is no such word boundary.
+
+		/* istanbul ignore else: not observable in tests */
 		if (
 			!(data.flags & ForkedTraversalFlag.RequireWordBoundaryAtStart) ||
 			!isWordBoundary(this.usedIndices.get(this.usedIndices.length - data.preFragmentMatchLength)!, this.input)
