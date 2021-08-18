@@ -2,6 +2,8 @@ import { assignIncrementingIds } from '../../src/matcher/BlacklistedTerm';
 import { MatchPayload } from '../../src/matcher/MatchPayload';
 import { PatternMatcher } from '../../src/matcher/PatternMatcher';
 import { parseRawPattern, pattern } from '../../src/pattern/Pattern';
+import { createSimpleTransformer } from '../../src/transformer/Transformers';
+import { CharacterCode } from '../../src/util/Char';
 
 function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
 	expect(as).toStrictEqual(expect.arrayContaining(bs));
@@ -338,12 +340,201 @@ describe('matching with wildcards', () => {
 	});
 });
 
+describe('matching with word boundaries', () => {
+	it.each([
+		// normal patterns
+		[
+			'should not emit matches for patterns which require a word boundary at the start if the matched segment does not start with a non-word char',
+			['|cool'],
+			'something is quitecool',
+			{},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment starts with a non-word char',
+			['|beans'],
+			'delicious beans',
+			{
+				0: [[10, 14, 5]],
+			},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment begins at the start of the string',
+			['|things'],
+			'things are cool',
+			{
+				0: [[0, 5, 6]],
+			},
+		],
+		[
+			'should not emit matches for patterns which require a word boundary at the end if the matched segment does not end with a non-word char',
+			['cool|'],
+			'something is quite coolbeans',
+			{},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment ends with a non-word char',
+			['beans|'],
+			'delicious beans yes',
+			{
+				0: [[10, 14, 5]],
+			},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment ends at the eof',
+			['things|'],
+			'there are many things',
+			{
+				0: [[15, 20, 6]],
+			},
+		],
+
+		// patterns with wildcards
+		[
+			'should not emit matches for patterns which require a word boundary at the start if the matched segment does not start with a non-word char',
+			['|c?ol'],
+			'something is quitecool',
+			{},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment starts with a non-word char',
+			['|be?ns'],
+			'delicious beans',
+			{
+				0: [[10, 14, 5]],
+			},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment begins at the start of the string',
+			['|?hings'],
+			'things are cool',
+			{
+				0: [[0, 5, 6]],
+			},
+		],
+		[
+			'should not emit matches for patterns which require a word boundary at the end if the matched segment does not end with a non-word char',
+			['?ool|'],
+			'something is quite coolbeans',
+			{},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment ends with a non-word char',
+			['be?ns|'],
+			'delicious beans yes',
+			{
+				0: [[10, 14, 5]],
+			},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment ends at the eof',
+			['thing?|'],
+			'there are many things',
+			{
+				0: [[15, 20, 6]],
+			},
+		],
+	])('%s', (_, pats, input, matches) => {
+		const expected: MatchPayload[] = [];
+		for (const [id, data] of Object.entries(matches)) {
+			const idNum = Number(id);
+			for (const datum of data) {
+				expected.push({
+					termId: idNum,
+					startIndex: datum[0],
+					endIndex: datum[1],
+					matchLength: datum[2],
+				});
+			}
+		}
+
+		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(pats.map(parseRawPattern)) });
+		expectThatArrayIsPermutationOfOther(matcher.setInput(input).getAllMatches(), expected);
+	});
+});
+
 describe('matching with whitelisted terms', () => {
-	it.todo('tests');
+	it('should not match parts of the text which are completely matched by a whitelisted term', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`penis` }],
+			whitelistedTerms: ['pen is'],
+		});
+		expect(matcher.setInput('the pen is mightier than the penis').getAllMatches()).toStrictEqual([
+			{
+				termId: 1,
+				startIndex: 29,
+				endIndex: 33,
+				matchLength: 5,
+			},
+		]);
+	});
+
+	it('should match parts of the text that only overlap (and are not completely contained) by a whitelisted term', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`bitch` }],
+			whitelistedTerms: ['bit', 'itch'],
+		});
+		expect(matcher.setInput('a bitch').getAllMatches()).toStrictEqual([
+			{
+				termId: 1,
+				startIndex: 2,
+				endIndex: 6,
+				matchLength: 5,
+			},
+		]);
+	});
 });
 
 describe('matching with blacklist transformers', () => {
-	it.todo('tests');
+	it('should skip characters which became undefined after transformation', () => {
+		const skipSpaces = createSimpleTransformer((c) => (c === 32 ? undefined : c));
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`something` }],
+			blacklistMatcherTransformers: [skipSpaces],
+		});
+		expect(matcher.setInput('s o m e t h i n  g').getAllMatches()).toStrictEqual([
+			{
+				termId: 1,
+				startIndex: 0,
+				endIndex: 17,
+				matchLength: 9,
+			},
+		]);
+	});
+
+	it('should work with transformers that change chars (no match)', () => {
+		const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`sa?e` }],
+			blacklistMatcherTransformers: [changeAToB],
+		});
+		expect(matcher.setInput('same').getAllMatches()).toHaveLength(0);
+	});
+
+	it('should work with transformers that change chars (with match)', () => {
+		const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`hbllo?` }],
+			blacklistMatcherTransformers: [changeAToB],
+		});
+		expect(matcher.setInput('sup hallothere').getAllMatches()).toStrictEqual([
+			{
+				termId: 1,
+				startIndex: 4,
+				endIndex: 9,
+				matchLength: 6,
+			},
+		]);
+	});
+
+	it('should not affect matching of whitelisted terms', () => {
+		const ignoreAllAs = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`bbb` }],
+			whitelistedTerms: ['aabbbaa'],
+			blacklistMatcherTransformers: [ignoreAllAs],
+		});
+		expect(matcher.setInput('!!!! $$aabbbaa## !!!').getAllMatches()).toHaveLength(0);
+	});
 });
 
 describe('matching with whitelist transformers', () => {
@@ -354,19 +545,15 @@ describe('forked traversal limiting', () => {
 	it.todo('tests');
 });
 
-describe('misc matching tests', () => {
-	it.todo('tests');
-});
-
-describe('PatternMatcher#getAllMatches()', () => {
-	it.todo('tests');
-});
-
 describe('PatternMatcher#getFirstMatch()', () => {
 	it.todo('tests');
 });
 
 describe('PatternMatcher#hasMatch()', () => {
+	it.todo('tests');
+});
+
+describe('PatternMatcher#next()', () => {
 	it.todo('tests');
 });
 
