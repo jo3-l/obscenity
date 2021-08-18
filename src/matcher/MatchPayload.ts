@@ -1,3 +1,5 @@
+import { compareIntervals } from './interval/Interval';
+
 /**
  * Data emitted by the pattern matcher on a successful match.
  *
@@ -28,4 +30,33 @@ export interface MatchPayload {
 	 * then this points to the index of the low surrogate.
 	 */
 	endIndex: number;
+}
+
+/**
+ * Compares two match payloads.
+ *
+ * * If the first match payload's start index is less than the second's, `-1` is
+ *   returned;
+ * * If the second match payload's start index is less than the first's, `1` is
+ *   returned;
+ * * If the first match payload's end index is less than the second's, `-1` is
+ *   returned;
+ * * If the second match payload's end index is less than the first's, `1` is
+ *   returned;
+ * * If the first match payload's term ID is less than the second's, `-1` is
+ *   returned;
+ * * If the first match payload's term ID is equal to the second's, `0` is
+ *   returned;
+ * * Otherwise, `1` is returned.
+ *
+ * @param a - First match payload.
+ * @param b - Second match payload.
+ * @returns The result of the comparison: -1 if the first should sort lower than
+ * the second, 0 if they are the same, and 1 if the second should sort lower
+ * than the first.
+ */
+export function comparingMatchByPositionAndId(a: MatchPayload, b: MatchPayload) {
+	const result = compareIntervals([a.startIndex, a.endIndex], [b.startIndex, b.endIndex]);
+	if (result !== 0) return result;
+	return a.termId === b.termId ? 0 : a.termId < b.termId ? -1 : 1;
 }
