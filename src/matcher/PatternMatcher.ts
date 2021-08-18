@@ -228,8 +228,8 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 				}
 
 				for (const metadata of forkedTraversalLink.forkedTraversals!) {
-					const alreadySpawned = spawned.add(metadata.patternId);
-					if (!alreadySpawned) this.spawnForkedTraversal(metadata);
+					const hasPreviouslyBeenSpawned = spawned.add(metadata.patternId);
+					if (hasPreviouslyBeenSpawned) this.spawnForkedTraversal(metadata);
 				}
 
 				forkedTraversalLink = forkedTraversalLink.forkedTraversalLink;
@@ -243,8 +243,7 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 						// do nothing
 						break;
 					case ForkedTraversalResponse.FoundMatch:
-						this.emitMatch(fork.metadata.patternId, fork.metadata.flags);
-					// fall through
+						this.emitMatch(fork.metadata.patternId, fork.metadata.flags); // fall through
 					case ForkedTraversalResponse.Destroy:
 						// swap the current element with the last element of the
 						// array, then pop the stack.
@@ -311,12 +310,14 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 	}
 
 	private spawnForkedTraversal(data: ForkedTraversalMetadata) {
-		// If the fragment requires a word boundary at the start but
-		// there is none, there's no need to spawn a forked traversal.
-		const wordBoundaryMismatch =
-			!!(data.flags & LinkedFragmentFlag.RequireWordBoundaryAtStart) &&
-			!isWordBoundary(this.position - data.preFragmentMatchLength, this.input);
-		if (!wordBoundaryMismatch) this.forkedTraversals.push(new ForkedTraversal(data));
+		// We can skip spawning a forked traversal if it requires a word
+		// boundary at the start, but there is no such word boundary.
+		if (
+			!(data.flags & LinkedFragmentFlag.RequireWordBoundaryAtStart) ||
+			!isWordBoundary(this.usedIndices.get(this.usedIndices.length - data.preFragmentMatchLength)!, this.input)
+		) {
+			this.forkedTraversals.push(new ForkedTraversal(data));
+		}
 
 		if (this.forkedTraversals.length > this.forkedTraversalLimit) {
 			throw new ForkedTraversalLimitExceededError(
@@ -364,13 +365,15 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 
 	private registerTerm(term: BlacklistedTerm) {
 		if (term.pattern.nodes.length === 0) {
-			throw new TypeError('Unexpected empty blacklisted term.');
+			throw new Error('Unexpected empty blacklisted term.');
 		}
 
 		const simplifiedPatterns = simplify(term.pattern.nodes);
 		for (const pattern of simplifiedPatterns) {
 			if (pattern.length === 0) {
-				throw new Error('Simplified pattern had no nodes; this should never happen.');
+				throw new Error(
+					'Unexpected pattern that matches on the empty string; this is probably due to a pattern comprised of a single optional construct.',
+				);
 			}
 
 			// Each pattern may actually correspond to several simplified
@@ -385,6 +388,8 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 			if (matchLength > this.maxMatchLength) this.maxMatchLength = matchLength;
 
 			const wildcardIndex = pattern.findIndex((t) => t.kind === SyntaxKind.Wildcard);
+
+			/* istanbul ignore if: hitting this branch should technically be impossible, for reasons detailed in the comment below. */
 			if (wildcardIndex > 1) {
 				// Simplifying the pattern should also result in literal nodes being merged.
 				// Thus, the index of the wildcard should be one of:
@@ -513,7 +518,7 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 					// one another is connected by failure links. Given that our
 					// goal is to spawn all the forked traversals connected to
 					// suffixes of the representative string of a node, we can
-					// simply set the forked traversal link of a node N to f(N)
+					// simply set the forked traver sal link of a node N to f(N)
 					// if f(N) itself has a forked traversal link or f(N) spawns
 					// forked traversals directly.
 					//
@@ -529,9 +534,9 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 					) {
 						childNode.forkedTraversalLink = failureLink;
 						// Apply path compression. Let t(N) denote the forked
-						// traversal link of N. if f(N) does not spawn forked
-						// traversals directly, set t(N) to t(f(N)) instead of f(N).
-						if (!(childNode.failureLink.flags & BlacklistTrieNodeFlag.SpawnsForkedTraversalsDirectly)) {
+						// traversal link of N. If t(N) does not spawn forked
+						// traversals directly, set t(N) to t(t(N)).
+						if (!(childNode.forkedTraversalLink.flags & BlacklistTrieNodeFlag.SpawnsForkedTraversalsDirectly)) {
 							childNode.forkedTraversalLink = childNode.forkedTraversalLink.forkedTraversalLink;
 						}
 					}
