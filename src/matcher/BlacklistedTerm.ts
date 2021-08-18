@@ -1,18 +1,18 @@
 import { ParsedPattern } from '../pattern/Nodes';
 
 /**
- * Assigns incrementing IDs to the patterns provided.
- * Useful if you have a list of patterns to match against but don't particularly care
+ * Assigns incrementing IDs to the patterns provided, starting with 0. Useful if
+ * you have a list of patterns to match against but don't particularly care
  * about identifying which pattern matched.
  *
  * @example
  * ```typescript
  * const matcher = new PatternMatcher({
- * 	...,
- * 	blacklistedPatterns: assignIncrementingIds([
- * 		pattern`f?uck`,
- * 		pattern`|shit|`,
- * 	]),
+ *  ...,
+ *  blacklistedPatterns: assignIncrementingIds([
+ *      pattern`f?uck`,
+ *      pattern`|shit|`,
+ *  ]),
  * });
  * ```
  *
