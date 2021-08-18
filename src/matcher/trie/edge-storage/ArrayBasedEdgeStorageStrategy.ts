@@ -31,7 +31,7 @@ export class ArrayBasedEdgeStorageStrategy<T> implements EdgeStorageStrategy<T> 
 		let low = 0;
 		let high = this.edges.length - 1;
 		while (low <= high) {
-			const mid = Math.floor(low + (high - low) / 2);
+			const mid = (low + high) >>> 1;
 			const edge = this.edges[mid];
 			if (edge[0] > char) high = mid - 1;
 			else if (edge[0] === char) return edge[1];
