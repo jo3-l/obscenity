@@ -1,194 +1,169 @@
-import { BlacklistedTerm } from '../matcher/BlacklistedTerm';
+import { assignIncrementingIds } from '../matcher/BlacklistedTerm';
 import { MatchPayload } from '../matcher/MatchPayload';
 import { PatternMatcherOptions } from '../matcher/PatternMatcher';
 import { ParsedPattern } from '../pattern/Nodes';
 
-export class DataSet<
-	GroupMetadataType = any,
-	PhraseMetadataType = any,
-	GroupTagType extends PermissibleTagType = string | undefined,
-	PhraseTagType extends PermissibleTagType = string | undefined,
-> {
-	private blacklistedPatterns: BlacklistedTerm[] = [];
-	private readonly whitelistedTerms: string[] = [];
-	private readonly patternMetadata = new Map<
-		number,
-		PatternMetadata<GroupMetadataType, PhraseMetadataType, GroupTagType, PhraseTagType>
-	>();
-	private currentBlacklistedPatternId = 0;
+/**
+ * Holds phrases (groups of patterns and whitelisted terms), optionally
+ * associating metadata with them.
+ */
+export class DataSet<MetadataType> {
+	private readonly containers: PhraseContainer<MetadataType>[] = [];
+	private patternCount = 0;
+	private patternIdToPhraseOffset = new Map<number, number>(); // pattern ID => index of its container
 
-	public addDataFrom(other: DataSet<GroupMetadataType, PhraseMetadataType, GroupTagType, PhraseTagType>) {
-		this.whitelistedTerms.push(...other.whitelistedTerms);
+	/**
+	 * Adds all the phrases from the dataset provided to this one.
+	 *
+	 * @example
+	 * ```typescript
+	 * const customDataset = new DataSet().addAll(englishDataset);
+	 * ```
+	 *
+	 * @param other - Other dataset.
+	 */
+	public addAll(other: DataSet<MetadataType>) {
+		for (const container of other.containers) this.registerContainer(container);
+		return this;
+	}
 
-		const offset = this.currentBlacklistedPatternId;
-		for (const pattern of other.blacklistedPatterns) {
-			// Increment the IDs of all patterns so they don't conflict with existing ones in this dataset.
-			const actualId = offset + pattern.id;
-			this.blacklistedPatterns.push({ ...pattern, id: actualId });
+	/**
+	 * Adds a phrase to this dataset.
+	 *
+	 * @example
+	 * ```typescript
+	 * const data = new DataSet()
+	 * 	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'fuck' })
+	 * 		.addPattern(pattern`fuck`)
+	 * 		.addPattern(pattern`f[?]ck`)
+	 * 		.addWhitelistedTerm('Afck'))
+	 * 	.build();
+	 * ```
+	 *
+	 * @param fn - A function that takes a [[PhraseBuilder]], adds
+	 * patterns/whitelisted terms/metadata to it, then returns it.
+	 */
+	public addPhrase(fn: (builder: PhraseBuilder<MetadataType>) => PhraseBuilder<MetadataType>) {
+		const container = fn(new PhraseBuilder()).build();
+		this.registerContainer(container);
+		return this;
+	}
+
+	/**
+	 * Retrieves the phrase metadata associated with a pattern and returns a
+	 * copy of the match payload with said metadata attached to it.
+	 *
+	 * @example
+	 * ```typescript
+	 * const matches = matcher.setInput(input).getAllMatches();
+	 * const matchesWithPhraseMetadata = matches.map((match) => dataset.getPayloadWithPhraseMetadata(match));
+	 * // Now we can access the 'phraseMetadata' property:
+	 * const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
+	 * ```
+	 *
+	 * @param payload - Original match payload.
+	 */
+	public getPayloadWithPhraseMetadata(payload: MatchPayload): MatchPayloadWithPhraseMetadata<MetadataType> {
+		const offset = this.patternIdToPhraseOffset.get(payload.termId);
+		if (offset === undefined) {
+			throw new Error(`The pattern with ID '${payload.termId}' does not exist in this dataset.`);
 		}
-		this.currentBlacklistedPatternId = offset + other.currentBlacklistedPatternId;
 
-		for (const [id, metadata] of other.patternMetadata) {
-			Object.assign(this.getOrCreateMetadata(offset + id), metadata);
-		}
-
-		return this;
+		return {
+			...payload,
+			phraseMetadata: this.containers[offset].metadata,
+		};
 	}
 
-	public addGroup({
-		metadata,
-		phrases,
-		tag,
-	}: GroupOptions<GroupMetadataType, PhraseMetadataType, GroupTagType, PhraseTagType>) {
-		const ids = phrases.map(this.addPhraseReturningIds).flat(1);
-		if (metadata === undefined && tag === undefined) return this;
-		for (const id of ids) {
-			const metadata = this.getOrCreateMetadata(id);
-			metadata.groupTag = tag;
-			metadata.groupMetadata = metadata as GroupMetadataType;
-		}
-
-		return this;
-	}
-
-	public addPhrase(options: PhraseOptions<PhraseMetadataType, PhraseTagType>) {
-		this.addPhraseReturningIds(options);
-		return this;
-	}
-
-	public addWhitelistedTerm(text: string) {
-		this.whitelistedTerms.push(text);
-		return this;
-	}
-
-	public getRichMetadata(match: MatchPayload) {
-		return { ...match, ...this.patternMetadata.get(match.termId) };
-	}
-
-	public getPatternIdsForPhrases(phraseTags: Iterable<NonNullable<PhraseTagType>>) {
-		const set = new Set(phraseTags);
-		const patternIds = new Set<number>();
-		for (const [patternId, metadata] of this.patternMetadata) {
-			if (set.has(metadata.phraseTag!)) patternIds.add(patternId);
-		}
-		return patternIds;
-	}
-
-	public getPatternIdsInGroups(groupTags: Iterable<NonNullable<GroupTagType>>) {
-		const set = new Set(groupTags);
-		const patternIds: number[] = [];
-		for (const [id, metadata] of this.patternMetadata) {
-			if (set.has(metadata.groupTag!)) patternIds.push(id);
-		}
-		return patternIds;
-	}
-
-	public removeBlacklistedPhraseGroups(groupTags: Iterable<NonNullable<GroupTagType>>) {
-		const set = new Set(groupTags);
-		const ids = this.sweep((metadata) => set.has(metadata.groupTag!));
-		this.blacklistedPatterns = this.blacklistedPatterns.filter((p) => !ids.has(p.id));
-		return this;
-	}
-
-	public removeBlacklistedPhrases(phraseTags: Iterable<NonNullable<PhraseTagType>>) {
-		const set = new Set(phraseTags);
-		const ids = this.sweep((metadata) => set.has(metadata.phraseTag!));
-		this.blacklistedPatterns = this.blacklistedPatterns.filter((p) => !ids.has(p.id));
-		return this;
-	}
-
-	public removePatternsById(ids: Iterable<number>) {
-		const set = new Set(ids);
-		for (const id of this.patternMetadata.keys()) {
-			if (set.has(id)) this.patternMetadata.delete(id);
-		}
-		this.blacklistedPatterns = this.blacklistedPatterns.filter((p) => !set.has(p.id));
-		return this;
-	}
-
+	/**
+	 * Returns the dataset in a format suitable for usage with the [[PatternMatcher]].
+	 *
+	 * @example
+	 * ```typescript
+	 * const matcher = new PatternMatcher({
+	 * 	...dataset.build(),
+	 * 	// your additional options here
+	 * });
+	 * ```
+	 */
 	public build(): Pick<PatternMatcherOptions, 'blacklistedPatterns' | 'whitelistedTerms'> {
-		return { blacklistedPatterns: this.blacklistedPatterns, whitelistedTerms: this.whitelistedTerms };
+		return {
+			blacklistedPatterns: assignIncrementingIds(this.containers.flatMap((p) => p.patterns)),
+			whitelistedTerms: this.containers.flatMap((p) => p.whitelistedTerms),
+		};
 	}
 
-	private sweep(
-		predicate: (
-			metadata: PatternMetadata<GroupMetadataType, PhraseMetadataType, GroupTagType, PhraseTagType>,
-		) => boolean,
-	) {
-		const deleted = new Set<number>();
-		for (const [id, metadata] of this.patternMetadata) {
-			if (predicate(metadata)) deleted.add(id);
+	private registerContainer(container: PhraseContainer<MetadataType>) {
+		const offset = this.containers.push(container) - 1;
+		for (let i = 0, phraseId = this.patternCount; i < container.patterns.length; i++, phraseId++) {
+			this.patternIdToPhraseOffset.set(phraseId, offset);
+			this.patternCount++;
 		}
-		return deleted;
-	}
-
-	private addPhraseReturningIds({ metadata, patterns, tag }: PhraseOptions<PhraseMetadataType, PhraseTagType>) {
-		const patternIds: number[] = [];
-		for (const pattern of patterns) {
-			const patternId = this.currentBlacklistedPatternId++;
-			if (metadata !== undefined || tag !== undefined) {
-				const patternMetadata = this.getOrCreateMetadata(patternId);
-				patternMetadata.phraseMetadata = metadata;
-				patternMetadata.phraseTag = tag;
-			}
-
-			this.blacklistedPatterns.push({ id: patternId, pattern });
-			patternIds.push(patternId);
-		}
-
-		return patternIds;
-	}
-
-	private getOrCreateMetadata(id: number) {
-		let metadata = this.patternMetadata.get(id);
-		if (!metadata) this.patternMetadata.set(id, (metadata = {}));
-		return metadata;
 	}
 }
 
-export interface MatchPayloadWithRichMetadata<
-	GroupMetadataType,
-	PhraseMetadataType,
-	GroupTagType extends PermissibleTagType,
-	PhraseTagType extends PermissibleTagType,
-> extends MatchPayload,
-		PatternMetadata<GroupMetadataType, PhraseMetadataType, GroupTagType, PhraseTagType> {}
+/**
+ * Builder for phrases.
+ */
+export class PhraseBuilder<MetadataType> {
+	private readonly patterns: ParsedPattern[] = [];
+	private readonly whitelistedTerms: string[] = [];
+	private metadata?: MetadataType;
 
-export type GroupOptions<
-	GroupMetadataType,
-	PhraseMetadataType,
-	GroupTagType extends PermissibleTagType,
-	PhraseTagType extends PermissibleTagType,
-> = Tagged<
-	undefined extends GroupMetadataType
-		? { metadata?: GroupMetadataType; phrases: PhraseOptions<PhraseMetadataType, PhraseTagType>[] }
-		: { metadata: GroupMetadataType; phrases: PhraseOptions<PhraseMetadataType, PhraseTagType>[] },
-	GroupTagType
->;
+	/**
+	 * Registers a pattern with the phrase.
+	 *
+	 * @param pattern - Pattern to add.
+	 */
+	public addPattern(pattern: ParsedPattern) {
+		this.patterns.push(pattern);
+		return this;
+	}
 
-export type PhraseOptions<PhraseMetadataType, PhraseTagType extends PermissibleTagType> = Tagged<
-	undefined extends PhraseMetadataType
-		? { metadata?: PhraseMetadataType; patterns: ParsedPattern[] }
-		: { metadata: PhraseMetadataType; patterns: ParsedPattern[] },
-	PhraseTagType
->;
+	/**
+	 * Registers a whitelisted pattern with the phrase.
+	 *
+	 * @param term - Whitelisted term to add.
+	 */
+	public addWhitelistedTerm(term: string) {
+		this.whitelistedTerms.push(term);
+		return this;
+	}
 
-type Tagged<OriginalType, TagType extends PermissibleTagType> = Expand<
-	undefined extends TagType ? OriginalType & { tag?: TagType } : OriginalType & { tag: TagType }
->;
+	/**
+	 * Associates some metadata with the phrase.
+	 *
+	 * @param metadata - Metadata to use.
+	 */
+	public setMetadata(metadata?: MetadataType) {
+		this.metadata = metadata;
+		return this;
+	}
 
-type PermissibleTagType = string | number | bigint | symbol | undefined;
+	/**
+	 * Builds the phrase.
+	 */
+	public build() {
+		return {
+			patterns: this.patterns,
+			whitelistedTerms: this.whitelistedTerms,
+			metadata: this.metadata,
+		};
+	}
+}
 
-type Expand<T> = T extends infer X ? { [K in keyof X]: X[K] } : T;
+/**
+ * Extends the default match payload with phrase metadata.
+ */
+export interface MatchPayloadWithPhraseMetadata<MetadataType> extends MatchPayload {
+	/**
+	 * Phrase metadata associated with the pattern that matched.
+	 */
+	phraseMetadata?: MetadataType;
+}
 
-interface PatternMetadata<
-	GroupMetadataType,
-	PhraseMetadataType,
-	GroupTagType extends PermissibleTagType,
-	PhraseTagType extends PermissibleTagType,
-> {
-	groupTag?: GroupTagType;
-	phraseTag?: PhraseTagType;
-	groupMetadata?: GroupMetadataType;
-	phraseMetadata?: PhraseMetadataType;
+interface PhraseContainer<MetadataType> {
+	patterns: ParsedPattern[];
+	whitelistedTerms: string[];
+	metadata?: MetadataType;
 }
