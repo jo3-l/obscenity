@@ -8,3 +8,7 @@ dist
 coverage
 *.lcov
 .nyc_output
+
+# Logs
+pnpm-debug.log*
+*.log
