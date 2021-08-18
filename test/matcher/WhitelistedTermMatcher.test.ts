@@ -78,13 +78,13 @@ describe('WhitelistedTermMatcher#getMatchedSpans', () => {
 			expectThatArrayIsPermutationOfOther([...ms], [[13, 26]]);
 		});
 
-		it('should work with transformers that change chars (test 1)', () => {
+		it('should work with transformers that change chars (no match)', () => {
 			const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? CharacterCode.LowerA + 1 : c));
 			const ms = new WhitelistedTermMatcher({ terms: ['hallo'], transformers: [changeAToB] }).getMatchedSpans('hallo');
 			expect(ms.size).toBe(0);
 		});
 
-		it('should work with transformers that change chars (test 2)', () => {
+		it('should work with transformers that change chars (with match)', () => {
 			const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? CharacterCode.LowerA + 1 : c));
 			const ms = new WhitelistedTermMatcher({ terms: ['hbllo'], transformers: [changeAToB] }).getMatchedSpans('hallo');
 			expectThatArrayIsPermutationOfOther([...ms], [[0, 4]]);
