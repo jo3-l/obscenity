@@ -538,14 +538,52 @@ describe('matching with blacklist transformers', () => {
 });
 
 describe('matching with whitelist transformers', () => {
-	it.todo('tests');
+	it('should work with transformers which become undefined after transformation', () => {
+		const skipSpaces = createSimpleTransformer((c) => (c === 32 ? undefined : c));
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`world` }],
+			whitelistedTerms: ['helloworld!'],
+			whitelistMatcherTransformers: [skipSpaces],
+		});
+		expect(matcher.setInput('h e l l o world!').getAllMatches()).toHaveLength(0);
+	});
+
+	it('should work with transformers that change chars (no match)', () => {
+		const changeAToB = createSimpleTransformer((c) => (c == CharacterCode.LowerA ? c + 1 : c));
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`biash` }],
+			whitelistedTerms: ['a biash'],
+			whitelistMatcherTransformers: [changeAToB],
+		});
+		expect(matcher.setInput('the a biash was').getAllMatches()).toStrictEqual([
+			{ termId: 1, startIndex: 6, endIndex: 10, matchLength: 5 },
+		]);
+	});
+
+	it('should work with transformers that change chars (with match)', () => {
+		const changeAToB = createSimpleTransformer((c) => (c == CharacterCode.LowerA ? c + 1 : c));
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`ass` }],
+			whitelistedTerms: ['bss'],
+			whitelistMatcherTransformers: [changeAToB],
+		});
+		expect(matcher.setInput('a big ass').getAllMatches()).toHaveLength(0);
+	});
+
+	it('should not affect matching of blacklisted terms', () => {
+		const ignoreAllAs = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`dader` }],
+			whitelistedTerms: ['a dader'],
+			whitelistMatcherTransformers: [ignoreAllAs],
+		});
+		expect(matcher.setInput('there is a dader').getAllMatches()).toStrictEqual([
+			{ termId: 1, startIndex: 11, endIndex: 15, matchLength: 5 },
+		]);
+	});
 });
 
 describe('forked traversal limiting', () => {
-	it.todo('tests');
-});
-
-describe('PatternMatcher#getFirstMatch()', () => {
 	it.todo('tests');
 });
 
