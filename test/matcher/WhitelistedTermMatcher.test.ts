@@ -55,6 +55,15 @@ describe('WhitelistedTermMatcher#getMatchedSpans', () => {
 				[146, 190],
 			],
 		],
+		[
+			'should match several similar terms',
+			['thing', 'thang'],
+			'im just doin my thign thing ok thang',
+			[
+				[22, 26],
+				[31, 35],
+			],
+		],
 	])('%s', (_, terms, input, expected) => {
 		const ms = new WhitelistedTermMatcher({ terms }).getMatchedSpans(input);
 		expectThatArrayIsPermutationOfOther([...ms], expected);
