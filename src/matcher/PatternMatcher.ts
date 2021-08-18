@@ -6,7 +6,7 @@ import {
 	SharedFlag,
 	BlacklistTrieNode,
 	BlacklistTrieNodeFlag,
-	LinkedFragmentFlag,
+	ForkedTraversalFlag,
 	ForkedTraversalMetadata,
 } from './trie/BlacklistTrieNode';
 import { BlacklistedTerm } from './BlacklistedTerm';
@@ -315,7 +315,7 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 		// We can skip spawning a forked traversal if it requires a word
 		// boundary at the start, but there is no such word boundary.
 		if (
-			!(data.flags & LinkedFragmentFlag.RequireWordBoundaryAtStart) ||
+			!(data.flags & ForkedTraversalFlag.RequireWordBoundaryAtStart) ||
 			!isWordBoundary(this.usedIndices.get(this.usedIndices.length - data.preFragmentMatchLength)!, this.input)
 		) {
 			this.forkedTraversals.push(new ForkedTraversal(data));
@@ -424,8 +424,8 @@ export class PatternMatcher implements IterableIterator<MatchPayload> {
 					nodes: pattern.slice(wildcardIndex),
 				};
 
-				if (term.pattern.requireWordBoundaryAtStart) metadata.flags |= LinkedFragmentFlag.RequireWordBoundaryAtStart;
-				if (term.pattern.requireWordBoundaryAtEnd) metadata.flags |= LinkedFragmentFlag.RequireWordBoundaryAtEnd;
+				if (term.pattern.requireWordBoundaryAtStart) metadata.flags |= ForkedTraversalFlag.RequireWordBoundaryAtStart;
+				if (term.pattern.requireWordBoundaryAtEnd) metadata.flags |= ForkedTraversalFlag.RequireWordBoundaryAtEnd;
 				(endNode.forkedTraversals ??= []).push(metadata);
 				endNode.flags |= BlacklistTrieNodeFlag.SpawnsForkedTraversalsDirectly;
 			}
