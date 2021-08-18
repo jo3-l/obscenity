@@ -1,27 +1,27 @@
 import { CharacterCode } from '../../../src/util/Char';
-import { foldAsciiCharCaseTransformer } from '../../../src/transformer/fold-ascii-char-case';
+import { toAsciiLowerCaseTransformer } from '../../../src/transformer/to-ascii-lowercase';
 import { TransformerType } from '../../../src/transformer/Transformers';
 
-describe('foldAsciiCharCaseTransformer()', () => {
+describe('toAsciiLowerCaseTransformer()', () => {
 	it('should return a simple transformer container', () => {
-		const container = foldAsciiCharCaseTransformer();
+		const container = toAsciiLowerCaseTransformer();
 		expect(container.type).toBe(TransformerType.Simple);
 		expect(typeof container.transform).toBe('function');
 	});
 
 	describe('case folding', () => {
 		it('should change uppercase ascii characters to lowercase', () => {
-			const container = foldAsciiCharCaseTransformer();
+			const container = toAsciiLowerCaseTransformer();
 			expect(container.transform(CharacterCode.UpperA)).toBe(CharacterCode.LowerA);
 		});
 
 		it('should leave lowercase chars unchanged', () => {
-			const container = foldAsciiCharCaseTransformer();
+			const container = toAsciiLowerCaseTransformer();
 			expect(container.transform(CharacterCode.LowerA)).toBe(CharacterCode.LowerA);
 		});
 
 		it('should leave all other characters unchanged', () => {
-			const container = foldAsciiCharCaseTransformer();
+			const container = toAsciiLowerCaseTransformer();
 			expect(container.transform(3)).toBe(3);
 			expect(container.transform(CharacterCode.Backslash)).toBe(CharacterCode.Backslash);
 		});
