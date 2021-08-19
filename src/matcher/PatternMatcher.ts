@@ -188,7 +188,7 @@ export class PatternMatcher {
 
 		while (!this.done && !this.hasPendingMatches) {
 			const transformed = this.transformers.applyTo(this.iter.next().value!);
-			if (!transformed) continue; // Returning undefined from a transformer skips that character.
+			if (transformed === undefined) continue; // Returning undefined from a transformer skips that character.
 
 			// Mark the current position as one used for matching.
 			this.usedIndices.push(this.position);
