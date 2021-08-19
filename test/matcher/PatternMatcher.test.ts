@@ -337,13 +337,13 @@ describe('matching with word boundaries', () => {
 	it.each([
 		// normal patterns
 		[
-			'should not emit matches for patterns which require a word boundary at the start if the matched segment does not start with a non-word char',
+			'should not emit matches for patterns which require a word boundary at the start if the matched segment has a word char before it',
 			['|cool'],
 			'something is quitecool',
 			{},
 		],
 		[
-			'should emit matches for patterns which require a word boundary at the start if the matched segment starts with a non-word char',
+			'should emit matches for patterns which require a word boundary at the start if the matched segment has a non-word char before it',
 			['|beans'],
 			'delicious beans',
 			{
@@ -359,13 +359,13 @@ describe('matching with word boundaries', () => {
 			},
 		],
 		[
-			'should not emit matches for patterns which require a word boundary at the end if the matched segment does not end with a non-word char',
+			'should not emit matches for patterns which require a word boundary at the end if the matched segment does not have a non-word char after it',
 			['cool|'],
 			'something is quite coolbeans',
 			{},
 		],
 		[
-			'should emit matches for patterns which require a word boundary at the start if the matched segment ends with a non-word char',
+			'should emit matches for patterns which require a word boundary at the start if the matched segment has a non-word char after it',
 			['beans|'],
 			'delicious beans yes',
 			{
@@ -383,13 +383,13 @@ describe('matching with word boundaries', () => {
 
 		// normal patterns w/ non-word chars
 		[
-			'should not emit matches for patterns which require a word boundary at the start if the matched segment does not start with a non-word char (pattern has non-word char near the start)',
+			'should not emit matches for patterns which require a word boundary at the start if the matched segment has a word char before it (pattern has non-word char near the start)',
 			['|c!ol'],
 			'something is quitec!ol',
 			{},
 		],
 		[
-			'should emit matches for patterns which require a word boundary at the start if the matched segment starts with a non-word char (pattern has non-word char near the start)',
+			'should emit matches for patterns which require a word boundary at the start if the matched segment has a non-word char before it (pattern has non-word char near the start)',
 			['|b*ans'],
 			'delicious b*ans',
 			{
@@ -405,13 +405,13 @@ describe('matching with word boundaries', () => {
 			},
 		],
 		[
-			'should not emit matches for patterns which require a word boundary at the end if the matched segment does not end with a non-word char (pattern has non-word char near the end)',
+			'should not emit matches for patterns which require a word boundary at the end if the matched segment does not have a non-word char after it (pattern has non-word char near the end)',
 			['co#l|'],
 			'something is quite co#lbeans',
 			{},
 		],
 		[
-			'should emit matches for patterns which require a word boundary at the start if the matched segment ends with a non-word char (pattern has non-word char near the end)',
+			'should emit matches for patterns which require a word boundary at the start if the matched segment has a non-word char after it (pattern has non-word char near the end)',
 			['bea!s|'],
 			'delicious bea!s yes',
 			{
@@ -429,13 +429,13 @@ describe('matching with word boundaries', () => {
 
 		// patterns with wildcards
 		[
-			'should not emit matches for patterns which require a word boundary at the start if the matched segment does not start with a non-word char',
+			'should not emit matches for patterns which require a word boundary at the start if the matched segment does not have a non-word char after it (with wildcards)',
 			['|c?ol'],
 			'something is quitecool',
 			{},
 		],
 		[
-			'should emit matches for patterns which require a word boundary at the start if the matched segment starts with a non-word char',
+			'should emit matches for patterns which require a word boundary at the start if the matched segment has a non-word char after it (with wildcards)',
 			['|be?ns'],
 			'delicious beans',
 			{
@@ -443,7 +443,7 @@ describe('matching with word boundaries', () => {
 			},
 		],
 		[
-			'should emit matches for patterns which require a word boundary at the start if the matched segment begins at the start of the string',
+			'should emit matches for patterns which require a word boundary at the start if the matched segment begins at the start of the string (with wildcards)',
 			['|?hings'],
 			'things are cool',
 			{
@@ -451,13 +451,13 @@ describe('matching with word boundaries', () => {
 			},
 		],
 		[
-			'should not emit matches for patterns which require a word boundary at the end if the matched segment does not end with a non-word char',
+			'should not emit matches for patterns which require a word boundary at the end if the matched segment does not have a non-word char after it (with wildcards)',
 			['?ool|'],
 			'something is quite coolbeans',
 			{},
 		],
 		[
-			'should emit matches for patterns which require a word boundary at the start if the matched segment ends with a non-word char',
+			'should emit matches for patterns which require a word boundary at the start if the matched segment has a non-word char after it (with wildcards)',
 			['be?ns|'],
 			'delicious beans yes',
 			{
@@ -465,9 +465,55 @@ describe('matching with word boundaries', () => {
 			},
 		],
 		[
-			'should emit matches for patterns which require a word boundary at the start if the matched segment ends at the eof',
+			'should emit matches for patterns which require a word boundary at the start if the matched segment ends at the eof (with wildcards)',
 			['thing?|'],
 			'there are many things',
+			{
+				0: [[15, 20, 6]],
+			},
+		],
+
+		// patterns with wildcards and non-word chars
+		[
+			'should not emit matches for patterns which require a word boundary at the start if the matched segment does not have a non-word char after it (with wildcards and a non-word char near the start)',
+			['|c!?ol'],
+			'something is quitec!ool',
+			{},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment has a non-word char after it (with wildcards and a non-word char near the start)',
+			['|b$e?ns'],
+			'delicious b$eans',
+			{
+				0: [[10, 15, 6]],
+			},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment begins at the start of the string (with wildcards and a non-word char near the start)',
+			['|?^ings'],
+			't^ings are cool',
+			{
+				0: [[0, 5, 6]],
+			},
+		],
+		[
+			'should not emit matches for patterns which require a word boundary at the end if the matched segment does not have a non-word char after it (with wildcards and a non-word char near the end)',
+			['?o_l|'],
+			'something is quite coolbeans',
+			{},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment has a non-word char after it (with wildcards and a non-word char near the end)',
+			['be?%s|'],
+			'delicious bea%s yes',
+			{
+				0: [[10, 14, 5]],
+			},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment ends at the eof (with wildcards and a non-word char near the end)',
+			['thin*?|'],
+			'there are many thin*s',
 			{
 				0: [[15, 20, 6]],
 			},
