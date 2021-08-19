@@ -119,7 +119,7 @@ export class PatternMatcher {
 	 * @param input - Input string to match against.
 	 */
 	public setInput(input: string) {
-		this.iter.setInput(input.normalize());
+		this.iter.setInput(input);
 		this.whitelistedSpans = this.whitelistedTermMatcher.getMatchedSpans(this.input);
 		this.reset();
 		return this;
