@@ -381,6 +381,52 @@ describe('matching with word boundaries', () => {
 			},
 		],
 
+		// normal patterns w/ non-word chars
+		[
+			'should not emit matches for patterns which require a word boundary at the start if the matched segment does not start with a non-word char (pattern has non-word char near the start)',
+			['|c!ol'],
+			'something is quitec!ol',
+			{},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment starts with a non-word char (pattern has non-word char near the start)',
+			['|b*ans'],
+			'delicious b*ans',
+			{
+				0: [[10, 14, 5]],
+			},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment begins at the start of the string (pattern has non-word char near the start)',
+			['|t^ings'],
+			't^ings are cool',
+			{
+				0: [[0, 5, 6]],
+			},
+		],
+		[
+			'should not emit matches for patterns which require a word boundary at the end if the matched segment does not end with a non-word char (pattern has non-word char near the end)',
+			['co#l|'],
+			'something is quite co#lbeans',
+			{},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment ends with a non-word char (pattern has non-word char near the end)',
+			['bea!s|'],
+			'delicious bea!s yes',
+			{
+				0: [[10, 14, 5]],
+			},
+		],
+		[
+			'should emit matches for patterns which require a word boundary at the start if the matched segment ends at the eof (pattern has non-word char near the end)',
+			['thin$s|'],
+			'there are many thin$s',
+			{
+				0: [[15, 20, 6]],
+			},
+		],
+
 		// patterns with wildcards
 		[
 			'should not emit matches for patterns which require a word boundary at the start if the matched segment does not start with a non-word char',
