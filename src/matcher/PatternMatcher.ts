@@ -10,7 +10,7 @@ import {
 	ForkedTraversalMetadata,
 } from './trie/BlacklistTrieNode';
 import { BlacklistedTerm } from './BlacklistedTerm';
-import { comparingMatchByPositionAndId, MatchPayload } from './MatchPayload';
+import { compareMatchByPositionAndId, MatchPayload } from './MatchPayload';
 import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
 import { Queue } from '../util/Queue';
 import { CharacterIterator } from '../util/CharacterIterator';
@@ -133,7 +133,7 @@ export class PatternMatcher {
 	 * method, which is more efficient.
 	 *
 	 * @param sorted - Whether the resulting list of matches should be sorted
-	 * using [[comparingMatchByPositionAndId]]. Defaults to `false`.
+	 * using [[compareMatchByPositionAndId]]. Defaults to `false`.
 	 *
 	 * @returns A list of matches of the matcher on the text. The matches are
 	 * guaranteed to be sorted if and only if the `sorted` parameter is `true`,
@@ -147,7 +147,7 @@ export class PatternMatcher {
 		const matches: MatchPayload[] = [];
 		for (let payload = this.next(); payload; payload = this.next()) matches.push(payload);
 		this.reset();
-		return sorted ? matches.sort(comparingMatchByPositionAndId) : matches;
+		return sorted ? matches.sort(compareMatchByPositionAndId) : matches;
 	}
 
 	/**

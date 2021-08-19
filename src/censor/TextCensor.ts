@@ -1,4 +1,4 @@
-import { comparingMatchByPositionAndId, MatchPayload } from '../matcher/MatchPayload';
+import { compareMatchByPositionAndId, MatchPayload } from '../matcher/MatchPayload';
 import { grawlixCensorStrategy } from './BuiltinStrategies';
 
 export class TextCensor {
@@ -11,7 +11,7 @@ export class TextCensor {
 
 	public applyTo(input: string, matches: MatchPayload[]) {
 		if (matches.length === 0) return input;
-		const sorted = [...matches].sort(comparingMatchByPositionAndId);
+		const sorted = [...matches].sort(compareMatchByPositionAndId);
 
 		let censored = '';
 		let lastIndex = 0;

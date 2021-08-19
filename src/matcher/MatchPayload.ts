@@ -55,7 +55,7 @@ export interface MatchPayload {
  * the second, 0 if they are the same, and 1 if the second should sort lower
  * than the first.
  */
-export function comparingMatchByPositionAndId(a: MatchPayload, b: MatchPayload) {
+export function compareMatchByPositionAndId(a: MatchPayload, b: MatchPayload) {
 	const result = compareIntervals([a.startIndex, a.endIndex], [b.startIndex, b.endIndex]);
 	if (result !== 0) return result;
 	return a.termId === b.termId ? 0 : a.termId < b.termId ? -1 : 1;
