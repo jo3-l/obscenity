@@ -6,6 +6,9 @@ import { ParsedPattern } from '../pattern/Nodes';
 /**
  * Holds phrases (groups of patterns and whitelisted terms), optionally
  * associating metadata with them.
+ *
+ * @typeParam MetadataType - Metadata type for phrases. Note that the metadata
+ * type is implicitly nullable.
  */
 export class DataSet<MetadataType> {
 	private readonly containers: PhraseContainer<MetadataType>[] = [];
