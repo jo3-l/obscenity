@@ -61,6 +61,41 @@ describe('DataSet#addPhrase()', () => {
 	});
 });
 
+describe('DataSet#removePhrasesIf()', () => {
+	it('should remove phrases that satisfy the predicate', () => {
+		const ds = new DataSet()
+			.addPhrase((p) =>
+				p
+					.addPattern(pattern`hi`)
+					.addPattern(pattern`bye`)
+					.setMetadata('greetings')
+					.addWhitelistedTerm('a'),
+			)
+			.addPhrase((p) =>
+				p
+					.addPattern(pattern`morning`)
+					.addPattern(pattern`night`)
+					.setMetadata('times-of-day')
+					.addWhitelistedTerm('b'),
+			)
+			.addPhrase((p) =>
+				p
+					.addPattern(pattern`sad`)
+					.addPattern(pattern`happy`)
+					.setMetadata('emotions')
+					.addWhitelistedTerm('c'),
+			);
+		ds.removePhrasesIf((p) => p.metadata === 'emotions' || p.metadata === 'greetings');
+		expect(ds.build()).toStrictEqual({
+			blacklistedPatterns: [
+				{ id: 0, pattern: pattern`morning` },
+				{ id: 1, pattern: pattern`night` },
+			],
+			whitelistedTerms: ['b'],
+		});
+	});
+});
+
 describe('DataSet#getPayloadWithPhraseMetadata()', () => {
 	const partialData = { startIndex: 0, endIndex: 0, matchLength: 0 };
 	it('should throw an error if the pattern ID does not correspond to one in the dataset', () => {
@@ -182,6 +217,49 @@ describe('DataSet#getPayloadWithPhraseMetadata()', () => {
 		});
 		expect(ds.getPayloadWithPhraseMetadata({ termId: 5, ...partialData })).toStrictEqual({
 			termId: 5,
+			...partialData,
+			phraseMetadata: 'emojis',
+		});
+	});
+
+	it('should use the correct phrase metadata after removing certain phrases', () => {
+		const ds = new DataSet()
+			.addPhrase((p) =>
+				p
+					.addPattern(pattern`hi`)
+					.addPattern(pattern`bye`)
+					.setMetadata('greetings'),
+			)
+			.addPhrase((p) =>
+				p
+					.addPattern(pattern`sad`)
+					.addPattern(pattern`happy`)
+					.setMetadata('emotion'),
+			)
+			.addPhrase((p) =>
+				p
+					.addPattern(pattern`:D`)
+					.addPattern(pattern`:(`)
+					.setMetadata('emojis'),
+			);
+		ds.removePhrasesIf((phrase) => phrase.metadata === 'greetings');
+		expect(ds.getPayloadWithPhraseMetadata({ termId: 0, ...partialData })).toStrictEqual({
+			termId: 0,
+			...partialData,
+			phraseMetadata: 'emotion',
+		});
+		expect(ds.getPayloadWithPhraseMetadata({ termId: 1, ...partialData })).toStrictEqual({
+			termId: 1,
+			...partialData,
+			phraseMetadata: 'emotion',
+		});
+		expect(ds.getPayloadWithPhraseMetadata({ termId: 2, ...partialData })).toStrictEqual({
+			termId: 2,
+			...partialData,
+			phraseMetadata: 'emojis',
+		});
+		expect(ds.getPayloadWithPhraseMetadata({ termId: 3, ...partialData })).toStrictEqual({
+			termId: 3,
 			...partialData,
 			phraseMetadata: 'emojis',
 		});

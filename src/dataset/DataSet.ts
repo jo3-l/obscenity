@@ -31,6 +31,30 @@ export class DataSet<MetadataType> {
 	}
 
 	/**
+	 * Removes phrases that match the predicate given.
+	 *
+	 * @example
+	 * ```typescript
+	 * const customDataset = new DataSet()
+	 * 	.addAll(englishDataset)
+	 * 	.removePhrasesIf((phrase) => phrase.metadata.displayName === 'fuck'); // remove the f-word
+	 * ```
+	 *
+	 * @param predicate - A predicate that determines whether or not a phrase should be removed.
+	 * Return `true` to remove, `false` to keep.
+	 */
+	public removePhrasesIf(predicate: (phrase: PhraseContainer<MetadataType>) => boolean) {
+		this.patternCount = 0;
+		this.patternIdToPhraseOffset.clear();
+		const containers = this.containers.splice(0);
+		for (const container of containers) {
+			const remove = predicate(container);
+			if (!remove) this.registerContainer(container);
+		}
+		return this;
+	}
+
+	/**
 	 * Adds a phrase to this dataset.
 	 *
 	 * @example
@@ -146,7 +170,7 @@ export class PhraseBuilder<MetadataType> {
 	/**
 	 * Builds the phrase.
 	 */
-	public build() {
+	public build(): PhraseContainer<MetadataType> {
 		return {
 			patterns: this.patterns,
 			whitelistedTerms: this.whitelistedTerms,
@@ -165,8 +189,22 @@ export interface MatchPayloadWithPhraseMetadata<MetadataType> extends MatchPaylo
 	phraseMetadata?: MetadataType;
 }
 
-interface PhraseContainer<MetadataType> {
+/**
+ * Represents a phrase.
+ */
+export interface PhraseContainer<MetadataType> {
+	/**
+	 * The patterns corresponding to this phrase.
+	 */
 	patterns: ParsedPattern[];
+
+	/**
+	 * The whitelisted terms corresponding to this phrase.
+	 */
 	whitelistedTerms: string[];
+
+	/**
+	 * Metadata associated with this phrase.
+	 */
 	metadata?: MetadataType;
 }
