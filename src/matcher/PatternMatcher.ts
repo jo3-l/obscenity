@@ -445,80 +445,76 @@ export class PatternMatcher {
 				let cur = node.failureLink;
 				while (!cur.edges.get(char) && cur !== this.rootNode) cur = cur.failureLink;
 
-				const failureLink = cur.edges.get(char);
-				if (failureLink) {
-					// Recall that patterns with wildcard nodes are not
-					// completely stored in the trie. Instead, we add the
-					// literal nodes up to the first wildcard node and then add
-					// the remaining nodes to the linked fragments of the
-					// resulting trie node.
-					//
-					// How should this construct interact with failure links?
-					// Consider a set of patterns P = {'abcd', 'bcd', 'c?'}. The
-					// failure link at the trie nodes corresponding to the
-					// character 'c' in the first pattern points to the second,
-					// and similar for the second. If we have a match for
-					// 'abcd', 'bcd' should also match, as should 'c?'. However,
-					// without further changes to the original failure/output
-					// function construction algorithms, a match for the third
-					// pattern would not be emitted.
-					//
-					// To make the above example work, we need to spawn a forked
-					// traversal whenever we see the character 'c'. More
-					// generally, given a pattern with a wildcard node w 'xwy'
-					// where x and y are literals split by the wildcard node in
-					// the middle, we want to spawn a forked traversal whenever
-					// we are at a node which represents a string that either
-					// equals the literal x or has the literal x as a proper
-					// suffix.
-					//
-					// In the original example, as 'bcd' has 'c' as a suffix at
-					// the node representing literal 'bc', that node should also
-					// spawn a forked traversal, as should the node representing
-					// the literal 'abc' in 'abcd' for similar reasons.
-					//
-					// To do this, we will introduce the concept of forked traversal
-					// links. During matching, when a node n is reached, in addition
-					// to the forked traversals it spawns directly, all the forked
-					// traversals that are connected to any node linked by a forked
-					// traversal link to it should be spawned as well.
-					//
-					// We will compute forked traversal links with the help of
-					// failure links. Recall that due to the nature of failure
-					// links, if we have a node Nk representing string us and a
-					// node N representing string u, either Nk = N or there
-					// exist nodes N1, N2, N3, ... Nk such that f(Ni) = F(Ni-1),
-					// 1 < n <= k, and f(N1) = N. In other words, a set of
-					// patterns which have literal nodes that are suffixes of
-					// one another is connected by failure links. Given that our
-					// goal is to spawn all the forked traversals connected to
-					// suffixes of the representative string of a node, we can
-					// simply set the forked traversal link of a node N to f(N)
-					// if f(N) itself has a forked traversal link or f(N) spawns
-					// forked traversals directly.
-					//
-					// Note:
-					// The ideas above are based on the findings of the paper
-					// 'Generalized Aho-Corasick Algorithm for Signature Based
-					// Anti-Virus Applications', authored by Tsem-Huei Lee.
-					if (
-						// either the failure link spawns forked traversals directly...
-						failureLink.flags & BlacklistTrieNodeFlag.SpawnsForkedTraversalsDirectly ||
-						// or it has a forked traversal link.
-						failureLink.forkedTraversalLink
-					) {
-						childNode.forkedTraversalLink = failureLink;
-						// Apply path compression. Let t(N) denote the forked
-						// traversal link of N. If t(N) does not spawn forked
-						// traversals directly, set t(N) to t(t(N)).
-						if (!(childNode.forkedTraversalLink.flags & BlacklistTrieNodeFlag.SpawnsForkedTraversalsDirectly)) {
-							childNode.forkedTraversalLink = childNode.forkedTraversalLink.forkedTraversalLink;
-						}
+				const failureLink = cur.edges.get(char) ?? this.rootNode;
+				// Recall that patterns with wildcard nodes are not
+				// completely stored in the trie. Instead, we add the
+				// literal nodes up to the first wildcard node and then add
+				// the remaining nodes to the linked fragments of the
+				// resulting trie node.
+				//
+				// How should this construct interact with failure links?
+				// Consider a set of patterns P = {'abcd', 'bcd', 'c?'}. The
+				// failure link at the trie nodes corresponding to the
+				// character 'c' in the first pattern points to the second,
+				// and similar for the second. If we have a match for
+				// 'abcd', 'bcd' should also match, as should 'c?'. However,
+				// without further changes to the original failure/output
+				// function construction algorithms, a match for the third
+				// pattern would not be emitted.
+				//
+				// To make the above example work, we need to spawn a forked
+				// traversal whenever we see the character 'c'. More
+				// generally, given a pattern with a wildcard node w 'xwy'
+				// where x and y are literals split by the wildcard node in
+				// the middle, we want to spawn a forked traversal whenever
+				// we are at a node which represents a string that either
+				// equals the literal x or has the literal x as a proper
+				// suffix.
+				//
+				// In the original example, as 'bcd' has 'c' as a suffix at
+				// the node representing literal 'bc', that node should also
+				// spawn a forked traversal, as should the node representing
+				// the literal 'abc' in 'abcd' for similar reasons.
+				//
+				// To do this, we will introduce the concept of forked traversal
+				// links. During matching, when a node n is reached, in addition
+				// to the forked traversals it spawns directly, all the forked
+				// traversals that are connected to any node linked by a forked
+				// traversal link to it should be spawned as well.
+				//
+				// We will compute forked traversal links with the help of
+				// failure links. Recall that due to the nature of failure
+				// links, if we have a node Nk representing string us and a
+				// node N representing string u, either Nk = N or there
+				// exist nodes N1, N2, N3, ... Nk such that f(Ni) = F(Ni-1),
+				// 1 < n <= k, and f(N1) = N. In other words, a set of
+				// patterns which have literal nodes that are suffixes of
+				// one another is connected by failure links. Given that our
+				// goal is to spawn all the forked traversals connected to
+				// suffixes of the representative string of a node, we can
+				// simply set the forked traversal link of a node N to f(N)
+				// if f(N) itself has a forked traversal link or f(N) spawns
+				// forked traversals directly.
+				//
+				// Note:
+				// The ideas above are based on the findings of the paper
+				// 'Generalized Aho-Corasick Algorithm for Signature Based
+				// Anti-Virus Applications', authored by Tsem-Huei Lee.
+				if (
+					// either the failure link spawns forked traversals directly...
+					failureLink.flags & BlacklistTrieNodeFlag.SpawnsForkedTraversalsDirectly ||
+					// or it has a forked traversal link.
+					failureLink.forkedTraversalLink
+				) {
+					childNode.forkedTraversalLink = failureLink;
+					// Apply path compression. Let t(N) denote the forked
+					// traversal link of N. If t(N) does not spawn forked
+					// traversals directly, set t(N) to t(t(N)).
+					if (!(childNode.forkedTraversalLink.flags & BlacklistTrieNodeFlag.SpawnsForkedTraversalsDirectly)) {
+						childNode.forkedTraversalLink = childNode.forkedTraversalLink.forkedTraversalLink;
 					}
-					childNode.failureLink = failureLink;
-				} else {
-					childNode.failureLink = this.rootNode;
 				}
+				childNode.failureLink = failureLink;
 				queue.push(childNode);
 			}
 
