@@ -52,7 +52,7 @@ export class BucketBasedEdgeStorageStrategy<T> implements EdgeStorageStrategy<T>
 	public *[Symbol.iterator]() {
 		for (let i = 0; i < this.buckets.length; i++) {
 			const node = this.buckets[i];
-			if (node) {
+			if (node !== undefined) {
 				const char = this.bucketToCharMapper(i);
 				yield [char, node] as Edge<T>;
 			}
