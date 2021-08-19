@@ -17,7 +17,7 @@ import { CharacterIterator } from '../util/CharacterIterator';
 import { CircularBuffer } from '../util/CircularBuffer';
 import { computePatternMatchLength } from '../pattern/ComputeMatchLength';
 import { ForkedTraversal, ForkedTraversalResponse } from './ForkedTraversal';
-import { isWordBoundary } from '../util/Char';
+import { isWordBoundary, isWordChar } from '../util/Char';
 import { IntervalCollection } from './interval/IntervalCollection';
 import { ForkedTraversalLimitExceededError } from './ForkedTraversalLimitExceededError';
 
@@ -310,8 +310,14 @@ export class PatternMatcher {
 		// how start indices are computed.
 		const startIndex = this.usedIndices.get(this.usedIndices.length - matchLength)!;
 
-		const startBoundaryOk = !(flags & SharedFlag.RequireWordBoundaryAtStart) || isWordBoundary(startIndex, this.input);
-		const endBoundaryOk = !(flags & SharedFlag.RequireWordBoundaryAtEnd) || isWordBoundary(endIndex, this.input);
+		const startBoundaryOk =
+			!(flags & SharedFlag.RequireWordBoundaryAtStart) || // doesn't require word boundary at the start
+			startIndex === 0 || // first character
+			!isWordChar(this.input.charCodeAt(startIndex - 1)); // character before is a non-word char
+		const endBoundaryOk =
+			!(flags & SharedFlag.RequireWordBoundaryAtEnd) || // doesn't require word boundary at the end
+			endIndex === this.input.length - 1 || // last character
+			!isWordChar(this.input.charCodeAt(endIndex + 1)); // character after is a non-word char
 		if (!startBoundaryOk || !endBoundaryOk) return;
 
 		const patternId = this.patternIdMap.get(id)!;
