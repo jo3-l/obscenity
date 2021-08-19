@@ -17,7 +17,7 @@ import { CharacterIterator } from '../util/CharacterIterator';
 import { CircularBuffer } from '../util/CircularBuffer';
 import { computePatternMatchLength } from '../pattern/ComputeMatchLength';
 import { ForkedTraversal, ForkedTraversalResponse } from './ForkedTraversal';
-import { isWordBoundary, isWordChar } from '../util/Char';
+import { isWordChar } from '../util/Char';
 import { IntervalCollection } from './interval/IntervalCollection';
 import { ForkedTraversalLimitExceededError } from './ForkedTraversalLimitExceededError';
 
@@ -279,14 +279,16 @@ export class PatternMatcher {
 	private spawnForkedTraversal(data: ForkedTraversalMetadata) {
 		// We can skip spawning a forked traversal if it requires a word
 		// boundary at the start, but there is no such word boundary.
+		let startWordBoundaryOk = true;
+		if (data.flags & ForkedTraversalFlag.RequireWordBoundaryAtStart) {
+			const startIndex = this.usedIndices.get(this.usedIndices.length - data.preFragmentMatchLength - 1)!;
+			startWordBoundaryOk =
+				startIndex === 0 || // first character
+				!isWordChar(this.input.charCodeAt(startIndex - 1)); // character before isn't a word char
+		}
 
 		/* istanbul ignore else: not observable in tests */
-		if (
-			!(data.flags & ForkedTraversalFlag.RequireWordBoundaryAtStart) ||
-			!isWordBoundary(this.usedIndices.get(this.usedIndices.length - data.preFragmentMatchLength)!, this.input)
-		) {
-			this.forkedTraversals.push(new ForkedTraversal(data));
-		}
+		if (startWordBoundaryOk) this.forkedTraversals.push(new ForkedTraversal(data));
 
 		if (this.forkedTraversals.length > this.forkedTraversalLimit) {
 			throw new ForkedTraversalLimitExceededError(
@@ -299,7 +301,7 @@ export class PatternMatcher {
 	}
 
 	private emitMatch(id: number, flags: number) {
-		let endIndex = this.usedIndices.get(this.usedIndices.length - 1)!;
+		let endIndex = this.position;
 		if (this.iter.lastWidth === 2) {
 			// If the last character was a surrogate pair, adjust the end index.
 			endIndex++;
@@ -313,11 +315,11 @@ export class PatternMatcher {
 		const startBoundaryOk =
 			!(flags & SharedFlag.RequireWordBoundaryAtStart) || // doesn't require word boundary at the start
 			startIndex === 0 || // first character
-			!isWordChar(this.input.charCodeAt(startIndex - 1)); // character before is a non-word char
+			!isWordChar(this.input.charCodeAt(startIndex - 1)); // character before isn't a word char
 		const endBoundaryOk =
 			!(flags & SharedFlag.RequireWordBoundaryAtEnd) || // doesn't require word boundary at the end
 			endIndex === this.input.length - 1 || // last character
-			!isWordChar(this.input.charCodeAt(endIndex + 1)); // character after is a non-word char
+			!isWordChar(this.input.charCodeAt(endIndex + 1)); // character after isn't a word char
 		if (!startBoundaryOk || !endBoundaryOk) return;
 
 		const patternId = this.patternIdMap.get(id)!;
