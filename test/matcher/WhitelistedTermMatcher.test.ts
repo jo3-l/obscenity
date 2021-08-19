@@ -71,6 +71,7 @@ describe('WhitelistedTermMatcher#getMatchedSpans', () => {
 			],
 		],
 		['should work with terms that normalize to a different string', ['豈'], '豈', [[0, 0]]],
+		['should handle null characters correctly', ['\u0000'], '\u0000', [[0, 0]]],
 	])('%s', (_, terms, input, expected) => {
 		const ms = new WhitelistedTermMatcher({ terms }).getMatchedSpans(input);
 		expectThatArrayIsPermutationOfOther([...ms], expected);

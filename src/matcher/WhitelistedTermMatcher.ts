@@ -52,7 +52,7 @@ export class WhitelistedTermMatcher {
 		const iter = new CharacterIterator(text);
 		for (const char of iter) {
 			const transformed = this.transformers.applyTo(char);
-			if (!transformed) continue; // Returning undefined from a transformer skips that character.
+			if (transformed === undefined) continue; // Returning undefined from a transformer skips that character.
 
 			// Mark the current position as one used for matching.
 			usedIndices.push(iter.position);
