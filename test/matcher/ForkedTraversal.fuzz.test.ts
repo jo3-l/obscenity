@@ -8,9 +8,29 @@ import { CharacterIterator } from '../../src/util/CharacterIterator';
 test('running the forked traversal to completion on a certain pattern and input should produce the same result as running an equivalent regexp on the input', () => {
 	fc.assert(
 		fc.property(
-			fc.stringOf(fc.char()).filter((t) => t.length > 0),
-			fc.stringOf(fc.char()).filter((t) => t.length > 0),
-			(pat, input) => {
+			fc
+				.stringOf(fc.oneof(fc.char16bits(), fc.char16bits(), fc.constant('?')))
+				.filter((t) => t.length > 0)
+				.chain((pattern) =>
+					fc.tuple(
+						fc.constant(pattern),
+						fc.oneof(
+							// random strings
+							fc.string16bits(),
+							fc.string16bits(),
+							// generated string that should match the pattern
+							fc.char().chain((c) => {
+								let gen = '';
+								for (const char of new CharacterIterator(pattern)) {
+									if (char === CharacterCode.QuestionMark) gen += c;
+									else gen += String.fromCodePoint(char);
+								}
+								return fc.constant(gen);
+							}),
+						),
+					),
+				),
+			([pat, input]) => {
 				const regexp = toRegExp(pat);
 				const nodes = toPattern(pat);
 				const traversal = new ForkedTraversal({
@@ -21,23 +41,24 @@ test('running the forked traversal to completion on a certain pattern and input 
 				});
 
 				let traversalMatched = false;
-				outer: for (const char of new CharacterIterator(input)) {
+				const it = new CharacterIterator(input);
+				outer: for (const char of it) {
 					switch (traversal.consume(char)) {
 						case ForkedTraversalResponse.FoundMatch:
-							traversalMatched = true; // fall through
+							traversalMatched = it.done; // fall through
 						case ForkedTraversalResponse.Destroy:
 							break outer;
 					}
 				}
 
-				return regexp.test(input) === traversalMatched;
+				expect(traversalMatched).toBe(regexp.test(input));
 			},
 		),
 	);
 });
 
 function toRegExp(str: string) {
-	const clean = str.replace(/[.*+^${}()|[\]\\]/g, '\\%&');
+	const clean = str.replace(/[.*+^${}()|[\]\\]/g, '\\$&');
 	return new RegExp(`^${clean.replace(/\?/g, '.')}$`, 's');
 }
 
