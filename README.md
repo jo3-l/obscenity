@@ -4,4 +4,4 @@
 
 ## Status
 
-Pre-alpha; there are still several important components to be tested.
+Usable (all important components have full test coverage), but no documentation currently. That will change, so stay tuned!
