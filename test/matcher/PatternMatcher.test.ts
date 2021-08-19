@@ -306,6 +306,19 @@ describe('matching with wildcards', () => {
 			},
 		],
 		[
+			'should match two patterns where one is a single wildcard and the second is a literal',
+			['a!', '?'],
+			'a! ',
+			{
+				0: [[0, 1]],
+				1: [
+					[0, 0],
+					[1, 1],
+					[2, 2],
+				],
+			},
+		],
+		[
 			'should treat surrogate pairs as a single character and thus match a wildcard',
 			['night', 'cool ?'],
 			'what a cool 🌉 night sky',
