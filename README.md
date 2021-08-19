@@ -2,6 +2,10 @@
 
 > Over-engineered profanity filter.
 
-## Status
+## Roadmap
 
-Usable (all important components have full test coverage), but no documentation currently. That will change, so stay tuned!
+- [ ] Set up tools (ESLint, Commitizen, etc.)
+- [ ] Add fuzz testing
+- [ ] Benchmarks
+- [ ] Documentation
+- [ ] 1.0 release
