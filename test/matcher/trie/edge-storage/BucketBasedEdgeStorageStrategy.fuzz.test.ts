@@ -17,6 +17,7 @@ test('getting from the bucket-based edge storage strategy after setting some val
 				const mp = new Map();
 				const storage = new BucketBasedEdgeStorageStrategy({
 					charToBucketMapper: (c) => c - CharacterCode.LowerA,
+					// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 					bucketToCharMapper: (b) => CharacterCode.LowerA + b,
 				});
 				for (const [k, v] of data) {
@@ -36,6 +37,7 @@ test('getting the values stored by the array-based edge storage strategy after s
 			const mp = new Map();
 			const storage = new BucketBasedEdgeStorageStrategy({
 				charToBucketMapper: (c) => c - CharacterCode.LowerA,
+				// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 				bucketToCharMapper: (b) => CharacterCode.LowerA + b,
 			});
 			for (const [k, v] of data) {
@@ -54,6 +56,7 @@ test('the size should be equal to the number of unique keys', () => {
 			const keys = new Set();
 			const storage = new BucketBasedEdgeStorageStrategy({
 				charToBucketMapper: (c) => c - CharacterCode.LowerA,
+				// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 				bucketToCharMapper: (b) => CharacterCode.LowerA + b,
 			});
 			for (const [k, v] of data) {

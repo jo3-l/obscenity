@@ -87,12 +87,14 @@ describe('WhitelistedTermMatcher#getMatchedSpans', () => {
 		});
 
 		it('should work with transformers that change chars (no match)', () => {
+			// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 			const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? CharacterCode.LowerA + 1 : c));
 			const ms = new WhitelistedTermMatcher({ terms: ['hallo'], transformers: [changeAToB] }).getMatchedSpans('hallo');
 			expect(ms.size).toBe(0);
 		});
 
 		it('should work with transformers that change chars (with match)', () => {
+			// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 			const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? CharacterCode.LowerA + 1 : c));
 			const ms = new WhitelistedTermMatcher({ terms: ['hbllo'], transformers: [changeAToB] }).getMatchedSpans('hallo');
 			expectThatArrayIsPermutationOfOther([...ms], [[0, 4]]);

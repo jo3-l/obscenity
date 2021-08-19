@@ -140,13 +140,13 @@ describe('CharacterIterator#done', () => {
 
 	it('should be true if all input has been consumed', () => {
 		const iter = new CharacterIterator('hello');
-		for (let i = 0; i < 'hello'.length; i++) iter.next();
+		for (let i = 0; i < 5; i++) iter.next();
 		expect(iter.done).toBeTruthy();
 	});
 
 	it('should be false after resetting', () => {
 		const iter = new CharacterIterator('hello');
-		for (let i = 0; i < 'hello'.length; i++) iter.next();
+		for (let i = 0; i < 5; i++) iter.next();
 		expect(iter.done).toBeTruthy();
 		iter.reset();
 		expect(iter.done).toBeFalsy();

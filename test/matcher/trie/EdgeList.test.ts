@@ -12,6 +12,7 @@ const list = new EdgeList<string>();
 afterEach(() => list.clear());
 
 const edges: Edge<string>[] = [...new Array(26).keys()]
+	// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 	.map((n) => CharacterCode.LowerA + n)
 	.map((c) => [c, 'something']);
 

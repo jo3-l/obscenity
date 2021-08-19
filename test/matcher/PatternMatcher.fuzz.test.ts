@@ -4,8 +4,8 @@ import { assignIncrementingIds } from '../../src/matcher/BlacklistedTerm';
 import type { Interval } from '../../src/matcher/interval/Interval';
 import { compareIntervals } from '../../src/matcher/interval/Interval';
 import { PatternMatcher } from '../../src/matcher/PatternMatcher';
-import type { ParsedPattern } from '../../src/pattern/Nodes';
-import { LiteralNode, SyntaxKind } from '../../src/pattern/Nodes';
+import type { LiteralNode, ParsedPattern } from '../../src/pattern/Nodes';
+import { SyntaxKind } from '../../src/pattern/Nodes';
 import { CharacterCode } from '../../src/util/Char';
 import { CharacterIterator } from '../../src/util/CharacterIterator';
 
@@ -126,7 +126,8 @@ function toPattern(pattern: string, requireWordBoundaryAtStart: boolean, require
 		} else if (parsed.nodes.length === 0 || parsed.nodes[parsed.nodes.length - 1].kind !== SyntaxKind.Literal) {
 			parsed.nodes.push({ kind: SyntaxKind.Literal, chars: [char] });
 		} else {
-			parsed.nodes[parsed.nodes.length - 1].chars.push(char);
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+			(parsed.nodes[parsed.nodes.length - 1] as LiteralNode).chars.push(char);
 		}
 	}
 

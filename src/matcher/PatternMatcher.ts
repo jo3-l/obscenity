@@ -23,7 +23,7 @@ import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
  * matched by whitelisted terms.
  */
 export class PatternMatcher {
-	private readonly forkedTraversalLimit = 0;
+	private readonly forkedTraversalLimit: number = 0;
 
 	private readonly rootNode = new BlacklistTrieNode();
 	private readonly patternIdMap = new Map<number, number>(); // generated ID -> original pattern ID
@@ -183,6 +183,7 @@ export class PatternMatcher {
 		if (this.done) return undefined;
 		if (this.hasPendingMatches) return this.pendingMatches.pop();
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		while (!this.done && !this.hasPendingMatches) {
 			const transformed = this.transformers.applyTo(this.iter.next().value!);
 			if (transformed === undefined) continue; // Returning undefined from a transformer skips that character.
@@ -258,6 +259,7 @@ export class PatternMatcher {
 			}
 		}
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.hasPendingMatches) return this.pendingMatches.pop()!;
 	}
 

@@ -13,6 +13,7 @@ plugins:
 
 parserOptions:
   project:
+    - tsconfig.eslint.json
     - src/tsconfig.json
     - test/tsconfig.json
 
@@ -33,6 +34,11 @@ rules:
   curly:
     - error
     - multi-line
+  jest/expect-expect:
+    - error
+    - assertFunctionNames:
+        - expect
+        - expectThatArrayIsPermutationOfOther
   '@typescript-eslint/no-unnecessary-condition':
     - error
     - allowConstantLoopConditions: true
@@ -84,6 +90,14 @@ rules:
   '@typescript-eslint/member-ordering':
     - error
     - default:
+        - public-static-field
+        - protected-static-field
+        - private-static-field
+        - static-field
+        - public-static-method
+        - protected-static-method
+        - private-static-method
+        - static-method
         - signature
         - public-instance-field
         - protected-instance-field
@@ -97,12 +111,4 @@ rules:
         - protected-instance-method
         - private-instance-method
         - instance-method
-        - public-static-field
-        - protected-static-field
-        - private-static-field
-        - static-field
-        - public-static-method
-        - protected-static-method
-        - private-static-method
-        - static-method
   '@typescript-eslint/consistent-type-imports': error

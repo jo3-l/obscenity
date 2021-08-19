@@ -18,8 +18,13 @@ export class TreeBasedIntervalStorageStrategy implements IntervalStorageStrategy
 		let cur = this.root;
 		while (cur !== node) {
 			if (node.interval[1] > cur.maxSubtreeValue) cur.maxSubtreeValue = node.interval[1];
-			if (compareIntervals(cur.interval, node.interval) <= 0) cur = cur.right ??= node;
-			else cur = cur.left ??= node;
+			if (compareIntervals(cur.interval, node.interval) <= 0) {
+				cur.right ??= node;
+				cur = cur.right;
+			} else {
+				cur.left ??= node;
+				cur = cur.left;
+			}
 		}
 	}
 
@@ -32,6 +37,15 @@ export class TreeBasedIntervalStorageStrategy implements IntervalStorageStrategy
 		return this.fullyContainsRecursive(this.root, interval);
 	}
 
+	public values() {
+		if (!this.root) return emptyIterator;
+		return this.traverse(this.root);
+	}
+
+	public [Symbol.iterator]() {
+		return this.values();
+	}
+
 	private fullyContainsRecursive(cur: IntervalTreeNode, interval: Interval): boolean {
 		if (cur.interval[0] <= interval[0] && cur.interval[1] >= interval[1]) return true;
 		// only search left subtree if its maximum value is greater than the interval's left endpoint
@@ -42,19 +56,10 @@ export class TreeBasedIntervalStorageStrategy implements IntervalStorageStrategy
 		return inLeft || (cur.right !== undefined && this.fullyContainsRecursive(cur.right, interval));
 	}
 
-	public values() {
-		if (!this.root) return emptyIterator;
-		return this.traverse(this.root);
-	}
-
 	private *traverse(node: IntervalTreeNode): IterableIterator<Interval> {
 		if (node.left) yield* this.traverse(node.left);
 		yield node.interval;
 		if (node.right) yield* this.traverse(node.right);
-	}
-
-	public [Symbol.iterator]() {
-		return this.values();
 	}
 }
 

@@ -34,7 +34,6 @@ export class IntervalCollection implements Iterable<Interval> {
 		return this.values();
 	}
 
-	// TODO: Compute more precise thresholds.
 	private selectOptimalImpl() {
 		if (this.storage.size < 10) return IntervalStorageImpl.ArrayBased;
 		return IntervalStorageImpl.TreeBased;

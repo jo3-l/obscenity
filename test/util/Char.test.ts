@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import {
 	CharacterCode,
 	convertSurrogatePairToCodePoint,
@@ -35,8 +36,8 @@ describe('CharacterCode()', () => {
 			expect(actual).toBe(expected);
 		});
 
-		if (rest.length) {
-			it(`should display as '${rest[0]}'`, () => {
+		if (rest.length > 0) {
+			it(`should display as '${rest[0] as string}'`, () => {
 				expect(String.fromCodePoint(actual)).toBe(rest[0]);
 			});
 		}

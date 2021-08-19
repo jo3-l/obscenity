@@ -50,6 +50,7 @@ test('running the forked traversal to completion on a certain pattern and input 
 							traversalMatched = it.done; // fall through
 						case ForkedTraversalResponse.Destroy:
 							break outer;
+						case ForkedTraversalResponse.Pong: // do nothing
 					}
 				}
 
@@ -81,7 +82,8 @@ function toPattern(str: string) {
 		} else if (nodes.length === 0 || nodes[nodes.length - 1].kind === SyntaxKind.Wildcard) {
 			nodes.push({ kind: SyntaxKind.Literal, chars: [char] });
 		} else {
-			nodes[nodes.length - 1].chars.push(char);
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+			(nodes[nodes.length - 1] as LiteralNode).chars.push(char);
 		}
 	}
 

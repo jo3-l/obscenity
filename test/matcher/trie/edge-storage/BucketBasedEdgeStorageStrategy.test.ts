@@ -8,6 +8,7 @@ function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
 
 const storage = new BucketBasedEdgeStorageStrategy<string>({
 	charToBucketMapper: (c) => c - CharacterCode.LowerA,
+	// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 	bucketToCharMapper: (b) => b + CharacterCode.LowerA,
 });
 

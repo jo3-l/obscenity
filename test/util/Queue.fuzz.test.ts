@@ -6,7 +6,7 @@ test('after a series of pushes, popping should produce the input elements in rev
 	fc.assert(
 		fc.property(fc.array(fc.integer()), (data) => {
 			const queue = new Queue();
-			for (let i = 0; i < data.length; i++) queue.push(data[i]);
+			for (const v of data) queue.push(v);
 
 			let j = 0;
 			while (queue.length > 0) expect(queue.shift()).toBe(data[j++]);

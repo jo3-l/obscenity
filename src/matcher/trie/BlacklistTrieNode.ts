@@ -11,11 +11,13 @@ export class BlacklistTrieNode {
 	public flags = 0;
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const SharedFlag = Object.freeze({
 	RequireWordBoundaryAtStart: 1 << 0,
 	RequireWordBoundaryAtEnd: 1 << 1,
 });
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const BlacklistTrieNodeFlag = Object.freeze({
 	...SharedFlag,
 	IsOutputNode: 1 << 2,
@@ -29,4 +31,5 @@ export interface ForkedTraversalMetadata {
 	nodes: SimpleNode[];
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const ForkedTraversalFlag = SharedFlag;

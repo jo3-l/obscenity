@@ -15,7 +15,7 @@ describe('TransformerSet#applyTo()', () => {
 
 	it('should work with stateful transformers', () => {
 		const instance = {
-			transform: jest.fn((c) => c + 1),
+			transform: jest.fn<number, [number]>((c) => c + 1),
 			reset: jest.fn(),
 		};
 		expect(new TransformerSet([createStatefulTransformer(() => instance)]).applyTo(7)).toBe(8);
@@ -36,7 +36,7 @@ describe('TransformerSet#applyTo()', () => {
 
 	it('should short circuit if a transformer returns undefined', () => {
 		const fn0 = jest.fn((c: number) => c + 1);
-		const fn1 = jest.fn((c: number) => undefined);
+		const fn1 = jest.fn(() => undefined);
 		const fn2 = jest.fn((c: number) => c + 3);
 		expect(
 			new TransformerSet([
@@ -54,7 +54,7 @@ describe('TransformerSet#applyTo()', () => {
 
 	it('should work with a mix of different types of transformers', () => {
 		const instance = {
-			transform: jest.fn((c) => c + 1),
+			transform: jest.fn<number, [number]>((c) => c + 1),
 			reset: jest.fn(),
 		};
 		const fn0 = jest.fn((c: number) => c + 2);

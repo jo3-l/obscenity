@@ -30,13 +30,17 @@ describe('createSimpleTransformer', () => {
 });
 
 describe('createStatefulTransformer', () => {
-	const statefulTransformer: StatefulTransformer = {
-		transform: (c: number) => undefined,
-		reset: () => {},
-	};
-	const factory = () => statefulTransformer;
-	expect(createStatefulTransformer(factory)).toStrictEqual({
-		type: TransformerType.Stateful,
-		transformer: statefulTransformer,
+	it('should return a container holding an instance produced by the factory given', () => {
+		const statefulTransformer: StatefulTransformer = {
+			transform: () => undefined,
+			reset: () => {
+				/* do nothing */
+			},
+		};
+		const factory = () => statefulTransformer;
+		expect(createStatefulTransformer(factory)).toStrictEqual({
+			type: TransformerType.Stateful,
+			transformer: statefulTransformer,
+		});
 	});
 });

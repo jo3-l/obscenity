@@ -60,7 +60,6 @@ export class EdgeList<T> implements Iterable<Edge<T>> {
 		}
 	}
 
-	// TODO: Compute more precise thresholds.
 	private selectOptimalImpl() {
 		if (this.storage.size < 10) return EdgeStorageImpl.ArrayBased;
 		if (this.storage.size <= 26 && this.canUseBuckets) return EdgeStorageImpl.BucketBased;
