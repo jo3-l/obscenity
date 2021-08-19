@@ -57,9 +57,17 @@ test('running the forked traversal to completion on a certain pattern and input 
 	);
 });
 
+const regExpSpecialChars = ['.', '*', '+', '^', '$', '{', '}', '(', ')', '|', '[', '\\', ']'];
+
 function toRegExp(str: string) {
-	const clean = str.replace(/[.*+^${}()|[\]\\]/g, '\\$&');
-	return new RegExp(`^${clean.replace(/\?/g, '.')}$`, 's');
+	let regexpStr = '^';
+	for (const char of str) {
+		if (regExpSpecialChars.includes(char)) regexpStr += '\\' + char;
+		else if (char === '?') regexpStr += '.';
+		else regexpStr += char;
+	}
+	regexpStr += '$';
+	return new RegExp(regexpStr, 's');
 }
 
 function toPattern(str: string) {
