@@ -7,6 +7,12 @@ function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
 	expect(bs).toStrictEqual(expect.arrayContaining(as));
 }
 
+describe('constructor', () => {
+	it('should not allow empty terms', () => {
+		expect(() => new WhitelistedTermMatcher({ terms: [''] })).toThrow(new Error('Unexpected empty whitelisted term.'));
+	});
+});
+
 describe('WhitelistedTermMatcher#getMatchedSpans', () => {
 	it('should return an empty interval collection if there are no terms', () => {
 		const ms = new WhitelistedTermMatcher({ terms: [] }).getMatchedSpans('hello world');

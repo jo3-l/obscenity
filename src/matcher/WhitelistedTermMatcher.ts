@@ -76,6 +76,8 @@ export class WhitelistedTermMatcher {
 	}
 
 	private registerTerm(term: string) {
+		if (term.length === 0) throw new Error('Unexpected empty whitelisted term.');
+
 		const id = this.currentId++;
 		// Track the match length of this term.
 		const chars = [...new CharacterIterator(term)];

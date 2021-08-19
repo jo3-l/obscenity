@@ -341,9 +341,7 @@ export class PatternMatcher {
 	}
 
 	private registerTerm(term: BlacklistedTerm) {
-		if (term.pattern.nodes.length === 0) {
-			throw new Error('Unexpected empty blacklisted term.');
-		}
+		if (term.pattern.nodes.length === 0) throw new Error('Unexpected empty blacklisted term.');
 
 		const simplifiedPatterns = simplify(term.pattern.nodes);
 		for (const pattern of simplifiedPatterns) {
