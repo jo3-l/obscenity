@@ -105,13 +105,13 @@ const regExpSpecialChars = ['.', '*', '+', '^', '$', '{', '}', '(', ')', '|', '[
 
 function toRegExp(pattern: string, requireWordBoundaryAtStart: boolean, requireWordBoundaryAtEnd: boolean) {
 	let regexpStr = '';
-	if (requireWordBoundaryAtStart) regexpStr += '(?<=\\W|^)';
+	if (requireWordBoundaryAtStart) regexpStr += '(?<=[^\\dA-Za-z]|^)';
 	for (const char of pattern) {
 		if (regExpSpecialChars.includes(char)) regexpStr += '\\' + char;
 		else if (char === '?') regexpStr += '.';
 		else regexpStr += char;
 	}
-	if (requireWordBoundaryAtEnd) regexpStr += '(?=\\W|$)';
+	if (requireWordBoundaryAtEnd) regexpStr += '(?=[^\\dA-Za-z]|$)';
 	return new RegExp(regexpStr, 'gs');
 }
 
