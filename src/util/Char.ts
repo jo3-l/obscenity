@@ -38,18 +38,6 @@ export function convertSurrogatePairToCodePoint(highSurrogate: number, lowSurrog
 	);
 }
 
-export function isWordBoundary(index: number, text: string) {
-	return (
-		// first index
-		index === 0 ||
-		// last index
-		index === text.length - 1 ||
-		// character before or after is a non-word character
-		!isWordChar(text.charCodeAt(index + 1)) ||
-		!isWordChar(text.charCodeAt(index - 1))
-	);
-}
-
 export function isWordChar(char: number) {
 	return isDigit(char) || isAlphabetic(char);
 }

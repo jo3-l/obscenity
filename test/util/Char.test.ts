@@ -9,7 +9,6 @@ import {
 	isLowerCase,
 	isLowSurrogate,
 	isUpperCase,
-	isWordBoundary,
 	isWordChar,
 } from '../../src/util/Char';
 
@@ -101,29 +100,6 @@ describe('convertSurrogatePairToCodePoint()', () => {
 		const highSurrogate = text.charCodeAt(0);
 		const lowSurrogate = text.charCodeAt(1);
 		expect(convertSurrogatePairToCodePoint(highSurrogate, lowSurrogate)).toBe(text.codePointAt(0));
-	});
-});
-
-describe('isWordBoundary()', () => {
-	it('should return true for the first index in a string', () => {
-		expect(isWordBoundary(0, 'hello')).toBeTruthy();
-	});
-
-	it('should return false for indices with word characters on both sides', () => {
-		expect(isWordBoundary(1, 'hello')).toBeFalsy();
-		expect(isWordBoundary(3, 'hello')).toBeFalsy();
-	});
-
-	it('should return true for the last index in a string', () => {
-		expect(isWordBoundary(4, 'hello')).toBeTruthy();
-	});
-
-	it('should return true for indices with a word character on the left and a non-word character on the right', () => {
-		expect(isWordBoundary(1, 'he is')).toBeTruthy();
-	});
-
-	it('should return true for indices with a non-word character on the left and a word character on the right', () => {
-		expect(isWordBoundary(4, 'she was')).toBeTruthy();
 	});
 });
 
