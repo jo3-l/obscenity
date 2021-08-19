@@ -146,6 +146,7 @@ describe('simple matching; no wildcards/optionals', () => {
 				1: [[31, 35]],
 			},
 		],
+		['should work with terms that normalize to a different string', ['豈'], '豈', { 0: [[0, 0]] }],
 	])('%s', (_, pats, input, matches) => {
 		const expected: MatchPayload[] = [];
 		for (const [id, locs] of Object.entries(matches)) {
