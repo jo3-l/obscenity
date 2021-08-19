@@ -1,4 +1,4 @@
-import { ParsedPattern } from '../pattern/Nodes';
+import type { ParsedPattern } from '../pattern/Nodes';
 
 /**
  * Assigns incrementing IDs to the patterns provided, starting with 0. Useful if

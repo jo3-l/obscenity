@@ -1,6 +1,6 @@
-import { Interval } from './Interval';
+import type { Interval } from './Interval';
 import { ArrayBasedIntervalStorageStrategy } from './storage/ArrayBasedIntervalStorageStrategy';
-import { IntervalStorageStrategy } from './storage/IntervalStorageStrategy';
+import type { IntervalStorageStrategy } from './storage/IntervalStorageStrategy';
 import { TreeBasedIntervalStorageStrategy } from './storage/TreeBasedIntervalStorageStrategy';
 
 export class IntervalCollection implements Iterable<Interval> {

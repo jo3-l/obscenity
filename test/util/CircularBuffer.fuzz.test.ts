@@ -1,4 +1,5 @@
 import * as fc from 'fast-check';
+
 import { CircularBuffer } from '../../src/util/CircularBuffer';
 
 test('adding the elements of an array a of size > 0 in a sliding window fashion to a circular buffer should cause it to hold the values in the current window', () => {
@@ -8,7 +9,7 @@ test('adding the elements of an array a of size > 0 in a sliding window fashion 
 				.array(fc.integer())
 				.filter((data) => data.length > 0)
 				.chain((data) => {
-					let maxCapacity = Math.floor(Math.log2(data.length));
+					const maxCapacity = Math.floor(Math.log2(data.length));
 					return fc.tuple(
 						fc.constant(data),
 						fc.integer(0, maxCapacity).map((n) => 1 << n),

@@ -1,4 +1,5 @@
 import * as fc from 'fast-check';
+
 import { TreeBasedIntervalStorageStrategy } from '../../../../src/matcher/interval/storage/TreeBasedIntervalStorageStrategy';
 
 function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {

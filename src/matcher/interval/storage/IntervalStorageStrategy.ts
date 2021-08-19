@@ -1,4 +1,4 @@
-import { Interval } from '../Interval';
+import type { Interval } from '../Interval';
 
 export interface IntervalStorageStrategy extends Iterable<Interval> {
 	insert(interval: Interval): void;

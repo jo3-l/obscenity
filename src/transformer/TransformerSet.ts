@@ -1,4 +1,5 @@
-import { TransformerContainer, TransformerType } from './Transformers';
+import type { TransformerContainer } from './Transformers';
+import { TransformerType } from './Transformers';
 
 export class TransformerSet {
 	private readonly transformers: TransformerContainer[];
@@ -12,8 +13,8 @@ export class TransformerSet {
 		for (const transformer of this.transformers) {
 			transformed =
 				transformer.type === TransformerType.Simple
-					? transformer.transform(transformed!)
-					: transformer.transformer.transform(transformed!);
+					? transformer.transform(transformed)
+					: transformer.transformer.transform(transformed);
 			if (!transformed) return undefined;
 		}
 

@@ -1,4 +1,5 @@
-import { compareIntervals, Interval } from '../../../src/matcher/interval/Interval';
+import type { Interval } from '../../../src/matcher/interval/Interval';
+import { compareIntervals } from '../../../src/matcher/interval/Interval';
 
 describe('compareIntervals()', () => {
 	it("should return -1 if the first interval's lower bound is less than the second's", () => {

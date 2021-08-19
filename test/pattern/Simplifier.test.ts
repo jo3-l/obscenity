@@ -1,4 +1,5 @@
-import { Node, SyntaxKind } from '../../src/pattern/Nodes';
+import type { Node } from '../../src/pattern/Nodes';
+import { SyntaxKind } from '../../src/pattern/Nodes';
 import { simplify } from '../../src/pattern/Simplifier';
 
 function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {

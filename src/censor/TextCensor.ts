@@ -1,4 +1,5 @@
-import { compareMatchByPositionAndId, MatchPayload } from '../matcher/MatchPayload';
+import type { MatchPayload } from '../matcher/MatchPayload';
+import { compareMatchByPositionAndId } from '../matcher/MatchPayload';
 import { grawlixCensorStrategy } from './BuiltinStrategies';
 
 export class TextCensor {

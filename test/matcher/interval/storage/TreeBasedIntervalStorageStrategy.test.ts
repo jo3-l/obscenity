@@ -1,4 +1,4 @@
-import { Interval } from '../../../../src/matcher/interval/Interval';
+import type { Interval } from '../../../../src/matcher/interval/Interval';
 import { TreeBasedIntervalStorageStrategy } from '../../../../src/matcher/interval/storage/TreeBasedIntervalStorageStrategy';
 
 function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {

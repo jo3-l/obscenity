@@ -1,4 +1,5 @@
 import * as fc from 'fast-check';
+
 import { BucketBasedEdgeStorageStrategy } from '../../../../src/matcher/trie/edge-storage/BucketBasedEdgeStorageStrategy';
 import { CharacterCode } from '../../../../src/util/Char';
 

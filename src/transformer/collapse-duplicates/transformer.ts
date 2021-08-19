@@ -1,5 +1,5 @@
-import { ProcessedCollapseDuplicatesTransformerOptions } from '.';
-import { StatefulTransformer } from '../Transformers';
+import type { StatefulTransformer } from '../Transformers';
+import type { ProcessedCollapseDuplicatesTransformerOptions } from '.';
 
 export class CollapseDuplicatesTransformer implements StatefulTransformer {
 	private readonly defaultThreshold: number;

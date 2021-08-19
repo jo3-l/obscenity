@@ -1,4 +1,5 @@
-import { LiteralNode, Node, SyntaxKind, WildcardNode } from './Nodes';
+import type { LiteralNode, Node, WildcardNode } from './Nodes';
+import { SyntaxKind } from './Nodes';
 
 export type SimpleNode = LiteralNode | WildcardNode;
 

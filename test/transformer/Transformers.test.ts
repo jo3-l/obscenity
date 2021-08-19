@@ -1,7 +1,7 @@
+import type { StatefulTransformer } from '../../src/transformer/Transformers';
 import {
 	createSimpleTransformer,
 	createStatefulTransformer,
-	StatefulTransformer,
 	TransformerType,
 } from '../../src/transformer/Transformers';
 

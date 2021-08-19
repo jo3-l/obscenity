@@ -2,7 +2,7 @@ export class CircularBuffer<T> implements Iterable<T> {
 	private readonly data: (T | undefined)[];
 	private head: number;
 	private _length = 0;
-	private mask: number;
+	private readonly mask: number;
 
 	/**
 	 * Creates a new circular buffer with the capacity set to the smallest power

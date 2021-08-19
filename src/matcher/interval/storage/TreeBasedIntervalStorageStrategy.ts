@@ -1,5 +1,6 @@
-import { compareIntervals, Interval } from '../Interval';
-import { IntervalStorageStrategy } from './IntervalStorageStrategy';
+import type { Interval } from '../Interval';
+import { compareIntervals } from '../Interval';
+import type { IntervalStorageStrategy } from './IntervalStorageStrategy';
 
 // Tree storage strategy using an augmented interval tree.
 export class TreeBasedIntervalStorageStrategy implements IntervalStorageStrategy {

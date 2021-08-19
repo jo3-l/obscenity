@@ -1,5 +1,5 @@
 import { SyntaxKind } from '../pattern/Nodes';
-import { ForkedTraversalMetadata } from './trie/BlacklistTrieNode';
+import type { ForkedTraversalMetadata } from './trie/BlacklistTrieNode';
 
 export class ForkedTraversal {
 	public readonly metadata: ForkedTraversalMetadata;

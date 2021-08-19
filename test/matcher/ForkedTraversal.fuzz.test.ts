@@ -1,7 +1,9 @@
 import * as fc from 'fast-check';
+
 import { ForkedTraversal, ForkedTraversalResponse } from '../../src/matcher/ForkedTraversal';
-import { LiteralNode, SyntaxKind } from '../../src/pattern/Nodes';
-import { SimpleNode } from '../../src/pattern/Simplifier';
+import type { LiteralNode } from '../../src/pattern/Nodes';
+import { SyntaxKind } from '../../src/pattern/Nodes';
+import type { SimpleNode } from '../../src/pattern/Simplifier';
 import { CharacterCode } from '../../src/util/Char';
 import { CharacterIterator } from '../../src/util/CharacterIterator';
 
@@ -62,7 +64,7 @@ const regExpSpecialChars = ['.', '*', '+', '^', '$', '{', '}', '(', ')', '|', '[
 function toRegExp(str: string) {
 	let regexpStr = '^';
 	for (const char of str) {
-		if (regExpSpecialChars.includes(char)) regexpStr += '\\' + char;
+		if (regExpSpecialChars.includes(char)) regexpStr += `\\${char}`;
 		else if (char === '?') regexpStr += '.';
 		else regexpStr += char;
 	}
@@ -76,12 +78,10 @@ function toPattern(str: string) {
 	for (const char of iter) {
 		if (char === CharacterCode.QuestionMark) {
 			nodes.push({ kind: SyntaxKind.Wildcard });
+		} else if (nodes.length === 0 || nodes[nodes.length - 1].kind === SyntaxKind.Wildcard) {
+			nodes.push({ kind: SyntaxKind.Literal, chars: [char] });
 		} else {
-			if (nodes.length === 0 || nodes[nodes.length - 1].kind === SyntaxKind.Wildcard) {
-				nodes.push({ kind: SyntaxKind.Literal, chars: [char] });
-			} else {
-				(nodes[nodes.length - 1] as LiteralNode).chars.push(char);
-			}
+			nodes[nodes.length - 1].chars.push(char);
 		}
 	}
 

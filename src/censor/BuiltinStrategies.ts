@@ -1,4 +1,4 @@
-import { CensorContext, TextCensorStrategy } from './TextCensor';
+import type { CensorContext, TextCensorStrategy } from './TextCensor';
 
 export function keepStartCensorStrategy(baseStrategy: TextCensorStrategy): TextCensorStrategy {
 	return (ctx: CensorContext) => {

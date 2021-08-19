@@ -1,4 +1,4 @@
-import { EdgeStorageStrategy } from './EdgeStorageStrategy';
+import type { EdgeStorageStrategy } from './EdgeStorageStrategy';
 
 // Dead simple map storage strategy.
 export class MapBasedEdgeStorageStrategy<T> implements EdgeStorageStrategy<T> {

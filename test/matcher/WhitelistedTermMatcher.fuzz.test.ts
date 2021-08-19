@@ -1,5 +1,6 @@
 import * as fc from 'fast-check';
-import { Interval } from '../../src/matcher/interval/Interval';
+
+import type { Interval } from '../../src/matcher/interval/Interval';
 import { WhitelistedTermMatcher } from '../../src/matcher/WhitelistedTermMatcher';
 
 function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {

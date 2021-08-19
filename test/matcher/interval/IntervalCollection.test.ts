@@ -1,4 +1,4 @@
-import { Interval } from '../../../src/matcher/interval/Interval';
+import type { Interval } from '../../../src/matcher/interval/Interval';
 import { IntervalCollection } from '../../../src/matcher/interval/IntervalCollection';
 
 function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {

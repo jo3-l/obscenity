@@ -1,0 +1,108 @@
+---
+extends:
+  - marine/prettier/node
+  - plugin:import/errors
+  - plugin:import/warnings
+  - plugin:import/typescript
+  - plugin:jest/recommended
+  - plugin:jest/style
+
+plugins:
+  - simple-import-sort
+  - jest
+
+parserOptions:
+  project:
+    - src/tsconfig.json
+    - test/tsconfig.json
+
+rules:
+  prettier/prettier:
+    - error
+    - endOfLine: auto
+  simple-import-sort/imports: error
+  no-duplicate-imports: off
+  '@typescript-eslint/no-duplicate-imports': error
+  # The following rule conflicts with Prettier in certain cases.
+  # Also see https://github.com/typescript-eslint/typescript-eslint/issues/1824.
+  '@typescript-eslint/indent': off
+  '@typescript-eslint/no-misused-promises':
+    - error
+    - checksVoidReturn: false
+  import/no-unresolved: off
+  curly:
+    - error
+    - multi-line
+  '@typescript-eslint/no-unnecessary-condition':
+    - error
+    - allowConstantLoopConditions: true
+  '@typescript-eslint/no-throw-literal': off
+  '@typescript-eslint/naming-convention':
+    - error
+    - selector:
+        - enumMember
+        - typeAlias
+        - interface
+        - enum
+        - class
+      format:
+        - PascalCase
+      leadingUnderscore: forbid
+      trailingUnderscore: forbid
+
+    - selector:
+        - method
+        - accessor
+        - parameterProperty
+      format:
+        - strictCamelCase
+
+    - selector:
+        - property
+      format:
+        - strictCamelCase
+        - PascalCase
+      leadingUnderscore: allow
+      trailingUnderscore: forbid
+
+    - selector: typeParameter
+      format:
+        - PascalCase
+
+    - selector: variable
+      format:
+        - strictCamelCase
+        - UPPER_CASE
+      leadingUnderscore: allow
+      trailingUnderscore: forbid
+
+    - selector: function
+      format:
+        - strictCamelCase
+      leadingUnderscore: forbid
+      trailingUnderscore: forbid
+  '@typescript-eslint/member-ordering':
+    - error
+    - default:
+        - signature
+        - public-instance-field
+        - protected-instance-field
+        - private-instance-field
+        - instance-field
+        - public-constructor
+        - protected-constructor
+        - private-constructor
+        - constructor
+        - public-instance-method
+        - protected-instance-method
+        - private-instance-method
+        - instance-method
+        - public-static-field
+        - protected-static-field
+        - private-static-field
+        - static-field
+        - public-static-method
+        - protected-static-method
+        - private-static-method
+        - static-method
+  '@typescript-eslint/consistent-type-imports': error

@@ -1,4 +1,5 @@
 import * as fc from 'fast-check';
+
 import { Queue } from '../../src/util/Queue';
 
 test('after a series of pushes, popping should produce the input elements in reverse order', () => {
@@ -19,7 +20,7 @@ test('after a series of pushes, the length of the queue should be equal to the n
 			const queue = new Queue();
 			for (let i = 0; i < data.length; i++) {
 				queue.push(data[i]);
-				expect(queue.length).toBe(i + 1);
+				expect(queue).toHaveLength(i + 1);
 			}
 		}),
 	);

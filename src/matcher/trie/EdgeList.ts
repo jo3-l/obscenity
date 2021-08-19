@@ -1,7 +1,7 @@
 import { CharacterCode, isLowerCase } from '../../util/Char';
 import { ArrayBasedEdgeStorageStrategy } from './edge-storage/ArrayBasedEdgeStorageStrategy';
 import { BucketBasedEdgeStorageStrategy } from './edge-storage/BucketBasedEdgeStorageStrategy';
-import { Edge, EdgeStorageStrategy } from './edge-storage/EdgeStorageStrategy';
+import type { Edge, EdgeStorageStrategy } from './edge-storage/EdgeStorageStrategy';
 import { MapBasedEdgeStorageStrategy } from './edge-storage/MapBasedEdgeStorageStrategy';
 
 export class EdgeList<T> implements Iterable<Edge<T>> {

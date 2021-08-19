@@ -1,4 +1,4 @@
-import { SimpleNode } from '../../pattern/Simplifier';
+import type { SimpleNode } from '../../pattern/Simplifier';
 import { EdgeList } from './EdgeList';
 
 export class BlacklistTrieNode {

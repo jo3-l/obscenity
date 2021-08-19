@@ -41,7 +41,7 @@ describe('Queue#push()', () => {
 	it('should increase the length of the queue', () => {
 		const queue = new Queue();
 		queue.push(1);
-		expect(queue.length).toBe(1);
+		expect(queue).toHaveLength(1);
 	});
 });
 
@@ -67,29 +67,29 @@ describe('Queue#shift()', () => {
 		const queue = new Queue();
 		queue.push(1);
 		queue.push(2);
-		expect(queue.length).toBe(2);
+		expect(queue).toHaveLength(2);
 		queue.shift();
-		expect(queue.length).toBe(1);
+		expect(queue).toHaveLength(1);
 	});
 
 	it('should not decrease the length of the queue if it was empty before', () => {
 		const queue = new Queue();
 		queue.shift();
-		expect(queue.length).toBe(0);
+		expect(queue).toHaveLength(0);
 	});
 });
 
 describe('Queue#length', () => {
 	it('should start at 0', () => {
 		const queue = new Queue();
-		expect(queue.length).toBe(0);
+		expect(queue).toHaveLength(0);
 	});
 
 	it('should be the size of the queue', () => {
 		const queue = new Queue();
 		queue.push(1);
 		queue.push(2);
-		expect(queue.length).toBe(2);
+		expect(queue).toHaveLength(2);
 	});
 
 	it('should be the size of the queue when head > tail', () => {
@@ -101,6 +101,6 @@ describe('Queue#length', () => {
 		queue.shift();
 		queue.push(4);
 		queue.push(5);
-		expect(queue.length).toBe(3);
+		expect(queue).toHaveLength(3);
 	});
 });

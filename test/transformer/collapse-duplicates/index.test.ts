@@ -1,10 +1,8 @@
+import type { CollapseDuplicatesTransformerOptions } from '../../../src/transformer/collapse-duplicates/index';
+import { collapseDuplicatesTransformer } from '../../../src/transformer/collapse-duplicates/index';
 import { CollapseDuplicatesTransformer as _CollapseDuplicatesTransformer } from '../../../src/transformer/collapse-duplicates/transformer';
-import {
-	collapseDuplicatesTransformer,
-	CollapseDuplicatesTransformerOptions,
-} from '../../../src/transformer/collapse-duplicates/index';
-import { CharacterCode } from '../../../src/util/Char';
 import { TransformerType } from '../../../src/transformer/Transformers';
+import { CharacterCode } from '../../../src/util/Char';
 
 jest.mock('../../../src/transformer/collapse-duplicates/transformer');
 

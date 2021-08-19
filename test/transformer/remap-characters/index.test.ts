@@ -1,5 +1,5 @@
-import { TransformerType } from '../../../src/transformer/Transformers';
 import { remapCharactersTransformer } from '../../../src/transformer/remap-characters';
+import { TransformerType } from '../../../src/transformer/Transformers';
 import { CharacterCode } from '../../../src/util/Char';
 
 describe('remapCharactersTransformer()', () => {

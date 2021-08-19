@@ -1,32 +1,29 @@
+import { computePatternMatchLength } from '../pattern/ComputeMatchLength';
+import type { LiteralNode } from '../pattern/Nodes';
+import { SyntaxKind } from '../pattern/Nodes';
 import { simplify } from '../pattern/Simplifier';
-import { LiteralNode, SyntaxKind } from '../pattern/Nodes';
+import type { TransformerContainer } from '../transformer/Transformers';
 import { TransformerSet } from '../transformer/TransformerSet';
-import { TransformerContainer } from '../transformer/Transformers';
-import {
-	SharedFlag,
-	BlacklistTrieNode,
-	BlacklistTrieNodeFlag,
-	ForkedTraversalFlag,
-	ForkedTraversalMetadata,
-} from './trie/BlacklistTrieNode';
-import { BlacklistedTerm } from './BlacklistedTerm';
-import { compareMatchByPositionAndId, MatchPayload } from './MatchPayload';
-import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
-import { Queue } from '../util/Queue';
+import { isWordChar } from '../util/Char';
 import { CharacterIterator } from '../util/CharacterIterator';
 import { CircularBuffer } from '../util/CircularBuffer';
-import { computePatternMatchLength } from '../pattern/ComputeMatchLength';
+import { Queue } from '../util/Queue';
+import type { BlacklistedTerm } from './BlacklistedTerm';
 import { ForkedTraversal, ForkedTraversalResponse } from './ForkedTraversal';
-import { isWordChar } from '../util/Char';
-import { IntervalCollection } from './interval/IntervalCollection';
 import { ForkedTraversalLimitExceededError } from './ForkedTraversalLimitExceededError';
+import { IntervalCollection } from './interval/IntervalCollection';
+import type { MatchPayload } from './MatchPayload';
+import { compareMatchByPositionAndId } from './MatchPayload';
+import type { ForkedTraversalMetadata } from './trie/BlacklistTrieNode';
+import { BlacklistTrieNode, BlacklistTrieNodeFlag, ForkedTraversalFlag, SharedFlag } from './trie/BlacklistTrieNode';
+import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
 
 /**
  * Matches patterns on text, optionally ignoring portions of the text that are
  * matched by whitelisted terms.
  */
 export class PatternMatcher {
-	private forkedTraversalLimit = 0;
+	private readonly forkedTraversalLimit = 0;
 
 	private readonly rootNode = new BlacklistTrieNode();
 	private readonly patternIdMap = new Map<number, number>(); // generated ID -> original pattern ID
@@ -518,7 +515,7 @@ export class PatternMatcher {
 				queue.push(childNode);
 			}
 
-			node.outputLink = !!(node.failureLink.flags & BlacklistTrieNodeFlag.IsOutputNode)
+			node.outputLink = Boolean(node.failureLink.flags & BlacklistTrieNodeFlag.IsOutputNode)
 				? node.failureLink
 				: node.failureLink.outputLink;
 		}

@@ -1,6 +1,6 @@
 import { assignIncrementingIds } from '../../src/matcher/BlacklistedTerm';
 import { ForkedTraversalLimitExceededError } from '../../src/matcher/ForkedTraversalLimitExceededError';
-import { MatchPayload } from '../../src/matcher/MatchPayload';
+import type { MatchPayload } from '../../src/matcher/MatchPayload';
 import { PatternMatcher } from '../../src/matcher/PatternMatcher';
 import { parseRawPattern, pattern } from '../../src/pattern/Pattern';
 import { createSimpleTransformer } from '../../src/transformer/Transformers';
@@ -172,7 +172,7 @@ describe('matching with optionals', () => {
 		const ms = new PatternMatcher({ blacklistedPatterns: [{ id: 10, pattern: pattern`w[o]rld` }] })
 			.setInput('world wrld')
 			.getAllMatches();
-		expect(ms.length).toBe(2);
+		expect(ms).toHaveLength(2);
 		expect(ms[0].termId).toBe(10);
 		expect(ms[1].termId).toBe(10);
 	});

@@ -13,7 +13,7 @@ describe('constructor', () => {
 
 	it('should set the length to 0', () => {
 		const buf = new CircularBuffer(5);
-		expect(buf.length).toBe(0);
+		expect(buf).toHaveLength(0);
 	});
 });
 
@@ -21,7 +21,7 @@ describe('CircularBuffer#push()', () => {
 	it('should add the element at the back (no overflow)', () => {
 		const buf = new CircularBuffer(8);
 		buf.push(5);
-		expect(buf.length).toBe(1);
+		expect(buf).toHaveLength(1);
 		expect(buf.get(0)).toBe(5);
 	});
 
@@ -32,7 +32,7 @@ describe('CircularBuffer#push()', () => {
 		buf.push(7);
 		buf.push(8);
 		buf.push(9);
-		expect(buf.length).toBe(4);
+		expect(buf).toHaveLength(4);
 		expect(buf.get(3)).toBe(9);
 		expect(buf.get(2)).toBe(8);
 		expect(buf.get(1)).toBe(7);
@@ -77,7 +77,7 @@ describe('CircularBuffer#clear()', () => {
 		buf.push(3);
 		buf.push(4);
 		buf.clear();
-		expect(buf.length).toBe(0);
+		expect(buf).toHaveLength(0);
 	});
 });
 
@@ -96,14 +96,14 @@ describe('CircularBuffer#capacity', () => {
 describe('CircularBuffer#length', () => {
 	it('should start at 0', () => {
 		const buf = new CircularBuffer(5);
-		expect(buf.length).toBe(0);
+		expect(buf).toHaveLength(0);
 	});
 
 	it('should grow as the circular buffer grows', () => {
 		const buf = new CircularBuffer(5);
 		buf.push(5);
 		buf.push(7);
-		expect(buf.length).toBe(2);
+		expect(buf).toHaveLength(2);
 	});
 
 	it('should stay the same if capacity is hit', () => {
@@ -112,9 +112,9 @@ describe('CircularBuffer#length', () => {
 		buf.push(2);
 		buf.push(3);
 		buf.push(4);
-		expect(buf.length).toBe(4);
+		expect(buf).toHaveLength(4);
 		buf.push(5);
-		expect(buf.length).toBe(4);
+		expect(buf).toHaveLength(4);
 	});
 });
 

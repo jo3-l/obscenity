@@ -1,4 +1,5 @@
 import * as fc from 'fast-check';
+
 import { ArrayBasedEdgeStorageStrategy } from '../../../../src/matcher/trie/edge-storage/ArrayBasedEdgeStorageStrategy';
 
 function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {

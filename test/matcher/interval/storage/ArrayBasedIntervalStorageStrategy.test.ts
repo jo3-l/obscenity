@@ -1,4 +1,4 @@
-import { Interval } from '../../../../src/matcher/interval/Interval';
+import type { Interval } from '../../../../src/matcher/interval/Interval';
 import { ArrayBasedIntervalStorageStrategy } from '../../../../src/matcher/interval/storage/ArrayBasedIntervalStorageStrategy';
 
 let storage: ArrayBasedIntervalStorageStrategy;

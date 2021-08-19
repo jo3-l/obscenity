@@ -1,4 +1,4 @@
-import { Edge, EdgeStorageStrategy } from './EdgeStorageStrategy';
+import type { Edge, EdgeStorageStrategy } from './EdgeStorageStrategy';
 
 // Bucket-based storage strategy. Each character is mapped into a bucket using a
 // client-supplied function, which should be injective. The characters that this

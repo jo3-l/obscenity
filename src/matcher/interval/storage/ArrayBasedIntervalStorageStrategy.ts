@@ -1,9 +1,9 @@
-import { Interval } from '../Interval';
-import { IntervalStorageStrategy } from './IntervalStorageStrategy';
+import type { Interval } from '../Interval';
+import type { IntervalStorageStrategy } from './IntervalStorageStrategy';
 
 // Dead simple array-based interval storage strategy.
 export class ArrayBasedIntervalStorageStrategy implements IntervalStorageStrategy {
-	private _intervals: Interval[] = [];
+	private readonly _intervals: Interval[] = [];
 
 	public insert(interval: Interval) {
 		this._intervals.push(interval);

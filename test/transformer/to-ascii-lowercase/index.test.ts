@@ -1,6 +1,6 @@
-import { CharacterCode } from '../../../src/util/Char';
 import { toAsciiLowerCaseTransformer } from '../../../src/transformer/to-ascii-lowercase';
 import { TransformerType } from '../../../src/transformer/Transformers';
+import { CharacterCode } from '../../../src/util/Char';
 
 describe('toAsciiLowerCaseTransformer()', () => {
 	it('should return a simple transformer container', () => {

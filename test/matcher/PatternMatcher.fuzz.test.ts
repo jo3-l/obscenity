@@ -1,8 +1,11 @@
 import * as fc from 'fast-check';
+
 import { assignIncrementingIds } from '../../src/matcher/BlacklistedTerm';
-import { compareIntervals, Interval } from '../../src/matcher/interval/Interval';
+import type { Interval } from '../../src/matcher/interval/Interval';
+import { compareIntervals } from '../../src/matcher/interval/Interval';
 import { PatternMatcher } from '../../src/matcher/PatternMatcher';
-import { LiteralNode, ParsedPattern, SyntaxKind } from '../../src/pattern/Nodes';
+import type { ParsedPattern } from '../../src/pattern/Nodes';
+import { LiteralNode, SyntaxKind } from '../../src/pattern/Nodes';
 import { CharacterCode } from '../../src/util/Char';
 import { CharacterIterator } from '../../src/util/CharacterIterator';
 
@@ -107,7 +110,7 @@ function toRegExp(pattern: string, requireWordBoundaryAtStart: boolean, requireW
 	let regexpStr = '';
 	if (requireWordBoundaryAtStart) regexpStr += '(?<=[^\\dA-Za-z]|^)';
 	for (const char of pattern) {
-		if (regExpSpecialChars.includes(char)) regexpStr += '\\' + char;
+		if (regExpSpecialChars.includes(char)) regexpStr += `\\${char}`;
 		else if (char === '?') regexpStr += '.';
 		else regexpStr += char;
 	}
@@ -123,7 +126,7 @@ function toPattern(pattern: string, requireWordBoundaryAtStart: boolean, require
 		} else if (parsed.nodes.length === 0 || parsed.nodes[parsed.nodes.length - 1].kind !== SyntaxKind.Literal) {
 			parsed.nodes.push({ kind: SyntaxKind.Literal, chars: [char] });
 		} else {
-			(parsed.nodes[parsed.nodes.length - 1] as LiteralNode).chars.push(char);
+			parsed.nodes[parsed.nodes.length - 1].chars.push(char);
 		}
 	}
 

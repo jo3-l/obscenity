@@ -1,15 +1,8 @@
 import { CharacterCode, convertSurrogatePairToCodePoint, isHighSurrogate, isLowSurrogate } from '../util/Char';
 import { CharacterIterator } from '../util/CharacterIterator';
+import type { BoundaryAssertionNode, LiteralNode, Node, OptionalNode, ParsedPattern, WildcardNode } from './Nodes';
+import { SyntaxKind } from './Nodes';
 import { ParserError } from './ParserError';
-import {
-	OptionalNode,
-	LiteralNode,
-	SyntaxKind,
-	WildcardNode,
-	ParsedPattern,
-	BoundaryAssertionNode,
-	Node,
-} from './Nodes';
 
 const supportsEscaping = [
 	CharacterCode.Backslash,

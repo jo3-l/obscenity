@@ -1,4 +1,4 @@
-import { Edge } from '../../../src/matcher/trie/edge-storage/EdgeStorageStrategy';
+import type { Edge } from '../../../src/matcher/trie/edge-storage/EdgeStorageStrategy';
 import { EdgeList } from '../../../src/matcher/trie/EdgeList';
 import { CharacterCode } from '../../../src/util/Char';
 

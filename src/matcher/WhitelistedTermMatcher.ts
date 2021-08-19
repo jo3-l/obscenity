@@ -1,10 +1,10 @@
+import type { TransformerContainer } from '../transformer/Transformers';
 import { TransformerSet } from '../transformer/TransformerSet';
-import { TransformerContainer } from '../transformer/Transformers';
-import { WhitelistTrieNode } from './trie/WhitelistTrieNode';
 import { CharacterIterator } from '../util/CharacterIterator';
-import { Queue } from '../util/Queue';
 import { CircularBuffer } from '../util/CircularBuffer';
+import { Queue } from '../util/Queue';
 import { IntervalCollection } from './interval/IntervalCollection';
+import { WhitelistTrieNode } from './trie/WhitelistTrieNode';
 
 export class WhitelistedTermMatcher {
 	private readonly rootNode = new WhitelistTrieNode();

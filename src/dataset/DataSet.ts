@@ -1,7 +1,7 @@
 import { assignIncrementingIds } from '../matcher/BlacklistedTerm';
-import { MatchPayload } from '../matcher/MatchPayload';
-import { PatternMatcherOptions } from '../matcher/PatternMatcher';
-import { ParsedPattern } from '../pattern/Nodes';
+import type { MatchPayload } from '../matcher/MatchPayload';
+import type { PatternMatcherOptions } from '../matcher/PatternMatcher';
+import type { ParsedPattern } from '../pattern/Nodes';
 
 /**
  * Holds phrases (groups of patterns and whitelisted terms), optionally
@@ -13,7 +13,7 @@ import { ParsedPattern } from '../pattern/Nodes';
 export class DataSet<MetadataType> {
 	private readonly containers: PhraseContainer<MetadataType>[] = [];
 	private patternCount = 0;
-	private patternIdToPhraseOffset = new Map<number, number>(); // pattern ID => index of its container
+	private readonly patternIdToPhraseOffset = new Map<number, number>(); // pattern ID => index of its container
 
 	/**
 	 * Adds all the phrases from the dataset provided to this one.

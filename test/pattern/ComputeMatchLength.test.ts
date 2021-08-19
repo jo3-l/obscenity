@@ -1,6 +1,6 @@
 import { computePatternMatchLength } from '../../src/pattern/ComputeMatchLength';
 import { SyntaxKind } from '../../src/pattern/Nodes';
-import { SimpleNode } from '../../src/pattern/Simplifier';
+import type { SimpleNode } from '../../src/pattern/Simplifier';
 
 describe('computePatternMatchLength()', () => {
 	it('should return 0 if given an empty array', () => {
