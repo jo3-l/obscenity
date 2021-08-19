@@ -9,7 +9,7 @@ import { CharacterIterator } from '../../src/util/CharacterIterator';
 test('running the pattern matcher on a set of patterns and input should have the same result as using a naive approach with regexp', () => {
 	fc.assert(
 		fc.property(
-			fc.string16bits().chain((input) => {
+			fc.stringOf(fc.char()).chain((input) => {
 				const substringPatterns =
 					input.length < 2
 						? fc.constant([])

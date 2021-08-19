@@ -9,15 +9,15 @@ test('running the forked traversal to completion on a certain pattern and input 
 	fc.assert(
 		fc.property(
 			fc
-				.stringOf(fc.oneof(fc.char16bits(), fc.char16bits(), fc.constant('?')))
+				.stringOf(fc.oneof(fc.char(), fc.char(), fc.char(), fc.constant('?')))
 				.filter((t) => t.length > 0)
 				.chain((pattern) =>
 					fc.tuple(
 						fc.constant(pattern),
 						fc.oneof(
 							// random strings
-							fc.string16bits(),
-							fc.string16bits(),
+							fc.unicodeString(),
+							fc.unicodeString(),
 							// generated string that should match the pattern
 							fc.char().chain((c) => {
 								let gen = '';

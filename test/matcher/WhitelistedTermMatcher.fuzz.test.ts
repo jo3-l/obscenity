@@ -10,7 +10,7 @@ function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
 test('running the whitelist matcher with a set of terms and input should have the same result as running the naive string searching algorithm on it', () => {
 	fc.assert(
 		fc.property(
-			fc.string16bits().chain((input) => {
+			fc.unicodeString().chain((input) => {
 				const substringPatterns =
 					input.length < 2
 						? fc.constant([])
@@ -23,7 +23,11 @@ test('running the whitelist matcher with a set of terms and input should have th
 									})
 									.filter((p) => p.length > 0),
 						  );
-				return fc.tuple(fc.constant(input), fc.array(fc.string16bits().filter((p) => p.length > 0)), substringPatterns);
+				return fc.tuple(
+					fc.constant(input),
+					fc.array(fc.unicodeString().filter((p) => p.length > 0)),
+					substringPatterns,
+				);
 			}),
 			([input, randPatterns, substrPatterns]) => {
 				const allPatterns = [...randPatterns, ...substrPatterns];
