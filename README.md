@@ -5,7 +5,7 @@
 ## Roadmap
 
 - [ ] Set up tools (ESLint, Commitizen, etc.)
-- [ ] Add fuzz testing
+- [x] Add fuzz testing
 - [ ] Benchmarks
 - [ ] Documentation
 - [ ] 1.0 release
