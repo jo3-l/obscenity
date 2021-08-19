@@ -8,8 +8,8 @@ import { CharacterIterator } from '../../src/util/CharacterIterator';
 test('running the forked traversal to completion on a certain pattern and input should produce the same result as running an equivalent regexp on the input', () => {
 	fc.assert(
 		fc.property(
-			fc.string16bits().filter((t) => t.length > 0),
-			fc.string16bits().filter((t) => t.length > 0),
+			fc.stringOf(fc.char()).filter((t) => t.length > 0),
+			fc.stringOf(fc.char()).filter((t) => t.length > 0),
 			(pat, input) => {
 				const regexp = toRegExp(pat);
 				const nodes = toPattern(pat);
