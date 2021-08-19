@@ -66,7 +66,7 @@ export class DataSet<MetadataType> {
 	public getPayloadWithPhraseMetadata(payload: MatchPayload): MatchPayloadWithPhraseMetadata<MetadataType> {
 		const offset = this.patternIdToPhraseOffset.get(payload.termId);
 		if (offset === undefined) {
-			throw new Error(`The pattern with ID '${payload.termId}' does not exist in this dataset.`);
+			throw new Error(`The pattern with ID ${payload.termId} does not exist in this dataset.`);
 		}
 
 		return {
