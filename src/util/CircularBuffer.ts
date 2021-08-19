@@ -12,7 +12,7 @@ export class CircularBuffer<T> implements Iterable<T> {
 	 */
 	public constructor(capacity: number) {
 		this.head = 0;
-		this.data = new Array<T>(nextHighestPowerOfTwo(capacity));
+		this.data = new Array<T | undefined>(nextHighestPowerOfTwo(capacity));
 		this.mask = this.capacity - 1;
 	}
 

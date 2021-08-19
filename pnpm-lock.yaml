@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@types/jest': ^26.0.24
+  fast-check: ^2.17.0
   jest: ^27.0.6
   jest-circus: ^27.0.6
   prettier: ^2.3.2
@@ -11,6 +12,7 @@ specifiers:
 
 devDependencies:
   '@types/jest': 26.0.24
+  fast-check: 2.17.0
   jest: 27.0.6_ts-node@10.1.0
   jest-circus: 27.0.6
   prettier: 2.3.2
@@ -1207,6 +1209,13 @@ packages:
       jest-regex-util: 27.0.6
     dev: true
 
+  /fast-check/2.17.0:
+    resolution: {integrity: sha512-fNNKkxNEJP+27QMcEzF6nbpOYoSZIS0p+TyB+xh/jXqRBxRhLkiZSREly4ruyV8uJi7nwH1YWAhi7OOK5TubRw==}
+    engines: {node: '>=8.0.0'}
+    dependencies:
+      pure-rand: 5.0.0
+    dev: true
+
   /fast-json-stable-stringify/2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
     dev: true
@@ -2302,6 +2311,10 @@ packages:
   /punycode/2.1.1:
     resolution: {integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==}
     engines: {node: '>=6'}
+    dev: true
+
+  /pure-rand/5.0.0:
+    resolution: {integrity: sha512-lD2/y78q+7HqBx2SaT6OT4UcwtvXNRfEpzYEzl0EQ+9gZq2Qi3fa0HDnYPeqQwhlHJFBUhT7AO3mLU3+8bynHA==}
     dev: true
 
   /react-is/17.0.2:
