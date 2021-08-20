@@ -37,13 +37,15 @@ export class DataSet<MetadataType> {
 	 * ```typescript
 	 * const customDataset = new DataSet()
 	 * 	.addAll(englishDataset)
-	 * 	.removePhrasesIf((phrase) => phrase.metadata.displayName === 'fuck'); // remove the f-word
+	 * 	.removePhrasesIf((phrase) => phrase.metadata.displayName === 'fuck');
 	 * ```
 	 *
 	 * @param predicate - A predicate that determines whether or not a phrase should be removed.
 	 * Return `true` to remove, `false` to keep.
 	 */
 	public removePhrasesIf(predicate: (phrase: PhraseContainer<MetadataType>) => boolean) {
+		// Clear the internal state, then gradually rebuild it by adding the
+		// containers that should be kept.
 		this.patternCount = 0;
 		this.patternIdToPhraseOffset.clear();
 		const containers = this.containers.splice(0);
@@ -68,7 +70,7 @@ export class DataSet<MetadataType> {
 	 * ```
 	 *
 	 * @param fn - A function that takes a [[PhraseBuilder]], adds
-	 * patterns/whitelisted terms/metadata to it, then returns it.
+	 * patterns/whitelisted terms/metadata to it, and returns it.
 	 */
 	public addPhrase(fn: (builder: PhraseBuilder<MetadataType>) => PhraseBuilder<MetadataType>) {
 		const container = fn(new PhraseBuilder()).build();
@@ -138,7 +140,7 @@ export class PhraseBuilder<MetadataType> {
 	private metadata?: MetadataType;
 
 	/**
-	 * Registers a pattern with the phrase.
+	 * Associates a pattern with this phrase.
 	 *
 	 * @param pattern - Pattern to add.
 	 */
@@ -148,7 +150,7 @@ export class PhraseBuilder<MetadataType> {
 	}
 
 	/**
-	 * Registers a whitelisted pattern with the phrase.
+	 * Associates a whitelisted pattern with this phrase.
 	 *
 	 * @param term - Whitelisted term to add.
 	 */
@@ -158,7 +160,7 @@ export class PhraseBuilder<MetadataType> {
 	}
 
 	/**
-	 * Associates some metadata with the phrase.
+	 * Associates some metadata with this phrase.
 	 *
 	 * @param metadata - Metadata to use.
 	 */
@@ -168,7 +170,8 @@ export class PhraseBuilder<MetadataType> {
 	}
 
 	/**
-	 * Builds the phrase.
+	 * Builds the phrase, returning a [[PhraseContainer]] for use with the
+	 * [[Dataset]].
 	 */
 	public build(): PhraseContainer<MetadataType> {
 		return {
@@ -180,7 +183,7 @@ export class PhraseBuilder<MetadataType> {
 }
 
 /**
- * Extends the default match payload with phrase metadata.
+ * Extends the default match payload by adding phrase metadata.
  */
 export interface MatchPayloadWithPhraseMetadata<MetadataType> extends MatchPayload {
 	/**
@@ -194,12 +197,12 @@ export interface MatchPayloadWithPhraseMetadata<MetadataType> extends MatchPaylo
  */
 export interface PhraseContainer<MetadataType> {
 	/**
-	 * The patterns corresponding to this phrase.
+	 * Patterns associated with this phrase.
 	 */
 	patterns: ParsedPattern[];
 
 	/**
-	 * The whitelisted terms corresponding to this phrase.
+	 * Whitelisted terms associated with this phrase.
 	 */
 	whitelistedTerms: string[];
 

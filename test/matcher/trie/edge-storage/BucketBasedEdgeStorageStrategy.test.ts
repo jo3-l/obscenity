@@ -1,37 +1,31 @@
 import { BucketBasedEdgeStorageStrategy } from '../../../../src/matcher/trie/edge-storage/BucketBasedEdgeStorageStrategy';
 import { CharacterCode } from '../../../../src/util/Char';
 
-function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
-	expect(as).toStrictEqual(expect.arrayContaining(bs));
-	expect(bs).toStrictEqual(expect.arrayContaining(as));
-}
-
 const storage = new BucketBasedEdgeStorageStrategy<string>({
 	charToBucketMapper: (c) => c - CharacterCode.LowerA,
 	// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 	bucketToCharMapper: (b) => b + CharacterCode.LowerA,
 });
 
-afterEach(() => storage.clear());
+afterEach(() => {
+	storage.clear();
+});
 
 describe('BucketBasedEdgeStorageStrategy#set()', () => {
 	it('should add the edge', () => {
 		storage.set('a'.charCodeAt(0), 'x');
-		expectThatArrayIsPermutationOfOther([...storage], [['a'.charCodeAt(0), 'x']]);
+		expect([...storage]).toBePermutationOf([['a'.charCodeAt(0), 'x']]);
 		storage.set('b'.charCodeAt(0), 'y');
-		expectThatArrayIsPermutationOfOther(
-			[...storage],
-			[
-				['a'.charCodeAt(0), 'x'],
-				['b'.charCodeAt(0), 'y'],
-			],
-		);
+		expect([...storage]).toBePermutationOf([
+			['a'.charCodeAt(0), 'x'],
+			['b'.charCodeAt(0), 'y'],
+		]);
 	});
 
 	it('should overwrite existing edges', () => {
 		storage.set('b'.charCodeAt(0), 'x');
 		storage.set('b'.charCodeAt(0), 'y');
-		expectThatArrayIsPermutationOfOther([...storage], [['b'.charCodeAt(0), 'y']]);
+		expect([...storage]).toBePermutationOf([['b'.charCodeAt(0), 'y']]);
 		expect(storage.size).toBe(1);
 	});
 
@@ -87,10 +81,7 @@ describe('BucketBasedEdgeStorageStrategy#chars()', () => {
 		storage.set('a'.charCodeAt(0), 'a');
 		storage.set('p'.charCodeAt(0), 'b');
 		storage.set('y'.charCodeAt(0), 'c');
-		expectThatArrayIsPermutationOfOther(
-			[...storage.chars()],
-			['a'.charCodeAt(0), 'p'.charCodeAt(0), 'y'.charCodeAt(0)],
-		);
+		expect([...storage.chars()]).toBePermutationOf(['a'.charCodeAt(0), 'p'.charCodeAt(0), 'y'.charCodeAt(0)]);
 	});
 });
 
@@ -99,7 +90,7 @@ describe('BucketBasedEdgeStorageStrategy#nodes()', () => {
 		storage.set('b'.charCodeAt(0), 'b');
 		storage.set('e'.charCodeAt(0), 'c');
 		storage.set('z'.charCodeAt(0), 'd');
-		expectThatArrayIsPermutationOfOther([...storage.nodes()], ['b', 'c', 'd']);
+		expect([...storage.nodes()]).toBePermutationOf(['b', 'c', 'd']);
 	});
 });
 
@@ -107,12 +98,9 @@ it('should be iterable', () => {
 	storage.set('e'.charCodeAt(0), 'a');
 	storage.set('d'.charCodeAt(0), 'd');
 	storage.set('m'.charCodeAt(0), 'e');
-	expectThatArrayIsPermutationOfOther(
-		[...storage],
-		[
-			['e'.charCodeAt(0), 'a'],
-			['d'.charCodeAt(0), 'd'],
-			['m'.charCodeAt(0), 'e'],
-		],
-	);
+	expect([...storage]).toBePermutationOf([
+		['e'.charCodeAt(0), 'a'],
+		['d'.charCodeAt(0), 'd'],
+		['m'.charCodeAt(0), 'e'],
+	]);
 });

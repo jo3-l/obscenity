@@ -18,23 +18,23 @@ test('running the forked traversal to completion on a certain pattern and input 
 						fc.constant(pattern),
 						fc.oneof(
 							// random strings
-							fc.unicodeString(),
-							fc.unicodeString(),
+							fc.string16bits(),
+							fc.string16bits(),
 							// generated string that should match the pattern
 							fc.char().chain((c) => {
-								let gen = '';
+								let generated = '';
 								for (const char of new CharacterIterator(pattern)) {
-									if (char === CharacterCode.QuestionMark) gen += c;
-									else gen += String.fromCodePoint(char);
+									if (char === CharacterCode.QuestionMark) generated += c;
+									else generated += String.fromCodePoint(char);
 								}
-								return fc.constant(gen);
+								return fc.constant(generated);
 							}),
 						),
 					),
 				),
-			([pat, input]) => {
-				const regexp = toRegExp(pat);
-				const nodes = toPattern(pat);
+			([pattern, input]) => {
+				const regExp = toRegExp(pattern);
+				const nodes = toNodes(pattern);
 				const traversal = new ForkedTraversal({
 					patternId: -1,
 					preFragmentMatchLength: 0,
@@ -42,19 +42,19 @@ test('running the forked traversal to completion on a certain pattern and input 
 					nodes,
 				});
 
-				let traversalMatched = false;
-				const it = new CharacterIterator(input);
-				outer: for (const char of it) {
+				let didTraversalMatch = false;
+				const iter = new CharacterIterator(input);
+				outer: for (const char of iter) {
 					switch (traversal.consume(char)) {
 						case ForkedTraversalResponse.FoundMatch:
-							traversalMatched = it.done; // fall through
+							didTraversalMatch = iter.done; // fall through
 						case ForkedTraversalResponse.Destroy:
 							break outer;
 						case ForkedTraversalResponse.Pong: // do nothing
 					}
 				}
 
-				expect(traversalMatched).toBe(regexp.test(input));
+				expect(didTraversalMatch).toBe(regExp.test(input));
 			},
 		),
 	);
@@ -73,7 +73,7 @@ function toRegExp(str: string) {
 	return new RegExp(regexpStr, 's');
 }
 
-function toPattern(str: string) {
+function toNodes(str: string) {
 	const nodes: SimpleNode[] = [];
 	const iter = new CharacterIterator(str);
 	for (const char of iter) {

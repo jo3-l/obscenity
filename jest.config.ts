@@ -12,6 +12,7 @@ const config: Config.InitialOptions = {
 	collectCoverageFrom: ['src/**/*.ts'],
 	coverageDirectory: 'coverage',
 	coverageReporters: ['text', 'lcov', 'clover'],
+	setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
 };
 
 export default config;

@@ -2,11 +2,6 @@ import * as fc from 'fast-check';
 
 import { ArrayBasedEdgeStorageStrategy } from '../../../../src/matcher/trie/edge-storage/ArrayBasedEdgeStorageStrategy';
 
-function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
-	expect(as).toStrictEqual(expect.arrayContaining(bs));
-	expect(bs).toStrictEqual(expect.arrayContaining(as));
-}
-
 test('getting from the array-based edge storage strategy after setting some values should have the same result as using a map', () => {
 	fc.assert(
 		fc.property(fc.array(fc.tuple(fc.integer(0, 30), fc.string())), fc.array(fc.integer(0, 30)), (data, keys) => {
@@ -32,7 +27,7 @@ test('getting the values stored by the array-based edge storage strategy after s
 				mp.set(k, v);
 			}
 
-			expectThatArrayIsPermutationOfOther([...storage], [...mp.entries()]);
+			expect([...storage]).toBePermutationOf([...mp.entries()]);
 		}),
 	);
 });

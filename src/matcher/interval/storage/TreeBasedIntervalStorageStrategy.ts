@@ -2,7 +2,6 @@ import type { Interval } from '../Interval';
 import { compareIntervals } from '../Interval';
 import type { IntervalStorageStrategy } from './IntervalStorageStrategy';
 
-// Tree storage strategy using an augmented interval tree.
 export class TreeBasedIntervalStorageStrategy implements IntervalStorageStrategy {
 	private root?: IntervalTreeNode;
 	private _size = 0;
@@ -38,7 +37,6 @@ export class TreeBasedIntervalStorageStrategy implements IntervalStorageStrategy
 	}
 
 	public values() {
-		if (!this.root) return emptyIterator;
 		return this.traverse(this.root);
 	}
 
@@ -48,7 +46,7 @@ export class TreeBasedIntervalStorageStrategy implements IntervalStorageStrategy
 
 	private fullyContainsRecursive(cur: IntervalTreeNode, interval: Interval): boolean {
 		if (cur.interval[0] <= interval[0] && cur.interval[1] >= interval[1]) return true;
-		// only search left subtree if its maximum value is greater than the interval's left endpoint
+		// Only search the left subtree if its maximum value is greater than the interval's left endpoint.
 		const inLeft =
 			cur.left !== undefined &&
 			cur.left.maxSubtreeValue >= interval[0] &&
@@ -56,21 +54,13 @@ export class TreeBasedIntervalStorageStrategy implements IntervalStorageStrategy
 		return inLeft || (cur.right !== undefined && this.fullyContainsRecursive(cur.right, interval));
 	}
 
-	private *traverse(node: IntervalTreeNode): IterableIterator<Interval> {
-		if (node.left) yield* this.traverse(node.left);
+	private *traverse(node?: IntervalTreeNode): IterableIterator<Interval> {
+		if (!node) return;
+		yield* this.traverse(node.left);
 		yield node.interval;
-		if (node.right) yield* this.traverse(node.right);
+		yield* this.traverse(node.right);
 	}
 }
-
-const emptyIterator: IterableIterator<Interval> = {
-	next() {
-		return { done: true, value: undefined };
-	},
-	[Symbol.iterator]() {
-		return this;
-	},
-};
 
 class IntervalTreeNode {
 	public readonly interval: Interval;

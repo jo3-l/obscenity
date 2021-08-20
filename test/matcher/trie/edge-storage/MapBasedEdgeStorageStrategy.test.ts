@@ -1,32 +1,26 @@
 import { MapBasedEdgeStorageStrategy } from '../../../../src/matcher/trie/edge-storage/MapBasedEdgeStorageStrategy';
 
-function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
-	expect(as).toStrictEqual(expect.arrayContaining(bs));
-	expect(bs).toStrictEqual(expect.arrayContaining(as));
-}
-
 const storage = new MapBasedEdgeStorageStrategy<string>();
 
-afterEach(() => storage.clear());
+afterEach(() => {
+	storage.clear();
+});
 
 describe('MapBasedEdgeStorageStrategy#set()', () => {
 	it('should add the edge', () => {
 		storage.set(5, 'x');
-		expectThatArrayIsPermutationOfOther([...storage], [[5, 'x']]);
+		expect([...storage]).toBePermutationOf([[5, 'x']]);
 		storage.set(8, 'y');
-		expectThatArrayIsPermutationOfOther(
-			[...storage],
-			[
-				[5, 'x'],
-				[8, 'y'],
-			],
-		);
+		expect([...storage]).toBePermutationOf([
+			[5, 'x'],
+			[8, 'y'],
+		]);
 	});
 
 	it('should overwrite existing edges', () => {
 		storage.set(5, 'x');
 		storage.set(5, 'y');
-		expectThatArrayIsPermutationOfOther([...storage], [[5, 'y']]);
+		expect([...storage]).toBePermutationOf([[5, 'y']]);
 		expect(storage.size).toBe(1);
 	});
 
@@ -82,7 +76,7 @@ describe('MapBasedEdgeStorageStrategy#chars()', () => {
 		storage.set(5, 'a');
 		storage.set(8, 'b');
 		storage.set(4, 'c');
-		expectThatArrayIsPermutationOfOther([...storage.chars()], [5, 8, 4]);
+		expect([...storage.chars()]).toBePermutationOf([5, 8, 4]);
 	});
 });
 
@@ -91,7 +85,7 @@ describe('MapBasedEdgeStorageStrategy#nodes()', () => {
 		storage.set(5, 'b');
 		storage.set(6, 'c');
 		storage.set(7, 'd');
-		expectThatArrayIsPermutationOfOther([...storage.nodes()], ['b', 'c', 'd']);
+		expect([...storage.nodes()]).toBePermutationOf(['b', 'c', 'd']);
 	});
 });
 
@@ -99,12 +93,9 @@ it('should be iterable', () => {
 	storage.set(8, 'a');
 	storage.set(50, 'd');
 	storage.set(4, 'e');
-	expectThatArrayIsPermutationOfOther(
-		[...storage],
-		[
-			[8, 'a'],
-			[50, 'd'],
-			[4, 'e'],
-		],
-	);
+	expect([...storage]).toBePermutationOf([
+		[8, 'a'],
+		[50, 'd'],
+		[4, 'e'],
+	]);
 });

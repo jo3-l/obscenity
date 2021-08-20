@@ -3,11 +3,13 @@ import { CharacterIterator } from '../../util/CharacterIterator';
 import { createSimpleTransformer } from '../Transformers';
 
 /**
- * Maps certain characters to other characters, leaving all other characters unchanged.
+ * Maps certain characters to other characters, leaving other characters
+ * unchanged.
  *
  * **Application order**
  *
- * It is recommended that this transformer be applied near the start of the transformer chain.
+ * It is recommended that this transformer be applied near the start of the
+ * transformer chain.
  *
  * @example
  * ```typescript
@@ -31,8 +33,10 @@ import { createSimpleTransformer } from '../Transformers';
  * ```
  *
  * @param mapping - A map/object mapping certain characters to others.
- * @returns A container holding the transformer, which can then be passed to the [[PatternMatcher]].
- * @see [[resolveConfusablesTransformer | Transformer that handles confusable Unicode characters]]
+ * @returns A container holding the transformer, which can then be passed to the
+ * [[PatternMatcher]].
+ * @see [[resolveConfusablesTransformer | Transformer that handles confusable
+ * Unicode characters]]
  * @see [[resolveLeetSpeakTransformer | Transformer that handles leet-speak]]
  */
 export function remapCharactersTransformer(mapping: CharacterMapping) {

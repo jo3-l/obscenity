@@ -2,11 +2,6 @@ import { WhitelistedTermMatcher } from '../../src/matcher/WhitelistedTermMatcher
 import { createSimpleTransformer } from '../../src/transformer/Transformers';
 import { CharacterCode } from '../../src/util/Char';
 
-function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
-	expect(as).toStrictEqual(expect.arrayContaining(bs));
-	expect(bs).toStrictEqual(expect.arrayContaining(as));
-}
-
 describe('constructor', () => {
 	it('should not allow empty terms', () => {
 		expect(() => new WhitelistedTermMatcher({ terms: [''] })).toThrow(new Error('Unexpected empty whitelisted term.'));
@@ -15,8 +10,8 @@ describe('constructor', () => {
 
 describe('WhitelistedTermMatcher#getMatchedSpans', () => {
 	it('should return an empty interval collection if there are no terms', () => {
-		const ms = new WhitelistedTermMatcher({ terms: [] }).getMatchedSpans('hello world');
-		expect(ms.size).toBe(0);
+		const matches = new WhitelistedTermMatcher({ terms: [] }).getMatchedSpans('hello world');
+		expect(matches.size).toBe(0);
 	});
 
 	it.each([
@@ -73,31 +68,35 @@ describe('WhitelistedTermMatcher#getMatchedSpans', () => {
 		['should work with terms that normalize to a different string', ['豈'], '豈', [[0, 0]]],
 		['should handle null characters correctly', ['\u0000'], '\u0000', [[0, 0]]],
 	])('%s', (_, terms, input, expected) => {
-		const ms = new WhitelistedTermMatcher({ terms }).getMatchedSpans(input);
-		expectThatArrayIsPermutationOfOther([...ms], expected);
+		const matches = new WhitelistedTermMatcher({ terms }).getMatchedSpans(input);
+		expect([...matches]).toBePermutationOf(expected);
 	});
 
 	describe('transformers', () => {
 		it('should work with transformers that skip chars', () => {
 			const skipA = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? undefined : c));
-			const ms = new WhitelistedTermMatcher({ terms: ['intriguing'], transformers: [skipA] }).getMatchedSpans(
+			const matches = new WhitelistedTermMatcher({ terms: ['intriguing'], transformers: [skipA] }).getMatchedSpans(
 				'hello world! inatrigauainagfoo bar.',
 			);
-			expectThatArrayIsPermutationOfOther([...ms], [[13, 26]]);
+			expect([...matches]).toBePermutationOf([[13, 26]]);
 		});
 
 		it('should work with transformers that change chars (no match)', () => {
 			// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 			const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? CharacterCode.LowerA + 1 : c));
-			const ms = new WhitelistedTermMatcher({ terms: ['hallo'], transformers: [changeAToB] }).getMatchedSpans('hallo');
-			expect(ms.size).toBe(0);
+			const matches = new WhitelistedTermMatcher({ terms: ['hallo'], transformers: [changeAToB] }).getMatchedSpans(
+				'hallo',
+			);
+			expect(matches.size).toBe(0);
 		});
 
 		it('should work with transformers that change chars (with match)', () => {
 			// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 			const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? CharacterCode.LowerA + 1 : c));
-			const ms = new WhitelistedTermMatcher({ terms: ['hbllo'], transformers: [changeAToB] }).getMatchedSpans('hallo');
-			expectThatArrayIsPermutationOfOther([...ms], [[0, 4]]);
+			const matches = new WhitelistedTermMatcher({ terms: ['hbllo'], transformers: [changeAToB] }).getMatchedSpans(
+				'hallo',
+			);
+			expect([...matches]).toBePermutationOf([[0, 4]]);
 		});
 	});
 });

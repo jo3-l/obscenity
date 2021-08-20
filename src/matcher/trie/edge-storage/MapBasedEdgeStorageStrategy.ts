@@ -1,6 +1,5 @@
 import type { EdgeStorageStrategy } from './EdgeStorageStrategy';
 
-// Dead simple map storage strategy.
 export class MapBasedEdgeStorageStrategy<T> implements EdgeStorageStrategy<T> {
 	private readonly edges = new Map<number, T>();
 

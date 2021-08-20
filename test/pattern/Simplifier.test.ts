@@ -2,11 +2,6 @@ import type { Node } from '../../src/pattern/Nodes';
 import { SyntaxKind } from '../../src/pattern/Nodes';
 import { simplify } from '../../src/pattern/Simplifier';
 
-function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
-	expect(as).toStrictEqual(expect.arrayContaining(bs));
-	expect(bs).toStrictEqual(expect.arrayContaining(as));
-}
-
 describe('simplify()', () => {
 	it('should leave patterns without optional nodes as-is, disregarding literal node merging', () => {
 		const nodes: Node[] = [
@@ -23,7 +18,7 @@ describe('simplify()', () => {
 			const childNode: Node = { kind: SyntaxKind.Wildcard };
 			const node1: Node = { kind: SyntaxKind.Optional, childNode };
 			const node2: Node = { kind: SyntaxKind.Wildcard };
-			expectThatArrayIsPermutationOfOther(simplify([node0, node1, node2]), [
+			expect(simplify([node0, node1, node2])).toBePermutationOf([
 				[node0, node2],
 				[node0, childNode, node2],
 			]);
@@ -37,7 +32,7 @@ describe('simplify()', () => {
 			const childNode1: Node = { kind: SyntaxKind.Wildcard };
 			const node3: Node = { kind: SyntaxKind.Optional, childNode: childNode1 };
 			const node4: Node = { kind: SyntaxKind.Literal, chars: [2, 3, 4, 5] };
-			expectThatArrayIsPermutationOfOther(simplify([node0, node1, node2, node3, node4]), [
+			expect(simplify([node0, node1, node2, node3, node4])).toBePermutationOf([
 				[node0, node2, node4],
 				[node0, childNode0, node2, node4],
 				[node0, childNode0, node2, childNode1, node4],
@@ -74,7 +69,7 @@ describe('simplify()', () => {
 				{ kind: SyntaxKind.Literal, chars: [4, 5] },
 				{ kind: SyntaxKind.Wildcard },
 			];
-			expectThatArrayIsPermutationOfOther(simplify(nodes), [
+			expect(simplify(nodes)).toBePermutationOf([
 				[{ kind: SyntaxKind.Literal, chars: [1, 2, 3, 4, 4, 5] }, { kind: SyntaxKind.Wildcard }],
 				[{ kind: SyntaxKind.Literal, chars: [1, 2, 3, 4, 2, 3, 4, 4, 5] }, { kind: SyntaxKind.Wildcard }],
 			]);

@@ -3,16 +3,12 @@ import * as fc from 'fast-check';
 import type { Interval } from '../../src/matcher/interval/Interval';
 import { WhitelistedTermMatcher } from '../../src/matcher/WhitelistedTermMatcher';
 
-function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
-	expect(as).toStrictEqual(expect.arrayContaining(bs));
-	expect(bs).toStrictEqual(expect.arrayContaining(as));
-}
-
-test('running the whitelist matcher with a set of terms and input should have the same result as running the naive string searching algorithm on it', () => {
+test('running the whitelist matcher with a set of terms and input should have the same result as running the brute force string searching algorithm on it', () => {
 	fc.assert(
 		fc.property(
 			fc.unicodeString().chain((input) => {
-				const substringPatterns =
+				// Generate patterns that are substrings of the input.
+				const arbitrarySubstringPatterns =
 					input.length < 2
 						? fc.constant([])
 						: fc.array(
@@ -27,19 +23,23 @@ test('running the whitelist matcher with a set of terms and input should have th
 				return fc.tuple(
 					fc.constant(input),
 					fc.array(fc.unicodeString().filter((p) => p.length > 0)),
-					substringPatterns,
+					arbitrarySubstringPatterns,
 				);
 			}),
-			([input, randPatterns, substrPatterns]) => {
-				const allPatterns = [...randPatterns, ...substrPatterns];
+			([input, randomPatterns, substrPatterns]) => {
+				// Deduplicate the patterns.
+				const set = new Set<string>();
+				for (const pattern of randomPatterns) set.add(pattern);
+				for (const pattern of substrPatterns) set.add(pattern);
+				const allPatterns = [...set];
 				const matcher = new WhitelistedTermMatcher({ terms: allPatterns });
-				expectThatArrayIsPermutationOfOther([...matcher.getMatchedSpans(input)], naiveMatch(allPatterns, input));
+				expect([...matcher.getMatchedSpans(input)]).toBePermutationOf(bruteForceMatch(allPatterns, input));
 			},
 		),
 	);
 });
 
-function naiveMatch(patterns: string[], input: string) {
+function bruteForceMatch(patterns: string[], input: string) {
 	const result: Interval[] = [];
 	for (let i = 0; i < input.length; i++) {
 		for (const pattern of patterns) {

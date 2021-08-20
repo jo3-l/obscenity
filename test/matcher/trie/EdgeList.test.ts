@@ -2,11 +2,6 @@ import type { Edge } from '../../../src/matcher/trie/edge-storage/EdgeStorageStr
 import { EdgeList } from '../../../src/matcher/trie/EdgeList';
 import { CharacterCode } from '../../../src/util/Char';
 
-function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
-	expect(as).toStrictEqual(expect.arrayContaining(bs));
-	expect(bs).toStrictEqual(expect.arrayContaining(as));
-}
-
 const list = new EdgeList<string>();
 
 afterEach(() => list.clear());
@@ -19,21 +14,18 @@ const edges: Edge<string>[] = [...new Array(26).keys()]
 describe('EdgeList#set()', () => {
 	it('should add the edge', () => {
 		list.set(5, 'x');
-		expectThatArrayIsPermutationOfOther([...list], [[5, 'x']]);
+		expect([...list]).toBePermutationOf([[5, 'x']]);
 		list.set(8, 'y');
-		expectThatArrayIsPermutationOfOther(
-			[...list],
-			[
-				[5, 'x'],
-				[8, 'y'],
-			],
-		);
+		expect([...list]).toBePermutationOf([
+			[5, 'x'],
+			[8, 'y'],
+		]);
 	});
 
 	it('should overwrite existing edges', () => {
 		list.set(5, 'x');
 		list.set(5, 'y');
-		expectThatArrayIsPermutationOfOther([...list], [[5, 'y']]);
+		expect([...list]).toBePermutationOf([[5, 'y']]);
 		expect(list.size).toBe(1);
 	});
 
@@ -46,25 +38,25 @@ describe('EdgeList#set()', () => {
 
 	describe('dynamic strategy switching', () => {
 		it('should work correctly when adding >10 and <=26 edges (all lowercase ascii) (bucket-based)', () => {
-			for (const e of edges.slice(0, 15)) list.set(...e);
-			expectThatArrayIsPermutationOfOther([...list], edges.slice(0, 15));
+			for (const edge of edges.slice(0, 15)) list.set(...edge);
+			expect([...list]).toBePermutationOf(edges.slice(0, 15));
 		});
 
 		it('should work correctly when adding >10 and <=26 edges (some non-lowercase ascii) (map-based)', () => {
 			const subset = edges.slice(0, 16);
 			subset.push([5, 'd']);
-			for (const e of subset) list.set(...e);
-			expectThatArrayIsPermutationOfOther([...list], subset);
+			for (const edge of subset) list.set(...edge);
+			expect([...list]).toBePermutationOf(subset);
 		});
 
 		it('should work correctly when adding >26 edges (map-based)', () => {
-			const subset = [...edges];
-			subset.push([3, 'h']);
-			subset.push([4, 'd']);
-			subset.push([150, 'z']);
-			subset.push([202, 'd']);
-			for (const e of subset) list.set(...e);
-			expectThatArrayIsPermutationOfOther([...list], subset);
+			const superset = [...edges];
+			superset.push([3, 'h']);
+			superset.push([4, 'd']);
+			superset.push([150, 'z']);
+			superset.push([202, 'd']);
+			for (const edge of superset) list.set(...edge);
+			expect([...list]).toBePermutationOf(superset);
 		});
 	});
 });
@@ -126,7 +118,7 @@ describe('EdgeList#chars()', () => {
 		list.set(5, 'a');
 		list.set(8, 'b');
 		list.set(4, 'c');
-		expectThatArrayIsPermutationOfOther([...list.chars()], [5, 8, 4]);
+		expect([...list.chars()]).toBePermutationOf([5, 8, 4]);
 	});
 });
 
@@ -135,7 +127,7 @@ describe('EdgeList#nodes()', () => {
 		list.set(5, 'b');
 		list.set(6, 'c');
 		list.set(7, 'd');
-		expectThatArrayIsPermutationOfOther([...list.nodes()], ['b', 'c', 'd']);
+		expect([...list.nodes()]).toBePermutationOf(['b', 'c', 'd']);
 	});
 });
 
@@ -143,12 +135,9 @@ it('should be iterable', () => {
 	list.set(8, 'a');
 	list.set(50, 'd');
 	list.set(4, 'e');
-	expectThatArrayIsPermutationOfOther(
-		[...list],
-		[
-			[8, 'a'],
-			[50, 'd'],
-			[4, 'e'],
-		],
-	);
+	expect([...list]).toBePermutationOf([
+		[8, 'a'],
+		[50, 'd'],
+		[4, 'e'],
+	]);
 });

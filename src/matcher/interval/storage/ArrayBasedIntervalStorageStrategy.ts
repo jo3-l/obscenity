@@ -1,7 +1,6 @@
 import type { Interval } from '../Interval';
 import type { IntervalStorageStrategy } from './IntervalStorageStrategy';
 
-// Dead simple array-based interval storage strategy.
 export class ArrayBasedIntervalStorageStrategy implements IntervalStorageStrategy {
 	private readonly _intervals: Interval[] = [];
 

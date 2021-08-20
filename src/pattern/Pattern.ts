@@ -13,19 +13,28 @@ const parser = new Parser();
  * is, they match exactly what they are: `a` matches an `a`, `b` matches a `b`,
  * `;` matches a `;`, and so on.
  *
- * However, there are several meta-characters that do not match literally:
+ * However, there are several constructs that have special meaning:
  *
- * - `[expr]` matches either the empty string or `expr`. `expr` may be a
- *   sequence of literal characters or the wildcard.
+ * - `[expr]` matches either the empty string or `expr` (an **optional
+ *   expression**). `expr` may be a sequence of literal characters or a wildcard
+ *   (see below).
  * - `?` matches any character (a **wildcard**).
- * - A `|` at the start or end asserts position at a word boundary (a **word
- *   boundary assertion**).
+ * - A `|` at the start or end of the pattern asserts position at a word
+ *   boundary (a **word boundary assertion**). If `|` is at the start, it
+ *   ensures that the match either starts at the start of the string or a non-
+ *   word character preceding it; if it is at the end, it ensures that the match
+ *   either ends at the end of the string or a non-word character follows it.
+ *
+ *   A word character is an lower-case or upper-case ASCII alphabet character or
+ *   an ASCII digit.
  * - In a literal, a backslash may be used to **escape** one of the
- *   meta-characters mentioned above so that it does match literally.
+ *   meta-characters mentioned above so that it does match literally: `\\[`
+ *   matches `[`, and does not mark the start of an optional expression.
  *
  *   **Note about escapes**
  *
- *   As this function operates on raw strings, double-escaping backslashes is not necessary:
+ *   As this function operates on raw strings, double-escaping backslashes is
+ *   not necessary:
  *
  *   ```typescript
  *   // Use this:
@@ -90,7 +99,10 @@ const parser = new Parser();
  * const parsed = pattern`my initials are \[??\]`; // match "my initials are [", then any two characters, then a "]"
  * ```
  *
- * @returns The parsed pattern, which can then be used with the [[PatternMatcher]].
+ * @returns The parsed pattern, which can then be used with the
+ * [[PatternMatcher]].
+ * @throws [[ParserError]] if a syntactical error was detected while parsing the
+ * pattern.
  * @see [[parseRawPattern]] if you want to parse a string into a pattern without
  * using a template tag.
  */
@@ -104,7 +116,7 @@ export function pattern(strings: TemplateStringsArray, ...expressions: unknown[]
 }
 
 /**
- * Parses a pattern directly.
+ * Parses a string as a pattern directly.
  *
  * **Note**
  *
@@ -112,6 +124,8 @@ export function pattern(strings: TemplateStringsArray, ...expressions: unknown[]
  * for literal patterns (i.e. ones without dynamic content).
  *
  * @param pattern - The string to parse.
+ * @throws [[ParserError]] if a syntactical error was detected while parsing the
+ * pattern.
  * @returns The parsed pattern, which can then be used with the [[PatternMatcher]].
  */
 export function parseRawPattern(pattern: string) {

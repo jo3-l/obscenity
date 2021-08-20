@@ -9,11 +9,12 @@ import { SyntaxKind } from '../../src/pattern/Nodes';
 import { CharacterCode } from '../../src/util/Char';
 import { CharacterIterator } from '../../src/util/CharacterIterator';
 
-test('running the pattern matcher on a set of patterns and input should have the same result as using a naive approach with regexp', () => {
+test('running the pattern matcher on a set of patterns and input should have the same result as using a brute force approach with regexp', () => {
 	fc.assert(
 		fc.property(
 			fc.stringOf(fc.char()).chain((input) => {
-				const substringPatterns =
+				// Generate patterns that are a substring of the input.
+				const arbitrarySubstringPatterns =
 					input.length < 2
 						? fc.constant([])
 						: fc.array(
@@ -25,62 +26,69 @@ test('running the pattern matcher on a set of patterns and input should have the
 											if (a > b) [a, b] = [b, a];
 											return fc.tuple(fc.constant(input.slice(a, b)), fc.set(fc.integer(a, b)));
 										})
-										.map(([pat, wildcardIndices]) => {
-											let newPat = '';
-											for (let i = 0; i < pat.length; i++) {
-												if (wildcardIndices.includes(i)) newPat += '?';
-												else newPat += pat[i];
+										.map(([pattern, wildcardIndices]) => {
+											let patternWithWildcards = '';
+											for (let i = 0; i < pattern.length; i++) {
+												if (wildcardIndices.includes(i)) patternWithWildcards += '?';
+												else patternWithWildcards += pattern[i];
 											}
-											return newPat;
+											return patternWithWildcards;
 										}),
 									fc.boolean(),
 									fc.boolean(),
 								),
 						  );
-				return fc.tuple(
-					fc.constant(input),
-					fc.array(
-						fc.tuple(
-							fc
-								.stringOf(fc.oneof(fc.char16bits(), fc.char16bits(), fc.char16bits(), fc.constant('?')))
-								.filter((p) => p.length > 0),
-							fc.boolean(),
-							fc.boolean(),
-						),
+				// Completely random patterns.
+				const completelyArbitraryPatterns = fc.array(
+					fc.tuple(
+						fc
+							.stringOf(fc.oneof(fc.char16bits(), fc.char16bits(), fc.char16bits(), fc.constant('?')))
+							.filter((p) => p.length > 0),
+						fc.boolean(),
+						fc.boolean(),
 					),
-					substringPatterns,
 				);
+				return fc.tuple(fc.constant(input), completelyArbitraryPatterns, arbitrarySubstringPatterns);
 			}),
-			([input, randPatterns, substrPatterns]) => {
+			([input, randomPatterns, substrPatterns]) => {
 				const seen = new Set<string>();
 				const allPatterns: [string, boolean, boolean][] = [];
-				for (const p of randPatterns) {
-					if (!seen.has(p[0])) {
-						allPatterns.push(p);
-						seen.add(p[0]);
+				for (const pattern of randomPatterns) {
+					// Make sure we don't use the same pattern twice.
+					if (!seen.has(pattern[0])) {
+						allPatterns.push(pattern);
+						seen.add(pattern[0]);
 					}
 				}
-				for (const p of substrPatterns) {
-					if (!seen.has(p[0])) {
-						allPatterns.push(p);
-						seen.add(p[0]);
+				for (const pattern of substrPatterns) {
+					// Similar.
+					if (!seen.has(pattern[0])) {
+						allPatterns.push(pattern);
+						seen.add(pattern[0]);
 					}
 				}
 
 				const matcher = new PatternMatcher({
 					forkedTraversalLimit: Infinity,
-					blacklistedPatterns: assignIncrementingIds(allPatterns.map(([p, a, b]) => toPattern(p, a, b))),
+					blacklistedPatterns: assignIncrementingIds(
+						allPatterns.map(([pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd]) =>
+							toNodes(pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd),
+						),
+					),
 				});
 
-				const ms = matcher.setInput(input).getAllMatches();
-				const ps: Record<number, Interval[]> = {};
-				for (const x of ms) {
-					(ps[x.termId] ??= []).push([x.startIndex, x.endIndex]);
+				const matchedRegions = matcher.setInput(input).getAllMatches();
+				const transformedMatches: Record<number, Interval[]> = {};
+				for (const payload of matchedRegions) {
+					(transformedMatches[payload.termId] ??= []).push([payload.startIndex, payload.endIndex]);
 				}
-				for (const v of Object.values(ps)) v.sort(compareIntervals);
-				expect(ps).toStrictEqual(
-					naiveMatch(
-						allPatterns.map(([p, a, b]) => toRegExp(p, a, b)),
+
+				for (const matches of Object.values(transformedMatches)) matches.sort(compareIntervals);
+				expect(transformedMatches).toStrictEqual(
+					runBruteForceMatch(
+						allPatterns.map(([pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd]) =>
+							toRegExp(pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd),
+						),
 						input,
 					),
 				);
@@ -89,10 +97,10 @@ test('running the pattern matcher on a set of patterns and input should have the
 	);
 });
 
-function naiveMatch(regexps: RegExp[], input: string) {
+function runBruteForceMatch(regExps: RegExp[], input: string) {
 	const result: Record<number, Interval[]> = {};
-	for (let i = 0; i < regexps.length; i++) {
-		const regexp = regexps[i];
+	for (let i = 0; i < regExps.length; i++) {
+		const regexp = regExps[i];
 		let match: RegExpMatchArray | null;
 		while ((match = regexp.exec(input))) {
 			(result[i] ??= []).push([match.index!, match.index! + match[0].length - 1]);
@@ -100,7 +108,7 @@ function naiveMatch(regexps: RegExp[], input: string) {
 		}
 	}
 
-	for (const v of Object.values(result)) v.sort(compareIntervals);
+	for (const matches of Object.values(result)) matches.sort(compareIntervals);
 	return result;
 }
 
@@ -118,7 +126,7 @@ function toRegExp(pattern: string, requireWordBoundaryAtStart: boolean, requireW
 	return new RegExp(regexpStr, 'gs');
 }
 
-function toPattern(pattern: string, requireWordBoundaryAtStart: boolean, requireWordBoundaryAtEnd: boolean) {
+function toNodes(pattern: string, requireWordBoundaryAtStart: boolean, requireWordBoundaryAtEnd: boolean) {
 	const parsed: ParsedPattern = { nodes: [], requireWordBoundaryAtStart, requireWordBoundaryAtEnd };
 	for (const char of new CharacterIterator(pattern)) {
 		if (char === CharacterCode.QuestionMark) {

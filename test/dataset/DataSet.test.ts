@@ -4,19 +4,19 @@ import { pattern } from '../../src/pattern/Pattern';
 describe('DataSet#addAll()', () => {
 	it('should add all the data from the other dataset to the current one', () => {
 		const other = new DataSet()
-			.addPhrase((p) =>
-				p
+			.addPhrase((phrase) =>
+				phrase
 					.addPattern(pattern`hi`)
 					.addPattern(pattern`yo`)
 					.setMetadata(':D'),
 			)
-			.addPhrase((p) => p.addPattern(pattern`hmm`).addWhitelistedTerm('whitelisted'));
-		const cur = new DataSet()
-			.addPhrase((p) => p.setMetadata('yodog').addPattern(pattern`hmm2`))
-			.addPhrase((p) => p.setMetadata('dude').addPattern(pattern`real`));
-		cur.addAll(other);
+			.addPhrase((phrase) => phrase.addPattern(pattern`hmm`).addWhitelistedTerm('whitelisted'));
+		const dataset = new DataSet()
+			.addPhrase((phrase) => phrase.setMetadata('yodog').addPattern(pattern`hmm2`))
+			.addPhrase((phrase) => phrase.setMetadata('dude').addPattern(pattern`real`))
+			.addAll(other);
 
-		const built = cur.build();
+		const built = dataset.build();
 		expect(
 			other
 				.build()
@@ -30,63 +30,62 @@ describe('DataSet#addAll()', () => {
 
 describe('DataSet#addPhrase()', () => {
 	it('should pass an instance of PhraseBuilder to the callback', () => {
-		const ds = new DataSet();
-		ds.addPhrase((builder) => {
+		new DataSet().addPhrase((builder) => {
 			expect(builder).toBeInstanceOf(PhraseBuilder);
 			return builder;
 		});
 	});
 
 	it('should add all the patterns provided to the dataset', () => {
-		const p0 = pattern`hi`;
-		const p1 = pattern`bye`;
-		const p2 = pattern`yo`;
-		const ds = new DataSet();
-		ds.addPhrase((builder) => builder.addPattern(p0).addPattern(p1).addPattern(p2));
-		expect(ds.build().blacklistedPatterns).toStrictEqual([
-			{ id: 0, pattern: p0 },
-			{ id: 1, pattern: p1 },
-			{ id: 2, pattern: p2 },
+		const firstPattern = pattern`hi`;
+		const secondPattern = pattern`bye`;
+		const thirdPattern = pattern`yo`;
+		const dataset = new DataSet().addPhrase((builder) =>
+			builder.addPattern(firstPattern).addPattern(secondPattern).addPattern(thirdPattern),
+		);
+		expect(dataset.build().blacklistedPatterns).toStrictEqual([
+			{ id: 0, pattern: firstPattern },
+			{ id: 1, pattern: secondPattern },
+			{ id: 2, pattern: thirdPattern },
 		]);
 	});
 
 	it('should add all the whitelisted terms provided to the dataset', () => {
-		const ws = ['a', 'b', 'c', 'd'];
-		const ds = new DataSet();
-		ds.addPhrase((builder) => {
-			for (const w of ws) builder.addWhitelistedTerm(w);
+		const terms = ['a', 'b', 'c', 'd'];
+		const dataset = new DataSet().addPhrase((builder) => {
+			for (const w of terms) builder.addWhitelistedTerm(w);
 			return builder;
 		});
-		expect(ds.build().whitelistedTerms).toStrictEqual(ws);
+		expect(dataset.build().whitelistedTerms).toStrictEqual(terms);
 	});
 });
 
 describe('DataSet#removePhrasesIf()', () => {
 	it('should remove phrases that satisfy the predicate', () => {
-		const ds = new DataSet()
-			.addPhrase((p) =>
-				p
+		const dataset = new DataSet()
+			.addPhrase((phrase) =>
+				phrase
 					.addPattern(pattern`hi`)
 					.addPattern(pattern`bye`)
 					.setMetadata('greetings')
 					.addWhitelistedTerm('a'),
 			)
-			.addPhrase((p) =>
-				p
+			.addPhrase((phrase) =>
+				phrase
 					.addPattern(pattern`morning`)
 					.addPattern(pattern`night`)
 					.setMetadata('times-of-day')
 					.addWhitelistedTerm('b'),
 			)
-			.addPhrase((p) =>
-				p
+			.addPhrase((phrase) =>
+				phrase
 					.addPattern(pattern`sad`)
 					.addPattern(pattern`happy`)
 					.setMetadata('emotions')
 					.addWhitelistedTerm('c'),
-			);
-		ds.removePhrasesIf((p) => p.metadata === 'emotions' || p.metadata === 'greetings');
-		expect(ds.build()).toStrictEqual({
+			)
+			.removePhrasesIf((phrase) => phrase.metadata === 'emotions' || phrase.metadata === 'greetings');
+		expect(dataset.build()).toStrictEqual({
 			blacklistedPatterns: [
 				{ id: 0, pattern: pattern`morning` },
 				{ id: 1, pattern: pattern`night` },
@@ -97,11 +96,12 @@ describe('DataSet#removePhrasesIf()', () => {
 });
 
 describe('DataSet#getPayloadWithPhraseMetadata()', () => {
-	const partialData = { startIndex: 0, endIndex: 0, matchLength: 0 };
+	const partialMatch = { startIndex: 0, endIndex: 0, matchLength: 0 };
+
 	it('should throw an error if the pattern ID does not correspond to one in the dataset', () => {
-		const ds = new DataSet().addPhrase((p) => p.addPattern(pattern`hmm.`).setMetadata('hmm metadata'));
+		const dataset = new DataSet().addPhrase((phrase) => phrase.addPattern(pattern`hmm.`).setMetadata('hmm metadata'));
 		expect(() =>
-			ds.getPayloadWithPhraseMetadata({
+			dataset.getPayloadWithPhraseMetadata({
 				termId: 3,
 				startIndex: 0,
 				endIndex: 0,
@@ -111,121 +111,121 @@ describe('DataSet#getPayloadWithPhraseMetadata()', () => {
 	});
 
 	it('should not mutate the original data', () => {
-		const ds = new DataSet().addPhrase((p) => p.addPattern(pattern`hmm.`).setMetadata('hmm metadata'));
-		const inp = {
+		const dataset = new DataSet().addPhrase((phrase) => phrase.addPattern(pattern`hmm.`).setMetadata('hmm metadata'));
+		const originalMatch = {
 			termId: 0,
-			...partialData,
+			...partialMatch,
 		};
-		const cop = { ...inp };
-		ds.getPayloadWithPhraseMetadata(inp);
-		expect(inp).toStrictEqual(cop);
+		const originalMatchCopy = { ...originalMatch };
+		dataset.getPayloadWithPhraseMetadata(originalMatch);
+		expect(originalMatch).toStrictEqual(originalMatchCopy);
 	});
 
 	it('should return the data with an additional property phraseMetadata', () => {
-		const ds = new DataSet().addPhrase((p) => p.addPattern(pattern`hmm.`).setMetadata('hmm metadata'));
-		const inp = {
+		const dataset = new DataSet().addPhrase((phrase) => phrase.addPattern(pattern`hmm.`).setMetadata('hmm metadata'));
+		const match = {
 			termId: 0,
-			...partialData,
+			...partialMatch,
 		};
-		expect(ds.getPayloadWithPhraseMetadata(inp)).toStrictEqual({
-			...inp,
+		expect(dataset.getPayloadWithPhraseMetadata(match)).toStrictEqual({
+			...match,
 			phraseMetadata: 'hmm metadata',
 		});
 	});
 
 	it('should use the correct phrase metadata', () => {
-		const ds = new DataSet()
-			.addPhrase((p) =>
-				p
+		const dataset = new DataSet()
+			.addPhrase((phrase) =>
+				phrase
 					.addPattern(pattern`hi`)
 					.addPattern(pattern`bye`)
 					.setMetadata('greetings'),
 			)
-			.addPhrase((p) =>
-				p
+			.addPhrase((phrase) =>
+				phrase
 					.addPattern(pattern`sad`)
 					.addPattern(pattern`happy`)
 					.setMetadata('emotion'),
 			);
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 0, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 0, ...partialMatch })).toStrictEqual({
 			termId: 0,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'greetings',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 1, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 1, ...partialMatch })).toStrictEqual({
 			termId: 1,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'greetings',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 2, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 2, ...partialMatch })).toStrictEqual({
 			termId: 2,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'emotion',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 3, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 3, ...partialMatch })).toStrictEqual({
 			termId: 3,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'emotion',
 		});
 	});
 
 	it('should use the correct phrase metadata after merging data from other dataset', () => {
-		const ods = new DataSet().addPhrase((p) =>
-			p
+		const other = new DataSet().addPhrase((phrase) =>
+			phrase
 				.addPattern(pattern`:D`)
 				.addPattern(pattern`:(`)
 				.setMetadata('emojis'),
 		);
-		const ds = new DataSet()
-			.addPhrase((p) =>
-				p
+		const dataset = new DataSet()
+			.addPhrase((phrase) =>
+				phrase
 					.addPattern(pattern`hi`)
 					.addPattern(pattern`bye`)
 					.setMetadata('greetings'),
 			)
-			.addPhrase((p) =>
-				p
+			.addPhrase((phrase) =>
+				phrase
 					.addPattern(pattern`sad`)
 					.addPattern(pattern`happy`)
 					.setMetadata('emotion'),
 			)
-			.addAll(ods);
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 0, ...partialData })).toStrictEqual({
+			.addAll(other);
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 0, ...partialMatch })).toStrictEqual({
 			termId: 0,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'greetings',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 1, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 1, ...partialMatch })).toStrictEqual({
 			termId: 1,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'greetings',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 2, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 2, ...partialMatch })).toStrictEqual({
 			termId: 2,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'emotion',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 3, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 3, ...partialMatch })).toStrictEqual({
 			termId: 3,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'emotion',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 4, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 4, ...partialMatch })).toStrictEqual({
 			termId: 4,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'emojis',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 5, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 5, ...partialMatch })).toStrictEqual({
 			termId: 5,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'emojis',
 		});
 	});
 
 	it('should use the correct phrase metadata after removing certain phrases', () => {
-		const ds = new DataSet()
-			.addPhrase((p) =>
-				p
+		const dataset = new DataSet()
+			.addPhrase((phrase) =>
+				phrase
 					.addPattern(pattern`hi`)
 					.addPattern(pattern`bye`)
 					.setMetadata('greetings'),
@@ -241,26 +241,26 @@ describe('DataSet#getPayloadWithPhraseMetadata()', () => {
 					.addPattern(pattern`:D`)
 					.addPattern(pattern`:(`)
 					.setMetadata('emojis'),
-			);
-		ds.removePhrasesIf((phrase) => phrase.metadata === 'greetings');
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 0, ...partialData })).toStrictEqual({
+			)
+			.removePhrasesIf((phrase) => phrase.metadata === 'greetings');
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 0, ...partialMatch })).toStrictEqual({
 			termId: 0,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'emotion',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 1, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 1, ...partialMatch })).toStrictEqual({
 			termId: 1,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'emotion',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 2, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 2, ...partialMatch })).toStrictEqual({
 			termId: 2,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'emojis',
 		});
-		expect(ds.getPayloadWithPhraseMetadata({ termId: 3, ...partialData })).toStrictEqual({
+		expect(dataset.getPayloadWithPhraseMetadata({ termId: 3, ...partialMatch })).toStrictEqual({
 			termId: 3,
-			...partialData,
+			...partialMatch,
 			phraseMetadata: 'emojis',
 		});
 	});
@@ -268,10 +268,10 @@ describe('DataSet#getPayloadWithPhraseMetadata()', () => {
 
 describe('DataSet#build()', () => {
 	it('should assign incrementing ids to the patterns', () => {
-		const ds = new DataSet()
-			.addPhrase((p) => p.addPattern(pattern`hi`).addPattern(pattern`bye`))
-			.addPhrase((p) => p.addPattern(pattern`huh`).addPattern(pattern`huhu`));
-		expect(ds.build().blacklistedPatterns).toStrictEqual([
+		const dataset = new DataSet()
+			.addPhrase((phrase) => phrase.addPattern(pattern`hi`).addPattern(pattern`bye`))
+			.addPhrase((phrase) => phrase.addPattern(pattern`huh`).addPattern(pattern`huhu`));
+		expect(dataset.build().blacklistedPatterns).toStrictEqual([
 			{ id: 0, pattern: pattern`hi` },
 			{ id: 1, pattern: pattern`bye` },
 			{ id: 2, pattern: pattern`huh` },
@@ -283,25 +283,22 @@ describe('DataSet#build()', () => {
 describe('PhraseBuilder', () => {
 	describe('PhraseBuilder#addPattern()', () => {
 		it('should add the pattern', () => {
-			const p = new PhraseBuilder();
-			p.addPattern(pattern`x`).addPattern(pattern`y`);
-			expect(p.build().patterns).toStrictEqual([pattern`x`, pattern`y`]);
+			const builder = new PhraseBuilder().addPattern(pattern`x`).addPattern(pattern`y`);
+			expect(builder.build().patterns).toStrictEqual([pattern`x`, pattern`y`]);
 		});
 	});
 
 	describe('PhraseBuilder#addWhitelistedTerm()', () => {
 		it('should add the whitelisted term', () => {
-			const p = new PhraseBuilder();
-			p.addWhitelistedTerm('x').addWhitelistedTerm('y').addWhitelistedTerm('z');
-			expect(p.build().whitelistedTerms).toStrictEqual(['x', 'y', 'z']);
+			const builder = new PhraseBuilder().addWhitelistedTerm('x').addWhitelistedTerm('y').addWhitelistedTerm('z');
+			expect(builder.build().whitelistedTerms).toStrictEqual(['x', 'y', 'z']);
 		});
 	});
 
 	describe('PhraseBuilder#setMetadata()', () => {
 		it('should set the metadata', () => {
-			const p = new PhraseBuilder();
-			p.setMetadata({ a: 'b' });
-			expect(p.build().metadata).toStrictEqual({ a: 'b' });
+			const builder = new PhraseBuilder().setMetadata({ a: 'b' });
+			expect(builder.build().metadata).toStrictEqual({ a: 'b' });
 		});
 	});
 });

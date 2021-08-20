@@ -2,7 +2,7 @@ import { invertCaseOfAlphabeticChar, isUpperCase } from '../../util/Char';
 import { createSimpleTransformer } from '../Transformers';
 
 /**
- * Creates a transformer that changes the case of ASCII alphabet characters to
+ * Creates a transformer that changes all ASCII alphabet characters to
  * lower-case, leaving other characters unchanged.
  *
  * **Application order**

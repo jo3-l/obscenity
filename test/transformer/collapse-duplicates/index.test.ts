@@ -51,14 +51,14 @@ describe('collapseDuplicatesTransformer()', () => {
 	});
 
 	it("should pass the options given to CollapseDuplicatesTransformer's constructor", () => {
-		const opts: CollapseDuplicatesTransformerOptions = {
+		const options: CollapseDuplicatesTransformerOptions = {
 			defaultThreshold: 5,
 			customThresholds: new Map([
 				['a', 2],
 				['z', 3],
 			]),
 		};
-		collapseDuplicatesTransformer(opts);
+		collapseDuplicatesTransformer(options);
 		expect(CollapseDuplicatesTransformer).toHaveBeenCalledTimes(1);
 		expect(CollapseDuplicatesTransformer).toHaveBeenLastCalledWith({
 			defaultThreshold: 5,
@@ -70,13 +70,13 @@ describe('collapseDuplicatesTransformer()', () => {
 	});
 
 	it('should use 1 as the value for defaultThreshold if not provided', () => {
-		const opts: CollapseDuplicatesTransformerOptions = {
+		const options: CollapseDuplicatesTransformerOptions = {
 			customThresholds: new Map([
 				['a', 2],
 				['z', 3],
 			]),
 		};
-		collapseDuplicatesTransformer(opts);
+		collapseDuplicatesTransformer(options);
 		expect(CollapseDuplicatesTransformer).toHaveBeenCalledTimes(1);
 		expect(CollapseDuplicatesTransformer).toHaveBeenLastCalledWith({
 			defaultThreshold: 1,
@@ -88,12 +88,12 @@ describe('collapseDuplicatesTransformer()', () => {
 	});
 
 	it('should use an empty map as the value for customThresholds if not provided', () => {
-		const opts: CollapseDuplicatesTransformerOptions = {
+		const options: CollapseDuplicatesTransformerOptions = {
 			defaultThreshold: 1,
 		};
-		collapseDuplicatesTransformer(opts);
+		collapseDuplicatesTransformer(options);
 		expect(CollapseDuplicatesTransformer).toHaveBeenCalledTimes(1);
-		expect(CollapseDuplicatesTransformer).toHaveBeenLastCalledWith({ ...opts, customThresholds: new Map() });
+		expect(CollapseDuplicatesTransformer).toHaveBeenLastCalledWith({ ...options, customThresholds: new Map() });
 	});
 
 	it('should return a stateful transformer container', () => {

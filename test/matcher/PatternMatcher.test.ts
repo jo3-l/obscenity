@@ -6,11 +6,6 @@ import { parseRawPattern, pattern } from '../../src/pattern/Pattern';
 import { createSimpleTransformer } from '../../src/transformer/Transformers';
 import { CharacterCode } from '../../src/util/Char';
 
-function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
-	expect(as).toStrictEqual(expect.arrayContaining(bs));
-	expect(bs).toStrictEqual(expect.arrayContaining(as));
-}
-
 describe('constructor', () => {
 	it('should not accept patterns with the same id', () => {
 		expect(
@@ -163,7 +158,7 @@ describe('simple matching; no wildcards/optionals', () => {
 		}
 
 		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(pats.map(parseRawPattern)) });
-		expectThatArrayIsPermutationOfOther(matcher.setInput(input).getAllMatches(), expected);
+		expect(matcher.setInput(input).getAllMatches()).toBePermutationOf(expected);
 	});
 });
 
@@ -229,22 +224,22 @@ describe('matching with optionals', () => {
 				1: [[0, 8, 9]],
 			},
 		],
-	])('%s', (_, pats, input, matches) => {
+	])('%s', (_, patterns, input, matches) => {
 		const expected: MatchPayload[] = [];
-		for (const [id, data] of Object.entries(matches)) {
-			const idNum = Number(id);
-			for (const datum of data) {
+		for (const [idStr, matchData] of Object.entries(matches)) {
+			const id = Number(idStr);
+			for (const match of matchData) {
 				expected.push({
-					termId: idNum,
-					startIndex: datum[0],
-					endIndex: datum[1],
-					matchLength: datum[2],
+					termId: id,
+					startIndex: match[0],
+					endIndex: match[1],
+					matchLength: match[2],
 				});
 			}
 		}
 
-		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(pats.map(parseRawPattern)) });
-		expectThatArrayIsPermutationOfOther(matcher.setInput(input).getAllMatches(), expected);
+		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(patterns.map(parseRawPattern)) });
+		expect(matcher.setInput(input).getAllMatches()).toBePermutationOf(expected);
 	});
 });
 
@@ -329,22 +324,22 @@ describe('matching with wildcards', () => {
 				1: [[7, 13]],
 			},
 		],
-	])('%s', (_, pats, input, matches) => {
+	])('%s', (_, patterns, input, matches) => {
 		const expected: MatchPayload[] = [];
-		for (const [id, locs] of Object.entries(matches)) {
-			const idNum = Number(id);
-			for (const loc of locs) {
+		for (const [idStr, matchData] of Object.entries(matches)) {
+			const id = Number(idStr);
+			for (const match of matchData) {
 				expected.push({
-					termId: idNum,
-					startIndex: loc[0],
-					endIndex: loc[1],
-					matchLength: [...pats[idNum]].length,
+					termId: id,
+					startIndex: match[0],
+					endIndex: match[1],
+					matchLength: [...patterns[id]].length,
 				});
 			}
 		}
 
-		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(pats.map(parseRawPattern)) });
-		expectThatArrayIsPermutationOfOther(matcher.setInput(input).getAllMatches(), expected);
+		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(patterns.map(parseRawPattern)) });
+		expect(matcher.setInput(input).getAllMatches()).toBePermutationOf(expected);
 	});
 });
 
@@ -533,22 +528,22 @@ describe('matching with word boundaries', () => {
 				0: [[15, 20, 6]],
 			},
 		],
-	])('%s', (_, pats, input, matches) => {
+	])('%s', (_, patterns, input, matches) => {
 		const expected: MatchPayload[] = [];
-		for (const [id, data] of Object.entries(matches)) {
-			const idNum = Number(id);
-			for (const datum of data) {
+		for (const [idStr, matchData] of Object.entries(matches)) {
+			const id = Number(idStr);
+			for (const match of matchData) {
 				expected.push({
-					termId: idNum,
-					startIndex: datum[0],
-					endIndex: datum[1],
-					matchLength: datum[2],
+					termId: id,
+					startIndex: match[0],
+					endIndex: match[1],
+					matchLength: match[2],
 				});
 			}
 		}
 
-		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(pats.map(parseRawPattern)) });
-		expectThatArrayIsPermutationOfOther(matcher.setInput(input).getAllMatches(), expected);
+		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(patterns.map(parseRawPattern)) });
+		expect(matcher.setInput(input).getAllMatches()).toBePermutationOf(expected);
 	});
 });
 
@@ -703,7 +698,7 @@ describe('forked traversal limiting', () => {
 			blacklistedPatterns: assignIncrementingIds([pattern`foobar`, pattern`barbuz`, pattern`buzbaz`, pattern`bazd`]),
 			forkedTraversalLimit: 0,
 		});
-		expectThatArrayIsPermutationOfOther(matcher.setInput('i really liked the foobarbuzbazd').getAllMatches(), [
+		expect(matcher.setInput('i really liked the foobarbuzbazd').getAllMatches()).toBePermutationOf([
 			{ termId: 0, startIndex: 19, endIndex: 24, matchLength: 6 },
 			{ termId: 1, startIndex: 22, endIndex: 27, matchLength: 6 },
 			{ termId: 2, startIndex: 25, endIndex: 30, matchLength: 6 },
@@ -734,15 +729,15 @@ describe('PatternMatcher#getAllMatches()', () => {
 			whitelistedTerms: ['the foobar'],
 		});
 		matcher.setInput('the foobar is quite foobar hello yo');
-		expectThatArrayIsPermutationOfOther(matcher.getAllMatches(), [
+		expect(matcher.getAllMatches()).toBePermutationOf([
 			{ termId: 0, startIndex: 20, endIndex: 25, matchLength: 6 },
 			{ termId: 1, startIndex: 27, endIndex: 31, matchLength: 5 },
 		]);
-		expectThatArrayIsPermutationOfOther(matcher.getAllMatches(), [
+		expect(matcher.getAllMatches()).toBePermutationOf([
 			{ termId: 0, startIndex: 20, endIndex: 25, matchLength: 6 },
 			{ termId: 1, startIndex: 27, endIndex: 31, matchLength: 5 },
 		]);
-		expectThatArrayIsPermutationOfOther(matcher.getAllMatches(), [
+		expect(matcher.getAllMatches()).toBePermutationOf([
 			{ termId: 0, startIndex: 20, endIndex: 25, matchLength: 6 },
 			{ termId: 1, startIndex: 27, endIndex: 31, matchLength: 5 },
 		]);

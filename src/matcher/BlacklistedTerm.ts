@@ -1,9 +1,9 @@
 import type { ParsedPattern } from '../pattern/Nodes';
 
 /**
- * Assigns incrementing IDs to the patterns provided, starting with 0. Useful if
- * you have a list of patterns to match against but don't particularly care
- * about identifying which pattern matched.
+ * Assigns incrementing IDs to the patterns provided, starting with 0. It is
+ * useful if you have a list of patterns to match against but don't care about
+ * identifying which pattern matched.
  *
  * @example
  * ```typescript

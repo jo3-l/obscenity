@@ -60,6 +60,10 @@ export type TransformerFn = (char: number) => number | undefined;
  */
 export interface SimpleTransformerContainer {
 	type: TransformerType.Simple;
+
+	/**
+	 * The transformer function.
+	 */
 	transform: TransformerFn;
 }
 
@@ -125,5 +129,9 @@ export interface StatefulTransformer {
  */
 export interface StatefulTransformerContainer {
 	type: TransformerType.Stateful;
+
+	/**
+	 * An instance of the stateful transformer produced by the factory.
+	 */
 	transformer: StatefulTransformer;
 }

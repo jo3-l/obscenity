@@ -3,15 +3,15 @@ import { pattern } from '../../src/pattern/Pattern';
 
 describe('assignIncrementingIds()', () => {
 	it('should assign incrementing, unique IDs to the input patterns', () => {
-		const pat0 = pattern`|world|`;
-		const pat1 = pattern`:D`;
-		const pat2 = pattern`??`;
-		const pat3 = pattern`hmm interesting`;
-		expect(assignIncrementingIds([pat0, pat1, pat2, pat3])).toStrictEqual([
-			{ id: 0, pattern: pat0 },
-			{ id: 1, pattern: pat1 },
-			{ id: 2, pattern: pat2 },
-			{ id: 3, pattern: pat3 },
+		const firstPattern = pattern`|world|`;
+		const secondPattern = pattern`:D`;
+		const thirdPattern = pattern`??`;
+		const fourthPattern = pattern`hmm interesting`;
+		expect(assignIncrementingIds([firstPattern, secondPattern, thirdPattern, fourthPattern])).toStrictEqual([
+			{ id: 0, pattern: firstPattern },
+			{ id: 1, pattern: secondPattern },
+			{ id: 2, pattern: thirdPattern },
+			{ id: 3, pattern: fourthPattern },
 		]);
 	});
 });

@@ -19,8 +19,8 @@ import { BlacklistTrieNode, BlacklistTrieNodeFlag, ForkedTraversalFlag, SharedFl
 import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
 
 /**
- * Matches patterns on text, optionally ignoring portions of the text that are
- * matched by whitelisted terms.
+ * Matches patterns on text, ignoring parts of the text that are matched by
+ * whitelisted terms.
  */
 export class PatternMatcher {
 	private readonly forkedTraversalLimit: number = 0;
@@ -153,7 +153,6 @@ export class PatternMatcher {
 	 * This is more efficient than calling `getAllMatches` and checking the result,
 	 * as it stops once it finds a match.
 	 *
-	 * @returns Whether the matcher matches on the text.
 	 * @throws [[ForkedTraversalLimitedExceededError]] if, in the process of matching
 	 * on the text, the number of forked traversals spawned was exceeded. To increase
 	 * the limit, see `forkedTraversalLimit` in the matcher options.
@@ -226,17 +225,15 @@ export class PatternMatcher {
 			for (let i = this.forkedTraversals.length - 1; i >= 0; i--) {
 				const fork = this.forkedTraversals[i];
 				switch (fork.consume(transformed)) {
-					case ForkedTraversalResponse.Pong:
-						// do nothing
-						break;
 					case ForkedTraversalResponse.FoundMatch:
 						this.emitMatch(fork.metadata.patternId, fork.metadata.flags); // fall through
 					case ForkedTraversalResponse.Destroy:
-						// swap the current element with the last element of the
-						// array, then pop the stack.
+						// Swap the current element with the last element of the
+						// array, then remove the last element.
 						this.forkedTraversals[i] = this.forkedTraversals[this.forkedTraversals.length - 1];
 						this.forkedTraversals.pop();
 						break;
+					case ForkedTraversalResponse.Pong: // do nothing
 				}
 			}
 
@@ -246,7 +243,7 @@ export class PatternMatcher {
 			}
 			this.currentNode = this.currentNode.edges.get(transformed) ?? this.rootNode;
 
-			// Emit matches as necessary.
+			// Emit matches as needed.
 			if (this.currentNode.flags & BlacklistTrieNodeFlag.IsOutputNode) {
 				this.emitMatch(this.currentNode.termId, this.currentNode.flags);
 			}

@@ -1,10 +1,5 @@
 import type { Edge, EdgeStorageStrategy } from './EdgeStorageStrategy';
 
-// Bucket-based storage strategy. Each character is mapped into a bucket using a
-// client-supplied function, which should be injective. The characters that this
-// storage strategy supports may be limited, and it is up to the client to
-// ensure that only supported characters are passed to operations exposed by
-// this implementation.
 export class BucketBasedEdgeStorageStrategy<T> implements EdgeStorageStrategy<T> {
 	private readonly buckets: (T | undefined)[] = [];
 	private _size = 0;

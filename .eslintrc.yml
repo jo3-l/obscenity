@@ -34,11 +34,6 @@ rules:
   curly:
     - error
     - multi-line
-  jest/expect-expect:
-    - error
-    - assertFunctionNames:
-        - expect
-        - expectThatArrayIsPermutationOfOther
   '@typescript-eslint/no-unnecessary-condition':
     - error
     - allowConstantLoopConditions: true

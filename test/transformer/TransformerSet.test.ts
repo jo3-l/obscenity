@@ -100,12 +100,12 @@ describe('TransformerSet#resetAll()', () => {
 			transform: (c: number) => c + 2,
 			reset: jest.fn(),
 		};
-		const ts = new TransformerSet([
+		const transformers = new TransformerSet([
 			createStatefulTransformer(() => instance0),
 			createSimpleTransformer(fn),
 			createStatefulTransformer(() => instance1),
 		]);
-		ts.resetAll();
+		transformers.resetAll();
 		expect(instance0.reset).toHaveBeenCalledTimes(1);
 		expect(instance1.reset).toHaveBeenCalledTimes(1);
 	});

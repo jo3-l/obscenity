@@ -3,9 +3,8 @@ import { compareIntervals } from './interval/Interval';
 /**
  * Data emitted by the pattern matcher on a successful match.
  *
- * The metadata emitted is intentionally minimal. For use cases which require
- * additional metadata, see the [[DataSet]] class, which permits one to
- * associate user-defined metadata with patterns.
+ * If you require more information about matches than what is provided here, see
+ * the [[DataSet]] class, which permits one to associate metadata with patterns.
  */
 export interface MatchPayload {
 	/**

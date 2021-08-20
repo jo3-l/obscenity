@@ -1,11 +1,6 @@
 import type { Interval } from '../../../../src/matcher/interval/Interval';
 import { TreeBasedIntervalStorageStrategy } from '../../../../src/matcher/interval/storage/TreeBasedIntervalStorageStrategy';
 
-function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
-	expect(as).toStrictEqual(expect.arrayContaining(bs));
-	expect(bs).toStrictEqual(expect.arrayContaining(as));
-}
-
 let storage: TreeBasedIntervalStorageStrategy;
 
 beforeEach(() => {
@@ -15,45 +10,33 @@ beforeEach(() => {
 describe('TreeBasedIntervalStorageStrategy#insert()', () => {
 	it('should add the specified interval', () => {
 		storage.insert([5, 10]);
-		expectThatArrayIsPermutationOfOther([...storage.values()], [[5, 10]]);
+		expect([...storage.values()]).toBePermutationOf([[5, 10]]);
 		storage.insert([7, 15]);
-		expectThatArrayIsPermutationOfOther(
-			[...storage.values()],
-			[
-				[5, 10],
-				[7, 15],
-			],
-		);
+		expect([...storage.values()]).toBePermutationOf([
+			[5, 10],
+			[7, 15],
+		]);
 		storage.insert([3, 5]);
-		expectThatArrayIsPermutationOfOther(
-			[...storage.values()],
-			[
-				[3, 5],
-				[5, 10],
-				[7, 15],
-			],
-		);
+		expect([...storage.values()]).toBePermutationOf([
+			[3, 5],
+			[5, 10],
+			[7, 15],
+		]);
 		storage.insert([500, 1000]);
-		expectThatArrayIsPermutationOfOther(
-			[...storage.values()],
-			[
-				[3, 5],
-				[5, 10],
-				[7, 15],
-				[500, 1000],
-			],
-		);
+		expect([...storage.values()]).toBePermutationOf([
+			[3, 5],
+			[5, 10],
+			[7, 15],
+			[500, 1000],
+		]);
 		storage.insert([0, 2]);
-		expectThatArrayIsPermutationOfOther(
-			[...storage.values()],
-			[
-				[0, 2],
-				[3, 5],
-				[5, 10],
-				[7, 15],
-				[500, 1000],
-			],
-		);
+		expect([...storage.values()]).toBePermutationOf([
+			[0, 2],
+			[3, 5],
+			[5, 10],
+			[7, 15],
+			[500, 1000],
+		]);
 	});
 
 	it('should increment the size', () => {
@@ -97,24 +80,13 @@ describe('TreeBasedIntervalStorageStrategy#fullyContains()', () => {
 	});
 });
 
-describe('TreeBasedIntervalStorageStrategy#values()', () => {
-	it('should return an empty iterator if there are no values', () => {
-		const it = storage.values();
-		expect(it.next().done).toBeTruthy();
-		expect(it[Symbol.iterator]()).toStrictEqual(it);
-	});
-});
-
 it('should be iterable', () => {
 	storage.insert([5, 10]);
 	storage.insert([10, 15]);
 	storage.insert([100, 500]);
-	expectThatArrayIsPermutationOfOther(
-		[...storage],
-		[
-			[5, 10],
-			[10, 15],
-			[100, 500],
-		],
-	);
+	expect([...storage]).toBePermutationOf([
+		[5, 10],
+		[10, 15],
+		[100, 500],
+	]);
 });

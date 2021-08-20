@@ -1,11 +1,6 @@
 import type { Interval } from '../../../src/matcher/interval/Interval';
 import { IntervalCollection } from '../../../src/matcher/interval/IntervalCollection';
 
-function expectThatArrayIsPermutationOfOther<T>(as: T[], bs: T[]) {
-	expect(as).toStrictEqual(expect.arrayContaining(bs));
-	expect(bs).toStrictEqual(expect.arrayContaining(as));
-}
-
 let coll: IntervalCollection;
 
 beforeEach(() => {
@@ -45,11 +40,11 @@ describe('IntervalCollection#insert()', () => {
 	describe('dynamic strategy switching', () => {
 		it('should work correctly when adding >10 intervals (switch to tree-based)', () => {
 			for (const interval of intervals) coll.insert(interval);
-			expectThatArrayIsPermutationOfOther([...coll], intervals);
+			expect([...coll]).toBePermutationOf(intervals);
 			coll.insert([55, 506]);
-			expectThatArrayIsPermutationOfOther([...coll], [...intervals, [55, 506]]);
+			expect([...coll]).toBePermutationOf([...intervals, [55, 506]]);
 			coll.insert([599, 600]);
-			expectThatArrayIsPermutationOfOther([...coll], [...intervals, [55, 506], [599, 600]]);
+			expect([...coll]).toBePermutationOf([...intervals, [55, 506], [599, 600]]);
 		});
 	});
 });

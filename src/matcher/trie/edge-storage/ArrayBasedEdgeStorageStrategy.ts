@@ -1,7 +1,5 @@
 import type { Edge, EdgeStorageStrategy } from './EdgeStorageStrategy';
 
-// Array-based storage strategy. Uses linear search for small numbers of
-// elements and dynamically switches to binary search for larger numbers.
 export class ArrayBasedEdgeStorageStrategy<T> implements EdgeStorageStrategy<T> {
 	private static readonly maxLinearSearchEdgeCount = 3;
 

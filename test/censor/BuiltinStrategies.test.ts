@@ -19,20 +19,22 @@ const partialCtx = {
 };
 
 describe('keepStartCensorStrategy()', () => {
-	const base = jest.fn<string, [CensorContext]>().mockImplementation((k) => '.'.repeat(k.matchLength));
+	const baseStrategy = jest.fn<string, [CensorContext]>().mockImplementation((k) => '.'.repeat(k.matchLength));
 
-	afterEach(() => base.mockClear());
+	afterEach(() => {
+		baseStrategy.mockClear();
+	});
 
 	it('should call the base strategy with the same arguments if overlapsAtStart is true', () => {
-		const strat = keepStartCensorStrategy(base);
-		const res = strat({ ...partialCtx, matchLength: 5, overlapsAtStart: true });
+		const strategy = keepStartCensorStrategy(baseStrategy);
+		const res = strategy({ ...partialCtx, matchLength: 5, overlapsAtStart: true });
 		expect(res).toBe('.....');
-		expect(base).toHaveBeenCalledTimes(1);
-		expect(base).toHaveBeenLastCalledWith({ ...partialCtx, matchLength: 5, overlapsAtStart: true });
+		expect(baseStrategy).toHaveBeenCalledTimes(1);
+		expect(baseStrategy).toHaveBeenLastCalledWith({ ...partialCtx, matchLength: 5, overlapsAtStart: true });
 	});
 
 	it('should call the base strategy with matchLength-1 and add the first character of the matched region', () => {
-		const strat = keepStartCensorStrategy(base);
+		const strategy = keepStartCensorStrategy(baseStrategy);
 		const ctx = {
 			input: 'hello world!',
 			overlapsAtStart: false,
@@ -42,28 +44,30 @@ describe('keepStartCensorStrategy()', () => {
 			endIndex: 10,
 			matchLength: 5,
 		};
-		const res = strat(ctx);
+		const res = strategy(ctx);
 		expect(res).toBe('w....');
-		expect(base).toHaveBeenCalledTimes(1);
-		expect(base).toHaveBeenLastCalledWith({ ...ctx, matchLength: 4 });
+		expect(baseStrategy).toHaveBeenCalledTimes(1);
+		expect(baseStrategy).toHaveBeenLastCalledWith({ ...ctx, matchLength: 4 });
 	});
 });
 
 describe('keepEndCensorStrategy()', () => {
-	const base = jest.fn<string, [CensorContext]>().mockImplementation((k) => '.'.repeat(k.matchLength));
+	const baseStrategy = jest.fn<string, [CensorContext]>().mockImplementation((k) => '.'.repeat(k.matchLength));
 
-	afterEach(() => base.mockClear());
+	afterEach(() => {
+		baseStrategy.mockClear();
+	});
 
 	it('should call the base strategy with the same arguments if overlapsAtEnd is true', () => {
-		const strat = keepEndCensorStrategy(base);
-		const res = strat({ ...partialCtx, matchLength: 5, overlapsAtEnd: true });
+		const strategy = keepEndCensorStrategy(baseStrategy);
+		const res = strategy({ ...partialCtx, matchLength: 5, overlapsAtEnd: true });
 		expect(res).toBe('.....');
-		expect(base).toHaveBeenCalledTimes(1);
-		expect(base).toHaveBeenLastCalledWith({ ...partialCtx, matchLength: 5, overlapsAtEnd: true });
+		expect(baseStrategy).toHaveBeenCalledTimes(1);
+		expect(baseStrategy).toHaveBeenLastCalledWith({ ...partialCtx, matchLength: 5, overlapsAtEnd: true });
 	});
 
 	it('should call the base strategy with matchLength-1 and add the last character of the matched region', () => {
-		const strat = keepEndCensorStrategy(base);
+		const strategy = keepEndCensorStrategy(baseStrategy);
 		const ctx = {
 			input: 'hello world!',
 			overlapsAtStart: false,
@@ -73,32 +77,32 @@ describe('keepEndCensorStrategy()', () => {
 			endIndex: 10,
 			matchLength: 5,
 		};
-		const res = strat(ctx);
+		const res = strategy(ctx);
 		expect(res).toBe('....d');
-		expect(base).toHaveBeenCalledTimes(1);
-		expect(base).toHaveBeenLastCalledWith({ ...ctx, matchLength: 4 });
+		expect(baseStrategy).toHaveBeenCalledTimes(1);
+		expect(baseStrategy).toHaveBeenLastCalledWith({ ...ctx, matchLength: 4 });
 	});
 });
 
 describe('asteriskCensorStrategy()', () => {
 	it('should return strings that are made up of asterisks', () => {
-		const strat = asteriskCensorStrategy();
-		expect(strat({ ...partialCtx, matchLength: 8 })).toBe('********');
+		const strategy = asteriskCensorStrategy();
+		expect(strategy({ ...partialCtx, matchLength: 8 })).toBe('********');
 	});
 });
 
 describe('grawlixCensorStrategy()', () => {
 	it('should return strings that have characters taken from the charset %@$&*', () => {
 		const charset = '%@$&*';
-		const strat = grawlixCensorStrategy();
-		expect([...strat({ ...partialCtx, matchLength: 20 })].every((c) => charset.includes(c))).toBeTruthy();
+		const strategy = grawlixCensorStrategy();
+		expect([...strategy({ ...partialCtx, matchLength: 20 })].every((c) => charset.includes(c))).toBeTruthy();
 	});
 });
 
 describe('fixedPhraseCensorStrategy()', () => {
 	it('should simply return the phrase given', () => {
-		const strat = fixedPhraseCensorStrategy('fixed phrase');
-		expect(strat({ ...partialCtx, matchLength: 30 })).toBe('fixed phrase');
+		const strategy = fixedPhraseCensorStrategy('fixed phrase');
+		expect(strategy({ ...partialCtx, matchLength: 30 })).toBe('fixed phrase');
 	});
 });
 
@@ -120,8 +124,8 @@ describe('fixedCharCensorStrategy()', () => {
 	});
 
 	it('should return the input string repeated N times (where N is the match length)', () => {
-		const strat = fixedCharCensorStrategy('x');
-		expect(strat({ ...partialCtx, matchLength: 7 })).toBe('xxxxxxx');
+		const strategy = fixedCharCensorStrategy('x');
+		expect(strategy({ ...partialCtx, matchLength: 7 })).toBe('xxxxxxx');
 	});
 });
 
@@ -131,13 +135,13 @@ describe('randomCharFromSetCensorStrategy()', () => {
 	});
 
 	it('should work for matchLength 0', () => {
-		const strat = randomCharFromSetCensorStrategy('abcdefghijk');
-		expect(strat({ ...partialCtx, matchLength: 0 })).toBe('');
+		const strategy = randomCharFromSetCensorStrategy('abcdefghijk');
+		expect(strategy({ ...partialCtx, matchLength: 0 })).toBe('');
 	});
 
 	it('should return N characters (where N is the match length) from the set of characters given', () => {
 		const charset = 'abcdefghijk';
-		const strat = randomCharFromSetCensorStrategy(charset);
-		expect([...strat({ ...partialCtx, matchLength: 5 })].every((c) => charset.includes(c))).toBeTruthy();
+		const strategy = randomCharFromSetCensorStrategy(charset);
+		expect([...strategy({ ...partialCtx, matchLength: 5 })].every((c) => charset.includes(c))).toBeTruthy();
 	});
 });
