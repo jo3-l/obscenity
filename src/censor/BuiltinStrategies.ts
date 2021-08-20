@@ -22,7 +22,7 @@ import type { CensorContext, TextCensorStrategy } from './TextCensor';
  * ```
  *
  * @param baseStrategy - Strategy to wrap. It will be used to generate the
- * start of the string.
+ * end of the string.
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].
  */
 export function keepStartCensorStrategy(baseStrategy: TextCensorStrategy): TextCensorStrategy {
