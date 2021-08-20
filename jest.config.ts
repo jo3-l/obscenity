@@ -1,7 +1,6 @@
 import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
-	displayName: 'unit test',
 	preset: 'ts-jest',
 	testEnvironment: 'node',
 	testRunner: 'jest-circus/runner',
