@@ -69,6 +69,8 @@ export class Parser {
 				return undefined;
 			case CharacterCode.LeftSquareBracket:
 				return this.parseOptional();
+			case CharacterCode.RightSquareBracket:
+				this.reportError(`Unexpected ']' with no corresponding '['.`);
 			case CharacterCode.QuestionMark:
 				return this.parseWildcard();
 			case CharacterCode.VerticalBar:

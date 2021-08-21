@@ -14,6 +14,10 @@ it('should parse an empty string', () => {
 	});
 });
 
+it('should not accept an unmatched right square bracket', () => {
+	expect(() => parser.parse('[bar]]')).toThrow(new ParserError("Unexpected ']' with no corresponding '['.", 1, 6));
+});
+
 describe('word boundaries', () => {
 	it('should return requireWordBoundaryAtStart=true if there is a | at the start', () => {
 		expect(parser.parse('|')).toStrictEqual({
