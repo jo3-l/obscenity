@@ -45,6 +45,9 @@ export class TreeBasedIntervalStorageStrategy implements IntervalStorageStrategy
 	}
 
 	private fullyContainsRecursive(cur: IntervalTreeNode, interval: Interval): boolean {
+		// If the upper bound of the interval is greater than the maximum
+		// subtree value, there won't be any matches.
+		if (interval[1] > cur.maxSubtreeValue) return false;
 		if (cur.interval[0] <= interval[0] && cur.interval[1] >= interval[1]) return true;
 		// Only search the left subtree if its maximum value is greater than the interval's left endpoint.
 		const inLeft =
