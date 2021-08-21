@@ -9,9 +9,13 @@ const config: Config.InitialOptions = {
 		'ts-jest': { tsconfig: '<rootDir>/test/tsconfig.json' },
 	},
 	collectCoverage: true,
-	collectCoverageFrom: ['src/**/*.ts'],
+	collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
 	coverageDirectory: 'coverage',
 	coverageReporters: ['text', 'lcov', 'clover'],
+	coveragePathIgnorePatterns: [
+		'<rootDir>/src/index\\.ts', // library entry point
+		'<rootDir>/src/preset/.*\\.ts', // presets
+	],
 	setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
 };
 
