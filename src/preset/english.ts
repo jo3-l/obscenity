@@ -341,7 +341,7 @@ export const englishDataset = new DataSet<{ displayName: ProfaneWordDisplayName 
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ displayName: 'whore' })
-			.addPattern(pattern`|wh[o]]re|`)
+			.addPattern(pattern`|wh[o]re|`)
 			.addPattern(pattern`|who[o]res[s]|`)
 			.addWhitelistedTerm("who're"),
 	);
