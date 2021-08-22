@@ -12,6 +12,7 @@
 		"build": "rimraf dist && tsc -b src && gen-esm-wrapper dist/index.js dist/index.mjs",
 		"build:benchmarks": "tsc -b benchmarks",
 		"bench": "pnpm build:benchmarks && node benchmarks",
+		"build:docs": "rimraf docs/references && typedoc",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:ci": "jest --ci --no-stack-trace --verbose",
@@ -40,6 +41,8 @@
 		"rimraf": "^3.0.2",
 		"ts-jest": "^27.0.4",
 		"ts-node": "^10.1.0",
+		"typedoc": "^0.21.6",
+		"typedoc-plugin-markdown": "^3.10.4",
 		"typescript": "^4.3.5"
 	},
 	"renovate": {

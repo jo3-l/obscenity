@@ -102,7 +102,7 @@ The above example matches on **all of the following**:
 
 If you want to re-send the input with profanities changed to a less offensive phrase, you can do it with the help of Obscenity's `TextCensor` class.
 
-The default censoring strategy used by the `TextCensor` is grawlix, but there are several other commonly used censoring strategies available. See the documentation for the [TextCensor](TODO) class for more details.
+The default censoring strategy used by the `TextCensor` is grawlix, but there are several other commonly used censoring strategies available. See the documentation for the [TextCensor](./docs/reference/classes/TextCensor.md) class for more details.
 
 <details>
 	<summary>Click to show code</summary>
@@ -162,7 +162,7 @@ const matcher = new PatternMatcher({
 
 ## Writing your own patterns
 
-To write your own patterns, see the documentation for the [pattern template tag](TODO). A quick summary is:
+To write your own patterns, see the documentation for the [pattern template tag](./docs/reference/README.md#pattern). A quick summary is:
 
 - `?` matches any character: `a?` matches `ab`, `ac`, `ad`, `a-`, and so on.
 - `|` at the start or end asserts position at a word boundary: `|cunt` matches `cunt`, `cunts`, ..., but not `scunt`.
@@ -189,7 +189,7 @@ const matcher = new PatternMatcher({
 
 ## Documentation
 
-- [Auto-generated API documentation](TODO)
+- [Auto-generated API documentation](./docs/reference)
 - [Article about how Obscenity works internally](TODO)
 
 ## Performance
