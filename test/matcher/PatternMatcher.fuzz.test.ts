@@ -99,11 +99,11 @@ test('running the pattern matcher on a set of patterns and input should have the
 function bruteForceMatch(regExps: RegExp[], input: string) {
 	const result: Record<number, Interval[]> = {};
 	for (let i = 0; i < regExps.length; i++) {
-		const regexp = regExps[i];
-		let match: RegExpMatchArray | null;
-		while ((match = regexp.exec(input))) {
-			(result[i] ??= []).push([match.index!, match.index! + match[0].length - 1]);
-			regexp.lastIndex = match.index! + 1;
+		const regExp = regExps[i];
+		let match: RegExpExecArray | null;
+		while ((match = regExp.exec(input))) {
+			(result[i] ??= []).push([match.index, match.index + match[0].length - 1]);
+			regExp.lastIndex = match.index + 1;
 		}
 	}
 
