@@ -69,7 +69,6 @@ test('running the pattern matcher on a set of patterns and input should have the
 				}
 
 				const matcher = new PatternMatcher({
-					forkedTraversalLimit: Infinity,
 					blacklistedPatterns: assignIncrementingIds(
 						allPatterns.map(([pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd]) =>
 							toNodes(pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd),
@@ -85,7 +84,7 @@ test('running the pattern matcher on a set of patterns and input should have the
 
 				for (const matches of Object.values(transformedMatches)) matches.sort(compareIntervals);
 				expect(transformedMatches).toStrictEqual(
-					runBruteForceMatch(
+					bruteForceMatch(
 						allPatterns.map(([pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd]) =>
 							toRegExp(pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd),
 						),
@@ -97,7 +96,7 @@ test('running the pattern matcher on a set of patterns and input should have the
 	);
 });
 
-function runBruteForceMatch(regExps: RegExp[], input: string) {
+function bruteForceMatch(regExps: RegExp[], input: string) {
 	const result: Record<number, Interval[]> = {};
 	for (let i = 0; i < regExps.length; i++) {
 		const regexp = regExps[i];

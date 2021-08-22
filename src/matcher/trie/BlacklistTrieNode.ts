@@ -1,4 +1,3 @@
-import type { SimpleNode } from '../../pattern/Simplifier';
 import { EdgeList } from './EdgeList';
 
 export class BlacklistTrieNode {
@@ -6,30 +5,36 @@ export class BlacklistTrieNode {
 	public termId = -1;
 	public failureLink!: this;
 	public outputLink?: this;
-	public forkedTraversalLink?: this;
-	public forkedTraversals?: ForkedTraversalMetadata[];
+	public partialMatches?: PartialMatchData[]; // partial matches that end at this node
 	public flags = 0;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const SharedFlag = Object.freeze({
-	RequireWordBoundaryAtStart: 1 << 0,
-	RequireWordBoundaryAtEnd: 1 << 1,
-});
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const BlacklistTrieNodeFlag = Object.freeze({
-	...SharedFlag,
-	IsOutputNode: 1 << 2,
-	SpawnsForkedTraversalsDirectly: 1 << 3,
-});
-
-export interface ForkedTraversalMetadata {
-	patternId: number;
-	preFragmentMatchLength: number;
-	flags: number;
-	nodes: SimpleNode[];
+export const enum SharedFlag {
+	RequireWordBoundaryAtStart = 1 << 0,
+	RequireWordBoundaryAtEnd = 1 << 1,
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const ForkedTraversalFlag = SharedFlag;
+export const enum NodeFlag {
+	RequireWordBoundaryAtStart = 1 << 0,
+	RequireWordBoundaryAtEnd = 1 << 1,
+	MatchLeaf = 1 << 2,
+	PartialMatchLeaf = 1 << 3,
+}
+
+export const enum PartialMatchFlag {
+	RequireWordBoundaryAtStart = 1 << 0,
+	RequireWordBoundaryAtEnd = 1 << 1,
+}
+
+export interface PartialMatchData {
+	step: number;
+	termId: number;
+	flags: number;
+	leadingWildcardCount: number;
+	trailingWildcardCount: number;
+	matchLength: number;
+}
+
+export function hashPartialMatch(step: number, termId: number) {
+	return `${step}-${termId}`;
+}
