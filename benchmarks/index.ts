@@ -4,15 +4,25 @@ import type { RecordableHistogram } from 'perf_hooks';
 import { createHistogram, performance } from 'perf_hooks';
 
 import type { Node, ParsedPattern } from '../dist';
-import { englishDataset, PatternMatcher, SyntaxKind, toAsciiLowerCaseTransformer } from '../dist';
+import {
+	collapseDuplicatesTransformer,
+	englishDataset,
+	PatternMatcher,
+	skipNonAlphabeticTransformer,
+	SyntaxKind,
+	toAsciiLowerCaseTransformer,
+} from '../dist';
 
 let matchCount = 0; // to guard against dead code elimination
 
 const built = englishDataset.build();
 const matcher = new PatternMatcher({
 	...built,
-	blacklistMatcherTransformers: [toAsciiLowerCaseTransformer()],
-	whitelistMatcherTransformers: [toAsciiLowerCaseTransformer()],
+	blacklistMatcherTransformers: [toAsciiLowerCaseTransformer(), skipNonAlphabeticTransformer()],
+	whitelistMatcherTransformers: [
+		toAsciiLowerCaseTransformer(),
+		collapseDuplicatesTransformer({ defaultThreshold: Infinity, customThresholds: new Map([[' ', 1]]) }),
+	],
 });
 
 function getPatternMatcherBenchmarkCase(text: string): [() => void, RecordableHistogram] {
@@ -31,36 +41,63 @@ function getPatternMatcherBenchmarkCase(text: string): [() => void, RecordableHi
 const regExps = built.blacklistedPatterns.map((term) => patternToRegExp(term.pattern));
 const whitelistedTerms = built.whitelistedTerms!;
 
+const a = 'a'.charCodeAt(0);
+const A = 'A'.charCodeAt(0);
+const z = 'z'.charCodeAt(0);
+const Z = 'Z'.charCodeAt(0);
+const space = ' '.charCodeAt(0);
+
 function getRegExpBenchmarkCase(text: string): [() => void, RecordableHistogram] {
 	const histogram = createHistogram();
 	return [
 		performance.timerify(
 			() => {
-				const lowercased = text.toLowerCase();
+				const lowerCased = text.toLowerCase();
 
-				const whitelistedRegions = [];
+				const withoutDuplicateSpacesIndexMap: number[] = [];
+				// Skip duplicate spaces while matching whitelisted terms.
+				let withoutDuplicateSpaces = '';
+				for (let i = 0; i < lowerCased.length; i++) {
+					const c = lowerCased.charCodeAt(i);
+					if (i === 0 || lowerCased.charCodeAt(i - 1) !== c || c !== space) {
+						withoutDuplicateSpaces += lowerCased[i];
+						withoutDuplicateSpacesIndexMap.push(i);
+					}
+				}
+
+				const whitelistedRegions: [number, number][] = [];
 				for (const whitelistedTerm of whitelistedTerms) {
-					let i = 0;
-					for (
-						let startIndex = lowercased.indexOf(whitelistedTerm, i);
-						startIndex !== -1;
-						startIndex = lowercased.indexOf(whitelistedTerm, i)
-					) {
-						const endIndex = startIndex + whitelistedTerm.length - 1;
-						whitelistedRegions.push([startIndex, endIndex]);
-						i = endIndex + 1;
+					for (let i = 0; i < withoutDuplicateSpaces.length; i++) {
+						if (withoutDuplicateSpaces.startsWith(whitelistedTerm, i)) {
+							whitelistedRegions.push([
+								withoutDuplicateSpacesIndexMap[i],
+								withoutDuplicateSpacesIndexMap[i + whitelistedTerm.length - 1],
+							]);
+						}
+					}
+				}
+
+				// Skip non-alphabetical characters while matching the blacklisted patterns.
+				const onlyAlphabeticalCharsIndexMap: number[] = [];
+				let onlyAlphabeticalChars = '';
+				for (let i = 0; i < lowerCased.length; i++) {
+					const c = lowerCased.charCodeAt(i);
+					if ((a <= c && c <= z) || (A <= c && c <= Z)) {
+						onlyAlphabeticalChars += lowerCased[i];
+						onlyAlphabeticalCharsIndexMap.push(i);
 					}
 				}
 
 				const matches = [];
 				for (let i = 0; i < regExps.length; i++) {
 					const regExp = regExps[i];
-					for (const match of lowercased.matchAll(regExp)) {
-						const startIndex = match.index!;
-						// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-						const endIndex = startIndex + match[0].length - 1;
+					let match: RegExpExecArray | null;
+					while ((match = regExp.exec(onlyAlphabeticalChars))) {
+						const startIndex = onlyAlphabeticalCharsIndexMap[match.index];
+						const endIndex = onlyAlphabeticalCharsIndexMap[match.index + match[0].length - 1];
 						if (whitelistedRegions.some((region) => startIndex >= region[0] && endIndex <= region[1])) continue;
 						matches.push({ termId: i, matchLength: match[0].length, startIndex, endIndex });
+						regExp.lastIndex = match.index + 1;
 					}
 				}
 
@@ -89,17 +126,20 @@ for (const [name, text] of cases) {
 
 	console.log(`🏁 Running case ${green(name)}:\n`);
 
-	for (let n = 0; n < 1e3; n++) runPatternMatcher();
-	for (let n = 0; n < 1e3; n++) runRegExpMatcher();
+	for (let n = 0; n < 1e4; n++) runPatternMatcher();
+	for (let n = 0; n < 1e4; n++) runRegExpMatcher();
 
 	console.log(`Results for case ${green(name)}:\n`);
 	console.log(`Using ${bold('Obscenity')}: ${yellow(patternMatcherHistogram.mean.toString())}`);
-	console.log(`Using ${bold('regular expressions and indexOf')}: ${yellow(regExpMatcherHistogram.mean.toString())}`);
+	console.log(`Using ${bold('regular expressions')}: ${yellow(regExpMatcherHistogram.mean.toString())}`);
 	console.log(italic(`(Ignore, to guard against dead code elimination) ${matchCount}\n`));
 }
 
 function patternToRegExp(pattern: ParsedPattern) {
 	let regExpStr = '';
+	// Note: \b doesn't have the *exact* same meaning as word boundary assertions in Obscenity,
+	// but a completely fair comparison would use lookarounds/lookbehinds which would probably
+	// kill the performance of the regexp.
 	if (pattern.requireWordBoundaryAtStart) regExpStr += '\\b';
 	regExpStr += pattern.nodes.map(nodeToRegExp).join('');
 	if (pattern.requireWordBoundaryAtEnd) regExpStr += '\\b';

@@ -6,6 +6,7 @@
 	"scripts": {
 		"build": "rimraf dist && tsc -b src",
 		"build:benchmarks": "tsc -b benchmarks",
+		"bench": "pnpm build:benchmarks && node benchmarks",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:ci": "jest --ci --no-stack-trace --verbose",
