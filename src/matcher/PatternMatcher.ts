@@ -27,7 +27,7 @@ export class PatternMatcher {
 	private readonly patternIdMap = new Map<number, number>(); // generated ID -> original pattern ID
 	private readonly matchLengths = new Map<number, number>(); // pattern ID -> match length
 	private readonly partialMatchStepCounts = new Map<number, number>(); // pattern ID -> number of partial match steps
-	private readonly wildcardOnlyPatterns = new Map<number, WildcardOnlyPatternData[]>(); // key is match length
+	private readonly wildcardOnlyPatterns = new Map<number, WildcardOnlyPatternData>(); // key is match length
 	private readonly wildcardOnlyPatternMatchLengths: number[] = [];
 	private maxMatchLength = 0;
 	private currentId = 0;
@@ -196,6 +196,7 @@ export class PatternMatcher {
 				// matched.
 				if (--match.trailingWildcardCount === 0) {
 					this.emitMatch(match.termId, match.flags);
+					/* istanbul ignore if: behavior is not observable in tests */
 					if (breakAfterFirstMatch) return true;
 
 					// Set the value at the current index to the last pending
@@ -214,10 +215,10 @@ export class PatternMatcher {
 			// >= N.
 			for (const matchLength of this.wildcardOnlyPatternMatchLengths) {
 				if (matchLength > this.usedIndices.length) break;
-				for (const pattern of this.wildcardOnlyPatterns.get(matchLength)!) {
-					this.emitMatch(pattern.termId, pattern.flags);
-					if (breakAfterFirstMatch) return true;
-				}
+				const pattern = this.wildcardOnlyPatterns.get(matchLength)!;
+				this.emitMatch(pattern.termId, pattern.flags);
+				/* istanbul ignore if: behavior is not observable in tests */
+				if (breakAfterFirstMatch) return true;
 			}
 
 			// Emit matches for the current node, then follow its output links.
@@ -227,6 +228,7 @@ export class PatternMatcher {
 			}
 			if (this.currentNode.flags & NodeFlag.PartialMatchLeaf) {
 				for (const partialMatch of this.currentNode.partialMatches!) {
+					/* istanbul ignore if: behavior is not observable in tests */
 					if (this.emitPartialMatch(partialMatch) && breakAfterFirstMatch) return true;
 				}
 			}
@@ -235,11 +237,13 @@ export class PatternMatcher {
 			while (outputLink) {
 				if (outputLink.flags & NodeFlag.PartialMatchLeaf) {
 					for (const partialMatch of outputLink.partialMatches!) {
+						/* istanbul ignore if: behavior is not observable in tests */
 						if (this.emitPartialMatch(partialMatch) && breakAfterFirstMatch) return true;
 					}
 				}
 				if (outputLink.flags & NodeFlag.MatchLeaf) {
 					this.emitMatch(outputLink.termId, outputLink.flags);
+					/* istanbul ignore if: behavior is not observable in tests */
 					if (breakAfterFirstMatch) return true;
 				}
 				outputLink = outputLink.outputLink;
@@ -368,10 +372,7 @@ export class PatternMatcher {
 		};
 		if (term.pattern.requireWordBoundaryAtStart) data.flags |= WildcardOnlyPatternFlag.RequireWordBoundaryAtStart;
 		if (term.pattern.requireWordBoundaryAtEnd) data.flags |= WildcardOnlyPatternFlag.RequireWordBoundaryAtEnd;
-
-		let patterns = this.wildcardOnlyPatterns.get(matchLength);
-		if (!patterns) this.wildcardOnlyPatterns.set(matchLength, (patterns = []));
-		patterns.push(data);
+		this.wildcardOnlyPatterns.set(matchLength, data);
 	}
 
 	private registerPatternWithWildcardsAndLiterals(id: number, pattern: SimpleNode[], term: BlacklistedTerm) {
