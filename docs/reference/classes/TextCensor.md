@@ -11,10 +11,6 @@ flexible [censoring strategies](../README.md#textcensorstrategy).
 
 - [constructor](TextCensor.md#constructor)
 
-### Properties
-
-- [strategy](TextCensor.md#strategy)
-
 ### Methods
 
 - [applyTo](TextCensor.md#applyto)
@@ -25,16 +21,6 @@ flexible [censoring strategies](../README.md#textcensorstrategy).
 ### constructor
 
 • **new TextCensor**()
-
-## Properties
-
-### strategy
-
-• `Private` **strategy**: [`TextCensorStrategy`](../README.md#textcensorstrategy)
-
-#### Defined in
-
-[src/censor/TextCensor.ts:10](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/censor/TextCensor.ts#L10)
 
 ## Methods
 
@@ -72,7 +58,7 @@ The censored text.
 
 #### Defined in
 
-[src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/censor/TextCensor.ts#L66)
+[src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/33992d8/src/censor/TextCensor.ts#L66)
 
 ___
 
@@ -118,4 +104,4 @@ utility functions:
 
 #### Defined in
 
-[src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/censor/TextCensor.ts#L41)
+[src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/33992d8/src/censor/TextCensor.ts#L41)

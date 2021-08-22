@@ -2,5 +2,6 @@
 	"readme": "none",
 	"entryPoints": ["src/index.ts"],
 	"out": "docs/reference",
-	"tsconfig": "src/tsconfig.json"
+	"tsconfig": "src/tsconfig.json",
+	"excludePrivate": true
 }

@@ -16,12 +16,6 @@ Builder for phrases.
 
 - [constructor](PhraseBuilder.md#constructor)
 
-### Properties
-
-- [metadata](PhraseBuilder.md#metadata)
-- [patterns](PhraseBuilder.md#patterns)
-- [whitelistedTerms](PhraseBuilder.md#whitelistedterms)
-
 ### Methods
 
 - [addPattern](PhraseBuilder.md#addpattern)
@@ -40,36 +34,6 @@ Builder for phrases.
 | Name |
 | :------ |
 | `MetadataType` |
-
-## Properties
-
-### metadata
-
-• `Private` `Optional` **metadata**: `MetadataType`
-
-#### Defined in
-
-[src/dataset/DataSet.ts:140](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L140)
-
-___
-
-### patterns
-
-• `Private` `Readonly` **patterns**: [`ParsedPattern`](../interfaces/ParsedPattern.md)[] = `[]`
-
-#### Defined in
-
-[src/dataset/DataSet.ts:138](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L138)
-
-___
-
-### whitelistedTerms
-
-• `Private` `Readonly` **whitelistedTerms**: `string`[] = `[]`
-
-#### Defined in
-
-[src/dataset/DataSet.ts:139](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L139)
 
 ## Methods
 
@@ -91,7 +55,7 @@ Associates a pattern with this phrase.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:147](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L147)
+[src/dataset/DataSet.ts:147](https://github.com/jo3-l/obscenity/blob/33992d8/src/dataset/DataSet.ts#L147)
 
 ___
 
@@ -113,7 +77,7 @@ Associates a whitelisted pattern with this phrase.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:157](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L157)
+[src/dataset/DataSet.ts:157](https://github.com/jo3-l/obscenity/blob/33992d8/src/dataset/DataSet.ts#L157)
 
 ___
 
@@ -130,7 +94,7 @@ Builds the phrase, returning a [PhraseContainer](../interfaces/PhraseContainer.m
 
 #### Defined in
 
-[src/dataset/DataSet.ts:176](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L176)
+[src/dataset/DataSet.ts:176](https://github.com/jo3-l/obscenity/blob/33992d8/src/dataset/DataSet.ts#L176)
 
 ___
 
@@ -152,4 +116,4 @@ Associates some metadata with this phrase.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:167](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L167)
+[src/dataset/DataSet.ts:167](https://github.com/jo3-l/obscenity/blob/33992d8/src/dataset/DataSet.ts#L167)

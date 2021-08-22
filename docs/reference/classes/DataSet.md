@@ -17,19 +17,12 @@ associating metadata with them.
 
 - [constructor](DataSet.md#constructor)
 
-### Properties
-
-- [containers](DataSet.md#containers)
-- [patternCount](DataSet.md#patterncount)
-- [patternIdToPhraseOffset](DataSet.md#patternidtophraseoffset)
-
 ### Methods
 
 - [addAll](DataSet.md#addall)
 - [addPhrase](DataSet.md#addphrase)
 - [build](DataSet.md#build)
 - [getPayloadWithPhraseMetadata](DataSet.md#getpayloadwithphrasemetadata)
-- [registerContainer](DataSet.md#registercontainer)
 - [removePhrasesIf](DataSet.md#removephrasesif)
 
 ## Constructors
@@ -43,36 +36,6 @@ associating metadata with them.
 | Name |
 | :------ |
 | `MetadataType` |
-
-## Properties
-
-### containers
-
-• `Private` `Readonly` **containers**: [`PhraseContainer`](../interfaces/PhraseContainer.md)<`MetadataType`\>[] = `[]`
-
-#### Defined in
-
-[src/dataset/DataSet.ts:14](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L14)
-
-___
-
-### patternCount
-
-• `Private` **patternCount**: `number` = `0`
-
-#### Defined in
-
-[src/dataset/DataSet.ts:15](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L15)
-
-___
-
-### patternIdToPhraseOffset
-
-• `Private` `Readonly` **patternIdToPhraseOffset**: `Map`<`number`, `number`\>
-
-#### Defined in
-
-[src/dataset/DataSet.ts:16](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L16)
 
 ## Methods
 
@@ -99,7 +62,7 @@ const customDataset = new DataSet().addAll(englishDataset);
 
 #### Defined in
 
-[src/dataset/DataSet.ts:28](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L28)
+[src/dataset/DataSet.ts:28](https://github.com/jo3-l/obscenity/blob/33992d8/src/dataset/DataSet.ts#L28)
 
 ___
 
@@ -131,7 +94,7 @@ const data = new DataSet()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L75)
+[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/33992d8/src/dataset/DataSet.ts#L75)
 
 ___
 
@@ -155,7 +118,7 @@ const matcher = new PatternMatcher({
 
 #### Defined in
 
-[src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L118)
+[src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/33992d8/src/dataset/DataSet.ts#L118)
 
 ___
 
@@ -186,27 +149,7 @@ const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
 
 #### Defined in
 
-[src/dataset/DataSet.ts:95](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L95)
-
-___
-
-### registerContainer
-
-▸ `Private` **registerContainer**(`container`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `container` | [`PhraseContainer`](../interfaces/PhraseContainer.md)<`MetadataType`\> |
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-[src/dataset/DataSet.ts:125](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L125)
+[src/dataset/DataSet.ts:95](https://github.com/jo3-l/obscenity/blob/33992d8/src/dataset/DataSet.ts#L95)
 
 ___
 
@@ -235,4 +178,4 @@ const customDataset = new DataSet()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/4c7b1df/src/dataset/DataSet.ts#L46)
+[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/33992d8/src/dataset/DataSet.ts#L46)
