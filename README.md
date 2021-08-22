@@ -72,6 +72,14 @@ console.log(
 );
 ```
 
+In ESM and TypeScript, use the following to import:
+
+```typescript
+import { PatternMatcher, ... } from 'obscenity';
+// Or:
+import * as obscenity from 'obscenity';
+```
+
 The above example matches on **all of the following**:
 
 - you are a little **fuck**er

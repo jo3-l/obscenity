@@ -8,8 +8,6 @@
 		"moduleResolution": "Node",
 		"target": "ES2019",
 		"lib": ["ES2019"],
-		"experimentalDecorators": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true
+		"declaration": true
 	}
 }

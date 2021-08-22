@@ -12,6 +12,7 @@ specifiers:
   eslint-plugin-prettier: ^3.4.0
   eslint-plugin-simple-import-sort: ^7.0.0
   fast-check: ^2.17.0
+  gen-esm-wrapper: ^1.1.2
   jest: ^27.0.6
   jest-circus: ^27.0.6
   prettier: ^2.3.2
@@ -32,6 +33,7 @@ devDependencies:
   eslint-plugin-prettier: 3.4.0_5a48a349ffec60f5257b5f148f5199c3
   eslint-plugin-simple-import-sort: 7.0.0_eslint@7.32.0
   fast-check: 2.17.0
+  gen-esm-wrapper: 1.1.2
   jest: 27.0.6_ts-node@10.1.0
   jest-circus: 27.0.6
   prettier: 2.3.2
@@ -1013,6 +1015,13 @@ packages:
       es-abstract: 1.18.5
     dev: true
 
+  /assert/1.5.0:
+    resolution: {integrity: sha512-EDsgawzwoun2CZkCgtxJbv392v4nbk9XDD06zI+kQYoBM/3RBWLlEyJARDOmhAAosBjWACEkKL6S+lIZtcAubA==}
+    dependencies:
+      object-assign: 4.1.1
+      util: 0.10.3
+    dev: true
+
   /astral-regex/2.0.0:
     resolution: {integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==}
     engines: {node: '>=8'}
@@ -1862,6 +1871,13 @@ packages:
     resolution: {integrity: sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=}
     dev: true
 
+  /gen-esm-wrapper/1.1.2:
+    resolution: {integrity: sha512-ZzqvusFKGZEWunpoz5Yg4+tdODUa7Swv1pvd83VF9nVJNCIu5i1KJ6pFjTFFkvk8deeSWLdMgc8FNRaTe5MTTA==}
+    hasBin: true
+    dependencies:
+      is-valid-identifier: 2.0.2
+    dev: true
+
   /gensync/1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
@@ -2056,6 +2072,10 @@ packages:
       wrappy: 1.0.2
     dev: true
 
+  /inherits/2.0.1:
+    resolution: {integrity: sha1-sX0I0ya0Qj5Wjv9xn5GwscvfafE=}
+    dev: true
+
   /inherits/2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
     dev: true
@@ -2184,6 +2204,12 @@ packages:
 
   /is-typedarray/1.0.0:
     resolution: {integrity: sha1-5HnICFjfDBsR3dppQPlgEfzaSpo=}
+    dev: true
+
+  /is-valid-identifier/2.0.2:
+    resolution: {integrity: sha512-mpS5EGqXOwzXtKAg6I44jIAqeBfntFLxpAth1rrKbxtKyI6LPktyDYpHBI+tHlduhhX/SF26mFXmxQu995QVqg==}
+    dependencies:
+      assert: 1.5.0
     dev: true
 
   /isexe/2.0.0:
@@ -2981,6 +3007,11 @@ packages:
     resolution: {integrity: sha512-h2AatdwYH+JHiZpv7pt/gSX1XoRGb7L/qSIeuqA6GwYoF9w1vP1cw42TO0aI2pNyshRK5893hNSl+1//vHK7hQ==}
     dev: true
 
+  /object-assign/4.1.1:
+    resolution: {integrity: sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=}
+    engines: {node: '>=0.10.0'}
+    dev: true
+
   /object-inspect/1.11.0:
     resolution: {integrity: sha512-jp7ikS6Sd3GxQfZJPyH3cjcbJF6GZPClgdV+EFygjFLQ5FmW/dRUnTd9PQ9k0JhoNDabWFbpF1yCdSWCC6gexg==}
     dev: true
@@ -3755,6 +3786,12 @@ packages:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
       punycode: 2.1.1
+    dev: true
+
+  /util/0.10.3:
+    resolution: {integrity: sha1-evsa/lCAUkZInj23/g7TeTNqwPk=}
+    dependencies:
+      inherits: 2.0.1
     dev: true
 
   /v8-compile-cache/2.3.0:
