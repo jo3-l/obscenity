@@ -20,7 +20,7 @@
 		"style": "prettier --write src/**/*.ts test/**/*.ts",
 		"lint": "eslint src test",
 		"lint:fix": "eslint src test --fix",
-		"prepare": "husky install"
+		"prepare": "is-ci || husky install"
 	},
 	"repository": {
 		"type": "git",
@@ -65,8 +65,10 @@
 		"fast-check": "^2.17.0",
 		"gen-esm-wrapper": "^1.1.2",
 		"husky": "^7.0.1",
+		"is-ci": "^3.0.0",
 		"jest": "^27.0.6",
 		"jest-circus": "^27.0.6",
+		"lint-staged": "^11.1.2",
 		"prettier": "^2.3.2",
 		"rimraf": "^3.0.2",
 		"ts-jest": "^27.0.4",
