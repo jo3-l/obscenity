@@ -34,6 +34,7 @@ Obscenity is a high-performance, robust **profanity filter** for NodeJS (with su
 
 - **Powerful:** Though Obscenity doesn't support regular expressions (as mentioned above), its pattern syntax does support arbitrary-length wildcards and optionals. Furthermore, thanks to transformers, a single pattern is often enough to match a lot of variations. With the default English preset, `fuck` matches all of the following:
 
+  - `fucked`;
   - `f u u u u ck`;
   - `f....uu....ck`;
   - `inthemiddleofuckasentence`;
