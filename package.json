@@ -19,7 +19,8 @@
 		"test:ci": "jest --ci --no-stack-trace --verbose",
 		"style": "prettier --write src/**/*.ts test/**/*.ts",
 		"lint": "eslint src test",
-		"lint:fix": "eslint src test --fix"
+		"lint:fix": "eslint src test --fix",
+		"prepare": "husky install"
 	},
 	"repository": {
 		"type": "git",
@@ -49,6 +50,8 @@
 	"author": "Joe L. <https://github.com/jo3-l>",
 	"license": "MIT",
 	"devDependencies": {
+		"@commitlint/cli": "^13.1.0",
+		"@commitlint/config-angular": "^13.1.0",
 		"@types/jest": "^27.0.0",
 		"@typescript-eslint/eslint-plugin": "^4.29.2",
 		"@typescript-eslint/parser": "^4.29.2",
@@ -61,6 +64,7 @@
 		"eslint-plugin-simple-import-sort": "^7.0.0",
 		"fast-check": "^2.17.0",
 		"gen-esm-wrapper": "^1.1.2",
+		"husky": "^7.0.1",
 		"jest": "^27.0.6",
 		"jest-circus": "^27.0.6",
 		"prettier": "^2.3.2",
@@ -73,15 +77,5 @@
 	},
 	"engines": {
 		"node": ">=12.0.0"
-	},
-	"renovate": {
-		"extends": [
-			"config:base",
-			":semanticCommits",
-			":semanticPrefixChore",
-			":preserveSemverRanges",
-			":rebaseStalePrs",
-			":label(deps)"
-		]
 	}
 }

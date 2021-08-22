@@ -1,0 +1,10 @@
+{
+	"extends": [
+		"config:base",
+		":semanticCommits",
+		":semanticPrefixChore",
+		":preserveSemverRanges",
+		":rebaseStalePrs",
+		":label(deps)"
+	]
+}
