@@ -331,7 +331,7 @@ Results for Regular Expressions:
 
 See the benchmark code [here](./benchmarks/index.ts).
 
-### Why no benchmarks against other libraries?
+### Why are there no benchmarks against other libraries?
 
 The feature set of this library and most other profanity filtering libraries is incompatible enough to make any real benchmark somewhat unfair to both sides.
 
