@@ -320,6 +320,7 @@ export const englishDataset = new DataSet<{ displayName: ProfaneWordDisplayName 
 			.addPattern(pattern`|rape`)
 			.addPattern(pattern`|rapis[s]t`),
 	)
+	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'retard' }).addPattern(pattern`retard`))
 	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'scat' }).addPattern(pattern`|s[s]cat|`))
 	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'slut' }).addPattern(pattern`s[s]lut`))
 	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'semen' }).addPattern(pattern`|s[s]e[e]me[e]n`))
@@ -392,6 +393,7 @@ export type ProfaneWordDisplayName =
 	| 'vagina'
 	| 'penis'
 	| 'rape'
+	| 'retard'
 	| 'scat'
 	| 'slut'
 	| 'semen'
