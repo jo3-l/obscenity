@@ -1,9 +1,10 @@
 {
 	"name": "obscenity",
 	"version": "0.1.0",
-	"description": "A stand-alone package for detecting and handling profanity in text.",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"description": "Blazing fast, robust, profanity filter using finite automata.",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
 	"exports": {
 		"import": "./dist/index.mjs",
 		"require": "./dist/index.js"
@@ -20,6 +21,31 @@
 		"lint": "eslint src test",
 		"lint:fix": "eslint src test --fix"
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jo3-l/obscenity.git"
+	},
+	"bugs": {
+		"url": "https://github.com/jo3-l/obscenity/issues"
+	},
+	"keywords": [
+		"profanity",
+		"profane",
+		"obscenities",
+		"obscenity",
+		"obscene",
+		"filter",
+		"curse",
+		"swear",
+		"swearing",
+		"vulgar",
+		"vulgarity",
+		"bad-words",
+		"badwords",
+		"cuss",
+		"cussing"
+	],
+	"homepage": "https://github.com/jo3-l/obscenity#readme",
 	"author": "Joe L. <https://github.com/jo3-l>",
 	"license": "MIT",
 	"devDependencies": {
@@ -44,6 +70,9 @@
 		"typedoc": "^0.21.6",
 		"typedoc-plugin-markdown": "^3.10.4",
 		"typescript": "^4.3.5"
+	},
+	"engines": {
+		"node": ">=12.0.0"
 	},
 	"renovate": {
 		"extends": [
