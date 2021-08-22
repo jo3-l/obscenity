@@ -126,8 +126,8 @@ for (const [name, text] of cases) {
 
 	console.log(`🏁 Running case ${green(name)}\n`);
 
-	for (let n = 0; n < 1e4; n++) runPatternMatcher();
-	for (let n = 0; n < 1e4; n++) runRegExpMatcher();
+	for (let n = 0; n < 1e5; n++) runPatternMatcher();
+	for (let n = 0; n < 1e5; n++) runRegExpMatcher();
 
 	display('Obscenity', patternMatcherHistogram);
 	console.log();
