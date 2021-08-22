@@ -16,6 +16,7 @@ parserOptions:
     - tsconfig.eslint.json
     - src/tsconfig.json
     - test/tsconfig.json
+    - benchmarks/tsconfig.json
 
 rules:
   prettier/prettier:

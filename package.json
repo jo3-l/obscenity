@@ -5,6 +5,7 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"build": "rimraf dist && tsc -b src",
+		"build:benchmarks": "tsc -b benchmarks",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:ci": "jest --ci --no-stack-trace --verbose",

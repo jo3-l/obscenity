@@ -1,11 +1,15 @@
-/* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
 const repl = require('repl');
-const obscenity = require('../dist/index');
+const {
+	PatternMatcher,
+	englishDataset,
+	englishRecommendedBlacklistMatcherTransformers,
+	englishRecommendedWhitelistMatcherTransformers,
+} = require('../dist');
 
-const matcher = new obscenity.PatternMatcher({
-	...obscenity.englishDataset.build(),
-	blacklistMatcherTransformers: obscenity.englishRecommendedBlacklistMatcherTransformers,
-	whitelistMatcherTransformers: obscenity.englishRecommendedWhitelistMatcherTransformers,
+const matcher = new PatternMatcher({
+	...englishDataset.build(),
+	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
+	whitelistMatcherTransformers: englishRecommendedWhitelistMatcherTransformers,
 });
 
 console.log(`Welcome to the REPL example for Obscenity.
@@ -14,7 +18,7 @@ Type ".help" for more information.`);
 const replServer = repl.start({
 	prompt: '> ',
 	eval: (input, _ctx, _file, cb) => {
-		const matches = matcher //
+		const matches = matcher
 			.setInput(input)
 			.getAllMatches(true)
 			.map((match) => englishDataset.getPayloadWithPhraseMetadata(match));
