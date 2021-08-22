@@ -1,12 +1,11 @@
 # Obscenity
 
-TODO: Badges.
+<a href="https://github.com/jo3-l/obscenity/actions"><img src="https://img.shields.io/github/workflow/status/jo3-l/obscenity/Continuous%20Integration?style=for-the-badge" alt="Build status"></a>
+<a href="https://app.codecov.io/gh/jo3-l/obscenity/"><img src="https://img.shields.io/codecov/c/github/jo3-l/obscenity?style=for-the-badge" alt="Codecov status"></a>
+<a href="https://npmjs.com/package/obscenity"><img src="https://img.shields.io/npm/v/obscenity?style=for-the-badge" alt="npm version"></a>
+<a href="https://github.com/jo3-l/obscenity/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/jo3-l/obscenity?style=for-the-badge" alt="License"></a>
 
-[obscenity](https://www.lexico.com/definition/obscenity) **əbˈsɛnɪti** _noun_
-
-1.2. An extremely offensive word or expression.
-
-# Table of Contents
+## Table of Contents
 
 - [About](#about)
 - [Installation](#installation)
@@ -20,9 +19,13 @@ TODO: Badges.
 
 ## About
 
+> [obscenity](https://www.lexico.com/definition/obscenity) **əbˈsɛnɪti** _noun_
+>
+> 1.2. An extremely offensive word or expression.
+
 Obscenity is a high-performance, robust **profanity filter** for NodeJS (with support for **TypeScript** as well). It is:
 
-- **Accurate:** To handle the famed [scunthorpe problem](https://en.wikipedia.org/wiki/Scunthorpe_problem), Obscenity supports word boundary assertions (so a pattern `|cunt` would only match `cunt`, `cunts`, ... but not `scunt`) in addition to whitelisting phrases.
+- **Relatively accurate:** To handle the famed [scunthorpe problem](https://en.wikipedia.org/wiki/Scunthorpe_problem), Obscenity supports word boundary assertions (so a pattern `|cunt` would only match `cunt`, `cunts`, ... but not `scunt`) in addition to whitelisting phrases.
 
   > As with all swear filters, Obscenity is not perfect (nor will it ever be). Use its output as a heuristic, and not as the sole judge of whether some content is appropriate or not.
 
