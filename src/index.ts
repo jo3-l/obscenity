@@ -4,7 +4,6 @@ export * from './censor/TextCensor';
 export * from './dataset/DataSet';
 
 export * from './matcher/BlacklistedTerm';
-export * from './matcher/ForkedTraversalLimitExceededError';
 export * from './matcher/MatchPayload';
 export * from './matcher/PatternMatcher';
 

@@ -63,6 +63,22 @@ describe('CircularBuffer#get()', () => {
 	});
 });
 
+describe('CircularBuffer#set', () => {
+	it('should set the element at the offset provided (head at 0)', () => {
+		const buf = new CircularBuffer(4);
+		buf.push(1);
+		buf.set(0, 2);
+		expect(buf.get(0)).toBe(2);
+	});
+
+	it('should set the element at the offset provided (head not at 0)', () => {
+		const buf = new CircularBuffer(4);
+		for (let i = 1; i <= 10; i++) buf.push(i);
+		buf.set(3, 4);
+		expect(buf.get(3)).toBe(4);
+	});
+});
+
 describe('CircularBuffer#clear()', () => {
 	it('should clear the underlying array', () => {
 		const buf = new CircularBuffer(4);

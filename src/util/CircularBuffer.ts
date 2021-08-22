@@ -27,6 +27,10 @@ export class CircularBuffer<T> implements Iterable<T> {
 		return this.data[(this.head + index) & this.mask];
 	}
 
+	public set(index: number, value: T) {
+		this.data[(this.head + index) & this.mask] = value;
+	}
+
 	public clear() {
 		this.head = 0;
 		this._length = 0;

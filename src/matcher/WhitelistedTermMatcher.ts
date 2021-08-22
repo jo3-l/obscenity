@@ -102,10 +102,10 @@ export class WhitelistedTermMatcher {
 	}
 
 	private constructLinks() {
-		// Compute the failure and output functions for the trie.
-		// This implementation is fairly straightforward and is essentially the exact same
-		// as that detailed in Aho and Corasick's original paper.
-		// Refer to section 3 in said paper for more details.
+		// Compute the failure and output functions for the trie. This
+		// implementation is fairly straightforward and is essentially the exact
+		// same as that detailed in Aho and Corasick's original paper. Refer to
+		// section 3 in said paper for more details.
 		this.rootNode.failureLink = this.rootNode;
 		const queue = new Queue<WhitelistTrieNode>();
 		for (const node of this.rootNode.edges.nodes()) {

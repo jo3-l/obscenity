@@ -1,5 +1,4 @@
 import { assignIncrementingIds } from '../../src/matcher/BlacklistedTerm';
-import { ForkedTraversalLimitExceededError } from '../../src/matcher/ForkedTraversalLimitExceededError';
 import type { MatchPayload } from '../../src/matcher/MatchPayload';
 import { PatternMatcher } from '../../src/matcher/PatternMatcher';
 import { parseRawPattern, pattern } from '../../src/pattern/Pattern';
@@ -51,8 +50,8 @@ describe('PatternMatcher#setInput()', () => {
 });
 
 it('should match nothing if there are no patterns', () => {
-	const m = new PatternMatcher({ blacklistedPatterns: [] });
-	expect(m.setInput('foo bar').getAllMatches()).toHaveLength(0);
+	const matcher = new PatternMatcher({ blacklistedPatterns: [] });
+	expect(matcher.setInput('foo bar').getAllMatches()).toHaveLength(0);
 });
 
 describe('simple matching; no wildcards/optionals', () => {
@@ -164,12 +163,12 @@ describe('simple matching; no wildcards/optionals', () => {
 
 describe('matching with optionals', () => {
 	it('should emit matches with the correct ID', () => {
-		const ms = new PatternMatcher({ blacklistedPatterns: [{ id: 10, pattern: pattern`w[o]rld` }] })
+		const matches = new PatternMatcher({ blacklistedPatterns: [{ id: 10, pattern: pattern`w[o]rld` }] })
 			.setInput('world wrld')
 			.getAllMatches();
-		expect(ms).toHaveLength(2);
-		expect(ms[0].termId).toBe(10);
-		expect(ms[1].termId).toBe(10);
+		expect(matches).toHaveLength(2);
+		expect(matches[0].termId).toBe(10);
+		expect(matches[1].termId).toBe(10);
 	});
 
 	it.each([
@@ -680,29 +679,6 @@ describe('matching with whitelist transformers', () => {
 		});
 		expect(matcher.setInput('there is a dader').getAllMatches()).toStrictEqual([
 			{ termId: 1, startIndex: 11, endIndex: 15, matchLength: 5 },
-		]);
-	});
-});
-
-describe('forked traversal limiting', () => {
-	it('should throw an error if the number of forked traversals exceeds the limit', () => {
-		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 0, pattern: pattern`?` }],
-			forkedTraversalLimit: 0,
-		});
-		expect(() => matcher.setInput('hi').getAllMatches()).toThrow(new ForkedTraversalLimitExceededError('hi', 0, 1, 0));
-	});
-
-	it('should not throw an error if the number of forked traversals exceeds the limit', () => {
-		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`foobar`, pattern`barbuz`, pattern`buzbaz`, pattern`bazd`]),
-			forkedTraversalLimit: 0,
-		});
-		expect(matcher.setInput('i really liked the foobarbuzbazd').getAllMatches()).toBePermutationOf([
-			{ termId: 0, startIndex: 19, endIndex: 24, matchLength: 6 },
-			{ termId: 1, startIndex: 22, endIndex: 27, matchLength: 6 },
-			{ termId: 2, startIndex: 25, endIndex: 30, matchLength: 6 },
-			{ termId: 3, startIndex: 28, endIndex: 31, matchLength: 4 },
 		]);
 	});
 });
