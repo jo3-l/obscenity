@@ -156,7 +156,6 @@ function patternToRegExp(pattern: ParsedPattern) {
 	return new RegExp(regExpStr, 'gs');
 }
 
-/** @returns {string} */
 function nodeToRegExp(node: Node): string {
 	switch (node.kind) {
 		case SyntaxKind.Literal:
