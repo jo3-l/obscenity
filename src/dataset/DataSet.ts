@@ -171,7 +171,7 @@ export class PhraseBuilder<MetadataType> {
 
 	/**
 	 * Builds the phrase, returning a [[PhraseContainer]] for use with the
-	 * [[Dataset]].
+	 * [[DataSet]].
 	 */
 	public build(): PhraseContainer<MetadataType> {
 		return {

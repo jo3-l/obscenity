@@ -77,7 +77,7 @@ console.log(matcher
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:91](https://github.com/jo3-l/obscenity/blob/33992d8/src/matcher/PatternMatcher.ts#L91)
+[src/matcher/PatternMatcher.ts:91](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L91)
 
 ## Accessors
 
@@ -93,7 +93,7 @@ The input that is currently being matched on.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:159](https://github.com/jo3-l/obscenity/blob/33992d8/src/matcher/PatternMatcher.ts#L159)
+[src/matcher/PatternMatcher.ts:159](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L159)
 
 ## Methods
 
@@ -123,7 +123,7 @@ otherwise, their order is unspecified.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:136](https://github.com/jo3-l/obscenity/blob/33992d8/src/matcher/PatternMatcher.ts#L136)
+[src/matcher/PatternMatcher.ts:136](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L136)
 
 ___
 
@@ -142,7 +142,7 @@ as it stops once it finds a match.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:150](https://github.com/jo3-l/obscenity/blob/33992d8/src/matcher/PatternMatcher.ts#L150)
+[src/matcher/PatternMatcher.ts:150](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L150)
 
 ___
 
@@ -164,4 +164,4 @@ Sets the input of the pattern matcher.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:115](https://github.com/jo3-l/obscenity/blob/33992d8/src/matcher/PatternMatcher.ts#L115)
+[src/matcher/PatternMatcher.ts:115](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L115)
