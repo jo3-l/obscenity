@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync } from 'fs';
-import { basename, join } from 'path';
+import { basename, extname, join } from 'path';
 import type { RecordableHistogram } from 'perf_hooks';
 import { createHistogram, performance } from 'perf_hooks';
 
@@ -117,22 +117,32 @@ const bold = makeColorizer(1);
 const cases = [];
 for (const filename of readdirSync(join(__dirname, 'cases'))) {
 	const content = readFileSync(join(__dirname, 'cases', filename), { encoding: 'utf8' });
-	cases.push([basename(filename), content.trim()]);
+	cases.push([basename(filename, extname(filename)), content.trim()]);
 }
 
 for (const [name, text] of cases) {
 	const [runPatternMatcher, patternMatcherHistogram] = getPatternMatcherBenchmarkCase(text);
 	const [runRegExpMatcher, regExpMatcherHistogram] = getRegExpBenchmarkCase(text);
 
-	console.log(`🏁 Running case ${green(name)}:\n`);
+	console.log(`🏁 Running case ${green(name)}\n`);
 
 	for (let n = 0; n < 1e4; n++) runPatternMatcher();
 	for (let n = 0; n < 1e4; n++) runRegExpMatcher();
 
-	console.log(`Results for case ${green(name)}:\n`);
-	console.log(`Using ${bold('Obscenity')}: ${yellow(patternMatcherHistogram.mean.toString())}`);
-	console.log(`Using ${bold('regular expressions')}: ${yellow(regExpMatcherHistogram.mean.toString())}`);
-	console.log(italic(`(Ignore, to guard against dead code elimination) ${matchCount}\n`));
+	display('Obscenity', patternMatcherHistogram);
+	console.log();
+	display('Regular Expressions', regExpMatcherHistogram);
+	console.log();
+}
+
+console.log(italic(`(Ignore, to guard against dead code elimination) ${matchCount}\n`));
+
+function display(name: string, h: RecordableHistogram) {
+	console.log(`Results for ${italic(name)}:`);
+	console.log(`  - ${bold('Min:')} ${yellow((h.min / 1e6).toFixed(2))} ms`);
+	console.log(`  - ${bold('Max:')} ${yellow((h.max / 1e6).toFixed(2))} ms`);
+	console.log(`  - ${bold('Mean:')} ${yellow((h.mean / 1e6).toFixed(2))} ms`);
+	console.log(`  - ${bold('Standard deviation:')} ± ${yellow((h.stddev / 1e6).toFixed(2))} ms`);
 }
 
 function patternToRegExp(pattern: ParsedPattern) {
