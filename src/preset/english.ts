@@ -213,7 +213,7 @@ export const englishDataset = new DataSet<{ displayName: ProfaneWordDisplayName 
 			.addWhitelistedTerm('cumu')
 			.addWhitelistedTerm('cumb'),
 	)
-	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'cunt' }).addPattern(pattern`cunt`))
+	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'cunt' }).addPattern(pattern`|cunt`))
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ displayName: 'deepthroat' })
