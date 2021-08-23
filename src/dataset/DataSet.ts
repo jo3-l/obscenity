@@ -84,7 +84,7 @@ export class DataSet<MetadataType> {
 	 *
 	 * @example
 	 * ```typescript
-	 * const matches = matcher.setInput(input).getAllMatches();
+	 * const matches = matcher.getAllMatches(input);
 	 * const matchesWithPhraseMetadata = matches.map((match) => dataset.getPayloadWithPhraseMetadata(match));
 	 * // Now we can access the 'phraseMetadata' property:
 	 * const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;

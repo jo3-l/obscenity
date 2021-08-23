@@ -11,15 +11,10 @@ whitelisted terms.
 
 - [constructor](PatternMatcher.md#constructor)
 
-### Accessors
-
-- [input](PatternMatcher.md#input)
-
 ### Methods
 
 - [getAllMatches](PatternMatcher.md#getallmatches)
 - [hasMatch](PatternMatcher.md#hasmatch)
-- [setInput](PatternMatcher.md#setinput)
 
 ## Constructors
 
@@ -42,7 +37,7 @@ const matcher = new PatternMatcher({
 });
 
 // Check whether some string matches any of the patterns.
-const doesMatch = matcher.setInput('fuck you bitch').hasMatch();
+const doesMatch = matcher.hasMatch('fuck you bitch');
 ```
 
 **`example`**
@@ -64,9 +59,7 @@ const matcher = new PatternMatcher({
 });
 
 // Output all matches.
-console.log(matcher
-	.setInput('fu.....uuuuCK the pen is mightier than the sword!')
-	.getAllMatches());
+console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sword!'));
 ```
 
 #### Parameters
@@ -77,29 +70,13 @@ console.log(matcher
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:91](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L91)
-
-## Accessors
-
-### input
-
-• `get` **input**(): `string`
-
-The input that is currently being matched on.
-
-#### Returns
-
-`string`
-
-#### Defined in
-
-[src/matcher/PatternMatcher.ts:159](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L159)
+[src/matcher/PatternMatcher.ts:89](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L89)
 
 ## Methods
 
 ### getAllMatches
 
-▸ **getAllMatches**(`sorted?`): [`MatchPayload`](../interfaces/MatchPayload.md)[]
+▸ **getAllMatches**(`input`, `sorted?`): [`MatchPayload`](../interfaces/MatchPayload.md)[]
 
 Returns all matches of the matcher on the text.
 
@@ -111,6 +88,7 @@ method, which is more efficient.
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
+| `input` | `string` | `undefined` | Text to find profanities in. |
 | `sorted` | `boolean` | `false` | Whether the resulting list of matches should be sorted using [compareMatchByPositionAndId](../README.md#comparematchbypositionandid). Defaults to `false`. |
 
 #### Returns
@@ -123,18 +101,24 @@ otherwise, their order is unspecified.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:136](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L136)
+[src/matcher/PatternMatcher.ts:124](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L124)
 
 ___
 
 ### hasMatch
 
-▸ **hasMatch**(): `boolean`
+▸ **hasMatch**(`input`): `boolean`
 
 Checks whether the matcher matches on the text.
 
 This is more efficient than calling `getAllMatches` and checking the result,
 as it stops once it finds a match.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `input` | `string` | Text to check. |
 
 #### Returns
 
@@ -142,26 +126,4 @@ as it stops once it finds a match.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:150](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L150)
-
-___
-
-### setInput
-
-▸ **setInput**(`input`): [`PatternMatcher`](PatternMatcher.md)
-
-Sets the input of the pattern matcher.
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `input` | `string` | Input string to match against. |
-
-#### Returns
-
-[`PatternMatcher`](PatternMatcher.md)
-
-#### Defined in
-
-[src/matcher/PatternMatcher.ts:115](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L115)
+[src/matcher/PatternMatcher.ts:139](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L139)

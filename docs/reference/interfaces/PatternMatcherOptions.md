@@ -29,7 +29,7 @@ Transformers will be applied in the order they appear.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:526](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L526)
+[src/matcher/PatternMatcher.ts:504](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L504)
 
 ___
 
@@ -48,7 +48,7 @@ resulting in an unacceptable number of variants.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:502](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L502)
+[src/matcher/PatternMatcher.ts:480](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L480)
 
 ___
 
@@ -66,7 +66,7 @@ Transformers will be applied in the order they appear.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:537](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L537)
+[src/matcher/PatternMatcher.ts:515](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L515)
 
 ___
 
@@ -86,4 +86,4 @@ than the sword.`
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:515](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/PatternMatcher.ts#L515)
+[src/matcher/PatternMatcher.ts:493](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L493)

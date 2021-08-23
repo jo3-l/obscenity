@@ -76,7 +76,7 @@ test('running the pattern matcher on a set of patterns and input should have the
 					),
 				});
 
-				const matchedRegions = matcher.setInput(input).getAllMatches();
+				const matchedRegions = matcher.getAllMatches(input);
 				const transformedMatches: Record<number, Interval[]> = {};
 				for (const payload of matchedRegions) {
 					(transformedMatches[payload.termId] ??= []).push([payload.startIndex, payload.endIndex]);

@@ -13,6 +13,4 @@ const matcher = new PatternMatcher({
 });
 
 const input = 'ʃʃᵤс𝗄 you';
-console.log(
-	matcher.setInput(input).hasMatch() ? 'The input contains obscenities.' : 'The input does not contain obscenities.',
-);
+console.log(matcher.hasMatch(input) ? 'The input contains obscenities.' : 'The input does not contain obscenities.');

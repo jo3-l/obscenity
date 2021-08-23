@@ -62,7 +62,7 @@ const customDataset = new DataSet().addAll(englishDataset);
 
 #### Defined in
 
-[src/dataset/DataSet.ts:28](https://github.com/jo3-l/obscenity/blob/ce020a0/src/dataset/DataSet.ts#L28)
+[src/dataset/DataSet.ts:28](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/dataset/DataSet.ts#L28)
 
 ___
 
@@ -94,7 +94,7 @@ const data = new DataSet()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/ce020a0/src/dataset/DataSet.ts#L75)
+[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/dataset/DataSet.ts#L75)
 
 ___
 
@@ -118,7 +118,7 @@ const matcher = new PatternMatcher({
 
 #### Defined in
 
-[src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/ce020a0/src/dataset/DataSet.ts#L118)
+[src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/dataset/DataSet.ts#L118)
 
 ___
 
@@ -131,7 +131,7 @@ copy of the match payload with said metadata attached to it.
 
 **`example`**
 ```typescript
-const matches = matcher.setInput(input).getAllMatches();
+const matches = matcher.getAllMatches(input);
 const matchesWithPhraseMetadata = matches.map((match) => dataset.getPayloadWithPhraseMetadata(match));
 // Now we can access the 'phraseMetadata' property:
 const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
@@ -149,7 +149,7 @@ const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
 
 #### Defined in
 
-[src/dataset/DataSet.ts:95](https://github.com/jo3-l/obscenity/blob/ce020a0/src/dataset/DataSet.ts#L95)
+[src/dataset/DataSet.ts:95](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/dataset/DataSet.ts#L95)
 
 ___
 
@@ -178,4 +178,4 @@ const customDataset = new DataSet()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/ce020a0/src/dataset/DataSet.ts#L46)
+[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/dataset/DataSet.ts#L46)

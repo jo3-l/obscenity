@@ -85,13 +85,11 @@ const matcher = new PatternMatcher({
 });
 ```
 
-Now, we can use it to check whether some input contains obscenities. Don't forget to call `setInput()` before!
+Now, we can use it to check whether some input contains obscenities.
 
 ```javascript
 const input = 'ʃʃᵤс𝗄 you';
-console.log(
-	matcher.setInput(input).hasMatch() ? 'The input contains obscenities.' : 'The input does not contain obscenities.',
-);
+console.log(matcher.hasMatch(input) ? 'The input contains obscenities.' : 'The input does not contain obscenities.');
 // => "The input contains obscenities".
 ```
 
@@ -139,7 +137,7 @@ const matcher = new PatternMatcher({
 const censor = new TextCensor();
 
 const input = 'you are a fucking retard';
-const matches = matcher.setInput(input).getAllMatches();
+const matches = matcher.getAllMatches(input);
 console.log(censor.applyTo(input, matches)); // you are a $$$*ing %&*%**
 ```
 

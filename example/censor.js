@@ -14,5 +14,5 @@ const matcher = new PatternMatcher({
 const censor = new TextCensor();
 
 const input = 'you are a fucking retard';
-const matches = matcher.setInput(input).getAllMatches();
+const matches = matcher.getAllMatches(input);
 console.log(censor.applyTo(input, matches));

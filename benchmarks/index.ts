@@ -30,7 +30,7 @@ function getPatternMatcherBenchmarkCase(text: string): [() => void, RecordableHi
 	return [
 		performance.timerify(
 			() => {
-				matchCount += matcher.setInput(text).getAllMatches().length;
+				matchCount += matcher.getAllMatches(text).length;
 			},
 			{ histogram },
 		),

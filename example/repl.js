@@ -19,8 +19,7 @@ const replServer = repl.start({
 	prompt: '> ',
 	eval: (input, _ctx, _file, cb) => {
 		const matches = matcher
-			.setInput(input)
-			.getAllMatches(true)
+			.getAllMatches(input, true)
 			.map((match) => englishDataset.getPayloadWithPhraseMetadata(match));
 		cb(undefined, matches);
 	},

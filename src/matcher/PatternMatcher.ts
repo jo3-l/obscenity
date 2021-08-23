@@ -37,7 +37,7 @@ export class PatternMatcher {
 
 	private readonly iter = new CharacterIterator();
 	private readonly usedIndices: CircularBuffer<number>; // tracks indices used for matching; see comment in WhitelistedTermMatcher.ts for why this exists
-	private output: MatchPayload[] = [];
+	private matches: MatchPayload[] = [];
 	private readonly pendingPartialMatches: PendingPartialMatch[] = []; // pending partial matches that are waiting for their required wildcard count to be fulfilled
 	private readonly partialMatches: CircularBuffer<Set<string> | undefined>; // partial matches found; value is a set of partial match hashes
 	private currentNode = this.rootNode;
@@ -59,7 +59,7 @@ export class PatternMatcher {
 	 * });
 	 *
 	 * // Check whether some string matches any of the patterns.
-	 * const doesMatch = matcher.setInput('fuck you bitch').hasMatch();
+	 * const doesMatch = matcher.hasMatch('fuck you bitch');
 	 * ```
 	 *
 	 * @example
@@ -81,9 +81,7 @@ export class PatternMatcher {
 	 * });
 	 *
 	 * // Output all matches.
-	 * console.log(matcher
-	 * 	.setInput('fu.....uuuuCK the pen is mightier than the sword!')
-	 * 	.getAllMatches());
+	 * console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sword!'));
 	 * ```
 	 *
 	 * @param options - Options to use.
@@ -108,23 +106,13 @@ export class PatternMatcher {
 	}
 
 	/**
-	 * Sets the input of the pattern matcher.
-	 *
-	 * @param input - Input string to match against.
-	 */
-	public setInput(input: string) {
-		this.iter.setInput(input);
-		this.whitelistedSpans = this.whitelistedTermMatcher.getMatchedSpans(this.input);
-		this.reset();
-		return this;
-	}
-
-	/**
 	 * Returns all matches of the matcher on the text.
 	 *
 	 * If you only need to check for the presence of a match, and have no use
 	 * for more specific information about the matches, use the `hasMatch()`
 	 * method, which is more efficient.
+	 *
+	 * @param input - Text to find profanities in.
 	 *
 	 * @param sorted - Whether the resulting list of matches should be sorted
 	 * using [[compareMatchByPositionAndId]]. Defaults to `false`.
@@ -133,12 +121,11 @@ export class PatternMatcher {
 	 * guaranteed to be sorted if and only if the `sorted` parameter is `true`,
 	 * otherwise, their order is unspecified.
 	 */
-	public getAllMatches(sorted = false) {
+	public getAllMatches(input: string, sorted = false) {
+		this.setInput(input);
 		this.run();
-		const { output } = this;
-		this.reset();
-		if (sorted) output.sort(compareMatchByPositionAndId);
-		return output;
+		if (sorted) this.matches.sort(compareMatchByPositionAndId);
+		return this.matches;
 	}
 
 	/**
@@ -146,26 +133,23 @@ export class PatternMatcher {
 	 *
 	 * This is more efficient than calling `getAllMatches` and checking the result,
 	 * as it stops once it finds a match.
+	 *
+	 * @param input - Text to check.
 	 */
-	public hasMatch() {
+	public hasMatch(input: string) {
+		this.setInput(input);
 		const hasMatch = this.run(true);
-		this.reset();
 		return hasMatch;
 	}
 
-	/**
-	 * The input that is currently being matched on.
-	 */
-	public get input() {
-		return this.iter.input;
-	}
-
-	private reset() {
+	private setInput(input: string) {
+		this.iter.setInput(input);
+		this.whitelistedSpans = this.whitelistedTermMatcher.getMatchedSpans(this.input);
 		this.iter.reset();
 		this.currentNode = this.rootNode;
 		this.usedIndices.clear();
 		this.partialMatches.clear();
-		this.output = [];
+		this.matches = [];
 	}
 
 	private run(breakAfterFirstMatch = false) {
@@ -195,9 +179,7 @@ export class PatternMatcher {
 				// characters before we can conclude that the whole pattern
 				// matched.
 				if (--match.trailingWildcardCount === 0) {
-					this.emitMatch(match.termId, match.flags);
-					/* istanbul ignore if: behavior is not observable in tests */
-					if (breakAfterFirstMatch) return true;
+					if (this.emitMatch(match.termId, match.flags) && breakAfterFirstMatch) return true;
 
 					// Set the value at the current index to the last pending
 					// match, then pop from the array. This allows us to remove
@@ -216,19 +198,16 @@ export class PatternMatcher {
 			for (const matchLength of this.wildcardOnlyPatternMatchLengths) {
 				if (matchLength > this.usedIndices.length) break;
 				const pattern = this.wildcardOnlyPatterns.get(matchLength)!;
-				this.emitMatch(pattern.termId, pattern.flags);
 				/* istanbul ignore if: behavior is not observable in tests */
-				if (breakAfterFirstMatch) return true;
+				if (this.emitMatch(pattern.termId, pattern.flags) && breakAfterFirstMatch) return true;
 			}
 
 			// Emit matches for the current node, then follow its output links.
 			if (this.currentNode.flags & NodeFlag.MatchLeaf) {
-				this.emitMatch(this.currentNode.termId, this.currentNode.flags);
-				if (breakAfterFirstMatch) return true;
+				if (this.emitMatch(this.currentNode.termId, this.currentNode.flags) && breakAfterFirstMatch) return true;
 			}
 			if (this.currentNode.flags & NodeFlag.PartialMatchLeaf) {
 				for (const partialMatch of this.currentNode.partialMatches!) {
-					/* istanbul ignore if: behavior is not observable in tests */
 					if (this.emitPartialMatch(partialMatch) && breakAfterFirstMatch) return true;
 				}
 			}
@@ -237,20 +216,21 @@ export class PatternMatcher {
 			while (outputLink) {
 				if (outputLink.flags & NodeFlag.PartialMatchLeaf) {
 					for (const partialMatch of outputLink.partialMatches!) {
-						/* istanbul ignore if: behavior is not observable in tests */
 						if (this.emitPartialMatch(partialMatch) && breakAfterFirstMatch) return true;
 					}
 				}
 				if (outputLink.flags & NodeFlag.MatchLeaf) {
-					this.emitMatch(outputLink.termId, outputLink.flags);
-					/* istanbul ignore if: behavior is not observable in tests */
-					if (breakAfterFirstMatch) return true;
+					if (this.emitMatch(outputLink.termId, outputLink.flags) && breakAfterFirstMatch) return true;
 				}
 				outputLink = outputLink.outputLink;
 			}
 		}
 
-		return this.output.length > 0;
+		return this.matches.length > 0;
+	}
+
+	private get input() {
+		return this.iter.input;
 	}
 
 	private get position() {
@@ -269,10 +249,7 @@ export class PatternMatcher {
 		if (data.step === this.partialMatchStepCounts.get(data.termId)) {
 			// We're on the last step: see if we can emit a match for the whole
 			// pattern, or add it to our pending matches.
-			if (data.trailingWildcardCount === 0) {
-				this.emitMatch(data.termId, data.flags);
-				return true;
-			}
+			if (data.trailingWildcardCount === 0) return this.emitMatch(data.termId, data.flags);
 
 			// Otherwise, add it to the stack of maybe pending partial matches.
 			this.pendingPartialMatches.push({
@@ -302,12 +279,13 @@ export class PatternMatcher {
 			!(flags & SharedFlag.RequireWordBoundaryAtEnd) || // doesn't require word boundary at the end
 			endIndex === this.input.length - 1 || // last character
 			!isWordChar(this.input.charCodeAt(endIndex + 1)); // character after isn't a word char
-		if (!startBoundaryOk || !endBoundaryOk) return;
+		if (!startBoundaryOk || !endBoundaryOk) return false;
 
 		const patternId = this.patternIdMap.get(id)!;
-		if (this.whitelistedSpans.fullyContains([startIndex, endIndex])) return;
+		if (this.whitelistedSpans.fullyContains([startIndex, endIndex])) return false;
 
-		this.output.push({ termId: patternId, matchLength, startIndex, endIndex });
+		this.matches.push({ termId: patternId, matchLength, startIndex, endIndex });
+		return true;
 	}
 
 	private ensureNoDuplicates(ids: number[]) {

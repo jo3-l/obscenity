@@ -21,7 +21,7 @@ The identifier of the pattern; should be unique across all patterns.
 
 #### Defined in
 
-[src/matcher/BlacklistedTerm.ts:35](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/BlacklistedTerm.ts#L35)
+[src/matcher/BlacklistedTerm.ts:35](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/BlacklistedTerm.ts#L35)
 
 ___
 
@@ -33,4 +33,4 @@ The parsed pattern.
 
 #### Defined in
 
-[src/matcher/BlacklistedTerm.ts:40](https://github.com/jo3-l/obscenity/blob/ce020a0/src/matcher/BlacklistedTerm.ts#L40)
+[src/matcher/BlacklistedTerm.ts:40](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/BlacklistedTerm.ts#L40)

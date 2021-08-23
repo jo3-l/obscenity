@@ -41,17 +41,9 @@ describe('constructor', () => {
 	});
 });
 
-describe('PatternMatcher#setInput()', () => {
-	it('should set the input', () => {
-		const matcher = new PatternMatcher({ blacklistedPatterns: [] });
-		matcher.setInput('hello');
-		expect(matcher.input).toBe('hello');
-	});
-});
-
 it('should match nothing if there are no patterns', () => {
 	const matcher = new PatternMatcher({ blacklistedPatterns: [] });
-	expect(matcher.setInput('foo bar').getAllMatches()).toHaveLength(0);
+	expect(matcher.getAllMatches('foo bar')).toHaveLength(0);
 });
 
 describe('simple matching; no wildcards/optionals', () => {
@@ -157,15 +149,15 @@ describe('simple matching; no wildcards/optionals', () => {
 		}
 
 		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(pats.map(parseRawPattern)) });
-		expect(matcher.setInput(input).getAllMatches()).toBePermutationOf(expected);
+		expect(matcher.getAllMatches(input)).toBePermutationOf(expected);
 	});
 });
 
 describe('matching with optionals', () => {
 	it('should emit matches with the correct ID', () => {
-		const matches = new PatternMatcher({ blacklistedPatterns: [{ id: 10, pattern: pattern`w[o]rld` }] })
-			.setInput('world wrld')
-			.getAllMatches();
+		const matches = new PatternMatcher({ blacklistedPatterns: [{ id: 10, pattern: pattern`w[o]rld` }] }).getAllMatches(
+			'world wrld',
+		);
 		expect(matches).toHaveLength(2);
 		expect(matches[0].termId).toBe(10);
 		expect(matches[1].termId).toBe(10);
@@ -238,7 +230,7 @@ describe('matching with optionals', () => {
 		}
 
 		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(patterns.map(parseRawPattern)) });
-		expect(matcher.setInput(input).getAllMatches()).toBePermutationOf(expected);
+		expect(matcher.getAllMatches(input)).toBePermutationOf(expected);
 	});
 });
 
@@ -338,7 +330,7 @@ describe('matching with wildcards', () => {
 		}
 
 		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(patterns.map(parseRawPattern)) });
-		expect(matcher.setInput(input).getAllMatches()).toBePermutationOf(expected);
+		expect(matcher.getAllMatches(input)).toBePermutationOf(expected);
 	});
 });
 
@@ -542,7 +534,7 @@ describe('matching with word boundaries', () => {
 		}
 
 		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(patterns.map(parseRawPattern)) });
-		expect(matcher.setInput(input).getAllMatches()).toBePermutationOf(expected);
+		expect(matcher.getAllMatches(input)).toBePermutationOf(expected);
 	});
 });
 
@@ -552,7 +544,7 @@ describe('matching with whitelisted terms', () => {
 			blacklistedPatterns: [{ id: 1, pattern: pattern`penis` }],
 			whitelistedTerms: ['pen is'],
 		});
-		expect(matcher.setInput('the pen is mightier than the penis').getAllMatches()).toStrictEqual([
+		expect(matcher.getAllMatches('the pen is mightier than the penis')).toStrictEqual([
 			{
 				termId: 1,
 				startIndex: 29,
@@ -567,7 +559,7 @@ describe('matching with whitelisted terms', () => {
 			blacklistedPatterns: [{ id: 1, pattern: pattern`bitch` }],
 			whitelistedTerms: ['bit', 'itch'],
 		});
-		expect(matcher.setInput('a bitch').getAllMatches()).toStrictEqual([
+		expect(matcher.getAllMatches('a bitch')).toStrictEqual([
 			{
 				termId: 1,
 				startIndex: 2,
@@ -585,7 +577,7 @@ describe('matching with blacklist transformers', () => {
 			blacklistedPatterns: [{ id: 1, pattern: pattern`something` }],
 			blacklistMatcherTransformers: [skipSpaces],
 		});
-		expect(matcher.setInput('s o m e t h i n  g').getAllMatches()).toStrictEqual([
+		expect(matcher.getAllMatches('s o m e t h i n  g')).toStrictEqual([
 			{
 				termId: 1,
 				startIndex: 0,
@@ -602,7 +594,7 @@ describe('matching with blacklist transformers', () => {
 			blacklistedPatterns: [{ id: 1, pattern: pattern`sa?e` }],
 			blacklistMatcherTransformers: [changeAToB],
 		});
-		expect(matcher.setInput('same').getAllMatches()).toHaveLength(0);
+		expect(matcher.getAllMatches('same')).toHaveLength(0);
 	});
 
 	it('should work with transformers that change chars (with match)', () => {
@@ -612,7 +604,7 @@ describe('matching with blacklist transformers', () => {
 			blacklistedPatterns: [{ id: 1, pattern: pattern`hbllo?` }],
 			blacklistMatcherTransformers: [changeAToB],
 		});
-		expect(matcher.setInput('sup hallothere').getAllMatches()).toStrictEqual([
+		expect(matcher.getAllMatches('sup hallothere')).toStrictEqual([
 			{
 				termId: 1,
 				startIndex: 4,
@@ -630,7 +622,7 @@ describe('matching with blacklist transformers', () => {
 			whitelistedTerms: ['aabbbaa'],
 			blacklistMatcherTransformers: [ignoreAllAs],
 		});
-		expect(matcher.setInput('!!!! $$aabbbaa## !!!').getAllMatches()).toHaveLength(0);
+		expect(matcher.getAllMatches('!!!! $$aabbbaa## !!!')).toHaveLength(0);
 	});
 });
 
@@ -642,7 +634,7 @@ describe('matching with whitelist transformers', () => {
 			whitelistedTerms: ['helloworld!'],
 			whitelistMatcherTransformers: [skipSpaces],
 		});
-		expect(matcher.setInput('h e l l o world!').getAllMatches()).toHaveLength(0);
+		expect(matcher.getAllMatches('h e l l o world!')).toHaveLength(0);
 	});
 
 	it('should work with transformers that change chars (no match)', () => {
@@ -653,7 +645,7 @@ describe('matching with whitelist transformers', () => {
 			whitelistedTerms: ['a biash'],
 			whitelistMatcherTransformers: [changeAToB],
 		});
-		expect(matcher.setInput('the a biash was').getAllMatches()).toStrictEqual([
+		expect(matcher.getAllMatches('the a biash was')).toStrictEqual([
 			{ termId: 1, startIndex: 6, endIndex: 10, matchLength: 5 },
 		]);
 	});
@@ -666,7 +658,7 @@ describe('matching with whitelist transformers', () => {
 			whitelistedTerms: ['bss'],
 			whitelistMatcherTransformers: [changeAToB],
 		});
-		expect(matcher.setInput('a big ass').getAllMatches()).toHaveLength(0);
+		expect(matcher.getAllMatches('a big ass')).toHaveLength(0);
 	});
 
 	it('should not affect matching of blacklisted terms', () => {
@@ -677,7 +669,7 @@ describe('matching with whitelist transformers', () => {
 			whitelistedTerms: ['a dader'],
 			whitelistMatcherTransformers: [ignoreAllAs],
 		});
-		expect(matcher.setInput('there is a dader').getAllMatches()).toStrictEqual([
+		expect(matcher.getAllMatches('there is a dader')).toStrictEqual([
 			{ termId: 1, startIndex: 11, endIndex: 15, matchLength: 5 },
 		]);
 	});
@@ -689,7 +681,7 @@ describe('PatternMatcher#getAllMatches()', () => {
 			const matcher = new PatternMatcher({
 				blacklistedPatterns: assignIncrementingIds([pattern`sup`, pattern`u?`, pattern`dude`]),
 			});
-			expect(matcher.setInput('sup guys there are some dudes here').getAllMatches(true)).toStrictEqual([
+			expect(matcher.getAllMatches('sup guys there are some dudes here', true)).toStrictEqual([
 				{ termId: 0, startIndex: 0, endIndex: 2, matchLength: 3 },
 				{ termId: 1, startIndex: 1, endIndex: 2, matchLength: 2 },
 				{ termId: 1, startIndex: 5, endIndex: 6, matchLength: 2 },
@@ -704,16 +696,15 @@ describe('PatternMatcher#getAllMatches()', () => {
 			blacklistedPatterns: assignIncrementingIds([pattern`foobar`, pattern`hello`]),
 			whitelistedTerms: ['the foobar'],
 		});
-		matcher.setInput('the foobar is quite foobar hello yo');
-		expect(matcher.getAllMatches()).toBePermutationOf([
+		expect(matcher.getAllMatches('the foobar is quite foobar hello yo')).toBePermutationOf([
 			{ termId: 0, startIndex: 20, endIndex: 25, matchLength: 6 },
 			{ termId: 1, startIndex: 27, endIndex: 31, matchLength: 5 },
 		]);
-		expect(matcher.getAllMatches()).toBePermutationOf([
+		expect(matcher.getAllMatches('the foobar is quite foobar hello yo')).toBePermutationOf([
 			{ termId: 0, startIndex: 20, endIndex: 25, matchLength: 6 },
 			{ termId: 1, startIndex: 27, endIndex: 31, matchLength: 5 },
 		]);
-		expect(matcher.getAllMatches()).toBePermutationOf([
+		expect(matcher.getAllMatches('the foobar is quite foobar hello yo')).toBePermutationOf([
 			{ termId: 0, startIndex: 20, endIndex: 25, matchLength: 6 },
 			{ termId: 1, startIndex: 27, endIndex: 31, matchLength: 5 },
 		]);
@@ -726,14 +717,14 @@ describe('PatternMatcher#hasMatch()', () => {
 			blacklistedPatterns: assignIncrementingIds([pattern`yo there`]),
 			whitelistedTerms: ['the yo there'],
 		});
-		expect(matcher.setInput('the yo there has a yo there').hasMatch()).toBeTruthy();
+		expect(matcher.hasMatch('the yo there has a yo there')).toBeTruthy();
 	});
 
 	it('should be falsy if there is no match', () => {
 		const matcher = new PatternMatcher({
 			blacklistedPatterns: assignIncrementingIds([pattern`yo`]),
 		});
-		expect(matcher.setInput('no y-word here!').hasMatch()).toBeFalsy();
+		expect(matcher.hasMatch('no y-word here!')).toBeFalsy();
 	});
 
 	it('should work when called several times in a row', () => {
@@ -741,23 +732,8 @@ describe('PatternMatcher#hasMatch()', () => {
 			blacklistedPatterns: assignIncrementingIds([pattern`yo there`]),
 			whitelistedTerms: ['the yo there'],
 		});
-		matcher.setInput('the yo there has a yo there');
-		expect(matcher.hasMatch()).toBeTruthy();
-		expect(matcher.hasMatch()).toBeTruthy();
-		expect(matcher.hasMatch()).toBeTruthy();
-	});
-});
-
-describe('PatternMatcher#input', () => {
-	it('should default to the empty string', () => {
-		expect(new PatternMatcher({ blacklistedPatterns: [] }).input).toBe('');
-	});
-
-	it('should be the input', () => {
-		const matcher = new PatternMatcher({ blacklistedPatterns: [] });
-		matcher.setInput('hi');
-		expect(matcher.input).toBe('hi');
-		matcher.setInput('bye');
-		expect(matcher.input).toBe('bye');
+		expect(matcher.hasMatch('the yo there has a yo there')).toBeTruthy();
+		expect(matcher.hasMatch('the yo there has a yo there')).toBeTruthy();
+		expect(matcher.hasMatch('the yo there has a yo there')).toBeTruthy();
 	});
 });
