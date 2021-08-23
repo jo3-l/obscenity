@@ -75,3 +75,5 @@ body:
           required: true
         - label: I have searched existing issues for similar reports.
           required: true
+    validations:
+      required: true

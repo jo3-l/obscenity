@@ -21,7 +21,6 @@ body:
     validations:
       required: true
   - type: checkboxes
-    id: terms
     attributes:
       label: Code of Conduct
       description: By submitting this issue, you agree to follow our [Code of Conduct](../CODE_OF_CONDUCT.md)
