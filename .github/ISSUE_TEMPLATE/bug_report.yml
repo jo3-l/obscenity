@@ -1,0 +1,77 @@
+name: Bug report
+description: Create an issue about a possible bug
+title: 'bug: '
+labels: [bug]
+body:
+  - type: markdown
+    attributes: |
+      Please make sure to [search for existing issues](https://github.com/jo3-l/obscenity/issues) before submitting a new one!
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: What were you expecting to happen?
+      placeholder: Using foo, I expected bar to happen.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual behavior
+      description: What happened instead?
+      placeholder: Instead, baz happened.
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        Good bug reports are reproducible. To make it easier for us to debug, provide a way to reproduce your issue.
+        If you can, provide a minimal reproducible example that demonstrates the bug.
+        If that is not possible, include as much information about the bug as possible.
+  - type: textarea
+    attributes:
+      label: Minimal reproducible example
+      description: A [minimal reproducible example](https://stackoverflow.com/help/minimal-reproducible-example) that demonstrates the problem.
+      placeholder: |
+        import { PatternMatcher } from 'obscenity';
+        // ...
+      render: typescript
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: Provide steps to reproduce the problem, if you cannot come up with a minimal reproducible example.
+      placeholder: |
+        1. Run foo
+        2. ...
+        3. See error
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: |
+        Links? References? Anything that will give us more context about the issue you are encountering!
+
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+  - type: textarea
+    attributes:
+      label: Node.js version
+      description: What version of Node are you using?
+      placeholder: v16.7.0
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Obscenity version
+      description: |
+        What version of the library are you using?
+
+        Tip: You can get this using 'npm ls obscenity', 'yarn list obscenity' or 'pnpm ls obscenity' (depending on which package manager you're using).
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Terms
+      description: 'By submitting this issue, you confirm the following:'
+      options:
+        - label: I agree to follow the project's Code of Conduct.
+          required: true
+        - label: I have searched existing issues for similar reports.
+          required: true
