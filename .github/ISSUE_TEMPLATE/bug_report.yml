@@ -73,8 +73,8 @@ body:
       description: What should be the priority of this issue? Be realistic.
       options:
         - label: Low
-        - low: Medium
-        - low: High
+        - label: Medium
+        - label: High
   - type: checkboxes
     attributes:
       label: Terms
