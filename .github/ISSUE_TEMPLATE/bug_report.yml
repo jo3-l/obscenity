@@ -75,6 +75,8 @@ body:
         - label: Low
         - label: Medium
         - label: High
+    validations:
+      required: true
   - type: checkboxes
     attributes:
       label: Terms
