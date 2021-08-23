@@ -1,0 +1,44 @@
+# Deps
+node_modules
+pnpm-lock.yaml
+
+# Source
+.github
+.husky
+benchmarks
+src
+static
+test
+
+# Docs
+docs
+example
+CONTRIBUTING.md
+INTERNALS.md
+
+# Config
+.commitlintrc.json
+.eslintignore
+.eslintrc.yml
+.gitattributes
+.gitignore
+.lintstagedrc.json
+.prettierignore
+.prettierrc.json
+jest.config.ts
+renovate.json
+tsconfig.base.json
+tsconfig.eslint.json
+typedoc.json
+
+# Coverage
+coverage
+*.lcov
+.nyc_output
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# Misc
+dist/*.tsbuildinfo
