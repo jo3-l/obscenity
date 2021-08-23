@@ -53,7 +53,9 @@ yarn add obscenity
 pnpm add obscenity
 ```
 
-## Example Usage
+## Example
+
+First, import Obscenity:
 
 ```javascript
 const {
@@ -63,28 +65,37 @@ const {
 	englishRecommendedWhitelistMatcherTransformers,
 } = require('obscenity');
 
+// Or, in ESM/TypeScript:
+import {
+	PatternMatcher,
+	englishDataset,
+	englishRecommendedBlacklistMatcherTransformers,
+	englishRecommendedWhitelistMatcherTransformers,
+} from 'obscenity';
+```
+
+Next, create a `PatternMatcher`, which does what its name says.
+
+```javascript
 // Creating a matcher is somewhat expensive, so do this only once in your app if possible:
 const matcher = new PatternMatcher({
 	...englishDataset.build(),
 	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
 	whitelistMatcherTransformers: englishRecommendedWhitelistMatcherTransformers,
 });
+```
 
+Now, we can use it to check whether some input contains obscenities. Don't forget to call `setInput()` before!
+
+```javascript
 const input = 'ʃʃᵤс𝗄 you';
 console.log(
 	matcher.setInput(input).hasMatch() ? 'The input contains obscenities.' : 'The input does not contain obscenities.',
 );
+// => "The input contains obscenities".
 ```
 
-In ESM and TypeScript, use the following to import:
-
-```typescript
-import { PatternMatcher, ... } from 'obscenity';
-// Or:
-import * as obscenity from 'obscenity';
-```
-
-The above example matches on **all of the following**:
+The example above matches on **all of the following**:
 
 - you are a little **fuck**er
 - **fk** you
@@ -164,7 +175,11 @@ const matcher = new PatternMatcher({
 
 </details>
 
-## Writing your own patterns
+### Getting more information about the matches
+
+TODO.
+
+### Writing your own patterns
 
 To write your own patterns, see the documentation for the [pattern template tag](./docs/reference/README.md#pattern). A quick summary is:
 
