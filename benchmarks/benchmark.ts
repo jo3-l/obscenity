@@ -17,22 +17,27 @@ export class BenchmarkSuite {
 
 	public run(numRuns: number) {
 		console.log(`🏁 Start benchmark ${green(this.title)}\n`);
-		for (const test of this.tests) {
+		let fastest = 0;
+		for (let i = 0; i < this.tests.length; i++) {
+			const test = this.tests[i];
 			for (let n = 0; n < numRuns; n++) test.fn();
+			if (test.histogram.mean < this.tests[fastest].histogram.mean) fastest = i;
 		}
 
-		for (let i = 0; i < this.tests.length; i++) {
-			if (i > 0) console.log();
-			this.display(this.tests[i].title, this.tests[i].histogram);
+		console.log(`  ${bold('Fastest:')} ${italic(this.tests[fastest].title)}`);
+		for (const test of this.tests) {
+			console.log();
+			this.display(test.title, test.histogram, this.tests[fastest].histogram);
 		}
 	}
 
-	private display(title: string, h: RecordableHistogram) {
-		console.log(`Results for ${italic(title)}:`);
-		console.log(`  - ${bold('Min:')} ${yellow((h.min / 1e6).toFixed(2))} ms`);
-		console.log(`  - ${bold('Max:')} ${yellow((h.max / 1e6).toFixed(2))} ms`);
-		console.log(`  - ${bold('Mean:')} ${yellow((h.mean / 1e6).toFixed(2))} ms`);
-		console.log(`  - ${bold('Standard deviation:')} ${yellow((h.stddev / 1e6).toFixed(2))} ms`);
+	private display(title: string, h: RecordableHistogram, fastest: RecordableHistogram) {
+		console.log(`  Results for ${italic(title)}:`);
+		console.log(`    - ${bold('Min:')} ${yellow((h.min / 1e6).toFixed(2))} ms`);
+		console.log(`    - ${bold('Max:')} ${yellow((h.max / 1e6).toFixed(2))} ms`);
+		console.log(`    - ${bold('Mean:')} ${yellow((h.mean / 1e6).toFixed(2))} ms`);
+		console.log(`    - ${bold('Standard deviation:')} ${yellow((h.stddev / 1e6).toFixed(2))} ms`);
+		console.log(`    - ${bold('Relative performance:')} ${yellow(((fastest.mean / h.mean) * 100).toFixed(2))}%`);
 	}
 }
 
