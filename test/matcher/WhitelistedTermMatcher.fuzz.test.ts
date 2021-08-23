@@ -1,7 +1,7 @@
 import * as fc from 'fast-check';
 
-import type { Interval } from '../../src/matcher/interval/Interval';
 import { WhitelistedTermMatcher } from '../../src/matcher/WhitelistedTermMatcher';
+import type { Interval } from '../../src/util/Interval';
 
 test('running the whitelist matcher with a set of terms and input should have the same result as running the brute force string searching algorithm on it', () => {
 	fc.assert(
@@ -33,7 +33,7 @@ test('running the whitelist matcher with a set of terms and input should have th
 				for (const pattern of substrPatterns) set.add(pattern);
 				const allPatterns = [...set];
 				const matcher = new WhitelistedTermMatcher({ terms: allPatterns });
-				expect([...matcher.getMatchedSpans(input)]).toBePermutationOf(bruteForceMatch(allPatterns, input));
+				expect([...matcher.getMatches(input)]).toBePermutationOf(bruteForceMatch(allPatterns, input));
 			},
 		),
 	);

@@ -11,7 +11,8 @@ import { CharacterIterator } from '../util/CharacterIterator';
 import { CircularBuffer } from '../util/CircularBuffer';
 import { Queue } from '../util/Queue';
 import type { BlacklistedTerm } from './BlacklistedTerm';
-import { IntervalCollection } from './interval/IntervalCollection';
+import { ArrayIntervalCollection } from './interval/ArrayIntervalCollection';
+import type { IntervalCollection } from './interval/IntervalCollection';
 import type { MatchPayload } from './MatchPayload';
 import { compareMatchByPositionAndId } from './MatchPayload';
 import type { PartialMatchData } from './trie/BlacklistTrieNode';
@@ -41,7 +42,7 @@ export class PatternMatcher {
 	private readonly pendingPartialMatches: PendingPartialMatch[] = []; // pending partial matches that are waiting for their required wildcard count to be fulfilled
 	private readonly partialMatches: CircularBuffer<Set<string> | undefined>; // partial matches found; value is a set of partial match hashes
 	private currentNode = this.rootNode;
-	private whitelistedSpans = new IntervalCollection();
+	private whitelistedIntervals: IntervalCollection = new ArrayIntervalCollection();
 
 	/**
 	 * Creates a new pattern matcher with the options given.
@@ -144,7 +145,7 @@ export class PatternMatcher {
 
 	private setInput(input: string) {
 		this.iter.setInput(input);
-		this.whitelistedSpans = this.whitelistedTermMatcher.getMatchedSpans(this.input);
+		this.whitelistedIntervals = this.whitelistedTermMatcher.getMatches(this.input);
 		this.iter.reset();
 		this.currentNode = this.rootNode;
 		this.usedIndices.clear();
@@ -198,7 +199,6 @@ export class PatternMatcher {
 			for (const matchLength of this.wildcardOnlyPatternMatchLengths) {
 				if (matchLength > this.usedIndices.length) break;
 				const pattern = this.wildcardOnlyPatterns.get(matchLength)!;
-				/* istanbul ignore if: behavior is not observable in tests */
 				if (this.emitMatch(pattern.termId, pattern.flags) && breakAfterFirstMatch) return true;
 			}
 
@@ -282,7 +282,7 @@ export class PatternMatcher {
 		if (!startBoundaryOk || !endBoundaryOk) return false;
 
 		const patternId = this.patternIdMap.get(id)!;
-		if (this.whitelistedSpans.fullyContains([startIndex, endIndex])) return false;
+		if (this.whitelistedIntervals.fullyContains(startIndex, endIndex)) return false;
 
 		this.matches.push({ termId: patternId, matchLength, startIndex, endIndex });
 		return true;

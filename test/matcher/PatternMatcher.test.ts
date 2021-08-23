@@ -1,7 +1,9 @@
 import { assignIncrementingIds } from '../../src/matcher/BlacklistedTerm';
 import type { MatchPayload } from '../../src/matcher/MatchPayload';
 import { PatternMatcher } from '../../src/matcher/PatternMatcher';
+import { WhitelistedTermMatcher } from '../../src/matcher/WhitelistedTermMatcher';
 import { parseRawPattern, pattern } from '../../src/pattern/Pattern';
+import { skipNonAlphabeticTransformer } from '../../src/transformer/skip-non-alphabetic';
 import { createSimpleTransformer } from '../../src/transformer/Transformers';
 import { CharacterCode } from '../../src/util/Char';
 
@@ -236,6 +238,22 @@ describe('matching with optionals', () => {
 
 describe('matching with wildcards', () => {
 	it.each([
+		[
+			'should match a pattern that only contains wildcards',
+			['??', '?'],
+			'abc',
+			{
+				0: [
+					[0, 1],
+					[1, 2],
+				],
+				1: [
+					[0, 0],
+					[1, 1],
+					[2, 2],
+				],
+			},
+		],
 		[
 			'should match a single pattern with an wildcard at the end correctly',
 			['hello?'],
@@ -539,9 +557,22 @@ describe('matching with word boundaries', () => {
 });
 
 describe('matching with whitelisted terms', () => {
+	it('should call the getMatches() method of the WhitelistedTermMatcher with the input', () => {
+		const spy = jest.spyOn(WhitelistedTermMatcher.prototype, 'getMatches');
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: [{ id: 1, pattern: pattern`thing` }],
+			blacklistMatcherTransformers: [skipNonAlphabeticTransformer()],
+			whitelistedTerms: ['thi ing'],
+		});
+		matcher.getAllMatches('the thi ing');
+		expect(spy).toHaveBeenCalledTimes(1);
+		expect(spy).toHaveBeenLastCalledWith('the thi ing');
+	});
+
 	it('should not match parts of the text which are completely matched by a whitelisted term', () => {
 		const matcher = new PatternMatcher({
 			blacklistedPatterns: [{ id: 1, pattern: pattern`penis` }],
+			blacklistMatcherTransformers: [skipNonAlphabeticTransformer()],
 			whitelistedTerms: ['pen is'],
 		});
 		expect(matcher.getAllMatches('the pen is mightier than the penis')).toStrictEqual([
@@ -714,8 +745,7 @@ describe('PatternMatcher#getAllMatches()', () => {
 describe('PatternMatcher#hasMatch()', () => {
 	it('should be true if there is a match', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`yo there`]),
-			whitelistedTerms: ['the yo there'],
+			blacklistedPatterns: assignIncrementingIds([pattern`there`, pattern`yo there hi`]),
 		});
 		expect(matcher.hasMatch('the yo there has a yo there')).toBeTruthy();
 	});
@@ -725,6 +755,41 @@ describe('PatternMatcher#hasMatch()', () => {
 			blacklistedPatterns: assignIncrementingIds([pattern`yo`]),
 		});
 		expect(matcher.hasMatch('no y-word here!')).toBeFalsy();
+	});
+
+	it('should not return true if a match with incorrect word boundaries is found', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: assignIncrementingIds([pattern`|xs`]),
+		});
+		expect(matcher.hasMatch('yoxs')).toBeFalsy();
+	});
+
+	it('should return true if there is a match for a pattern with a wildcard at the end', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: assignIncrementingIds([pattern`x?`]),
+		});
+		expect(matcher.hasMatch('my xo')).toBeTruthy();
+	});
+
+	it('should return true if there is a match for a pattern that only contains wildcards', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: assignIncrementingIds([pattern`??`]),
+		});
+		expect(matcher.hasMatch('xy')).toBeTruthy();
+	});
+
+	it('should return true if there a match for a pattern that contains wildcards at the start (only 1 pattern)', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: assignIncrementingIds([pattern`?x`]),
+		});
+		expect(matcher.hasMatch('foo bar quux')).toBeTruthy();
+	});
+
+	it('should return true if there is a match for a pattern that contains wildcards at the start (two patterns)', () => {
+		const matcher = new PatternMatcher({
+			blacklistedPatterns: assignIncrementingIds([pattern`?a`, pattern`?ba|`]),
+		});
+		expect(matcher.hasMatch('xbac')).toBeTruthy();
 	});
 
 	it('should work when called several times in a row', () => {

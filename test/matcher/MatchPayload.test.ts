@@ -1,42 +1,27 @@
 import { compareMatchByPositionAndId } from '../../src/matcher/MatchPayload';
+import { compareIntervals as _compareIntervals } from '../../src/util/Interval';
+
+jest.mock('../../src/util/Interval', () => ({ compareIntervals: jest.fn().mockReturnValue(0) }));
+
+const compareIntervals = _compareIntervals as jest.MockedFunction<typeof _compareIntervals>;
+
+afterEach(() => {
+	compareIntervals.mockClear();
+});
 
 describe('compareMatchByPositionAndId()', () => {
 	const termIdAndMatchLen = { termId: -1, matchLength: 0 };
 
-	it("should return -1 if the first match payload's start index is less than the second's", () => {
+	it('should call compareIntervals() and return its result if not zero', () => {
+		compareIntervals.mockImplementationOnce(() => -1);
 		expect(
 			compareMatchByPositionAndId(
 				{ ...termIdAndMatchLen, startIndex: 5, endIndex: 7 },
 				{ ...termIdAndMatchLen, startIndex: 6, endIndex: 8 },
 			),
 		).toBe(-1);
-	});
-
-	it("should return 1 if the second match payload's start index is less than the first's", () => {
-		expect(
-			compareMatchByPositionAndId(
-				{ ...termIdAndMatchLen, startIndex: 10, endIndex: 11 },
-				{ ...termIdAndMatchLen, startIndex: 9, endIndex: 14 },
-			),
-		).toBe(1);
-	});
-
-	it("should return -1 if the first payload's end index is less than the second's", () => {
-		expect(
-			compareMatchByPositionAndId(
-				{ ...termIdAndMatchLen, startIndex: 8, endIndex: 11 },
-				{ ...termIdAndMatchLen, startIndex: 8, endIndex: 12 },
-			),
-		).toBe(-1);
-	});
-
-	it("should return 1 if the second payload's end index if less than the first's", () => {
-		expect(
-			compareMatchByPositionAndId(
-				{ ...termIdAndMatchLen, startIndex: 10, endIndex: 15 },
-				{ ...termIdAndMatchLen, startIndex: 10, endIndex: 13 },
-			),
-		).toBe(1);
+		expect(compareIntervals).toHaveBeenCalledTimes(1);
+		expect(compareIntervals).toHaveBeenLastCalledWith(5, 7, 6, 8);
 	});
 
 	const startAndEndIdxAndMatchLen = { startIndex: 0, endIndex: 0, matchLength: 0 };

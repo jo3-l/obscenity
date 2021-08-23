@@ -1,4 +1,4 @@
-import { compareIntervals } from './interval/Interval';
+import { compareIntervals } from '../util/Interval';
 
 /**
  * Data emitted by the pattern matcher on a successful match.
@@ -55,7 +55,7 @@ export interface MatchPayload {
  * than the first.
  */
 export function compareMatchByPositionAndId(a: MatchPayload, b: MatchPayload) {
-	const result = compareIntervals([a.startIndex, a.endIndex], [b.startIndex, b.endIndex]);
+	const result = compareIntervals(a.startIndex, a.endIndex, b.startIndex, b.endIndex);
 	if (result !== 0) return result;
 	return a.termId === b.termId ? 0 : a.termId < b.termId ? -1 : 1;
 }

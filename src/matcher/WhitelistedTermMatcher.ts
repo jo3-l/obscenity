@@ -3,7 +3,8 @@ import { TransformerSet } from '../transformer/TransformerSet';
 import { CharacterIterator } from '../util/CharacterIterator';
 import { CircularBuffer } from '../util/CircularBuffer';
 import { Queue } from '../util/Queue';
-import { IntervalCollection } from './interval/IntervalCollection';
+import { ArrayIntervalCollection } from './interval/ArrayIntervalCollection';
+import { DynamicIntervalCollection } from './interval/DynamicIntervalCollection';
 import { WhitelistTrieNode } from './trie/WhitelistTrieNode';
 
 export class WhitelistedTermMatcher {
@@ -19,34 +20,10 @@ export class WhitelistedTermMatcher {
 		this.constructLinks();
 	}
 
-	public getMatchedSpans(text: string) {
-		if (this.rootNode.edges.size === 0) return new IntervalCollection();
-
-		// See the comment on startIndex for why this exists.
+	public getMatches(text: string) {
+		if (this.rootNode.edges.size === 0) return new ArrayIntervalCollection();
 		const usedIndices = new CircularBuffer<number>(this.maxMatchLength);
-		const matchedSpans = new IntervalCollection();
-		const reportMatch = (id: number) => {
-			let endIndex = usedIndices.get(usedIndices.length - 1)!;
-			if (iter.lastWidth === 2) {
-				// Adjust the end index if the last character was a surrogate pair.
-				endIndex++;
-			}
-
-			const matchLength = this.matchLengths.get(id)!;
-
-			// N.B.: We have to be careful about how we compute the start index
-			// here. Due to the fact that we support transformers (which can
-			// cause a character to be skipped during matching), it would be
-			// incorrect to simply write endIndex - matchLength.
-			//
-			// Instead, we get the nth index used for matching going backward
-			// from the end index. This is guaranteed to exist as we track at
-			// least the past M indices that were used during matching, where M
-			// is the maximum number of code points a whitelisted term can
-			// match.
-			const startIndex = usedIndices.get(usedIndices.length - matchLength)!;
-			matchedSpans.insert([startIndex, endIndex]);
-		};
+		const matches = new DynamicIntervalCollection();
 
 		let currentNode = this.rootNode;
 		const iter = new CharacterIterator(text);
@@ -64,15 +41,24 @@ export class WhitelistedTermMatcher {
 			currentNode = currentNode.edges.get(transformed) ?? this.rootNode;
 
 			// Report matches as needed.
-			if (currentNode.isOutputNode) reportMatch(currentNode.termId);
+			if (currentNode.isOutputNode) {
+				const matchLength = this.matchLengths.get(currentNode.termId)!;
+				const startIndex = usedIndices.get(usedIndices.length - matchLength)!;
+				// Adjust the end index by iter.lastWidth - 1 to account for surrogate pairs.
+				matches.insert(startIndex, iter.position + iter.lastWidth - 1);
+			}
+
 			let linkedNode = currentNode.outputLink;
 			while (linkedNode) {
-				reportMatch(linkedNode.termId);
+				const matchLength = this.matchLengths.get(linkedNode.termId)!;
+				const startIndex = usedIndices.get(usedIndices.length - matchLength)!;
+				// Similar.
+				matches.insert(startIndex, iter.position + iter.lastWidth - 1);
 				linkedNode = linkedNode.outputLink;
 			}
 		}
 
-		return matchedSpans;
+		return matches.underlyingImplementation;
 	}
 
 	private registerTerm(term: string) {

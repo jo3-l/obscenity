@@ -1,13 +1,13 @@
 import * as fc from 'fast-check';
 
 import { assignIncrementingIds } from '../../src/matcher/BlacklistedTerm';
-import type { Interval } from '../../src/matcher/interval/Interval';
-import { compareIntervals } from '../../src/matcher/interval/Interval';
 import { PatternMatcher } from '../../src/matcher/PatternMatcher';
 import type { LiteralNode, ParsedPattern } from '../../src/pattern/Nodes';
 import { SyntaxKind } from '../../src/pattern/Nodes';
 import { CharacterCode } from '../../src/util/Char';
 import { CharacterIterator } from '../../src/util/CharacterIterator';
+import type { Interval } from '../../src/util/Interval';
+import { compareIntervals } from '../../src/util/Interval';
 
 test('running the pattern matcher on a set of patterns and input should have the same result as using a brute force approach with regexp', () => {
 	fc.assert(
@@ -82,7 +82,7 @@ test('running the pattern matcher on a set of patterns and input should have the
 					(transformedMatches[payload.termId] ??= []).push([payload.startIndex, payload.endIndex]);
 				}
 
-				for (const matches of Object.values(transformedMatches)) matches.sort(compareIntervals);
+				for (const matches of Object.values(transformedMatches)) matches.sort((a, b) => compareIntervals(...a, ...b));
 				expect(transformedMatches).toStrictEqual(
 					bruteForceMatch(
 						allPatterns.map(([pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd]) =>
@@ -107,7 +107,7 @@ function bruteForceMatch(regExps: RegExp[], input: string) {
 		}
 	}
 
-	for (const matches of Object.values(result)) matches.sort(compareIntervals);
+	for (const matches of Object.values(result)) matches.sort((a, b) => compareIntervals(...a, ...b));
 	return result;
 }
 
