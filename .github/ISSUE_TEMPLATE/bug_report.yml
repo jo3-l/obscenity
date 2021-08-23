@@ -68,6 +68,14 @@ body:
       required: true
   - type: checkboxes
     attributes:
+      label: Priority
+      description: What should be the priority of this issue? Be realistic.
+      options:
+        - label: Low
+        - low: Medium
+        - low: High
+  - type: checkboxes
+    attributes:
       label: Terms
       description: 'By submitting this issue, you confirm the following:'
       options:
@@ -75,5 +83,3 @@ body:
           required: true
         - label: I have searched existing issues for similar reports.
           required: true
-    validations:
-      required: true
