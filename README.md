@@ -341,7 +341,7 @@ Results for Regular Expressions:
 
 </details>
 
-See the benchmark code [here](./benchmarks/index.ts).
+See the benchmark code [here](./benchmarks/lib.ts).
 
 ### Why are there no benchmarks against other libraries?
 
@@ -355,11 +355,16 @@ Clone the repository, then run the following commands:
 
 ```sh-session
 pnpm build
-pnpm bench
+pnpm build:benchmarks
+node benchmarks/lib
 ```
 
-Note that by default, to lower the standard deviation, the number of runs is quite high (`100,000`). Due to this, the benchmark may take some time to run.
-To speed it up, simply change `1e5` in the code to `1e4` or `1e3`.
+The default number of runs is 10,000. You can change it by passing a numerical value to the benchmark, e.g.:
+
+```sh-session
+node benchmarks/lib 10k
+node benchmarks/lib 100000
+```
 
 ## Contributing
 

@@ -12,7 +12,6 @@
 	"scripts": {
 		"build": "rimraf dist && tsc -b src && gen-esm-wrapper dist/index.js dist/index.mjs",
 		"build:benchmarks": "tsc -b benchmarks",
-		"bench": "pnpm build:benchmarks && node benchmarks",
 		"build:docs": "rimraf docs/references && typedoc",
 		"test": "jest",
 		"test:watch": "jest --watch",

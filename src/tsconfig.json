@@ -5,6 +5,7 @@
 		"outDir": "../dist",
 		"rootDir": ".",
 		"baseUrl": ".",
-		"composite": true
+		"composite": true,
+		"declaration": true
 	}
 }
