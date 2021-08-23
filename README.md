@@ -177,7 +177,7 @@ const matcher = new PatternMatcher({
 
 ### Getting more information about the matches
 
-TODO.
+TODO. Example coming soon!
 
 ### Writing your own patterns
 
@@ -208,8 +208,7 @@ const matcher = new PatternMatcher({
 
 ## Documentation
 
-- [Auto-generated API documentation](./docs/reference)
-- [Article about how Obscenity works internally](TODO)
+Refer to the [auto-generated API documentation](./docs/reference).
 
 ## Performance
 
@@ -366,7 +365,8 @@ To speed it up, simply change `1e5` in the code to `1e4` or `1e3`.
 
 ## Contributing
 
-TODO.
+Issues can be reported using the [issue tracker](https://github.com/jo3-l/obscenity/issues).
+If you'd like to submit a pull request, please read the [contribution guide](./CONTRIBUTING.md) first.
 
 ## Author
 
