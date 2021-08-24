@@ -9,7 +9,8 @@ export class CircularBuffer<T> implements Iterable<T> {
 	// that the circular buffer can store at least that capacity.
 	public constructor(capacity: number) {
 		this.head = 0;
-		this.data = new Array<T | undefined>(nextHighestPowerOfTwo(capacity));
+		// Round up to the nearest higher power of two.
+		this.data = new Array<T | undefined>(1 << Math.ceil(Math.log2(capacity)));
 		this.mask = this.capacity - 1;
 	}
 
@@ -50,15 +51,4 @@ export class CircularBuffer<T> implements Iterable<T> {
 			yield this.data[i & this.mask]!;
 		}
 	}
-}
-
-// See https://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
-function nextHighestPowerOfTwo(v: number) {
-	v--;
-	v |= v >> 1;
-	v |= v >> 2;
-	v |= v >> 4;
-	v |= v >> 8;
-	v |= v >> 16;
-	return ++v;
 }

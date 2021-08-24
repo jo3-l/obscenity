@@ -105,7 +105,7 @@ for (const [title, text] of tests) {
 	console.log();
 }
 
-console.log(italic(`(Ignore, to guard against dead code elimination) ${matchCount}\n`));
+console.log(italic(`(Ignore, to guard against dead code elimination) ${matchCount}`));
 
 function patternToRegExp(pattern: ParsedPattern) {
 	let regExpStr = '';

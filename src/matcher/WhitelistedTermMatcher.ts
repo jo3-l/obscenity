@@ -3,8 +3,7 @@ import { TransformerSet } from '../transformer/TransformerSet';
 import { CharacterIterator } from '../util/CharacterIterator';
 import { CircularBuffer } from '../util/CircularBuffer';
 import { Queue } from '../util/Queue';
-import { ArrayIntervalCollection } from './interval/ArrayIntervalCollection';
-import { DynamicIntervalCollection } from './interval/DynamicIntervalCollection';
+import { IntervalCollection } from './IntervalCollection';
 import { WhitelistTrieNode } from './trie/WhitelistTrieNode';
 
 export class WhitelistedTermMatcher {
@@ -21,9 +20,9 @@ export class WhitelistedTermMatcher {
 	}
 
 	public getMatches(text: string) {
-		if (this.rootNode.edges.size === 0) return new ArrayIntervalCollection();
+		if (this.rootNode.edges.size === 0) return new IntervalCollection();
 		const usedIndices = new CircularBuffer<number>(this.maxMatchLength);
-		const matches = new DynamicIntervalCollection();
+		const matches = new IntervalCollection();
 
 		let currentNode = this.rootNode;
 		const iter = new CharacterIterator(text);
@@ -58,7 +57,7 @@ export class WhitelistedTermMatcher {
 			}
 		}
 
-		return matches.underlyingImplementation;
+		return matches;
 	}
 
 	private registerTerm(term: string) {

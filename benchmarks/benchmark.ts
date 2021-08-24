@@ -15,7 +15,7 @@ export class BenchmarkSuite {
 		return this;
 	}
 
-	public run(numRuns: number) {
+	public run(numRuns: number): BenchmarkResult {
 		console.log(`🏁 Start benchmark ${green(this.title)}\n`);
 		let fastest = 0;
 		for (let i = 0; i < this.tests.length; i++) {
@@ -29,6 +29,11 @@ export class BenchmarkSuite {
 			console.log();
 			this.display(test.title, test.histogram, this.tests[fastest].histogram);
 		}
+
+		return {
+			fastest: this.toTestResult(this.tests[fastest]),
+			individualResults: this.tests.map(this.toTestResult),
+		};
 	}
 
 	private display(title: string, h: RecordableHistogram, fastest: RecordableHistogram) {
@@ -39,6 +44,20 @@ export class BenchmarkSuite {
 		console.log(`    - ${bold('Standard deviation:')} ${yellow((h.stddev / 1e6).toFixed(2))} ms`);
 		console.log(`    - ${bold('Relative performance:')} ${yellow(((fastest.mean / h.mean) * 100).toFixed(2))}%`);
 	}
+
+	private toTestResult(test: Test) {
+		return { title: test.title, histogram: test.histogram };
+	}
+}
+
+export interface BenchmarkResult {
+	fastest: TestResult;
+	individualResults: TestResult[];
+}
+
+export interface TestResult {
+	title: string;
+	histogram: RecordableHistogram;
 }
 
 interface Test {

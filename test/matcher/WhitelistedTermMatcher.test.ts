@@ -11,7 +11,7 @@ describe('constructor', () => {
 describe('WhitelistedTermMatcher#getMatchedSpans', () => {
 	it('should return an empty interval collection if there are no terms', () => {
 		const matches = new WhitelistedTermMatcher({ terms: [] }).getMatches('hello world');
-		expect(matches.size).toBe(0);
+		expect([...matches]).toHaveLength(0);
 	});
 
 	it.each([
@@ -85,7 +85,7 @@ describe('WhitelistedTermMatcher#getMatchedSpans', () => {
 			// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 			const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? CharacterCode.LowerA + 1 : c));
 			const matches = new WhitelistedTermMatcher({ terms: ['hallo'], transformers: [changeAToB] }).getMatches('hallo');
-			expect(matches.size).toBe(0);
+			expect([...matches]).toHaveLength(0);
 		});
 
 		it('should work with transformers that change chars (with match)', () => {

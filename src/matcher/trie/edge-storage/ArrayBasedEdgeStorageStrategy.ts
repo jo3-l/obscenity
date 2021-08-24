@@ -1,7 +1,7 @@
 import type { Edge, EdgeStorageStrategy } from './EdgeStorageStrategy';
 
 export class ArrayBasedEdgeStorageStrategy<T> implements EdgeStorageStrategy<T> {
-	private static readonly maxLinearSearchEdgeCount = 3;
+	private static readonly linearSearchMax = 3;
 
 	private readonly edges: Edge<T>[] = [];
 	private dirty = false;
@@ -20,7 +20,7 @@ export class ArrayBasedEdgeStorageStrategy<T> implements EdgeStorageStrategy<T> 
 	}
 
 	public get(char: number) {
-		if (this.edges.length <= ArrayBasedEdgeStorageStrategy.maxLinearSearchEdgeCount) {
+		if (this.edges.length <= ArrayBasedEdgeStorageStrategy.linearSearchMax) {
 			return this.edges.find((edge) => edge[0] === char)?.[1];
 		}
 

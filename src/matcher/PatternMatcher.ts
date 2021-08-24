@@ -11,8 +11,7 @@ import { CharacterIterator } from '../util/CharacterIterator';
 import { CircularBuffer } from '../util/CircularBuffer';
 import { Queue } from '../util/Queue';
 import type { BlacklistedTerm } from './BlacklistedTerm';
-import { ArrayIntervalCollection } from './interval/ArrayIntervalCollection';
-import type { IntervalCollection } from './interval/IntervalCollection';
+import { IntervalCollection } from './IntervalCollection';
 import type { MatchPayload } from './MatchPayload';
 import { compareMatchByPositionAndId } from './MatchPayload';
 import type { PartialMatchData } from './trie/BlacklistTrieNode';
@@ -42,7 +41,7 @@ export class PatternMatcher {
 	private readonly pendingPartialMatches: PendingPartialMatch[] = []; // pending partial matches that are waiting for their required wildcard count to be fulfilled
 	private readonly partialMatches: CircularBuffer<Set<string> | undefined>; // partial matches found; value is a set of partial match hashes
 	private currentNode = this.rootNode;
-	private whitelistedIntervals: IntervalCollection = new ArrayIntervalCollection();
+	private whitelistedIntervals = new IntervalCollection();
 
 	/**
 	 * Creates a new pattern matcher with the options given.
@@ -282,7 +281,7 @@ export class PatternMatcher {
 		if (!startBoundaryOk || !endBoundaryOk) return false;
 
 		const patternId = this.patternIdMap.get(id)!;
-		if (this.whitelistedIntervals.fullyContains(startIndex, endIndex)) return false;
+		if (this.whitelistedIntervals.query(startIndex, endIndex)) return false;
 
 		this.matches.push({ termId: patternId, matchLength, startIndex, endIndex });
 		return true;
