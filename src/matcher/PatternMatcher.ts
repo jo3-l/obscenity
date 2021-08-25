@@ -6,7 +6,7 @@ import type { LiteralGroup, WildcardGroup } from '../pattern/Util';
 import { computePatternMatchLength, groupByNodeType } from '../pattern/Util';
 import type { TransformerContainer } from '../transformer/Transformers';
 import { TransformerSet } from '../transformer/TransformerSet';
-import { isWordChar } from '../util/Char';
+import { isHighSurrogate, isLowSurrogate, isWordChar } from '../util/Char';
 import { CharacterIterator } from '../util/CharacterIterator';
 import { CircularBuffer } from '../util/CircularBuffer';
 import { Queue } from '../util/Queue';
@@ -29,17 +29,50 @@ export class PatternMatcher {
 	private readonly matchLengths: number[] = []; // matchLengths[i] is the match length of the pattern with ID i
 	private readonly partialMatchStepCounts = new Map<number, number>(); // partialMatchStepCounts[i] is the total number of steps of the pattern with ID i. Only applies to partial matches.
 	private readonly wildcardOnlyPatterns: WildcardOnlyPatternData[] = [];
+	// Maximum number of trailing wildcards.
+	//
+	// x x x ? y y ? ? ? ?
+	//             ^^^^^^^
+	//        4 trailing wildcards
+	private maxTrailingWildcardCount = 0;
+	// Maximum distance between the start of a partial pattern and the end of the partial pattern following it.
+	//
+	// x x x ? ? ? y y y y
+	// 0 1 2 3 4 5 6 7 8 9
+	// ^^^^^^^^^^^^^^^^^^^
+	//    distance of 10
+	//
+	// This value is equal to how long we need to keep partial matches around.
 	private maxPartialPatternDistance = 0;
-	private maxMatchLength = 0;
-	private currentId = 0;
+	private maxMatchLength = 0; // Maximum match length of any pattern, equal to how many indices to the left of the current position we need to track.
+	private currentId = 0; // Current generated pattern ID.
 
 	private readonly whitelistedTermMatcher: WhitelistedTermMatcher;
 	private readonly transformers: TransformerSet;
 
-	private readonly iter = new CharacterIterator();
-	private readonly usedIndices: CircularBuffer<number>; // tracks indices used for matching so we can get the start index of a match
+	// Use two iterators: one fast, and one slow. The fast iterator will
+	// constantly be |maxTrailingWildcardCount| positions head of the slow
+	// iterator.
+	private readonly slowIter = new CharacterIterator();
+	private readonly fastIter = new CharacterIterator();
+
+	// Sliding window of indices used for matching.
+	//
+	//             current position
+	//                 |
+	// i0 i1 i2 i3 i4 i5
+	// ^^^^^^^^^^^^^^^^^
+	//  maxMatchLength
+	private readonly usedIndices: CircularBuffer<number>;
+	// Sliding window of indices to the right of the current position.
+	//
+	// current position
+	// |
+	//   i6 i7 i8 i9 i10 i11 i12 i13
+	//   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+	//    maxTrailingWildcardCount
+	private readonly futureIndices: CircularBuffer<number | undefined>;
 	private matches: MatchPayload[] = [];
-	private readonly pendingPartialMatches: PendingPartialMatch[] = []; // pending partial matches that are waiting for their required wildcard count to be fulfilled
 	private readonly partialMatches: CircularBuffer<Set<string> | undefined>; // partial matches found; value is a set of partial match hashes
 	private currentNode = this.rootNode;
 	private whitelistedIntervals = new IntervalCollection();
@@ -108,6 +141,7 @@ export class PatternMatcher {
 			a.wildcardCount < b.wildcardCount ? -1 : b.wildcardCount < a.wildcardCount ? 1 : 0,
 		);
 		this.usedIndices = new CircularBuffer(this.maxMatchLength);
+		this.futureIndices = new CircularBuffer(this.maxTrailingWildcardCount);
 		this.partialMatches = new CircularBuffer(this.maxPartialPatternDistance);
 	}
 
@@ -149,24 +183,53 @@ export class PatternMatcher {
 	}
 
 	private setInput(input: string) {
-		this.iter.setInput(input);
-		this.whitelistedIntervals = this.whitelistedTermMatcher.getMatches(this.input);
-		this.iter.reset();
+		this.slowIter.setInput(input);
+		this.fastIter.setInput(input);
+		this.whitelistedIntervals = this.whitelistedTermMatcher.getMatches(input);
 		this.currentNode = this.rootNode;
 		this.usedIndices.clear();
+		this.futureIndices.clear();
 		this.partialMatches.clear();
 		this.matches = [];
 	}
 
 	private run(breakAfterFirstMatch = false) {
-		for (const char of this.iter) {
-			const transformed = this.transformers.applyTo(char);
-			if (transformed === undefined) continue; // Returning undefined from a transformer skips that character.
+		// Fill the future index buffer by advancing the fast iterator forward.
+		while (this.futureIndices.length < this.futureIndices.capacity) {
+			const char = this.fastIter.next().value;
+			if (char === undefined) {
+				// Iterator is done.
+				this.futureIndices.push(undefined);
+			} else {
+				const transformed = this.transformers.applyTo(char);
+				// Only add the position if the character didn't become
+				// undefined after transformation.
+				if (transformed !== undefined) this.futureIndices.push(this.fastIter.position);
+			}
+		}
 
-			// Mark the current position as one used for matching.
-			this.usedIndices.push(this.position);
-			// Move the partial matches buffer forward.
+		for (const char of this.slowIter) {
+			const transformed = this.transformers.applyTo(char);
+			if (transformed === undefined) continue;
+
+			// Advance the index window forward.
+			// 	1 3 4 5 7 8 9
+			// becomes
+			// 	3 4 5 7 8 9 10 (if 10 is the current position)
+			this.usedIndices.push(this.slowIter.position);
+
+			// Advance the partial matches buffer forward.
 			this.partialMatches.push(undefined);
+
+			// Find next usable character for the fast iterator.
+			if (this.maxTrailingWildcardCount > 0) {
+				let found = false;
+				while (!this.fastIter.done && !found) {
+					found = this.transformers.applyTo(this.fastIter.next().value!) !== undefined;
+					if (found) this.futureIndices.push(this.fastIter.position);
+				}
+				if (!found) this.futureIndices.push(undefined);
+			}
 
 			// Follow failure links until we find a node that has a transition for the current character.
 			while (this.currentNode !== this.rootNode && !this.currentNode.edges.get(transformed)) {
@@ -174,42 +237,38 @@ export class PatternMatcher {
 			}
 			this.currentNode = this.currentNode.edges.get(transformed) ?? this.rootNode;
 
-			// Relax the trailing wildcard counts of pending partial matches.
-			for (let i = this.pendingPartialMatches.length - 1; i >= 0; i--) {
-				const match = this.pendingPartialMatches[i];
-				// Have we seen enough characters to conclude that the wildcard
-				// requirement for this match has been fulfilled?
-				//
-				// Example: Let's say we are matching the pattern 'aa??'. After
-				// we match the partial pattern 'aa', we need to see 2 more
-				// characters before we can conclude that the whole pattern
-				// matched.
-				if (--match.trailingWildcardCount === 0) {
-					if (this.emitMatch(match.id, match.flags) && breakAfterFirstMatch) return true;
-
-					// Set the value at the current index to the last pending
-					// match, then pop from the array. This allows us to remove
-					// the value at the current index in amortized constant time
-					// and is only possible because we don't care about the
-					// order of the array.
-					this.pendingPartialMatches[i] = this.pendingPartialMatches[this.pendingPartialMatches.length - 1];
-					this.pendingPartialMatches.pop();
-				}
-			}
-
 			// Emit matches for wildcard-only patterns. Patterns of the form
-			// '????' ('?' repeated N times) always have a match ending at the
+			// ?^N ('?' repeated N times) always have a match ending at the
 			// current index if the number of characters seen is
 			// >= N.
 			for (const data of this.wildcardOnlyPatterns) {
 				if (data.wildcardCount > this.usedIndices.length) break;
-				if (this.emitMatch(data.id, data.flags) && breakAfterFirstMatch) return true;
+				const matchLength = this.matchLengths[data.id];
+				const startIndex = this.usedIndices.get(this.usedIndices.length - matchLength)!;
+				const matched = this.emitMatch(
+					data.id,
+					data.flags,
+					startIndex,
+					this.slowIter.position + this.slowIter.lastWidth - 1,
+					matchLength,
+				);
+				if (matched && breakAfterFirstMatch) return true;
 			}
 
 			// Emit matches for the current node, then follow its output links.
 			if (this.currentNode.flags & NodeFlag.MatchLeaf) {
-				if (this.emitMatch(this.currentNode.termId, this.currentNode.flags) && breakAfterFirstMatch) return true;
+				const matchLength = this.matchLengths[this.currentNode.termId];
+				const startIndex = this.usedIndices.get(this.usedIndices.length - matchLength)!;
+				const matched = this.emitMatch(
+					this.currentNode.termId,
+					this.currentNode.flags,
+					startIndex,
+					this.slowIter.position + this.slowIter.lastWidth - 1,
+					matchLength,
+				);
+				if (matched && breakAfterFirstMatch) return true;
 			}
+
 			if (this.currentNode.flags & NodeFlag.PartialMatchLeaf) {
 				for (const partialMatch of this.currentNode.partialMatches!) {
 					if (this.emitPartialMatch(partialMatch) && breakAfterFirstMatch) return true;
@@ -223,8 +282,18 @@ export class PatternMatcher {
 						if (this.emitPartialMatch(partialMatch) && breakAfterFirstMatch) return true;
 					}
 				}
+
 				if (outputLink.flags & NodeFlag.MatchLeaf) {
-					if (this.emitMatch(outputLink.termId, outputLink.flags) && breakAfterFirstMatch) return true;
+					const matchLength = this.matchLengths[outputLink.termId];
+					const startIndex = this.usedIndices.get(this.usedIndices.length - matchLength)!;
+					const matched = this.emitMatch(
+						outputLink.termId,
+						outputLink.flags,
+						startIndex,
+						this.slowIter.position + this.slowIter.lastWidth - 1,
+						matchLength,
+					);
+					if (matched && breakAfterFirstMatch) return true;
 				}
 				outputLink = outputLink.outputLink;
 			}
@@ -233,56 +302,84 @@ export class PatternMatcher {
 		return this.matches.length > 0;
 	}
 
-	private get input() {
-		return this.iter.input;
-	}
-
-	private get position() {
-		return this.iter.position;
-	}
-
 	private emitPartialMatch(data: PartialMatchData) {
-		const hasSufficientCharactersBefore = data.leadingWildcardCount + data.matchLength <= this.position + 1;
+		// ??xxxxx
+		// If we have a match for 'xxxxx', the whole pattern matches if the
+		// number of characters seen is greater than the number of leading
+		// wildcards (in this case 2).
+		const hasSufficientCharactersBefore = data.leadingWildcardCount + data.matchLength <= this.usedIndices.length;
+		if (!hasSufficientCharactersBefore) return false;
+
+		// 	x x ? ? y y y y y
+		// 	0 1 2 3 4 5 5 6 7
+		//
+		// If we have a match for 'yyyyy', the whole pattern matches if we have
+		// a match for 'xx' ending 7 characters before (length of 'yyyyy', plus
+		// two wildcards, plus one).
 		const hasMatchForPreviousStep =
+			// First step has no match before it.
 			data.step === 1 ||
 			(this.partialMatches
 				.get(this.partialMatches.length - data.leadingWildcardCount - data.matchLength - 1)
 				?.has(hashPartialMatch(data.step - 1, data.termId)) ??
 				false);
-		if (!hasSufficientCharactersBefore || !hasMatchForPreviousStep) return false;
+		if (!hasMatchForPreviousStep) return false;
 		if (data.step === this.partialMatchStepCounts.get(data.termId)) {
-			// We're on the last step: see if we can emit a match for the whole
-			// pattern, or add it to our pending matches.
-			if (data.trailingWildcardCount === 0) return this.emitMatch(data.termId, data.flags);
+			// Say the pattern is 'xx???yyyyy'.
+			// We're currently on 'yyyyy' and we know that the steps before
+			// match. We can safely emit a match if there are no trailing
+			// wildcards.
+			if (data.trailingWildcardCount === 0) {
+				const matchLength = this.matchLengths[data.termId];
+				const startIndex = this.usedIndices.get(this.usedIndices.length - matchLength)!;
+				return this.emitMatch(
+					data.termId,
+					data.flags,
+					startIndex,
+					this.slowIter.position + this.slowIter.lastWidth - 1,
+					matchLength,
+				);
+			}
 
-			// Otherwise, add it to the stack of maybe pending partial matches.
-			this.pendingPartialMatches.push({
-				trailingWildcardCount: data.trailingWildcardCount,
-				id: data.termId,
-				flags: data.flags,
-			});
-		} else {
-			let hashes = this.partialMatches.get(this.partialMatches.length - 1);
-			if (!hashes) this.partialMatches.set(this.partialMatches.length - 1, (hashes = new Set<string>()));
-			hashes.add(hashPartialMatch(data.step, data.termId));
+			// Say the pattern is 'xx??yy??'.
+			// This pattern matches if there are at least two characters that are
+			// usable to the right of the current position.
+			let endIndex = this.futureIndices.get(data.trailingWildcardCount - 1);
+			if (endIndex === undefined) return false;
+
+			// Adjust for surrogate pairs.
+			if (
+				// not the last character
+				endIndex < this.slowIter.input.length - 1 &&
+				// character is a high surrogate
+				isHighSurrogate(this.slowIter.input.charCodeAt(endIndex)) &&
+				// next character is a low surrogate
+				isLowSurrogate(this.slowIter.input.charCodeAt(endIndex + 1))
+			) {
+				endIndex++;
+			}
+
+			const matchLength = this.matchLengths[data.termId];
+			const startIndex = this.usedIndices.get(this.usedIndices.length - matchLength + data.trailingWildcardCount)!;
+			return this.emitMatch(data.termId, data.flags, startIndex, endIndex, matchLength);
 		}
 
+		// Otherwise, add a partial match.
+		let hashes = this.partialMatches.get(this.partialMatches.length - 1);
+		if (!hashes) this.partialMatches.set(this.partialMatches.length - 1, (hashes = new Set<string>()));
+		hashes.add(hashPartialMatch(data.step, data.termId));
 		return false;
 	}
 
-	private emitMatch(id: number, flags: number) {
-		// Adjust the position to point to the low surrogate if the last character we saw was a surrogate pair.
-		const endIndex = this.position + this.iter.lastWidth - 1;
-		const matchLength = this.matchLengths[id];
-		const startIndex = this.usedIndices.get(this.usedIndices.length - matchLength)!;
+	private emitMatch(id: number, flags: number, startIndex: number, endIndex: number, matchLength: number) {
 		const startBoundaryOk =
 			!(flags & SharedFlag.RequireWordBoundaryAtStart) || // doesn't require word boundary at the start
 			startIndex === 0 || // first character
-			!isWordChar(this.input.charCodeAt(startIndex - 1)); // character before isn't a word char
+			!isWordChar(this.slowIter.input.charCodeAt(startIndex - 1)); // character before isn't a word char
 		const endBoundaryOk =
 			!(flags & SharedFlag.RequireWordBoundaryAtEnd) || // doesn't require word boundary at the end
-			endIndex === this.input.length - 1 || // last character
-			!isWordChar(this.input.charCodeAt(endIndex + 1)); // character after isn't a word char
+			endIndex === this.slowIter.input.length - 1 || // last character
+			!isWordChar(this.slowIter.input.charCodeAt(endIndex + 1)); // character after isn't a word char
 		if (!startBoundaryOk || !endBoundaryOk) return false;
 
 		const termId = this.originalIds[id];
@@ -423,6 +520,10 @@ export class PatternMatcher {
 				this.maxPartialPatternDistance,
 				lastLiteralGroupLength + leadingWildcardCount + chars.length,
 			);
+			if (i >= groups.length - 2) {
+				// Last group of literals.
+				this.maxTrailingWildcardCount = Math.max(this.maxTrailingWildcardCount, trailingWildcardCount);
+			}
 		}
 
 		this.partialMatchStepCounts.set(id, step - 1);
@@ -541,10 +642,4 @@ interface WildcardOnlyPatternData {
 const enum WildcardOnlyPatternFlag {
 	RequireWordBoundaryAtStart = 1 << 0,
 	RequireWordBoundaryAtEnd = 1 << 1,
-}
-
-interface PendingPartialMatch {
-	id: number;
-	flags: number;
-	trailingWildcardCount: number;
 }
