@@ -1,4 +1,5 @@
 import { DataSet } from '../dataset/DataSet';
+import type { PatternMatcherOptions } from '../matcher/PatternMatcher';
 import { pattern } from '../pattern/Pattern';
 import { collapseDuplicatesTransformer } from '../transformer/collapse-duplicates';
 import { resolveConfusablesTransformer } from '../transformer/resolve-confusables';
@@ -41,14 +42,25 @@ export const englishRecommendedWhitelistMatcherTransformers = [
 ];
 
 /**
+ * Recommended transformers to be used with the [[englishDataset | english word
+ * dataset]] and the [[PatternMatcher]].
+ */
+export const englishRecommendedTransformers: Pick<
+	PatternMatcherOptions,
+	'blacklistMatcherTransformers' | 'whitelistMatcherTransformers'
+> = {
+	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
+	whitelistMatcherTransformers: englishRecommendedWhitelistMatcherTransformers,
+};
+
+/**
  * A dataset of profane English words.
  *
  * @example
  * ```typescript
  * const matcher = new PatternMatcher({
  * 	...englishDataset.build(),
- * 	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
- * 	whitelistMatcherTransformers: englishRecommendedWhitelistMatcherTransformers,
+ * 	...englishRecommendedTransformers,
  * });
  * ```
  *

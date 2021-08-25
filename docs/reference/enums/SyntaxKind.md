@@ -21,7 +21,7 @@ An enumeration of the kinds of nodes there are.
 
 #### Defined in
 
-[src/pattern/Nodes.ts:33](https://github.com/jo3-l/obscenity/blob/3d763ca/src/pattern/Nodes.ts#L33)
+[src/pattern/Nodes.ts:33](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/pattern/Nodes.ts#L33)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[src/pattern/Nodes.ts:32](https://github.com/jo3-l/obscenity/blob/3d763ca/src/pattern/Nodes.ts#L32)
+[src/pattern/Nodes.ts:32](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/pattern/Nodes.ts#L32)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[src/pattern/Nodes.ts:30](https://github.com/jo3-l/obscenity/blob/3d763ca/src/pattern/Nodes.ts#L30)
+[src/pattern/Nodes.ts:30](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/pattern/Nodes.ts#L30)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[src/pattern/Nodes.ts:31](https://github.com/jo3-l/obscenity/blob/3d763ca/src/pattern/Nodes.ts#L31)
+[src/pattern/Nodes.ts:31](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/pattern/Nodes.ts#L31)

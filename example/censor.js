@@ -1,15 +1,8 @@
-const {
-	TextCensor,
-	PatternMatcher,
-	englishDataset,
-	englishRecommendedBlacklistMatcherTransformers,
-	englishRecommendedWhitelistMatcherTransformers,
-} = require('../dist');
+const { TextCensor, PatternMatcher, englishDataset, englishRecommendedTransformers } = require('../dist');
 
 const matcher = new PatternMatcher({
 	...englishDataset.build(),
-	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
-	whitelistMatcherTransformers: englishRecommendedWhitelistMatcherTransformers,
+	...englishRecommendedTransformers,
 });
 const censor = new TextCensor();
 

@@ -1,15 +1,9 @@
-const {
-	PatternMatcher,
-	englishDataset,
-	englishRecommendedBlacklistMatcherTransformers,
-	englishRecommendedWhitelistMatcherTransformers,
-} = require('../dist');
+const { PatternMatcher, englishDataset, englishRecommendedTransformers } = require('../dist');
 
 // Creating a matcher is somewhat expensive, so do this only once in your app if possible:
 const matcher = new PatternMatcher({
 	...englishDataset.build(),
-	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
-	whitelistMatcherTransformers: englishRecommendedWhitelistMatcherTransformers,
+	...englishRecommendedTransformers,
 });
 
 const input = 'ʃʃᵤс𝗄 you';

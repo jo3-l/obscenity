@@ -1,15 +1,9 @@
 const repl = require('repl');
-const {
-	PatternMatcher,
-	englishDataset,
-	englishRecommendedBlacklistMatcherTransformers,
-	englishRecommendedWhitelistMatcherTransformers,
-} = require('../dist');
+const { PatternMatcher, englishDataset, englishRecommendedTransformers } = require('../dist');
 
 const matcher = new PatternMatcher({
 	...englishDataset.build(),
-	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
-	whitelistMatcherTransformers: englishRecommendedWhitelistMatcherTransformers,
+	...englishRecommendedTransformers,
 });
 
 console.log(`Welcome to the REPL example for Obscenity.

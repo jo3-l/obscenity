@@ -58,20 +58,10 @@ pnpm add obscenity
 First, import Obscenity:
 
 ```javascript
-const {
-	PatternMatcher,
-	englishDataset,
-	englishRecommendedBlacklistMatcherTransformers,
-	englishRecommendedWhitelistMatcherTransformers,
-} = require('obscenity');
+const { PatternMatcher, englishDataset, englishRecommendedTransformers } = require('obscenity');
 
 // Or, in ESM/TypeScript:
-import {
-	PatternMatcher,
-	englishDataset,
-	englishRecommendedBlacklistMatcherTransformers,
-	englishRecommendedWhitelistMatcherTransformers,
-} from 'obscenity';
+import { PatternMatcher, englishDataset, englishRecommendedTransformers } from 'obscenity';
 ```
 
 Next, create a `PatternMatcher`, which does what its name says.
@@ -80,8 +70,7 @@ Next, create a `PatternMatcher`, which does what its name says.
 // Creating a matcher is somewhat expensive, so do this only once in your app if possible:
 const matcher = new PatternMatcher({
 	...englishDataset.build(),
-	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
-	whitelistMatcherTransformers: englishRecommendedWhitelistMatcherTransformers,
+	...englishRecommendedTransformers,
 });
 ```
 
@@ -121,18 +110,11 @@ The default censoring strategy used by the `TextCensor` is grawlix, but there ar
 	<summary>Click to show code</summary>
 
 ```javascript
-const {
-	TextCensor,
-	PatternMatcher,
-	englishDataset,
-	englishRecommendedBlacklistMatcherTransformers,
-	englishRecommendedWhitelistMatcherTransformers,
-} = require('obscenity');
+const { TextCensor, PatternMatcher, englishDataset, englishRecommendedTransformers } = require('obscenity');
 
 const matcher = new PatternMatcher({
 	...englishDataset.build(),
-	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
-	whitelistMatcherTransformers: englishRecommendedWhitelistMatcherTransformers,
+	...englishRecommendedTransformers,
 });
 const censor = new TextCensor();
 
@@ -151,13 +133,7 @@ If you want to use the English dataset but don't agree with some of the word cho
 	<summary>Click to show code</summary>
 
 ```javascript
-const {
-	PatternMatcher,
-	englishDataSet,
-	englishRecommendedBlacklistMatcherTransformers,
-	englishRecommendedWhitelistMatcherTransformers,
-	DataSet,
-} = require('obscenity');
+const { PatternMatcher, englishDataSet, englishRecommendedTransformers, DataSet } = require('obscenity');
 
 // Create a custom dataset.
 const myDataset = new DataSet()
@@ -165,8 +141,7 @@ const myDataset = new DataSet()
 	.removePhrasesIf((phrase) => phrase.metadata.displayName === 'whore'); // remove 'whore'
 const matcher = new PatternMatcher({
 	...myDataset.build(),
-	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
-	whitelistMatcherTransformers: englishRecommendedWhitelistMatcherTransformers,
+	...englishRecommendedTransformers,
 });
 // ...
 ```
