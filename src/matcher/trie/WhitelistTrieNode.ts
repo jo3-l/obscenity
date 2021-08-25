@@ -1,7 +1,8 @@
-import { EdgeList } from './EdgeList';
+import type { EdgeCollection } from './edge/EdgeCollection';
+import { ForwardingEdgeCollection } from './edge/ForwardingEdgeCollection';
 
 export class WhitelistTrieNode {
-	public readonly edges = new EdgeList<this>();
+	public edges: EdgeCollection<this> = new ForwardingEdgeCollection<this>();
 	public termId = -1;
 	public failureLink!: WhitelistTrieNode;
 	public outputLink?: WhitelistTrieNode;

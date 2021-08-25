@@ -1,5 +1,4 @@
 import { IntervalCollection } from '../../src/matcher/IntervalCollection';
-import type { Interval } from '../../src/util/Interval';
 
 let coll: IntervalCollection;
 
@@ -50,10 +49,7 @@ it('should be iterable', () => {
 	coll.insert(30, 35);
 	coll.insert(47, 49);
 	coll.insert(98, 99);
-
-	const acc: Interval[] = [];
-	for (const interval of coll) acc.push(interval);
-	expect(acc).toBePermutationOf([
+	expect([...coll]).toBePermutationOf([
 		[30, 35],
 		[47, 49],
 		[98, 99],

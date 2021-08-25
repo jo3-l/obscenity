@@ -3,7 +3,7 @@ node_modules
 
 # Build artifacts
 dist
-benchmarks/*.js
+benchmarks/**/*.js
 
 # Coverage
 coverage

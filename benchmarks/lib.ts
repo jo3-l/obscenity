@@ -41,7 +41,7 @@ for (const filename of readdirSync(inputDir)) {
 	tests.push([basename(filename, extname(filename)), content.trim()]);
 }
 
-let matchCount = 0; // to guard against dead code elimination
+let n = 0; // to guard against dead code elimination
 
 for (const [title, text] of tests) {
 	const suite = new BenchmarkSuite(title)
@@ -95,17 +95,17 @@ for (const [title, text] of tests) {
 				}
 			}
 
-			matchCount += matches.length;
+			n += matches.length;
 		})
 		.add('Obscenity', () => {
-			matchCount += matcher.getAllMatches(text).length;
+			n += matcher.getAllMatches(text).length;
 		});
 
 	suite.run(numRuns);
 	console.log();
 }
 
-console.log(italic(`(Ignore, to guard against dead code elimination) ${matchCount}`));
+console.log(italic(`(Ignore, to guard against dead code elimination) ${n}`));
 
 function patternToRegExp(pattern: ParsedPattern) {
 	let regExpStr = '';

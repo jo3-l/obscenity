@@ -14,7 +14,10 @@ export class IntervalCollection implements Iterable<Interval> {
 		if (this.dirty) {
 			this.dirty = false;
 			// Sort by lower bound.
-			this.intervals.sort((a, b) => (a[0] < b[0] ? -1 : b[0] < a[0] ? 1 : 0));
+			this.intervals.sort(
+				/* istanbul ignore next: not possible to write a robust test for this */
+				(a, b) => (a[0] < b[0] ? -1 : b[0] < a[0] ? 1 : 0),
+			);
 		}
 
 		for (const interval of this.intervals) {

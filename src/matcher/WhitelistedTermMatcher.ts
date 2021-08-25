@@ -4,6 +4,7 @@ import { CharacterIterator } from '../util/CharacterIterator';
 import { CircularBuffer } from '../util/CircularBuffer';
 import { Queue } from '../util/Queue';
 import { IntervalCollection } from './IntervalCollection';
+import type { ForwardingEdgeCollection } from './trie/edge/ForwardingEdgeCollection';
 import { WhitelistTrieNode } from './trie/WhitelistTrieNode';
 
 export class WhitelistedTermMatcher {
@@ -17,6 +18,7 @@ export class WhitelistedTermMatcher {
 		this.transformers = new TransformerSet(transformers);
 		for (const term of terms) this.registerTerm(term);
 		this.constructLinks();
+		this.useUnderlyingEdgeCollectionImplementation(this.rootNode);
 	}
 
 	public getMatches(text: string) {
@@ -93,7 +95,7 @@ export class WhitelistedTermMatcher {
 		// section 3 in said paper for more details.
 		this.rootNode.failureLink = this.rootNode;
 		const queue = new Queue<WhitelistTrieNode>();
-		for (const node of this.rootNode.edges.nodes()) {
+		for (const node of this.rootNode.edges.values()) {
 			node.failureLink = this.rootNode;
 			queue.push(node);
 		}
@@ -110,6 +112,11 @@ export class WhitelistedTermMatcher {
 
 			node.outputLink = node.failureLink.isOutputNode ? node.failureLink : node.failureLink.outputLink;
 		}
+	}
+
+	private useUnderlyingEdgeCollectionImplementation(node: WhitelistTrieNode) {
+		node.edges = (node.edges as ForwardingEdgeCollection<WhitelistTrieNode>).underlyingImplementation;
+		for (const childNode of node.edges.values()) this.useUnderlyingEdgeCollectionImplementation(childNode);
 	}
 }
 

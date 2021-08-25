@@ -16,6 +16,7 @@ import type { MatchPayload } from './MatchPayload';
 import { compareMatchByPositionAndId } from './MatchPayload';
 import type { PartialMatchData } from './trie/BlacklistTrieNode';
 import { BlacklistTrieNode, hashPartialMatch, NodeFlag, PartialMatchFlag, SharedFlag } from './trie/BlacklistTrieNode';
+import type { ForwardingEdgeCollection } from './trie/edge/ForwardingEdgeCollection';
 import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
 
 /**
@@ -36,7 +37,7 @@ export class PatternMatcher {
 	private readonly transformers: TransformerSet;
 
 	private readonly iter = new CharacterIterator();
-	private readonly usedIndices: CircularBuffer<number>; // tracks indices used for matching; see comment in WhitelistedTermMatcher.ts for why this exists
+	private readonly usedIndices: CircularBuffer<number>; // tracks indices used for matching so we can get the start index of a match
 	private matches: MatchPayload[] = [];
 	private readonly pendingPartialMatches: PendingPartialMatch[] = []; // pending partial matches that are waiting for their required wildcard count to be fulfilled
 	private readonly partialMatches: CircularBuffer<Set<string> | undefined>; // partial matches found; value is a set of partial match hashes
@@ -99,10 +100,11 @@ export class PatternMatcher {
 		this.transformers = new TransformerSet(blacklistMatcherTransformers);
 		this.ensureNoDuplicates(blacklistedPatterns.map((p) => p.id));
 		this.buildTrie(blacklistedPatterns);
+		this.constructLinks();
+		this.useUnderlyingEdgeCollectionImplementation(this.rootNode);
 		this.wildcardOnlyPatternMatchLengths = [...new Set(this.wildcardOnlyPatternMatchLengths)].sort(); // deduplicate, then sort in ascending order
 		this.usedIndices = new CircularBuffer(this.maxMatchLength);
 		this.partialMatches = new CircularBuffer(this.maxMatchLength);
-		this.constructLinks();
 	}
 
 	/**
@@ -438,7 +440,7 @@ export class PatternMatcher {
 		// section 3 in said paper for more details.
 		this.rootNode.failureLink = this.rootNode;
 		const queue = new Queue<BlacklistTrieNode>();
-		for (const node of this.rootNode.edges.nodes()) {
+		for (const node of this.rootNode.edges.values()) {
 			node.failureLink = this.rootNode;
 			queue.push(node);
 		}
@@ -459,6 +461,11 @@ export class PatternMatcher {
 					? node.failureLink
 					: node.failureLink.outputLink;
 		}
+	}
+
+	private useUnderlyingEdgeCollectionImplementation(node: BlacklistTrieNode) {
+		node.edges = (node.edges as ForwardingEdgeCollection<BlacklistTrieNode>).underlyingImplementation;
+		for (const childNode of node.edges.values()) this.useUnderlyingEdgeCollectionImplementation(childNode);
 	}
 }
 

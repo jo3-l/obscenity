@@ -38,10 +38,10 @@ export class BenchmarkSuite {
 
 	private display(title: string, h: RecordableHistogram, fastest: RecordableHistogram) {
 		console.log(`  Results for ${italic(title)}:`);
-		console.log(`    - ${bold('Min:')} ${yellow((h.min / 1e6).toFixed(2))} ms`);
-		console.log(`    - ${bold('Max:')} ${yellow((h.max / 1e6).toFixed(2))} ms`);
-		console.log(`    - ${bold('Mean:')} ${yellow((h.mean / 1e6).toFixed(2))} ms`);
-		console.log(`    - ${bold('Standard deviation:')} ${yellow((h.stddev / 1e6).toFixed(2))} ms`);
+		console.log(`    - ${bold('Min:')} ${yellow((h.min / 1e6).toFixed(4))} ms`);
+		console.log(`    - ${bold('Max:')} ${yellow((h.max / 1e6).toFixed(4))} ms`);
+		console.log(`    - ${bold('Mean:')} ${yellow((h.mean / 1e6).toFixed(4))} ms`);
+		console.log(`    - ${bold('Standard deviation:')} ${yellow((h.stddev / 1e6).toFixed(4))} ms`);
 		console.log(`    - ${bold('Relative performance:')} ${yellow(((fastest.mean / h.mean) * 100).toFixed(2))}%`);
 	}
 
