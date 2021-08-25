@@ -70,7 +70,7 @@ console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sw
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:90](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/matcher/PatternMatcher.ts#L90)
+[src/matcher/PatternMatcher.ts:123](https://github.com/jo3-l/obscenity/blob/3d763ca/src/matcher/PatternMatcher.ts#L123)
 
 ## Methods
 
@@ -101,7 +101,7 @@ otherwise, their order is unspecified.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:126](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/matcher/PatternMatcher.ts#L126)
+[src/matcher/PatternMatcher.ts:164](https://github.com/jo3-l/obscenity/blob/3d763ca/src/matcher/PatternMatcher.ts#L164)
 
 ___
 
@@ -126,4 +126,4 @@ as it stops once it finds a match.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:141](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/matcher/PatternMatcher.ts#L141)
+[src/matcher/PatternMatcher.ts:179](https://github.com/jo3-l/obscenity/blob/3d763ca/src/matcher/PatternMatcher.ts#L179)

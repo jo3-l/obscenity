@@ -14,7 +14,7 @@ import { confusables } from './confusables';
  * @example
  * ```typescript
  * const transformer = resolveConfusablesTransformer();
- * const matcher = new PatternMatcher({ ..., blacklistMatcherTransformer: [transformer] });
+ * const matcher = new PatternMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
  *
  * @returns A container holding the transformer, which can then be passed to the
