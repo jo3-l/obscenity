@@ -11,9 +11,9 @@ import {
 	toAsciiLowerCaseTransformer,
 } from '../dist';
 import { BenchmarkSuite } from './benchmark';
-import { italic, parseRunCount } from './util';
+import { italic, parseNumRuns } from './util';
 
-const numRuns = parseRunCount();
+const numRuns = parseNumRuns();
 
 const built = englishDataset.build();
 const matcher = new PatternMatcher({

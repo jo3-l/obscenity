@@ -1,4 +1,4 @@
-export function parseRunCount() {
+export function parseNumRuns() {
 	if (process.argv.length <= 2) return 1e4;
 	const raw = process.argv[2];
 	if (!/^\d+[kK]?$/.test(raw)) {
