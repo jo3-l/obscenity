@@ -333,6 +333,12 @@ describe('matching with wildcards', () => {
 				1: [[7, 13]],
 			},
 		],
+		[
+			'should not match patterns with leading wildcards if there are insufficient characters at the start',
+			['??bye'],
+			'dbye',
+			{},
+		],
 	])('%s', (_, patterns, input, matches) => {
 		const expected: MatchPayload[] = [];
 		for (const [idStr, matchData] of Object.entries(matches)) {
