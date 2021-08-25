@@ -15,6 +15,7 @@ export const englishRecommendedBlacklistMatcherTransformers = [
 	resolveConfusablesTransformer(),
 	resolveLeetSpeakTransformer(),
 	toAsciiLowerCaseTransformer(),
+	skipNonAlphabeticTransformer(),
 	collapseDuplicatesTransformer({
 		defaultThreshold: 1,
 		customThresholds: new Map([
@@ -26,7 +27,6 @@ export const englishRecommendedBlacklistMatcherTransformers = [
 			['g', 2], // ni_gg_er
 		]),
 	}),
-	skipNonAlphabeticTransformer(),
 ];
 
 /**
