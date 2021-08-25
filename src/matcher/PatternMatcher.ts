@@ -28,8 +28,7 @@ export class PatternMatcher {
 	private readonly patternIdMap = new Map<number, number>(); // generated ID -> original pattern ID
 	private readonly matchLengths = new Map<number, number>(); // pattern ID -> match length
 	private readonly partialMatchStepCounts = new Map<number, number>(); // pattern ID -> number of partial match steps
-	private readonly wildcardOnlyPatterns = new Map<number, WildcardOnlyPatternData>(); // key is match length
-	private readonly wildcardOnlyPatternMatchLengths: number[] = [];
+	private readonly wildcardOnlyPatterns: WildcardOnlyPatternData[] = [];
 	private maxMatchLength = 0;
 	private currentId = 0;
 
@@ -102,7 +101,11 @@ export class PatternMatcher {
 		this.buildTrie(blacklistedTerms);
 		this.constructLinks();
 		this.useUnderlyingEdgeCollectionImplementation(this.rootNode);
-		this.wildcardOnlyPatternMatchLengths = [...new Set(this.wildcardOnlyPatternMatchLengths)].sort(); // deduplicate, then sort in ascending order
+		// Sort wildcard-only patterns by the number of wildcards they have.
+		this.wildcardOnlyPatterns.sort((a, b) =>
+			/* istanbul ignore next: not really possible to write a robust test for this */
+			a.wildcardCount < b.wildcardCount ? -1 : b.wildcardCount < a.wildcardCount ? 1 : 0,
+		);
 		this.usedIndices = new CircularBuffer(this.maxMatchLength);
 		this.partialMatches = new CircularBuffer(this.maxMatchLength);
 	}
@@ -197,10 +200,9 @@ export class PatternMatcher {
 			// '????' ('?' repeated N times) always have a match ending at the
 			// current index if the number of characters seen is
 			// >= N.
-			for (const matchLength of this.wildcardOnlyPatternMatchLengths) {
-				if (matchLength > this.usedIndices.length) break;
-				const pattern = this.wildcardOnlyPatterns.get(matchLength)!;
-				if (this.emitMatch(pattern.id, pattern.flags) && breakAfterFirstMatch) return true;
+			for (const data of this.wildcardOnlyPatterns) {
+				if (data.wildcardCount > this.usedIndices.length) break;
+				if (this.emitMatch(data.id, data.flags) && breakAfterFirstMatch) return true;
 			}
 
 			// Emit matches for the current node, then follow its output links.
@@ -343,15 +345,15 @@ export class PatternMatcher {
 		const matchLength = computePatternMatchLength(pattern);
 		this.matchLengths.set(id, matchLength);
 		this.maxMatchLength = Math.max(this.maxMatchLength, matchLength);
-		this.wildcardOnlyPatternMatchLengths.push(matchLength);
 
 		const data: WildcardOnlyPatternData = {
 			id: id,
 			flags: 0,
+			wildcardCount: matchLength,
 		};
 		if (term.pattern.requireWordBoundaryAtStart) data.flags |= WildcardOnlyPatternFlag.RequireWordBoundaryAtStart;
 		if (term.pattern.requireWordBoundaryAtEnd) data.flags |= WildcardOnlyPatternFlag.RequireWordBoundaryAtEnd;
-		this.wildcardOnlyPatterns.set(matchLength, data);
+		this.wildcardOnlyPatterns.push(data);
 	}
 
 	private registerPatternWithWildcardsAndLiterals(id: number, pattern: SimpleNode[], term: BlacklistedTerm) {
@@ -524,6 +526,7 @@ export interface PatternMatcherOptions {
 interface WildcardOnlyPatternData {
 	id: number;
 	flags: number;
+	wildcardCount: number;
 }
 
 const enum WildcardOnlyPatternFlag {
