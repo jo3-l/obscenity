@@ -20,8 +20,8 @@ describe('DataSet#addAll()', () => {
 		expect(
 			other
 				.build()
-				.blacklistedPatterns.every((p) =>
-					built.blacklistedPatterns.some((t) => JSON.stringify(t.pattern) === JSON.stringify(p.pattern)),
+				.blacklistedTerms.every((p) =>
+					built.blacklistedTerms.some((t) => JSON.stringify(t.pattern) === JSON.stringify(p.pattern)),
 				),
 		).toBeTruthy();
 		expect(built.whitelistedTerms).toStrictEqual(expect.arrayContaining(other.build().whitelistedTerms!));
@@ -43,7 +43,7 @@ describe('DataSet#addPhrase()', () => {
 		const dataset = new DataSet().addPhrase((builder) =>
 			builder.addPattern(firstPattern).addPattern(secondPattern).addPattern(thirdPattern),
 		);
-		expect(dataset.build().blacklistedPatterns).toStrictEqual([
+		expect(dataset.build().blacklistedTerms).toStrictEqual([
 			{ id: 0, pattern: firstPattern },
 			{ id: 1, pattern: secondPattern },
 			{ id: 2, pattern: thirdPattern },
@@ -86,7 +86,7 @@ describe('DataSet#removePhrasesIf()', () => {
 			)
 			.removePhrasesIf((phrase) => phrase.metadata === 'emotions' || phrase.metadata === 'greetings');
 		expect(dataset.build()).toStrictEqual({
-			blacklistedPatterns: [
+			blacklistedTerms: [
 				{ id: 0, pattern: pattern`morning` },
 				{ id: 1, pattern: pattern`night` },
 			],
@@ -98,7 +98,7 @@ describe('DataSet#removePhrasesIf()', () => {
 describe('DataSet#getPayloadWithPhraseMetadata()', () => {
 	const partialMatch = { startIndex: 0, endIndex: 0, matchLength: 0 };
 
-	it('should throw an error if the pattern ID does not correspond to one in the dataset', () => {
+	it('should throw an error if the term ID does not correspond to one in the dataset', () => {
 		const dataset = new DataSet().addPhrase((phrase) => phrase.addPattern(pattern`hmm.`).setMetadata('hmm metadata'));
 		expect(() =>
 			dataset.getPayloadWithPhraseMetadata({
@@ -271,7 +271,7 @@ describe('DataSet#build()', () => {
 		const dataset = new DataSet()
 			.addPhrase((phrase) => phrase.addPattern(pattern`hi`).addPattern(pattern`bye`))
 			.addPhrase((phrase) => phrase.addPattern(pattern`huh`).addPattern(pattern`huhu`));
-		expect(dataset.build().blacklistedPatterns).toStrictEqual([
+		expect(dataset.build().blacklistedTerms).toStrictEqual([
 			{ id: 0, pattern: pattern`hi` },
 			{ id: 1, pattern: pattern`bye` },
 			{ id: 2, pattern: pattern`huh` },

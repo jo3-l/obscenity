@@ -62,7 +62,7 @@ const customDataset = new DataSet().addAll(englishDataset);
 
 #### Defined in
 
-[src/dataset/DataSet.ts:28](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/dataset/DataSet.ts#L28)
+[src/dataset/DataSet.ts:28](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/dataset/DataSet.ts#L28)
 
 ___
 
@@ -94,13 +94,13 @@ const data = new DataSet()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/dataset/DataSet.ts#L75)
+[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/dataset/DataSet.ts#L75)
 
 ___
 
 ### build
 
-▸ **build**(): `Pick`<[`PatternMatcherOptions`](../interfaces/PatternMatcherOptions.md), ``"blacklistedPatterns"`` \| ``"whitelistedTerms"``\>
+▸ **build**(): `Pick`<[`PatternMatcherOptions`](../interfaces/PatternMatcherOptions.md), ``"blacklistedTerms"`` \| ``"whitelistedTerms"``\>
 
 Returns the dataset in a format suitable for usage with the [PatternMatcher](PatternMatcher.md).
 
@@ -114,11 +114,11 @@ const matcher = new PatternMatcher({
 
 #### Returns
 
-`Pick`<[`PatternMatcherOptions`](../interfaces/PatternMatcherOptions.md), ``"blacklistedPatterns"`` \| ``"whitelistedTerms"``\>
+`Pick`<[`PatternMatcherOptions`](../interfaces/PatternMatcherOptions.md), ``"blacklistedTerms"`` \| ``"whitelistedTerms"``\>
 
 #### Defined in
 
-[src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/dataset/DataSet.ts#L118)
+[src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/dataset/DataSet.ts#L118)
 
 ___
 
@@ -149,7 +149,7 @@ const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
 
 #### Defined in
 
-[src/dataset/DataSet.ts:95](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/dataset/DataSet.ts#L95)
+[src/dataset/DataSet.ts:95](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/dataset/DataSet.ts#L95)
 
 ___
 
@@ -178,4 +178,4 @@ const customDataset = new DataSet()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/dataset/DataSet.ts#L46)
+[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/dataset/DataSet.ts#L46)

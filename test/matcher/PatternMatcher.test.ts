@@ -12,7 +12,7 @@ describe('constructor', () => {
 		expect(
 			() =>
 				new PatternMatcher({
-					blacklistedPatterns: [
+					blacklistedTerms: [
 						{ id: 10, pattern: pattern`` },
 						{ id: 10, pattern: pattern`yo` },
 					],
@@ -24,7 +24,7 @@ describe('constructor', () => {
 		expect(
 			() =>
 				new PatternMatcher({
-					blacklistedPatterns: [{ id: 10, pattern: pattern`` }],
+					blacklistedTerms: [{ id: 10, pattern: pattern`` }],
 				}),
 		).toThrow(new Error('Unexpected empty blacklisted term.'));
 	});
@@ -33,7 +33,7 @@ describe('constructor', () => {
 		expect(
 			() =>
 				new PatternMatcher({
-					blacklistedPatterns: [{ id: 10, pattern: pattern`[abc]` }],
+					blacklistedTerms: [{ id: 10, pattern: pattern`[abc]` }],
 				}),
 		).toThrow(
 			new Error(
@@ -44,7 +44,7 @@ describe('constructor', () => {
 });
 
 it('should match nothing if there are no patterns', () => {
-	const matcher = new PatternMatcher({ blacklistedPatterns: [] });
+	const matcher = new PatternMatcher({ blacklistedTerms: [] });
 	expect(matcher.getAllMatches('foo bar')).toHaveLength(0);
 });
 
@@ -150,14 +150,14 @@ describe('simple matching; no wildcards/optionals', () => {
 			}
 		}
 
-		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(pats.map(parseRawPattern)) });
+		const matcher = new PatternMatcher({ blacklistedTerms: assignIncrementingIds(pats.map(parseRawPattern)) });
 		expect(matcher.getAllMatches(input)).toBePermutationOf(expected);
 	});
 });
 
 describe('matching with optionals', () => {
 	it('should emit matches with the correct ID', () => {
-		const matches = new PatternMatcher({ blacklistedPatterns: [{ id: 10, pattern: pattern`w[o]rld` }] }).getAllMatches(
+		const matches = new PatternMatcher({ blacklistedTerms: [{ id: 10, pattern: pattern`w[o]rld` }] }).getAllMatches(
 			'world wrld',
 		);
 		expect(matches).toHaveLength(2);
@@ -231,7 +231,7 @@ describe('matching with optionals', () => {
 			}
 		}
 
-		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(patterns.map(parseRawPattern)) });
+		const matcher = new PatternMatcher({ blacklistedTerms: assignIncrementingIds(patterns.map(parseRawPattern)) });
 		expect(matcher.getAllMatches(input)).toBePermutationOf(expected);
 	});
 });
@@ -347,7 +347,7 @@ describe('matching with wildcards', () => {
 			}
 		}
 
-		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(patterns.map(parseRawPattern)) });
+		const matcher = new PatternMatcher({ blacklistedTerms: assignIncrementingIds(patterns.map(parseRawPattern)) });
 		expect(matcher.getAllMatches(input)).toBePermutationOf(expected);
 	});
 });
@@ -551,7 +551,7 @@ describe('matching with word boundaries', () => {
 			}
 		}
 
-		const matcher = new PatternMatcher({ blacklistedPatterns: assignIncrementingIds(patterns.map(parseRawPattern)) });
+		const matcher = new PatternMatcher({ blacklistedTerms: assignIncrementingIds(patterns.map(parseRawPattern)) });
 		expect(matcher.getAllMatches(input)).toBePermutationOf(expected);
 	});
 });
@@ -560,7 +560,7 @@ describe('matching with whitelisted terms', () => {
 	it('should call the getMatches() method of the WhitelistedTermMatcher with the input', () => {
 		const spy = jest.spyOn(WhitelistedTermMatcher.prototype, 'getMatches');
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`thing` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`thing` }],
 			blacklistMatcherTransformers: [skipNonAlphabeticTransformer()],
 			whitelistedTerms: ['thi ing'],
 		});
@@ -571,7 +571,7 @@ describe('matching with whitelisted terms', () => {
 
 	it('should not match parts of the text which are completely matched by a whitelisted term', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`penis` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`penis` }],
 			blacklistMatcherTransformers: [skipNonAlphabeticTransformer()],
 			whitelistedTerms: ['pen is'],
 		});
@@ -587,7 +587,7 @@ describe('matching with whitelisted terms', () => {
 
 	it('should match parts of the text that only overlap (and are not completely contained) by a whitelisted term', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`bitch` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`bitch` }],
 			whitelistedTerms: ['bit', 'itch'],
 		});
 		expect(matcher.getAllMatches('a bitch')).toStrictEqual([
@@ -605,7 +605,7 @@ describe('matching with blacklist transformers', () => {
 	it('should skip characters which became undefined after transformation', () => {
 		const skipSpaces = createSimpleTransformer((c) => (c === 32 ? undefined : c));
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`something` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`something` }],
 			blacklistMatcherTransformers: [skipSpaces],
 		});
 		expect(matcher.getAllMatches('s o m e t h i n  g')).toStrictEqual([
@@ -622,7 +622,7 @@ describe('matching with blacklist transformers', () => {
 		// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 		const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`sa?e` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`sa?e` }],
 			blacklistMatcherTransformers: [changeAToB],
 		});
 		expect(matcher.getAllMatches('same')).toHaveLength(0);
@@ -632,7 +632,7 @@ describe('matching with blacklist transformers', () => {
 		// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 		const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`hbllo?` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`hbllo?` }],
 			blacklistMatcherTransformers: [changeAToB],
 		});
 		expect(matcher.getAllMatches('sup hallothere')).toStrictEqual([
@@ -649,7 +649,7 @@ describe('matching with blacklist transformers', () => {
 		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 		const ignoreAllAs = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`bbb` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`bbb` }],
 			whitelistedTerms: ['aabbbaa'],
 			blacklistMatcherTransformers: [ignoreAllAs],
 		});
@@ -661,7 +661,7 @@ describe('matching with whitelist transformers', () => {
 	it('should work with transformers which become undefined after transformation', () => {
 		const skipSpaces = createSimpleTransformer((c) => (c === 32 ? undefined : c));
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`world` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`world` }],
 			whitelistedTerms: ['helloworld!'],
 			whitelistMatcherTransformers: [skipSpaces],
 		});
@@ -672,7 +672,7 @@ describe('matching with whitelist transformers', () => {
 		// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 		const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`biash` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`biash` }],
 			whitelistedTerms: ['a biash'],
 			whitelistMatcherTransformers: [changeAToB],
 		});
@@ -685,7 +685,7 @@ describe('matching with whitelist transformers', () => {
 		// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 		const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`ass` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`ass` }],
 			whitelistedTerms: ['bss'],
 			whitelistMatcherTransformers: [changeAToB],
 		});
@@ -696,7 +696,7 @@ describe('matching with whitelist transformers', () => {
 		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 		const ignoreAllAs = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: [{ id: 1, pattern: pattern`dader` }],
+			blacklistedTerms: [{ id: 1, pattern: pattern`dader` }],
 			whitelistedTerms: ['a dader'],
 			whitelistMatcherTransformers: [ignoreAllAs],
 		});
@@ -710,7 +710,7 @@ describe('PatternMatcher#getAllMatches()', () => {
 	describe('result match order', () => {
 		it('should be sorted if the sorted parameter is set to true', () => {
 			const matcher = new PatternMatcher({
-				blacklistedPatterns: assignIncrementingIds([pattern`sup`, pattern`u?`, pattern`dude`]),
+				blacklistedTerms: assignIncrementingIds([pattern`sup`, pattern`u?`, pattern`dude`]),
 			});
 			expect(matcher.getAllMatches('sup guys there are some dudes here', true)).toStrictEqual([
 				{ termId: 0, startIndex: 0, endIndex: 2, matchLength: 3 },
@@ -724,7 +724,7 @@ describe('PatternMatcher#getAllMatches()', () => {
 
 	it('should work when called several times in a row', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`foobar`, pattern`hello`]),
+			blacklistedTerms: assignIncrementingIds([pattern`foobar`, pattern`hello`]),
 			whitelistedTerms: ['the foobar'],
 		});
 		expect(matcher.getAllMatches('the foobar is quite foobar hello yo')).toBePermutationOf([
@@ -745,56 +745,56 @@ describe('PatternMatcher#getAllMatches()', () => {
 describe('PatternMatcher#hasMatch()', () => {
 	it('should be true if there is a match', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`there`, pattern`yo there hi`]),
+			blacklistedTerms: assignIncrementingIds([pattern`there`, pattern`yo there hi`]),
 		});
 		expect(matcher.hasMatch('the yo there has a yo there')).toBeTruthy();
 	});
 
 	it('should be falsy if there is no match', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`yo`]),
+			blacklistedTerms: assignIncrementingIds([pattern`yo`]),
 		});
 		expect(matcher.hasMatch('no y-word here!')).toBeFalsy();
 	});
 
 	it('should not return true if a match with incorrect word boundaries is found', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`|xs`]),
+			blacklistedTerms: assignIncrementingIds([pattern`|xs`]),
 		});
 		expect(matcher.hasMatch('yoxs')).toBeFalsy();
 	});
 
 	it('should return true if there is a match for a pattern with a wildcard at the end', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`x?`]),
+			blacklistedTerms: assignIncrementingIds([pattern`x?`]),
 		});
 		expect(matcher.hasMatch('my xo')).toBeTruthy();
 	});
 
 	it('should return true if there is a match for a pattern that only contains wildcards', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`??`]),
+			blacklistedTerms: assignIncrementingIds([pattern`??`]),
 		});
 		expect(matcher.hasMatch('xy')).toBeTruthy();
 	});
 
 	it('should return true if there a match for a pattern that contains wildcards at the start (only 1 pattern)', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`?x`]),
+			blacklistedTerms: assignIncrementingIds([pattern`?x`]),
 		});
 		expect(matcher.hasMatch('foo bar quux')).toBeTruthy();
 	});
 
 	it('should return true if there is a match for a pattern that contains wildcards at the start (two patterns)', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`?a`, pattern`?ba|`]),
+			blacklistedTerms: assignIncrementingIds([pattern`?a`, pattern`?ba|`]),
 		});
 		expect(matcher.hasMatch('xbac')).toBeTruthy();
 	});
 
 	it('should work when called several times in a row', () => {
 		const matcher = new PatternMatcher({
-			blacklistedPatterns: assignIncrementingIds([pattern`yo there`]),
+			blacklistedTerms: assignIncrementingIds([pattern`yo there`]),
 			whitelistedTerms: ['the yo there'],
 		});
 		expect(matcher.hasMatch('the yo there has a yo there')).toBeTruthy();

@@ -28,7 +28,7 @@ Creates a new pattern matcher with the options given.
 ```typescript
 // Simple matcher that only has blacklisted patterns.
 const matcher = new PatternMatcher({
-	blacklistedPatterns: assignIncrementingIds([
+	blacklistedTerms: assignIncrementingIds([
 		pattern`fuck`,
 		pattern`f?uck`, // wildcards (?)
 		pattern`bitch`,
@@ -44,7 +44,7 @@ const doesMatch = matcher.hasMatch('fuck you bitch');
 ```typescript
 // A more advanced example, with transformers and whitelisted terms.
 const matcher = new PatternMatcher({
-	blacklistedPatterns: [
+	blacklistedTerms: [
 		{ id: 1, pattern: pattern`penis` },
 		{ id: 2, pattern: pattern`fuck` },
 	],
@@ -70,7 +70,7 @@ console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sw
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:89](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L89)
+[src/matcher/PatternMatcher.ts:90](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/matcher/PatternMatcher.ts#L90)
 
 ## Methods
 
@@ -101,7 +101,7 @@ otherwise, their order is unspecified.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:124](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L124)
+[src/matcher/PatternMatcher.ts:126](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/matcher/PatternMatcher.ts#L126)
 
 ___
 
@@ -126,4 +126,4 @@ as it stops once it finds a match.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:139](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L139)
+[src/matcher/PatternMatcher.ts:141](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/matcher/PatternMatcher.ts#L141)

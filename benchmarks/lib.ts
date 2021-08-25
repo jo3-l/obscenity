@@ -25,7 +25,7 @@ const matcher = new PatternMatcher({
 	],
 });
 
-const regExps = built.blacklistedPatterns.map((term) => patternToRegExp(term.pattern));
+const regExps = built.blacklistedTerms.map((term) => patternToRegExp(term.pattern));
 const whitelistedTerms = built.whitelistedTerms!;
 
 const a = 'a'.charCodeAt(0);

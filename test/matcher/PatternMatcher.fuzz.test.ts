@@ -69,7 +69,7 @@ test('running the pattern matcher on a set of patterns and input should have the
 				}
 
 				const matcher = new PatternMatcher({
-					blacklistedPatterns: assignIncrementingIds(
+					blacklistedTerms: assignIncrementingIds(
 						allPatterns.map(([pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd]) =>
 							toNodes(pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd),
 						),

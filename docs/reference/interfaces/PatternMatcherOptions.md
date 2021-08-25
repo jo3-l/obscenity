@@ -9,7 +9,7 @@ Options for the [PatternMatcher](../classes/PatternMatcher.md).
 ### Properties
 
 - [blacklistMatcherTransformers](PatternMatcherOptions.md#blacklistmatchertransformers)
-- [blacklistedPatterns](PatternMatcherOptions.md#blacklistedpatterns)
+- [blacklistedTerms](PatternMatcherOptions.md#blacklistedterms)
 - [whitelistMatcherTransformers](PatternMatcherOptions.md#whitelistmatchertransformers)
 - [whitelistedTerms](PatternMatcherOptions.md#whitelistedterms)
 
@@ -29,15 +29,15 @@ Transformers will be applied in the order they appear.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:504](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L504)
+[src/matcher/PatternMatcher.ts:510](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/matcher/PatternMatcher.ts#L510)
 
 ___
 
-### blacklistedPatterns
+### blacklistedTerms
 
-• **blacklistedPatterns**: [`BlacklistedTerm`](BlacklistedTerm.md)[]
+• **blacklistedTerms**: [`BlacklistedTerm`](BlacklistedTerm.md)[]
 
-A list of blacklisted terms to match on.
+A list of blacklisted terms.
 
 **User-supplied patterns**
 
@@ -48,7 +48,7 @@ resulting in an unacceptable number of variants.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:480](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L480)
+[src/matcher/PatternMatcher.ts:486](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/matcher/PatternMatcher.ts#L486)
 
 ___
 
@@ -66,7 +66,7 @@ Transformers will be applied in the order they appear.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:515](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L515)
+[src/matcher/PatternMatcher.ts:521](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/matcher/PatternMatcher.ts#L521)
 
 ___
 
@@ -75,8 +75,8 @@ ___
 • `Optional` **whitelistedTerms**: `string`[]
 
 A list of whitelisted terms. If a whitelisted term matches some part of
-the text, a match of a blacklisted pattern on the same will not be
-reported.
+the text, a match of a blacklisted pattern within that part of the text
+will not be emitted.
 
 For example, if we had a pattern `penis` and a whitelisted term `pen is`,
 only no matches would be reported for the input text `the pen is mightier
@@ -86,4 +86,4 @@ than the sword.`
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:493](https://github.com/jo3-l/obscenity/blob/eb9fc78/src/matcher/PatternMatcher.ts#L493)
+[src/matcher/PatternMatcher.ts:499](https://github.com/jo3-l/obscenity/blob/9a1d13b/src/matcher/PatternMatcher.ts#L499)

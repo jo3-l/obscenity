@@ -51,7 +51,7 @@ export class PatternMatcher {
 	 * ```typescript
 	 * // Simple matcher that only has blacklisted patterns.
 	 * const matcher = new PatternMatcher({
-	 * 	blacklistedPatterns: assignIncrementingIds([
+	 * 	blacklistedTerms: assignIncrementingIds([
 	 * 		pattern`fuck`,
 	 * 		pattern`f?uck`, // wildcards (?)
 	 * 		pattern`bitch`,
@@ -67,7 +67,7 @@ export class PatternMatcher {
 	 * ```typescript
 	 * // A more advanced example, with transformers and whitelisted terms.
 	 * const matcher = new PatternMatcher({
-	 * 	blacklistedPatterns: [
+	 * 	blacklistedTerms: [
 	 * 		{ id: 1, pattern: pattern`penis` },
 	 * 		{ id: 2, pattern: pattern`fuck` },
 	 * 	],
@@ -88,7 +88,7 @@ export class PatternMatcher {
 	 * @param options - Options to use.
 	 */
 	public constructor({
-		blacklistedPatterns,
+		blacklistedTerms,
 		whitelistedTerms = [],
 		blacklistMatcherTransformers = [],
 		whitelistMatcherTransformers = [],
@@ -98,8 +98,8 @@ export class PatternMatcher {
 			transformers: whitelistMatcherTransformers,
 		});
 		this.transformers = new TransformerSet(blacklistMatcherTransformers);
-		this.ensureNoDuplicates(blacklistedPatterns.map((p) => p.id));
-		this.buildTrie(blacklistedPatterns);
+		this.ensureNoDuplicates(blacklistedTerms.map((p) => p.id));
+		this.buildTrie(blacklistedTerms);
 		this.constructLinks();
 		this.useUnderlyingEdgeCollectionImplementation(this.rootNode);
 		this.wildcardOnlyPatternMatchLengths = [...new Set(this.wildcardOnlyPatternMatchLengths)].sort(); // deduplicate, then sort in ascending order
@@ -181,7 +181,7 @@ export class PatternMatcher {
 				// characters before we can conclude that the whole pattern
 				// matched.
 				if (--match.trailingWildcardCount === 0) {
-					if (this.emitMatch(match.termId, match.flags) && breakAfterFirstMatch) return true;
+					if (this.emitMatch(match.id, match.flags) && breakAfterFirstMatch) return true;
 
 					// Set the value at the current index to the last pending
 					// match, then pop from the array. This allows us to remove
@@ -200,7 +200,7 @@ export class PatternMatcher {
 			for (const matchLength of this.wildcardOnlyPatternMatchLengths) {
 				if (matchLength > this.usedIndices.length) break;
 				const pattern = this.wildcardOnlyPatterns.get(matchLength)!;
-				if (this.emitMatch(pattern.termId, pattern.flags) && breakAfterFirstMatch) return true;
+				if (this.emitMatch(pattern.id, pattern.flags) && breakAfterFirstMatch) return true;
 			}
 
 			// Emit matches for the current node, then follow its output links.
@@ -255,7 +255,7 @@ export class PatternMatcher {
 			// Otherwise, add it to the stack of maybe pending partial matches.
 			this.pendingPartialMatches.push({
 				trailingWildcardCount: data.trailingWildcardCount,
-				termId: data.termId,
+				id: data.termId,
 				flags: data.flags,
 			});
 		} else {
@@ -346,7 +346,7 @@ export class PatternMatcher {
 		this.wildcardOnlyPatternMatchLengths.push(matchLength);
 
 		const data: WildcardOnlyPatternData = {
-			termId: id,
+			id: id,
 			flags: 0,
 		};
 		if (term.pattern.requireWordBoundaryAtStart) data.flags |= WildcardOnlyPatternFlag.RequireWordBoundaryAtStart;
@@ -474,7 +474,7 @@ export class PatternMatcher {
  */
 export interface PatternMatcherOptions {
 	/**
-	 * A list of blacklisted terms to match on.
+	 * A list of blacklisted terms.
 	 *
 	 * **User-supplied patterns**
 	 *
@@ -483,12 +483,12 @@ export interface PatternMatcherOptions {
 	 * are permitted in patterns is limited to prevent pattern expansion from
 	 * resulting in an unacceptable number of variants.
 	 */
-	blacklistedPatterns: BlacklistedTerm[];
+	blacklistedTerms: BlacklistedTerm[];
 
 	/**
 	 * A list of whitelisted terms. If a whitelisted term matches some part of
-	 * the text, a match of a blacklisted pattern on the same will not be
-	 * reported.
+	 * the text, a match of a blacklisted pattern within that part of the text
+	 * will not be emitted.
 	 *
 	 * For example, if we had a pattern `penis` and a whitelisted term `pen is`,
 	 * only no matches would be reported for the input text `the pen is mightier
@@ -522,7 +522,7 @@ export interface PatternMatcherOptions {
 }
 
 interface WildcardOnlyPatternData {
-	termId: number;
+	id: number;
 	flags: number;
 }
 
@@ -532,7 +532,7 @@ const enum WildcardOnlyPatternFlag {
 }
 
 interface PendingPartialMatch {
-	trailingWildcardCount: number;
-	termId: number;
+	id: number;
 	flags: number;
+	trailingWildcardCount: number;
 }

@@ -13,7 +13,7 @@ import type { ParsedPattern } from '../pattern/Nodes';
 export class DataSet<MetadataType> {
 	private readonly containers: PhraseContainer<MetadataType>[] = [];
 	private patternCount = 0;
-	private readonly patternIdToPhraseOffset = new Map<number, number>(); // pattern ID => index of its container
+	private readonly patternIdToPhraseContainer = new Map<number, number>(); // pattern ID => index of its container
 
 	/**
 	 * Adds all the phrases from the dataset provided to this one.
@@ -47,7 +47,7 @@ export class DataSet<MetadataType> {
 		// Clear the internal state, then gradually rebuild it by adding the
 		// containers that should be kept.
 		this.patternCount = 0;
-		this.patternIdToPhraseOffset.clear();
+		this.patternIdToPhraseContainer.clear();
 		const containers = this.containers.splice(0);
 		for (const container of containers) {
 			const remove = predicate(container);
@@ -93,7 +93,7 @@ export class DataSet<MetadataType> {
 	 * @param payload - Original match payload.
 	 */
 	public getPayloadWithPhraseMetadata(payload: MatchPayload): MatchPayloadWithPhraseMetadata<MetadataType> {
-		const offset = this.patternIdToPhraseOffset.get(payload.termId);
+		const offset = this.patternIdToPhraseContainer.get(payload.termId);
 		if (offset === undefined) {
 			throw new Error(`The pattern with ID ${payload.termId} does not exist in this dataset.`);
 		}
@@ -115,9 +115,9 @@ export class DataSet<MetadataType> {
 	 * });
 	 * ```
 	 */
-	public build(): Pick<PatternMatcherOptions, 'blacklistedPatterns' | 'whitelistedTerms'> {
+	public build(): Pick<PatternMatcherOptions, 'blacklistedTerms' | 'whitelistedTerms'> {
 		return {
-			blacklistedPatterns: assignIncrementingIds(this.containers.flatMap((p) => p.patterns)),
+			blacklistedTerms: assignIncrementingIds(this.containers.flatMap((p) => p.patterns)),
 			whitelistedTerms: this.containers.flatMap((p) => p.whitelistedTerms),
 		};
 	}
@@ -125,7 +125,7 @@ export class DataSet<MetadataType> {
 	private registerContainer(container: PhraseContainer<MetadataType>) {
 		const offset = this.containers.push(container) - 1;
 		for (let i = 0, phraseId = this.patternCount; i < container.patterns.length; i++, phraseId++) {
-			this.patternIdToPhraseOffset.set(phraseId, offset);
+			this.patternIdToPhraseContainer.set(phraseId, offset);
 			this.patternCount++;
 		}
 	}

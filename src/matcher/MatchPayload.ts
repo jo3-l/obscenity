@@ -1,10 +1,10 @@
 import { compareIntervals } from '../util/Interval';
 
 /**
- * Data emitted by the pattern matcher on a successful match.
+ * Information emitted on a successful match.
  *
  * If you require more information about matches than what is provided here, see
- * the [[DataSet]] class, which permits one to associate metadata with patterns.
+ * the [[DataSet]] class, which supports associating metadata with patterns.
  */
 export interface MatchPayload {
 	/**

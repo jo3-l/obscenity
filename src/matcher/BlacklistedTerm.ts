@@ -1,6 +1,21 @@
 import type { ParsedPattern } from '../pattern/Nodes';
 
 /**
+ * Represents a blacklisted term.
+ */
+export interface BlacklistedTerm {
+	/**
+	 * The identifier of the pattern; should be unique across all patterns.
+	 */
+	id: number;
+
+	/**
+	 * The parsed pattern.
+	 */
+	pattern: ParsedPattern;
+}
+
+/**
  * Assigns incrementing IDs to the patterns provided, starting with 0. It is
  * useful if you have a list of patterns to match against but don't care about
  * identifying which pattern matched.
@@ -9,7 +24,7 @@ import type { ParsedPattern } from '../pattern/Nodes';
  * ```typescript
  * const matcher = new PatternMatcher({
  *  ...,
- *  blacklistedPatterns: assignIncrementingIds([
+ *  blacklistedTerms: assignIncrementingIds([
  *      pattern`f?uck`,
  *      pattern`|shit|`,
  *  ]),
@@ -23,19 +38,4 @@ import type { ParsedPattern } from '../pattern/Nodes';
 export function assignIncrementingIds(patterns: ParsedPattern[]) {
 	let currentId = 0;
 	return patterns.map<BlacklistedTerm>((pattern) => ({ id: currentId++, pattern }));
-}
-
-/**
- * Represents a blacklisted term.
- */
-export interface BlacklistedTerm {
-	/**
-	 * The identifier of the pattern; should be unique across all patterns.
-	 */
-	id: number;
-
-	/**
-	 * The parsed pattern.
-	 */
-	pattern: ParsedPattern;
 }

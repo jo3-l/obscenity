@@ -191,7 +191,7 @@ To actually use our new pattern, we need to register it with the `PatternMatcher
 
 ```javascript
 const matcher = new PatternMatcher({
-	blacklistedPatterns: [{ id: 0, pattern: pattern`|hoe` }],
+	blacklistedTerms: [{ id: 0, pattern: pattern`|hoe` }],
 });
 ```
 
@@ -200,7 +200,7 @@ In that case, you can use the `assignIncrementingIds` utility, which does what i
 
 ```javascript
 const matcher = new PatternMatcher({
-	blacklistedPatterns: assignIncrementingIds([pattern`|hoe`]),
+	blacklistedTerms: assignIncrementingIds([pattern`|hoe`]),
 });
 ```
 
