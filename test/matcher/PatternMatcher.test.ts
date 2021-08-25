@@ -655,6 +655,23 @@ describe('matching with blacklist transformers', () => {
 		});
 		expect(matcher.getAllMatches('!!!! $$aabbbaa## !!!')).toHaveLength(0);
 	});
+
+	it('should work with patterns that have trailing wildcards', () => {
+		const skipSpaces = createSimpleTransformer((c) => (c === 32 ? undefined : c));
+		const matcher = new PatternMatcher({
+			blacklistedTerms: [{ id: 1, pattern: pattern`trailing?` }],
+			whitelistedTerms: [],
+			blacklistMatcherTransformers: [skipSpaces],
+		});
+		expect(matcher.getAllMatches(' !!!! $$ t r a   i l    i    n  g## !!!')).toStrictEqual([
+			{
+				termId: 1,
+				startIndex: 9,
+				endIndex: 33,
+				matchLength: 9,
+			},
+		]);
+	});
 });
 
 describe('matching with whitelist transformers', () => {
