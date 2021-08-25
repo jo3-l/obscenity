@@ -25,9 +25,9 @@ import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
  */
 export class PatternMatcher {
 	private readonly rootNode = new BlacklistTrieNode();
-	private readonly patternIdMap = new Map<number, number>(); // generated ID -> original pattern ID
-	private readonly matchLengths = new Map<number, number>(); // pattern ID -> match length
-	private readonly partialMatchStepCounts = new Map<number, number>(); // pattern ID -> number of partial match steps
+	private readonly originalIds: number[] = []; // originalIds[i] is the term ID of the the pattern with ID i
+	private readonly matchLengths: number[] = []; // matchLengths[i] is the match length of the pattern with ID i
+	private readonly partialMatchStepCounts = new Map<number, number>(); // partialMatchStepCounts[i] is the total number of steps of the pattern with ID i. Only applies to partial matches.
 	private readonly wildcardOnlyPatterns: WildcardOnlyPatternData[] = [];
 	private maxMatchLength = 0;
 	private currentId = 0;
@@ -272,7 +272,7 @@ export class PatternMatcher {
 	private emitMatch(id: number, flags: number) {
 		// Adjust the position to point to the low surrogate if the last character we saw was a surrogate pair.
 		const endIndex = this.position + this.iter.lastWidth - 1;
-		const matchLength = this.matchLengths.get(id)!;
+		const matchLength = this.matchLengths[id];
 		const startIndex = this.usedIndices.get(this.usedIndices.length - matchLength)!;
 		const startBoundaryOk =
 			!(flags & SharedFlag.RequireWordBoundaryAtStart) || // doesn't require word boundary at the start
@@ -284,10 +284,10 @@ export class PatternMatcher {
 			!isWordChar(this.input.charCodeAt(endIndex + 1)); // character after isn't a word char
 		if (!startBoundaryOk || !endBoundaryOk) return false;
 
-		const patternId = this.patternIdMap.get(id)!;
+		const termId = this.originalIds[id];
 		if (this.whitelistedIntervals.query(startIndex, endIndex)) return false;
 
-		this.matches.push({ termId: patternId, matchLength, startIndex, endIndex });
+		this.matches.push({ termId, matchLength, startIndex, endIndex });
 		return true;
 	}
 
@@ -316,22 +316,22 @@ export class PatternMatcher {
 
 			// Each pattern may actually correspond to several simplified
 			// patterns, so use an incrementing numerical ID internally.
-			const generatedId = this.currentId++;
-			this.patternIdMap.set(generatedId, term.id);
+			const id = this.currentId++;
+			this.originalIds.push(term.id);
 
 			if (pattern.every((node): node is LiteralNode => node.kind === SyntaxKind.Literal)) {
-				this.registerPatternWithOnlyLiterals(generatedId, pattern, term);
+				this.registerPatternWithOnlyLiterals(id, pattern, term);
 			} else if (pattern.every((node) => node.kind === SyntaxKind.Wildcard)) {
-				this.registerPatternWithOnlyWildcards(generatedId, pattern, term);
+				this.registerPatternWithOnlyWildcards(id, pattern, term);
 			} else {
-				this.registerPatternWithWildcardsAndLiterals(generatedId, pattern, term);
+				this.registerPatternWithWildcardsAndLiterals(id, pattern, term);
 			}
 		}
 	}
 
 	private registerPatternWithOnlyLiterals(id: number, pattern: LiteralNode[], term: BlacklistedTerm) {
 		const matchLength = computePatternMatchLength(pattern);
-		this.matchLengths.set(id, matchLength);
+		this.matchLengths[id] = matchLength;
 		this.maxMatchLength = Math.max(this.maxMatchLength, matchLength);
 
 		const endNode = this.extendTrie(pattern[0].chars);
@@ -343,7 +343,7 @@ export class PatternMatcher {
 
 	private registerPatternWithOnlyWildcards(id: number, pattern: SimpleNode[], term: BlacklistedTerm) {
 		const matchLength = computePatternMatchLength(pattern);
-		this.matchLengths.set(id, matchLength);
+		this.matchLengths[id] = matchLength;
 		this.maxMatchLength = Math.max(this.maxMatchLength, matchLength);
 
 		const data: WildcardOnlyPatternData = {
@@ -358,7 +358,7 @@ export class PatternMatcher {
 
 	private registerPatternWithWildcardsAndLiterals(id: number, pattern: SimpleNode[], term: BlacklistedTerm) {
 		const matchLength = computePatternMatchLength(pattern);
-		this.matchLengths.set(id, matchLength);
+		this.matchLengths[id] = matchLength;
 		this.maxMatchLength = Math.max(this.maxMatchLength, matchLength);
 
 		// If a pattern has a wildcard in addition to at least one literal, we
