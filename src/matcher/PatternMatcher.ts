@@ -29,6 +29,7 @@ export class PatternMatcher {
 	private readonly matchLengths: number[] = []; // matchLengths[i] is the match length of the pattern with ID i
 	private readonly partialMatchStepCounts = new Map<number, number>(); // partialMatchStepCounts[i] is the total number of steps of the pattern with ID i. Only applies to partial matches.
 	private readonly wildcardOnlyPatterns: WildcardOnlyPatternData[] = [];
+	private maxPartialPatternDistance = 0;
 	private maxMatchLength = 0;
 	private currentId = 0;
 
@@ -107,7 +108,7 @@ export class PatternMatcher {
 			a.wildcardCount < b.wildcardCount ? -1 : b.wildcardCount < a.wildcardCount ? 1 : 0,
 		);
 		this.usedIndices = new CircularBuffer(this.maxMatchLength);
-		this.partialMatches = new CircularBuffer(this.maxMatchLength);
+		this.partialMatches = new CircularBuffer(this.maxPartialPatternDistance);
 	}
 
 	/**
@@ -395,8 +396,11 @@ export class PatternMatcher {
 		for (let i = startsWithLiteral ? 0 : 1; i < groups.length; i += 2, step++) {
 			// Count the number of trailing and leading wildcards
 			// before/after the current literal segment.
+			const lastLiteralGroupLength =
+				i < 2 ? 0 : (groups[i - 2] as LiteralGroup).literals.reduce((a, b) => a + b.chars.length, 0);
 			const leadingWildcardCount = i === 0 ? 0 : (groups[i - 1] as WildcardGroup).wildcardCount;
 			const trailingWildcardCount = i === groups.length - 1 ? 0 : (groups[i + 1] as WildcardGroup).wildcardCount;
+
 			// Extend the trie with the characters of the literal.
 			const chars = (groups[i] as LiteralGroup).literals.flatMap((node) => node.chars);
 			const endNode = this.extendTrie(chars);
@@ -414,6 +418,11 @@ export class PatternMatcher {
 			if (term.pattern.requireWordBoundaryAtEnd) data.flags |= PartialMatchFlag.RequireWordBoundaryAtEnd;
 			(endNode.partialMatches ??= []).push(data);
 			endNode.flags |= NodeFlag.PartialMatchLeaf;
+
+			this.maxPartialPatternDistance = Math.max(
+				this.maxPartialPatternDistance,
+				lastLiteralGroupLength + leadingWildcardCount + chars.length,
+			);
 		}
 
 		this.partialMatchStepCounts.set(id, step - 1);
