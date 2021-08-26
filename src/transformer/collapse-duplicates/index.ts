@@ -31,19 +31,19 @@ import { CollapseDuplicatesTransformer } from './transformer';
  * ```typescript
  * // Collapse runs of the same character.
  * const transformer = collapseDuplicatesTransformer();
- * const matcher = new PatternMatcher({ ..., blacklistMatcherTransformers: [transformer] });
+ * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
  *
  * @example
  * ```typescript
  * // Collapse runs of characters other than 'a'.
  * const transformer = collapseDuplicatesTransformer({ customThresholds: new Map([['a', Infinity]]) });
- * const matcher = new PatternMatcher({ ..., blacklistMatcherTransformers: [transformer] });
+ * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
  *
  * @param options - Options for the transformer.
  * @returns A container holding the transformer, which can then be passed to the
- * [[PatternMatcher]].
+ * [[RegExpMatcher]] or the [[NfaMatcher]].
  */
 export function collapseDuplicatesTransformer({
 	defaultThreshold = 1,

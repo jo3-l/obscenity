@@ -3,9 +3,11 @@ export * from './censor/TextCensor';
 
 export * from './dataset/DataSet';
 
+export * from './matcher/regexp/RegExpMatcher';
+export * from './matcher/nfa/NfaMatcher';
 export * from './matcher/BlacklistedTerm';
 export * from './matcher/MatchPayload';
-export * from './matcher/PatternMatcher';
+export * from './matcher/Matcher';
 
 export * from './pattern/Nodes';
 export * from './pattern/ParserError';

@@ -12,35 +12,37 @@ export const enum TransformerType {
 export type TransformerContainer = SimpleTransformerContainer | StatefulTransformerContainer;
 
 /**
- * Creates a container holding the transformer function provided.
- * Simple transformers are suitable for stateless transformations, e.g., a
+ * Creates a container holding the transformer function provided. Simple
+ * transformers are suitable for stateless transformations, e.g., a
  * transformation that maps certain characters to others. For transformations
  * that need to keep around state, see `createStatefulTransformer`.
  *
  * @example
  * ```typescript
  * function lowercaseToUppercase(char) {
- * 	return isLowercase(char) ? char - 32 : char;
+ *  return isLowercase(char) ? char - 32 : char;
  * }
  *
  * const transformer = createSimpleTransformer(lowercaseToUppercase);
- * const matcher = new PatternMatcher({ ..., transformers: [transformer] });
+ * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
  *
  * @example
  * ```typescript
  * function ignoreAllNonDigitChars(char) {
- * 	return isDigit(char) ? char : undefined;
+ *  return isDigit(char) ? char : undefined;
  * }
  *
  * const transformer = createSimpleTransformer(ignoreAllNonDigitChars);
- * const matcher = new PatternMatcher({ ..., blacklistMatcherTransformers: [transformer] });
+ * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
  *
- * @param transformer - Function that applies the transformation. It should accept one argument,
- * the input character, and return the transformed character. A return value of `undefined` indicates
- * that the character should be ignored.
- * @returns A container holding the transformer, which can then be passed to the [[PatternMatcher]].
+ * @param transformer - Function that applies the transformation. It should
+ * accept one argument, the input character, and return the transformed
+ * character. A return value of `undefined` indicates that the character should
+ * be ignored.
+ * @returns A container holding the transformer, which can then be passed to the
+ * [[RegExpMatcher]] or the [[NfaMatcher]].
  */
 export function createSimpleTransformer(transformer: TransformerFn): SimpleTransformerContainer {
 	return { type: TransformerType.Simple, transform: transformer };
@@ -76,25 +78,27 @@ export interface SimpleTransformerContainer {
  * @example
  * ```typescript
  * class IgnoreDuplicateCharactersTransformer implements StatefulTransformer {
- * 	private lastChar = -1;
+ *  private lastChar = -1;
  *
- * 	public transform(char: number) {
- * 		if (char === this.lastChar) return undefined;
- * 		this.lastChar = char;
- * 		return char;
- * 	}
+ *  public transform(char: number) {
+ *      if (char === this.lastChar) return undefined;
+ *      this.lastChar = char;
+ *      return char;
+ *  }
  *
- * 	public reset() {
- * 		this.lastChar = -1;
- * 	}
+ *  public reset() {
+ *      this.lastChar = -1;
+ *  }
  * }
  *
  * const transformer = createStatefulTransformer(() => new IgnoreDuplicateCharactersTransformer());
- * const matcher = new PatternMatcher({ ..., blacklistMatcherTransformers: [transformer] });
+ * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
  *
- * @param factory A function that returns an instance of the stateful transformer.
- * @returns A container holding the stateful transformer, which can then be passed to the [[PatternMatcher]].
+ * @param factory A function that returns an instance of the stateful
+ * transformer.
+ * @returns A container holding the stateful transformer, which can then be
+ * passed to the [[RegExpMatcher]] or the [[NfaMatcher]].
  */
 export function createStatefulTransformer(factory: StatefulTransformerFactory): StatefulTransformerContainer {
 	return { type: TransformerType.Stateful, factory };

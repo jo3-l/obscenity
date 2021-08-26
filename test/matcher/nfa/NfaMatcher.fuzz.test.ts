@@ -1,13 +1,13 @@
 import * as fc from 'fast-check';
 
-import { assignIncrementingIds } from '../../src/matcher/BlacklistedTerm';
-import { PatternMatcher } from '../../src/matcher/PatternMatcher';
-import type { LiteralNode, ParsedPattern } from '../../src/pattern/Nodes';
-import { SyntaxKind } from '../../src/pattern/Nodes';
-import { CharacterCode } from '../../src/util/Char';
-import { CharacterIterator } from '../../src/util/CharacterIterator';
-import type { Interval } from '../../src/util/Interval';
-import { compareIntervals } from '../../src/util/Interval';
+import { assignIncrementingIds } from '../../../src/matcher/BlacklistedTerm';
+import { NfaMatcher } from '../../../src/matcher/nfa/NfaMatcher';
+import type { LiteralNode, ParsedPattern } from '../../../src/pattern/Nodes';
+import { SyntaxKind } from '../../../src/pattern/Nodes';
+import { CharacterCode } from '../../../src/util/Char';
+import { CharacterIterator } from '../../../src/util/CharacterIterator';
+import type { Interval } from '../../../src/util/Interval';
+import { compareIntervals } from '../../../src/util/Interval';
 
 test('running the pattern matcher on a set of patterns and input should have the same result as using a brute force approach with regexp', () => {
 	fc.assert(
@@ -68,7 +68,7 @@ test('running the pattern matcher on a set of patterns and input should have the
 					}
 				}
 
-				const matcher = new PatternMatcher({
+				const matcher = new NfaMatcher({
 					blacklistedTerms: assignIncrementingIds(
 						allPatterns.map(([pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd]) =>
 							toNodes(pattern, requireWordBoundaryAtStart, requireWordBoundaryAtEnd),

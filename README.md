@@ -56,17 +56,16 @@ pnpm add obscenity
 First, import Obscenity:
 
 ```javascript
-const { PatternMatcher, englishDataset, englishRecommendedTransformers } = require('obscenity');
+const { RegExpMatcher, englishDataset, englishRecommendedTransformers } = require('obscenity');
 
 // Or, in ESM/TypeScript:
-import { PatternMatcher, englishDataset, englishRecommendedTransformers } from 'obscenity';
+import { RegExpMatcher, englishDataset, englishRecommendedTransformers } from 'obscenity';
 ```
 
-Next, create a `PatternMatcher`, which does what its name says.
+Next, create a `RegExpMatcher`, which implements matching blacklisted terms using regular expressions.
 
 ```javascript
-// Creating a matcher is somewhat expensive, so do this only once in your app if possible:
-const matcher = new PatternMatcher({
+const matcher = new RegExpMatcher({
 	...englishDataset.build(),
 	...englishRecommendedTransformers,
 });

@@ -1,9 +1,9 @@
-import type { TransformerContainer } from '../transformer/Transformers';
-import { TransformerSet } from '../transformer/TransformerSet';
-import { CharacterIterator } from '../util/CharacterIterator';
-import { CircularBuffer } from '../util/CircularBuffer';
-import { Queue } from '../util/Queue';
-import { IntervalCollection } from './IntervalCollection';
+import type { TransformerContainer } from '../../transformer/Transformers';
+import { TransformerSet } from '../../transformer/TransformerSet';
+import { CharacterIterator } from '../../util/CharacterIterator';
+import { CircularBuffer } from '../../util/CircularBuffer';
+import { Queue } from '../../util/Queue';
+import { IntervalCollection } from '../IntervalCollection';
 import type { ForwardingEdgeCollection } from './trie/edge/ForwardingEdgeCollection';
 import { WhitelistTrieNode } from './trie/WhitelistTrieNode';
 

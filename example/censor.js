@@ -1,6 +1,6 @@
-const { TextCensor, PatternMatcher, englishDataset, englishRecommendedTransformers } = require('../dist');
+const { TextCensor, RegExpMatcher, englishDataset, englishRecommendedTransformers } = require('../dist');
 
-const matcher = new PatternMatcher({
+const matcher = new RegExpMatcher({
 	...englishDataset.build(),
 	...englishRecommendedTransformers,
 });

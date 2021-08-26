@@ -1,4 +1,4 @@
-import { BlacklistTrieNode, hashPartialMatch } from '../../../src/matcher/trie/BlacklistTrieNode';
+import { BlacklistTrieNode, hashPartialMatch } from '../../../../src/matcher/nfa/trie/BlacklistTrieNode';
 
 describe('constructor', () => {
 	it('should set edges to an empty edge list', () => {

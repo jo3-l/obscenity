@@ -1,7 +1,7 @@
 const repl = require('repl');
-const { PatternMatcher, englishDataset, englishRecommendedTransformers } = require('../dist');
+const { RegExpMatcher, englishDataset, englishRecommendedTransformers } = require('../dist');
 
-const matcher = new PatternMatcher({
+const matcher = new RegExpMatcher({
 	...englishDataset.build(),
 	...englishRecommendedTransformers,
 });

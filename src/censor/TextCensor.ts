@@ -3,8 +3,8 @@ import { compareMatchByPositionAndId } from '../matcher/MatchPayload';
 import { grawlixCensorStrategy } from './BuiltinStrategies';
 
 /**
- * Censors regions of text matched by the [[PatternMatcher]], supporting
- * flexible [[TextCensorStrategy | censoring strategies]].
+ * Censors regions of text matched by a [[Matcher]], supporting flexible
+ * [[TextCensorStrategy | censoring strategies]].
  */
 export class TextCensor {
 	private strategy: TextCensorStrategy = grawlixCensorStrategy();

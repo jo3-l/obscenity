@@ -100,7 +100,7 @@ const parser = new Parser();
  * ```
  *
  * @returns The parsed pattern, which can then be used with the
- * [[PatternMatcher]].
+ * [[RegExpMatcher]] or the [[NfaMatcher]].
  * @throws [[ParserError]] if a syntactical error was detected while parsing the
  * pattern.
  * @see [[parseRawPattern]] if you want to parse a string into a pattern without
@@ -120,13 +120,14 @@ export function pattern(strings: TemplateStringsArray, ...expressions: unknown[]
  *
  * **Note**
  *
- * It is recommended to use the [[pattern | pattern template tag]] instead of this function
- * for literal patterns (i.e. ones without dynamic content).
+ * It is recommended to use the [[pattern | pattern template tag]] instead of
+ * this function for literal patterns (i.e. ones without dynamic content).
  *
  * @param pattern - The string to parse.
  * @throws [[ParserError]] if a syntactical error was detected while parsing the
  * pattern.
- * @returns The parsed pattern, which can then be used with the [[PatternMatcher]].
+ * @returns The parsed pattern, which can then be used with the
+ * [[RegExpMatcher]] or the [[NfaMatcher]].
  */
 export function parseRawPattern(pattern: string) {
 	return parser.parse(pattern);

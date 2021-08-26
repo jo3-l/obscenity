@@ -1,5 +1,5 @@
 import { DataSet } from '../dataset/DataSet';
-import type { PatternMatcherOptions } from '../matcher/PatternMatcher';
+import type { NfaMatcherOptions } from '../matcher/nfa/NfaMatcher';
 import { pattern } from '../pattern/Pattern';
 import { collapseDuplicatesTransformer } from '../transformer/collapse-duplicates';
 import { resolveConfusablesTransformer } from '../transformer/resolve-confusables';
@@ -43,10 +43,10 @@ export const englishRecommendedWhitelistMatcherTransformers = [
 
 /**
  * Recommended transformers to be used with the [[englishDataset | english word
- * dataset]] and the [[PatternMatcher]].
+ * dataset]] and the [[RegExpMatcher]] or the [[NfaMatcher]].
  */
 export const englishRecommendedTransformers: Pick<
-	PatternMatcherOptions,
+	NfaMatcherOptions,
 	'blacklistMatcherTransformers' | 'whitelistMatcherTransformers'
 > = {
 	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,
@@ -58,7 +58,7 @@ export const englishRecommendedTransformers: Pick<
  *
  * @example
  * ```typescript
- * const matcher = new PatternMatcher({
+ * const matcher = new RegExpMatcher({
  * 	...englishDataset.build(),
  * 	...englishRecommendedTransformers,
  * });

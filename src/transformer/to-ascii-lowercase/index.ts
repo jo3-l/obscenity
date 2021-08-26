@@ -13,7 +13,7 @@ import { createSimpleTransformer } from '../Transformers';
  * of varying cases.
  *
  * @returns A container holding the transformer, which can then be passed to the
- * [[PatternMatcher]].
+ * [[RegExpMatcher]] or the [[NfaMatcher]].
  */
 export function toAsciiLowerCaseTransformer() {
 	return createSimpleTransformer((c) => (isUpperCase(c) ? invertCaseOfAlphabeticChar(c) : c));

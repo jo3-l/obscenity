@@ -1,6 +1,6 @@
-import { WhitelistedTermMatcher } from '../../src/matcher/WhitelistedTermMatcher';
-import { createSimpleTransformer } from '../../src/transformer/Transformers';
-import { CharacterCode } from '../../src/util/Char';
+import { WhitelistedTermMatcher } from '../../../src/matcher/nfa/WhitelistedTermMatcher';
+import { createSimpleTransformer } from '../../../src/transformer/Transformers';
+import { CharacterCode } from '../../../src/util/Char';
 
 describe('constructor', () => {
 	it('should not allow empty terms', () => {

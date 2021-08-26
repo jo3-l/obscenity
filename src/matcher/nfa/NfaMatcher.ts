@@ -1,29 +1,53 @@
-import type { LiteralNode } from '../pattern/Nodes';
-import { SyntaxKind } from '../pattern/Nodes';
-import type { SimpleNode } from '../pattern/Simplifier';
-import { simplify } from '../pattern/Simplifier';
-import type { LiteralGroup, WildcardGroup } from '../pattern/Util';
-import { computePatternMatchLength, groupByNodeType } from '../pattern/Util';
-import type { TransformerContainer } from '../transformer/Transformers';
-import { TransformerSet } from '../transformer/TransformerSet';
-import { isHighSurrogate, isLowSurrogate, isWordChar } from '../util/Char';
-import { CharacterIterator } from '../util/CharacterIterator';
-import { CircularBuffer } from '../util/CircularBuffer';
-import { Queue } from '../util/Queue';
-import type { BlacklistedTerm } from './BlacklistedTerm';
-import { IntervalCollection } from './IntervalCollection';
-import type { MatchPayload } from './MatchPayload';
-import { compareMatchByPositionAndId } from './MatchPayload';
+import type { LiteralNode } from '../../pattern/Nodes';
+import { SyntaxKind } from '../../pattern/Nodes';
+import type { SimpleNode } from '../../pattern/Simplifier';
+import { simplify } from '../../pattern/Simplifier';
+import type { LiteralGroup, WildcardGroup } from '../../pattern/Util';
+import { computePatternMatchLength, groupByNodeType } from '../../pattern/Util';
+import type { TransformerContainer } from '../../transformer/Transformers';
+import { TransformerSet } from '../../transformer/TransformerSet';
+import { isHighSurrogate, isLowSurrogate, isWordChar } from '../../util/Char';
+import { CharacterIterator } from '../../util/CharacterIterator';
+import { CircularBuffer } from '../../util/CircularBuffer';
+import { Queue } from '../../util/Queue';
+import type { BlacklistedTerm } from '../BlacklistedTerm';
+import { IntervalCollection } from '../IntervalCollection';
+import type { Matcher } from '../Matcher';
+import type { MatchPayload } from '../MatchPayload';
+import { compareMatchByPositionAndId } from '../MatchPayload';
 import type { PartialMatchData } from './trie/BlacklistTrieNode';
 import { BlacklistTrieNode, hashPartialMatch, NodeFlag, PartialMatchFlag, SharedFlag } from './trie/BlacklistTrieNode';
 import type { ForwardingEdgeCollection } from './trie/edge/ForwardingEdgeCollection';
 import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
 
 /**
- * Matches patterns on text, ignoring parts of the text that are matched by
- * whitelisted terms.
+ * An implementation of the [[Matcher]] interface using finite automata
+ * techniques.
+ *
+ * It is theoretically faster than the [[RegExpMatcher]]: the `hasMatch()` and
+ * `getAllMatches()` execute in time proportional only to that of the length of
+ * the input text and the number of matches. In other words, it _theoretically_
+ * should not degrade in performance as you add more terms - matching with 100
+ * and 1000 patterns should have the same performance. It achieves this by
+ * building a heavily modified [Aho-Corasick
+ * automaton](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm) from
+ * the input patterns.
+ *
+ * In practice, its high constant factors make it slower than the
+ * [[RegExpMatcher]] until about ~100 patterns, at which point both
+ * implementations have approximately the same performance.
+ *
+ * The regular-expression matcher should be preferred to this one if at all
+ * possible, as it uses more memory and is only marginally faster at the scale
+ * most users of this package are expected to use it at. However, it may be
+ * appropriate if:
+ *
+ * - You have a large number of patterns (> 100);
+ * - You expect to be matching on long text;
+ * - You have benchmarked the implementations and found the [[NfaMatcher]] to be
+ *   noticeably faster.
  */
-export class PatternMatcher {
+export class NfaMatcher implements Matcher {
 	private readonly rootNode = new BlacklistTrieNode();
 	private readonly originalIds: number[] = []; // originalIds[i] is the term ID of the the pattern with ID i
 	private readonly matchLengths: number[] = []; // matchLengths[i] is the match length of the pattern with ID i
@@ -79,18 +103,27 @@ export class PatternMatcher {
 	private whitelistedIntervals = new IntervalCollection();
 
 	/**
-	 * Creates a new pattern matcher with the options given.
+	 * Creates a new [[NfaMatcher]] with the options given.
+	 *
+	 * @example
+	 * ```typescript
+	 * // Use the options provided by the English preset.
+	 * const matcher = new NfaMatcher({
+	 * 	...englishDataset.build(),
+	 * 	...englishRecommendedTransformers,
+	 * });
+	 * ```
 	 *
 	 * @example
 	 * ```typescript
 	 * // Simple matcher that only has blacklisted patterns.
-	 * const matcher = new PatternMatcher({
-	 * 	blacklistedTerms: assignIncrementingIds([
-	 * 		pattern`fuck`,
-	 * 		pattern`f?uck`, // wildcards (?)
-	 * 		pattern`bitch`,
-	 * 		pattern`b[i]tch` // optionals ([i] matches either "i" or "")
-	 * 	]),
+	 * const matcher = new NfaMatcher({
+	 *  blacklistedTerms: assignIncrementingIds([
+	 *      pattern`fuck`,
+	 *      pattern`f?uck`, // wildcards (?)
+	 *      pattern`bitch`,
+	 *      pattern`b[i]tch` // optionals ([i] matches either "i" or "")
+	 *  ]),
 	 * });
 	 *
 	 * // Check whether some string matches any of the patterns.
@@ -100,19 +133,19 @@ export class PatternMatcher {
 	 * @example
 	 * ```typescript
 	 * // A more advanced example, with transformers and whitelisted terms.
-	 * const matcher = new PatternMatcher({
-	 * 	blacklistedTerms: [
-	 * 		{ id: 1, pattern: pattern`penis` },
-	 * 		{ id: 2, pattern: pattern`fuck` },
-	 * 	],
-	 * 	whitelistedTerms: ['pen is'],
-	 * 	blacklistMatcherTransformers: [
-	 * 		resolveConfusablesTransformer(), // '🅰' => 'a'
-	 * 		resolveLeetSpeakTransformer(), // '$' => 's'
-	 * 		foldAsciiCharCaseTransformer(), // case insensitive matching
-	 * 		collapseDuplicatesTransformer(), // 'aaaa' => 'a'
-	 * 		skipNonAlphabeticTransformer(), // 'f.u...c.k' => 'fuck'
-	 * 	],
+	 * const matcher = new NfaMatcher({
+	 *  blacklistedTerms: [
+	 *      { id: 1, pattern: pattern`penis` },
+	 *      { id: 2, pattern: pattern`fuck` },
+	 *  ],
+	 *  whitelistedTerms: ['pen is'],
+	 *  blacklistMatcherTransformers: [
+	 *      resolveConfusablesTransformer(), // '🅰' => 'a'
+	 *      resolveLeetSpeakTransformer(), // '$' => 's'
+	 *      foldAsciiCharCaseTransformer(), // case insensitive matching
+	 * 	    skipNonAlphabeticTransformer(), // 'f.u...c.k' => 'fuck'
+	 *      collapseDuplicatesTransformer(), // 'aaaa' => 'a'
+	 *  ],
 	 * });
 	 *
 	 * // Output all matches.
@@ -126,7 +159,7 @@ export class PatternMatcher {
 		whitelistedTerms = [],
 		blacklistMatcherTransformers = [],
 		whitelistMatcherTransformers = [],
-	}: PatternMatcherOptions) {
+	}: NfaMatcherOptions) {
 		this.whitelistedTermMatcher = new WhitelistedTermMatcher({
 			terms: whitelistedTerms,
 			transformers: whitelistMatcherTransformers,
@@ -137,6 +170,7 @@ export class PatternMatcher {
 		this.buildTrie(blacklistedTerms);
 		this.constructLinks();
 		this.useUnderlyingEdgeCollectionImplementation(this.rootNode);
+
 		// Sort wildcard-only patterns by the number of wildcards they have.
 		this.wildcardOnlyPatterns.sort((a, b) =>
 			/* istanbul ignore next: not really possible to write a robust test for this */
@@ -147,41 +181,17 @@ export class PatternMatcher {
 		this.partialMatches = new CircularBuffer(this.maxPartialPatternDistance);
 	}
 
-	/**
-	 * Returns all matches of the matcher on the text.
-	 *
-	 * If you only need to check for the presence of a match, and have no use
-	 * for more specific information about the matches, use the `hasMatch()`
-	 * method, which is more efficient.
-	 *
-	 * @param input - Text to find profanities in.
-	 *
-	 * @param sorted - Whether the resulting list of matches should be sorted
-	 * using [[compareMatchByPositionAndId]]. Defaults to `false`.
-	 *
-	 * @returns A list of matches of the matcher on the text. The matches are
-	 * guaranteed to be sorted if and only if the `sorted` parameter is `true`,
-	 * otherwise, their order is unspecified.
-	 */
+	public hasMatch(input: string) {
+		this.setInput(input);
+		const hasMatch = this.run(true);
+		return hasMatch;
+	}
+
 	public getAllMatches(input: string, sorted = false) {
 		this.setInput(input);
 		this.run();
 		if (sorted) this.matches.sort(compareMatchByPositionAndId);
 		return this.matches;
-	}
-
-	/**
-	 * Checks whether the matcher matches on the text.
-	 *
-	 * This is more efficient than calling `getAllMatches` and checking the result,
-	 * as it stops once it finds a match.
-	 *
-	 * @param input - Text to check.
-	 */
-	public hasMatch(input: string) {
-		this.setInput(input);
-		const hasMatch = this.run(true);
-		return hasMatch;
 	}
 
 	private setInput(input: string) {
@@ -586,18 +596,11 @@ export class PatternMatcher {
 }
 
 /**
- * Options for the [[PatternMatcher]].
+ * Options for the [[NfaMatcher]].
  */
-export interface PatternMatcherOptions {
+export interface NfaMatcherOptions {
 	/**
 	 * A list of blacklisted terms.
-	 *
-	 * **User-supplied patterns**
-	 *
-	 * Allowing user-supplied patterns is potentially dangerous and frowned
-	 * upon, but should in theory be safe if the number of optional nodes that
-	 * are permitted in patterns is limited to prevent pattern expansion from
-	 * resulting in an unacceptable number of variants.
 	 */
 	blacklistedTerms: BlacklistedTerm[];
 

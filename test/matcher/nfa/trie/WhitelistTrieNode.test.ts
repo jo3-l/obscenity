@@ -1,4 +1,4 @@
-import { WhitelistTrieNode } from '../../../src/matcher/trie/WhitelistTrieNode';
+import { WhitelistTrieNode } from '../../../../src/matcher/nfa/trie/WhitelistTrieNode';
 
 describe('constructor', () => {
 	it('should set edges to an empty edge list', () => {

@@ -1,7 +1,7 @@
 import * as fc from 'fast-check';
 
-import { WhitelistedTermMatcher } from '../../src/matcher/WhitelistedTermMatcher';
-import type { Interval } from '../../src/util/Interval';
+import { WhitelistedTermMatcher } from '../../../src/matcher/nfa/WhitelistedTermMatcher';
+import type { Interval } from '../../../src/util/Interval';
 
 test('running the whitelist matcher with a set of terms and input should have the same result as running the brute force string searching algorithm on it', () => {
 	fc.assert(

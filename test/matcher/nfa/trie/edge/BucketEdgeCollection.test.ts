@@ -1,4 +1,4 @@
-import { BucketEdgeCollection } from '../../../../src/matcher/trie/edge/BucketEdgeCollection';
+import { BucketEdgeCollection } from '../../../../../src/matcher/nfa/trie/edge/BucketEdgeCollection';
 
 const getCode = (c: string) => c.charCodeAt(0);
 

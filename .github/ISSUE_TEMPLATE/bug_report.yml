@@ -32,7 +32,7 @@ body:
       label: Minimal reproducible example
       description: A [minimal reproducible example](https://stackoverflow.com/help/minimal-reproducible-example) that demonstrates the problem.
       placeholder: |
-        import { PatternMatcher } from 'obscenity';
+        import { RegExpMatcher } from 'obscenity';
         // ...
       render: typescript
   - type: textarea

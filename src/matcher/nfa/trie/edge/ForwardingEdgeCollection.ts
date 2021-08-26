@@ -1,4 +1,4 @@
-import { isLowerCase } from '../../../util/Char';
+import { isLowerCase } from '../../../../util/Char';
 import { ArrayEdgeCollection } from './ArrayEdgeCollection';
 import { BucketEdgeCollection } from './BucketEdgeCollection';
 import type { EdgeCollection } from './EdgeCollection';

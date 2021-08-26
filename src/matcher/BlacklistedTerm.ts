@@ -22,7 +22,7 @@ export interface BlacklistedTerm {
  *
  * @example
  * ```typescript
- * const matcher = new PatternMatcher({
+ * const matcher = new RegExpMatcher({
  *  ...,
  *  blacklistedTerms: assignIncrementingIds([
  *      pattern`f?uck`,
@@ -33,7 +33,7 @@ export interface BlacklistedTerm {
  *
  * @param patterns - List of parsed patterns.
  * @returns A list of blacklisted terms with valid IDs which can then be passed
- * to the [[PatternMatcher]].
+ * to the [[RegExpMatcher]] or [[NfaMatcher]].
  */
 export function assignIncrementingIds(patterns: ParsedPattern[]) {
 	let currentId = 0;

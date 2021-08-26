@@ -1,5 +1,5 @@
-import { ArrayEdgeCollection } from '../../../../src/matcher/trie/edge/ArrayEdgeCollection';
-import type { Edge } from '../../../../src/matcher/trie/edge/EdgeCollection';
+import { ArrayEdgeCollection } from '../../../../../src/matcher/nfa/trie/edge/ArrayEdgeCollection';
+import type { Edge } from '../../../../../src/matcher/nfa/trie/edge/EdgeCollection';
 
 let coll: ArrayEdgeCollection<string>;
 

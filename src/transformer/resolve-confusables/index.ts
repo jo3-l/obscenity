@@ -14,11 +14,11 @@ import { confusables } from './confusables';
  * @example
  * ```typescript
  * const transformer = resolveConfusablesTransformer();
- * const matcher = new PatternMatcher({ ..., blacklistMatcherTransformers: [transformer] });
+ * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
  *
  * @returns A container holding the transformer, which can then be passed to the
- * [[PatternMatcher]].
+ * [[RegExpMatcher]] or the [[NfaMatcher]].
  */
 export function resolveConfusablesTransformer() {
 	return remapCharactersTransformer(confusables);

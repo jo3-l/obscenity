@@ -1,4 +1,4 @@
-import { CharacterCode } from '../../../util/Char';
+import { CharacterCode } from '../../../../util/Char';
 import type { Edge, EdgeCollection } from './EdgeCollection';
 
 export class BucketEdgeCollection<T> implements EdgeCollection<T> {

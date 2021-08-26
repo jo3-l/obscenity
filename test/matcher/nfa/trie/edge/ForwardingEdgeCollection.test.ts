@@ -1,8 +1,8 @@
-import { ArrayEdgeCollection } from '../../../../src/matcher/trie/edge/ArrayEdgeCollection';
-import { BucketEdgeCollection } from '../../../../src/matcher/trie/edge/BucketEdgeCollection';
-import type { Edge } from '../../../../src/matcher/trie/edge/EdgeCollection';
-import { ForwardingEdgeCollection } from '../../../../src/matcher/trie/edge/ForwardingEdgeCollection';
-import { CharacterCode } from '../../../../src/util/Char';
+import { ArrayEdgeCollection } from '../../../../../src/matcher/nfa/trie/edge/ArrayEdgeCollection';
+import { BucketEdgeCollection } from '../../../../../src/matcher/nfa/trie/edge/BucketEdgeCollection';
+import type { Edge } from '../../../../../src/matcher/nfa/trie/edge/EdgeCollection';
+import { ForwardingEdgeCollection } from '../../../../../src/matcher/nfa/trie/edge/ForwardingEdgeCollection';
+import { CharacterCode } from '../../../../../src/util/Char';
 
 let coll: ForwardingEdgeCollection<number>;
 
