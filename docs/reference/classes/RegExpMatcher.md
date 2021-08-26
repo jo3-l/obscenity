@@ -90,7 +90,7 @@ console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sw
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:80](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/regexp/RegExpMatcher.ts#L80)
+[src/matcher/regexp/RegExpMatcher.ts:80](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/regexp/RegExpMatcher.ts#L80)
 
 ## Methods
 
@@ -120,7 +120,7 @@ which is typically more efficient.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:98](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/regexp/RegExpMatcher.ts#L98)
+[src/matcher/regexp/RegExpMatcher.ts:98](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/regexp/RegExpMatcher.ts#L98)
 
 ___
 
@@ -130,8 +130,8 @@ ___
 
 Checks whether there is a match for any blacklisted term in the text.
 
-This is more efficient than calling `getAllMatches` and checking the
-result, as it stops once it finds a match.
+This is typically more efficient than calling `getAllMatches` and
+checking the result, though it depends on the implementation.
 
 #### Parameters
 
@@ -149,4 +149,4 @@ result, as it stops once it finds a match.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:129](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/regexp/RegExpMatcher.ts#L129)
+[src/matcher/regexp/RegExpMatcher.ts:129](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/regexp/RegExpMatcher.ts#L129)

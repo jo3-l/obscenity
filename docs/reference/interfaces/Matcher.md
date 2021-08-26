@@ -53,7 +53,7 @@ otherwise, their order is unspecified.
 
 #### Defined in
 
-[src/matcher/Matcher.ts:41](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/Matcher.ts#L41)
+[src/matcher/Matcher.ts:41](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/Matcher.ts#L41)
 
 ___
 
@@ -63,8 +63,8 @@ ___
 
 Checks whether there is a match for any blacklisted term in the text.
 
-This is more efficient than calling `getAllMatches` and checking the
-result, as it stops once it finds a match.
+This is typically more efficient than calling `getAllMatches` and
+checking the result, though it depends on the implementation.
 
 #### Parameters
 
@@ -78,4 +78,4 @@ result, as it stops once it finds a match.
 
 #### Defined in
 
-[src/matcher/Matcher.ts:23](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/Matcher.ts#L23)
+[src/matcher/Matcher.ts:23](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/Matcher.ts#L23)

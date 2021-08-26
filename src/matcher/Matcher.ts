@@ -15,8 +15,8 @@ export interface Matcher {
 	/**
 	 * Checks whether there is a match for any blacklisted term in the text.
 	 *
-	 * This is more efficient than calling `getAllMatches` and checking the
-	 * result, as it stops once it finds a match.
+	 * This is typically more efficient than calling `getAllMatches` and
+	 * checking the result, though it depends on the implementation.
 	 *
 	 * @param input - Text to check.
 	 */

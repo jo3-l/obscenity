@@ -39,7 +39,7 @@ then this points to the index of the low surrogate.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:31](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/MatchPayload.ts#L31)
+[src/matcher/MatchPayload.ts:31](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/MatchPayload.ts#L31)
 
 ___
 
@@ -51,7 +51,7 @@ The entire input text, without any censoring applied to it.
 
 #### Defined in
 
-[src/censor/TextCensor.ts:108](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/censor/TextCensor.ts#L108)
+[src/censor/TextCensor.ts:108](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/censor/TextCensor.ts#L108)
 
 ___
 
@@ -67,7 +67,7 @@ Total number of of code points that matched.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:18](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/MatchPayload.ts#L18)
+[src/matcher/MatchPayload.ts:18](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/MatchPayload.ts#L18)
 
 ___
 
@@ -79,7 +79,7 @@ Whether the current region overlaps at the end with some other region.
 
 #### Defined in
 
-[src/censor/TextCensor.ts:118](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/censor/TextCensor.ts#L118)
+[src/censor/TextCensor.ts:118](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/censor/TextCensor.ts#L118)
 
 ___
 
@@ -91,7 +91,7 @@ Whether the current region overlaps at the start with some other region.
 
 #### Defined in
 
-[src/censor/TextCensor.ts:113](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/censor/TextCensor.ts#L113)
+[src/censor/TextCensor.ts:113](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/censor/TextCensor.ts#L113)
 
 ___
 
@@ -107,7 +107,7 @@ Start index of the match, inclusive.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:23](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/MatchPayload.ts#L23)
+[src/matcher/MatchPayload.ts:23](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/MatchPayload.ts#L23)
 
 ___
 
@@ -123,4 +123,4 @@ ID of the blacklisted term that matched.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:13](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/MatchPayload.ts#L13)
+[src/matcher/MatchPayload.ts:13](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/MatchPayload.ts#L13)
