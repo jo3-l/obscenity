@@ -28,7 +28,7 @@ Metadata associated with this phrase.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:212](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/dataset/DataSet.ts#L212)
+[src/dataset/DataSet.ts:223](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/dataset/DataSet.ts#L223)
 
 ___
 
@@ -40,7 +40,7 @@ Patterns associated with this phrase.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:202](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/dataset/DataSet.ts#L202)
+[src/dataset/DataSet.ts:213](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/dataset/DataSet.ts#L213)
 
 ___
 
@@ -52,4 +52,4 @@ Whitelisted terms associated with this phrase.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:207](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/dataset/DataSet.ts#L207)
+[src/dataset/DataSet.ts:218](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/dataset/DataSet.ts#L218)

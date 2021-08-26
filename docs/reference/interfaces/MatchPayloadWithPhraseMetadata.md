@@ -43,7 +43,7 @@ then this points to the index of the low surrogate.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:31](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/matcher/MatchPayload.ts#L31)
+[src/matcher/MatchPayload.ts:31](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/MatchPayload.ts#L31)
 
 ___
 
@@ -59,7 +59,7 @@ Total number of of code points that matched.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:18](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/matcher/MatchPayload.ts#L18)
+[src/matcher/MatchPayload.ts:18](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/MatchPayload.ts#L18)
 
 ___
 
@@ -71,7 +71,7 @@ Phrase metadata associated with the pattern that matched.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:192](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/dataset/DataSet.ts#L192)
+[src/dataset/DataSet.ts:203](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/dataset/DataSet.ts#L203)
 
 ___
 
@@ -87,7 +87,7 @@ Start index of the match, inclusive.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:23](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/matcher/MatchPayload.ts#L23)
+[src/matcher/MatchPayload.ts:23](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/MatchPayload.ts#L23)
 
 ___
 
@@ -103,4 +103,4 @@ ID of the blacklisted term that matched.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:13](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/matcher/MatchPayload.ts#L13)
+[src/matcher/MatchPayload.ts:13](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/MatchPayload.ts#L13)

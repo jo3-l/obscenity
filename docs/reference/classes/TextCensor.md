@@ -2,8 +2,8 @@
 
 # Class: TextCensor
 
-Censors regions of text matched by the [PatternMatcher](PatternMatcher.md), supporting
-flexible [censoring strategies](../README.md#textcensorstrategy).
+Censors regions of text matched by a [Matcher](../interfaces/Matcher.md), supporting flexible
+[censoring strategies](../README.md#textcensorstrategy).
 
 ## Table of contents
 
@@ -58,7 +58,7 @@ The censored text.
 
 #### Defined in
 
-[src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/censor/TextCensor.ts#L66)
+[src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/censor/TextCensor.ts#L66)
 
 ___
 
@@ -104,4 +104,4 @@ utility functions:
 
 #### Defined in
 
-[src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/censor/TextCensor.ts#L41)
+[src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/censor/TextCensor.ts#L41)

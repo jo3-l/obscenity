@@ -1,17 +1,17 @@
-[obscenity](../README.md) / PatternMatcherOptions
+[obscenity](../README.md) / NfaMatcherOptions
 
-# Interface: PatternMatcherOptions
+# Interface: NfaMatcherOptions
 
-Options for the [PatternMatcher](../classes/PatternMatcher.md).
+Options for the [NfaMatcher](../classes/NfaMatcher.md).
 
 ## Table of contents
 
 ### Properties
 
-- [blacklistMatcherTransformers](PatternMatcherOptions.md#blacklistmatchertransformers)
-- [blacklistedTerms](PatternMatcherOptions.md#blacklistedterms)
-- [whitelistMatcherTransformers](PatternMatcherOptions.md#whitelistmatchertransformers)
-- [whitelistedTerms](PatternMatcherOptions.md#whitelistedterms)
+- [blacklistMatcherTransformers](NfaMatcherOptions.md#blacklistmatchertransformers)
+- [blacklistedTerms](NfaMatcherOptions.md#blacklistedterms)
+- [whitelistMatcherTransformers](NfaMatcherOptions.md#whitelistmatchertransformers)
+- [whitelistedTerms](NfaMatcherOptions.md#whitelistedterms)
 
 ## Properties
 
@@ -29,7 +29,7 @@ Transformers will be applied in the order they appear.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:622](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/matcher/PatternMatcher.ts#L622)
+[src/matcher/nfa/NfaMatcher.ts:629](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/nfa/NfaMatcher.ts#L629)
 
 ___
 
@@ -39,16 +39,9 @@ ___
 
 A list of blacklisted terms.
 
-**User-supplied patterns**
-
-Allowing user-supplied patterns is potentially dangerous and frowned
-upon, but should in theory be safe if the number of optional nodes that
-are permitted in patterns is limited to prevent pattern expansion from
-resulting in an unacceptable number of variants.
-
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:598](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/matcher/PatternMatcher.ts#L598)
+[src/matcher/nfa/NfaMatcher.ts:605](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/nfa/NfaMatcher.ts#L605)
 
 ___
 
@@ -66,7 +59,7 @@ Transformers will be applied in the order they appear.
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:633](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/matcher/PatternMatcher.ts#L633)
+[src/matcher/nfa/NfaMatcher.ts:640](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/nfa/NfaMatcher.ts#L640)
 
 ___
 
@@ -86,4 +79,4 @@ than the sword.`
 
 #### Defined in
 
-[src/matcher/PatternMatcher.ts:611](https://github.com/jo3-l/obscenity/blob/0f3c7b6/src/matcher/PatternMatcher.ts#L611)
+[src/matcher/nfa/NfaMatcher.ts:618](https://github.com/jo3-l/obscenity/blob/cfc6c99/src/matcher/nfa/NfaMatcher.ts#L618)
