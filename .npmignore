@@ -7,7 +7,6 @@ pnpm-lock.yaml
 .husky
 benchmarks
 src
-static
 test
 
 # Docs
