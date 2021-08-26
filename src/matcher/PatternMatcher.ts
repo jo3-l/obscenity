@@ -187,6 +187,7 @@ export class PatternMatcher {
 		this.fastIter.setInput(input);
 		this.whitelistedIntervals = this.whitelistedTermMatcher.getMatches(input);
 		this.currentNode = this.rootNode;
+		this.transformers.resetAll();
 		this.usedIndices.clear();
 		this.futureIndices.clear();
 		this.partialMatches.clear();

@@ -59,6 +59,7 @@ export class WhitelistedTermMatcher {
 			}
 		}
 
+		this.transformers.resetAll();
 		return matches;
 	}
 
