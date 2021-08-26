@@ -357,6 +357,20 @@ export const englishDataset = new DataSet<{ displayName: ProfaneWordDisplayName 
 			.addPattern(pattern`|wh[o]re|`)
 			.addPattern(pattern`|who[o]res[s]|`)
 			.addWhitelistedTerm("who're"),
+	)
+	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'dildo' }).addPattern(pattern`dildo`))
+	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'double penetration' }).addPattern(pattern`double penetra`))
+	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'finger bang' }).addPattern(pattern`fingerbang`))
+	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'hooker' }).addPattern(pattern`hooker`))
+	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'jerk off' }).addPattern(pattern`jerkoff`))
+	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'incest' }).addPattern(pattern`incest`))
+	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'tranny' }).addPattern(pattern`tranny`))
+	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'buttplug' }).addPattern(pattern`buttplug`))
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ displayName: 'cuck' })
+			.addPattern(pattern`cuck`)
+			.addWhitelistedTerm('cuckoo'),
 	);
 
 /**
@@ -411,4 +425,13 @@ export type ProfaneWordDisplayName =
 	| 'semen'
 	| 'sex'
 	| 'tit'
-	| 'whore';
+	| 'whore'
+	| 'dildo'
+	| 'double penetration'
+	| 'finger bang'
+	| 'hooker'
+	| 'jerk off'
+	| 'incest'
+	| 'tranny'
+	| 'buttplug'
+	| 'cuck';
