@@ -5,6 +5,7 @@ pnpm-lock.yaml
 # Source
 .github
 .husky
+scripts
 benchmarks
 src
 test
