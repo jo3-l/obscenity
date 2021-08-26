@@ -6,7 +6,6 @@ pnpm-lock.yaml
 .github
 .husky
 scripts
-benchmarks
 src
 test
 

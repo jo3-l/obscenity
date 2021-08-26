@@ -3,4 +3,3 @@ dist
 coverage
 scripts
 example
-benchmarks/**/*.js
