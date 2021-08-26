@@ -3,102 +3,49 @@ import { basename, extname, join } from 'path';
 
 import type { Node, ParsedPattern } from '../dist';
 import {
-	collapseDuplicatesTransformer,
 	englishDataset,
+	englishRecommendedBlacklistMatcherTransformers,
+	englishRecommendedTransformers,
+	englishRecommendedWhitelistMatcherTransformers,
 	PatternMatcher,
-	skipNonAlphabeticTransformer,
 	SyntaxKind,
-	toAsciiLowerCaseTransformer,
 } from '../dist';
+import { TransformerSet } from '../dist/transformer/TransformerSet';
 import { BenchmarkSuite } from './benchmark';
 import { italic, parseNumRuns } from './util';
 
 const numRuns = parseNumRuns();
 
+let n = 0; // to guard against dead code elimination
+
+const inputs: [title: string, text: string][] = [];
+const inputDir = join(__dirname, 'inputs');
+for (const filename of readdirSync(inputDir)) {
+	const content = readFileSync(join(inputDir, filename), { encoding: 'utf8' });
+	inputs.push([basename(filename, extname(filename)), content.trim()]);
+}
+
 const built = englishDataset.build();
 const matcher = new PatternMatcher({
 	...built,
-	blacklistMatcherTransformers: [toAsciiLowerCaseTransformer(), skipNonAlphabeticTransformer()],
-	whitelistMatcherTransformers: [
-		toAsciiLowerCaseTransformer(),
-		collapseDuplicatesTransformer({ defaultThreshold: Infinity, customThresholds: new Map([[' ', 1]]) }),
-	],
+	...englishRecommendedTransformers,
 });
 
 const regExps = built.blacklistedTerms.map((term) => patternToRegExp(term.pattern));
 const whitelistedTerms = built.whitelistedTerms!;
 
-const a = 'a'.charCodeAt(0);
-const A = 'A'.charCodeAt(0);
-const z = 'z'.charCodeAt(0);
-const Z = 'Z'.charCodeAt(0);
-const space = ' '.charCodeAt(0);
+const whitelistMatcherTransformers = new TransformerSet(englishRecommendedWhitelistMatcherTransformers);
+const blacklistMatcherTransformers = new TransformerSet(englishRecommendedBlacklistMatcherTransformers);
 
-const tests: [title: string, text: string][] = [];
-const inputDir = join(__dirname, 'inputs');
-for (const filename of readdirSync(inputDir)) {
-	const content = readFileSync(join(inputDir, filename), { encoding: 'utf8' });
-	tests.push([basename(filename, extname(filename)), content.trim()]);
-}
-
-let n = 0; // to guard against dead code elimination
-
-for (const [title, text] of tests) {
+for (const [title, text] of inputs) {
 	const suite = new BenchmarkSuite(title)
-		.add('regular expressions and string methods', () => {
-			const lowerCased = text.toLowerCase();
-
-			const withoutDuplicateSpacesIndexMap: number[] = [];
-			// Skip duplicate spaces while matching whitelisted terms.
-			let withoutDuplicateSpaces = '';
-			for (let i = 0; i < lowerCased.length; i++) {
-				const c = lowerCased.charCodeAt(i);
-				if (i === 0 || lowerCased.charCodeAt(i - 1) !== c || c !== space) {
-					withoutDuplicateSpaces += lowerCased[i];
-					withoutDuplicateSpacesIndexMap.push(i);
-				}
-			}
-
-			const whitelistedRegions: [number, number][] = [];
-			for (const whitelistedTerm of whitelistedTerms) {
-				for (let i = 0; i < withoutDuplicateSpaces.length; i++) {
-					if (withoutDuplicateSpaces.startsWith(whitelistedTerm, i)) {
-						whitelistedRegions.push([
-							withoutDuplicateSpacesIndexMap[i],
-							withoutDuplicateSpacesIndexMap[i + whitelistedTerm.length - 1],
-						]);
-					}
-				}
-			}
-
-			// Skip non-alphabetical characters while matching the blacklisted patterns.
-			const onlyAlphabeticalCharsIndexMap: number[] = [];
-			let onlyAlphabeticalChars = '';
-			for (let i = 0; i < lowerCased.length; i++) {
-				const c = lowerCased.charCodeAt(i);
-				if ((a <= c && c <= z) || (A <= c && c <= Z)) {
-					onlyAlphabeticalChars += lowerCased[i];
-					onlyAlphabeticalCharsIndexMap.push(i);
-				}
-			}
-
-			const matches = [];
-			for (let i = 0; i < regExps.length; i++) {
-				const regExp = regExps[i];
-				let match: RegExpExecArray | null;
-				while ((match = regExp.exec(onlyAlphabeticalChars))) {
-					const startIndex = onlyAlphabeticalCharsIndexMap[match.index];
-					const endIndex = onlyAlphabeticalCharsIndexMap[match.index + match[0].length - 1];
-					if (whitelistedRegions.some((region) => startIndex >= region[0] && endIndex <= region[1])) continue;
-					matches.push({ termId: i, matchLength: match[0].length, startIndex, endIndex });
-					regExp.lastIndex = match.index + 1;
-				}
-			}
-
-			n += matches.length;
-		})
 		.add('Obscenity', () => {
 			n += matcher.getAllMatches(text).length;
+			n += matcher.getAllMatches(text).length;
+		})
+		.add('regular expressions and string methods', () => {
+			n += runBruteForceMatcher(text).length;
+			n += runBruteForceMatcher(text).length;
 		});
 
 	suite.run(numRuns);
@@ -106,6 +53,64 @@ for (const [title, text] of tests) {
 }
 
 console.log(italic(`(Ignore, to guard against dead code elimination) ${n}`));
+
+function runBruteForceMatcher(text: string) {
+	const indices: number[] = [];
+	let transformed = '';
+	let index = 0;
+	for (const char of text) {
+		const result = blacklistMatcherTransformers.applyTo(char.codePointAt(0)!);
+		if (result !== undefined) {
+			indices.push(index);
+			transformed += String.fromCodePoint(result);
+		}
+		index += char.length;
+	}
+	blacklistMatcherTransformers.resetAll();
+
+	const whitelistedIntervals = getWhitelistedIntervals(text);
+
+	const matches = [];
+	for (let i = 0; i < regExps.length; i++) {
+		const regExp = regExps[i];
+		let match: RegExpExecArray | null;
+		while ((match = regExp.exec(transformed))) {
+			const startIndex = indices[match.index];
+			const endIndex = indices[match.index + match[0].length - 1];
+			if (whitelistedIntervals.some((region) => startIndex >= region[0] && endIndex <= region[1])) continue;
+			matches.push({ termId: i, matchLength: match[0].length, startIndex, endIndex });
+		}
+	}
+
+	return matches;
+}
+
+function getWhitelistedIntervals(text: string) {
+	const indices: number[] = [];
+	let transformed = '';
+	let index = 0;
+	for (const char of text) {
+		const result = whitelistMatcherTransformers.applyTo(char.codePointAt(0)!);
+		if (result !== undefined) {
+			indices.push(index);
+			transformed += String.fromCodePoint(result);
+		}
+		index += char.length;
+	}
+	whitelistMatcherTransformers.resetAll();
+
+	const result: [number, number][] = [];
+	for (const whitelistedTerm of whitelistedTerms) {
+		for (
+			let start = 0, idx = transformed.indexOf(whitelistedTerm, start);
+			idx !== -1;
+			start = idx + 1, idx = transformed.indexOf(whitelistedTerm, start)
+		) {
+			result.push([indices[start], indices[start + whitelistedTerm.length - 1]]);
+		}
+	}
+	return result;
+}
 
 function patternToRegExp(pattern: ParsedPattern) {
 	let regExpStr = '';
