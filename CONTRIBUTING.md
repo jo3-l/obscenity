@@ -2,8 +2,6 @@
 
 If you wish to contribute to Obscenity, feel free to fork the repository and submit a pull request. We use [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) to enforce a consistent code style and catch possible issues; setting up relevant plugins for your editor of choice is highly recommended.
 
-If you are planning on contributing to the pattern matcher, the [internals document](./INTERNALS.md) may be of interest to you.
-
 ## Setup
 
 **Prerequisites:** Node.js (preferably latest version, but any version >= 12 will work), and [pnpm](https://pnpm.io/) for managing packages.
