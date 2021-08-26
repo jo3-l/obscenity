@@ -136,21 +136,21 @@ describe('simple matching; no wildcards/optionals', () => {
 		],
 		['should work with terms that normalize to a different string', ['豈'], '豈', { 0: [[0, 0]] }],
 		['should work with the null character', ['\u0000'], '\u0000', { 0: [[0, 0]] }],
-	])('%s', (_, pats, input, matches) => {
+	])('%s', (_, patterns, input, matches) => {
 		const expected: MatchPayload[] = [];
-		for (const [id, locs] of Object.entries(matches)) {
-			const idNum = Number(id);
-			for (const loc of locs) {
+		for (const [idStr, matchData] of Object.entries(matches)) {
+			const id = Number(idStr);
+			for (const match of matchData) {
 				expected.push({
-					termId: idNum,
-					startIndex: loc[0],
-					endIndex: loc[1],
-					matchLength: [...pats[idNum]].length,
+					termId: id,
+					startIndex: match[0],
+					endIndex: match[1],
+					matchLength: [...patterns[id]].length,
 				});
 			}
 		}
 
-		const matcher = new NfaMatcher({ blacklistedTerms: assignIncrementingIds(pats.map(parseRawPattern)) });
+		const matcher = new NfaMatcher({ blacklistedTerms: assignIncrementingIds(patterns.map(parseRawPattern)) });
 		expect(matcher.getAllMatches(input)).toBePermutationOf(expected);
 	});
 });
@@ -339,6 +339,12 @@ describe('matching with wildcards', () => {
 			'dbye',
 			{},
 		],
+		[
+			'should not match patterns with trailing wildcards if there are insufficient characters at the end',
+			['hi????'],
+			'hid',
+			{},
+		],
 	])('%s', (_, patterns, input, matches) => {
 		const expected: MatchPayload[] = [];
 		for (const [idStr, matchData] of Object.entries(matches)) {
@@ -495,6 +501,22 @@ describe('matching with word boundaries', () => {
 			'there are many things',
 			{
 				0: [[15, 20, 6]],
+			},
+		],
+		[
+			'should match a pattern with only wildcards and a word boundary at the start correctly',
+			['|??'],
+			'myby',
+			{
+				0: [[0, 1, 2]],
+			},
+		],
+		[
+			'should match a pattern with only wildcards and a word boundary at the end correctly',
+			['??|'],
+			'myby',
+			{
+				0: [[2, 3, 2]],
 			},
 		],
 

@@ -166,7 +166,7 @@ export class NfaMatcher implements Matcher {
 		});
 		this.slowTransformers = new TransformerSet(blacklistMatcherTransformers);
 		this.fastTransformers = new TransformerSet(blacklistMatcherTransformers);
-		this.ensureNoDuplicates(blacklistedTerms.map((p) => p.id));
+		this.ensureNoDuplicateIds(blacklistedTerms);
 		this.buildTrie(blacklistedTerms);
 		this.constructLinks();
 		this.useUnderlyingEdgeCollectionImplementation(this.rootNode);
@@ -403,11 +403,11 @@ export class NfaMatcher implements Matcher {
 		return true;
 	}
 
-	private ensureNoDuplicates(ids: number[]) {
+	private ensureNoDuplicateIds(terms: BlacklistedTerm[]) {
 		const seen = new Set<number>();
-		for (const id of ids) {
-			if (seen.has(id)) throw new Error(`Found duplicate blacklisted term ID ${id}.`);
-			seen.add(id);
+		for (const term of terms) {
+			if (seen.has(term.id)) throw new Error(`Found duplicate blacklisted term ID ${term.id}.`);
+			seen.add(term.id);
 		}
 	}
 

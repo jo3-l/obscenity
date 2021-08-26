@@ -25,7 +25,7 @@ export function getRegExpStringForNode(node: Node): string {
 			return str;
 		}
 		case SyntaxKind.Optional:
-			return `(?:${getRegExpStringForNode(node.childNode)})`;
+			return `(?:${getRegExpStringForNode(node.childNode)})?`;
 		case SyntaxKind.Wildcard:
 			return `.`;
 	}

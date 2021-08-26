@@ -7,7 +7,6 @@ import type { BlacklistedTerm } from '../BlacklistedTerm';
 import { IntervalCollection } from '../IntervalCollection';
 import type { Matcher } from '../Matcher';
 import type { MatchPayload } from '../MatchPayload';
-import { compareMatchByPositionAndId } from '../MatchPayload';
 
 /**
  * An implementation of the [[Matcher]] interface using regular expressions and
@@ -84,6 +83,7 @@ export class RegExpMatcher implements Matcher {
 		blacklistMatcherTransformers = [],
 		whitelistMatcherTransformers = [],
 	}: RegExpMatcherOptions) {
+		this.ensureNoDuplicateIds(blacklistedTerms);
 		this.blacklistedTerms = blacklistedTerms.map((term) => ({
 			id: term.id,
 			regExp: compilePatternToRegExp(term.pattern),
@@ -93,7 +93,9 @@ export class RegExpMatcher implements Matcher {
 		this.whitelistMatcherTransformers = new TransformerSet(whitelistMatcherTransformers);
 	}
 
-	public getAllMatches(input: string, sorted = false) {
+	// Note: No |sorted| parameter as the output is already sorted as a
+	// byproduct of how the method is implemented.
+	public getAllMatches(input: string) {
 		const whitelistedIntervals = this.getWhitelistedIntervals(input);
 		const [indices, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
 
@@ -101,8 +103,9 @@ export class RegExpMatcher implements Matcher {
 		for (const blacklistedTerm of this.blacklistedTerms) {
 			let match: RegExpExecArray | null;
 			while ((match = blacklistedTerm.regExp.exec(transformed))) {
+				const matchLength = [...match[0]].length; // spread so we count code points, not code units
 				const startIndex = indices[match.index];
-				let endIndex = indices[match.index + match[0].length - 1];
+				let endIndex = indices[match.index + matchLength - 1];
 				// Adjust the end index if needed.
 				if (
 					endIndex < transformed.length - 1 && // not the last character
@@ -113,12 +116,13 @@ export class RegExpMatcher implements Matcher {
 				}
 
 				if (!whitelistedIntervals.query(startIndex, endIndex)) {
-					matches.push({ termId: blacklistedTerm.id, startIndex, endIndex, matchLength: match[0].length });
+					matches.push({ termId: blacklistedTerm.id, startIndex, endIndex, matchLength });
 				}
 			}
+
+			blacklistedTerm.regExp.lastIndex = 0;
 		}
 
-		if (sorted) matches.sort(compareMatchByPositionAndId);
 		return matches;
 	}
 
@@ -128,8 +132,9 @@ export class RegExpMatcher implements Matcher {
 		for (const blacklistedTerm of this.blacklistedTerms) {
 			let match: RegExpExecArray | null;
 			while ((match = blacklistedTerm.regExp.exec(transformed))) {
+				const matchLength = [...match[0]].length; // spread so we count code points, not code units
 				const startIndex = indices[match.index];
-				let endIndex = indices[match.index + match[0].length - 1];
+				let endIndex = indices[match.index + matchLength - 1];
 				// Adjust the end index if needed.
 				if (
 					endIndex < transformed.length - 1 && // not the last character
@@ -141,6 +146,8 @@ export class RegExpMatcher implements Matcher {
 
 				if (!whitelistedIntervals.query(startIndex, endIndex)) return true;
 			}
+
+			blacklistedTerm.regExp.lastIndex = 0;
 		}
 
 		return false;
@@ -150,13 +157,15 @@ export class RegExpMatcher implements Matcher {
 		const matches = new IntervalCollection();
 		const [indices, transformed] = this.applyTransformers(input, this.whitelistMatcherTransformers);
 		for (const whitelistedTerm of this.whitelistedTerms) {
-			const lastEnd = 0;
+			const length = [...whitelistedTerm].length;
+
+			let lastEnd = 0;
 			for (
 				let startIndex = transformed.indexOf(whitelistedTerm, lastEnd);
 				startIndex !== -1;
 				startIndex = transformed.indexOf(whitelistedTerm, lastEnd)
 			) {
-				let endIndex = indices[startIndex + whitelistedTerm.length - 1];
+				let endIndex = indices[startIndex + length - 1];
 				// Adjust the end index if needed.
 				if (
 					endIndex < transformed.length - 1 && // not the last character
@@ -167,6 +176,7 @@ export class RegExpMatcher implements Matcher {
 				}
 
 				matches.insert(indices[startIndex], endIndex);
+				lastEnd = endIndex + 1;
 			}
 		}
 
@@ -185,7 +195,16 @@ export class RegExpMatcher implements Matcher {
 			}
 		}
 
+		transformers.resetAll();
 		return [indices, transformed];
+	}
+
+	private ensureNoDuplicateIds(terms: BlacklistedTerm[]) {
+		const seen = new Set<number>();
+		for (const term of terms) {
+			if (seen.has(term.id)) throw new Error(`Found duplicate blacklisted term ID ${term.id}.`);
+			seen.add(term.id);
+		}
 	}
 }
 
