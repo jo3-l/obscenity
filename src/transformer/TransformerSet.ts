@@ -1,29 +1,37 @@
-import type { TransformerContainer } from './Transformers';
+import type { StatefulTransformer, TransformerContainer } from './Transformers';
 import { TransformerType } from './Transformers';
 
 export class TransformerSet {
 	private readonly transformers: TransformerContainer[];
+	private readonly statefulTransformers: (StatefulTransformer | undefined)[];
 
 	public constructor(transformers: TransformerContainer[]) {
 		this.transformers = transformers;
+		this.statefulTransformers = new Array<StatefulTransformer | undefined>(this.transformers.length);
+		for (let i = 0; i < this.transformers.length; i++) {
+			const transformer = this.transformers[i];
+			if (transformer.type === TransformerType.Stateful) {
+				this.statefulTransformers[i] = transformer.factory();
+			}
+		}
 	}
 
 	public applyTo(char: number) {
 		let transformed: number | undefined = char;
-		for (const transformer of this.transformers) {
-			transformed =
-				transformer.type === TransformerType.Simple
-					? transformer.transform(transformed)
-					: transformer.transformer.transform(transformed);
-			if (!transformed) return undefined;
+		for (let i = 0; i < this.transformers.length && transformed !== undefined; i++) {
+			const transformer = this.transformers[i];
+			if (transformer.type === TransformerType.Simple) transformed = transformer.transform(transformed);
+			else transformed = this.statefulTransformers[i]!.transform(transformed);
 		}
 
 		return transformed;
 	}
 
 	public resetAll() {
-		for (const transformer of this.transformers) {
-			if (transformer.type === TransformerType.Stateful) transformer.transformer.reset();
+		for (let i = 0; i < this.transformers.length; i++) {
+			if (this.transformers[i].type === TransformerType.Stateful) {
+				this.statefulTransformers[i]!.reset();
+			}
 		}
 	}
 }

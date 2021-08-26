@@ -1,5 +1,29 @@
+import type { StatefulTransformer } from '../../src/transformer/Transformers';
 import { createSimpleTransformer, createStatefulTransformer } from '../../src/transformer/Transformers';
 import { TransformerSet } from '../../src/transformer/TransformerSet';
+
+it('should create multiple instances of stateful transformers', () => {
+	const spy = jest.fn();
+	class MyTransformer implements StatefulTransformer {
+		public constructor() {
+			spy();
+		}
+
+		public transform() {
+			return 0;
+		}
+
+		public reset() {
+			// do nothing
+		}
+	}
+
+	const transformer = createStatefulTransformer(() => new MyTransformer());
+	new TransformerSet([transformer]);
+	expect(spy).toHaveBeenCalledTimes(1);
+	new TransformerSet([transformer]);
+	expect(spy).toHaveBeenCalledTimes(2);
+});
 
 describe('TransformerSet#applyTo()', () => {
 	it('should be a noop if no transformers were provided', () => {

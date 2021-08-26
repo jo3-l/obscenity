@@ -40,7 +40,7 @@ describe('createStatefulTransformer', () => {
 		const factory = () => statefulTransformer;
 		expect(createStatefulTransformer(factory)).toStrictEqual({
 			type: TransformerType.Stateful,
-			transformer: statefulTransformer,
+			factory,
 		});
 	});
 });

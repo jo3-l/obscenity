@@ -97,7 +97,7 @@ export interface SimpleTransformerContainer {
  * @returns A container holding the stateful transformer, which can then be passed to the [[PatternMatcher]].
  */
 export function createStatefulTransformer(factory: StatefulTransformerFactory): StatefulTransformerContainer {
-	return { type: TransformerType.Stateful, transformer: factory() };
+	return { type: TransformerType.Stateful, factory };
 }
 
 /**
@@ -129,9 +129,5 @@ export interface StatefulTransformer {
  */
 export interface StatefulTransformerContainer {
 	type: TransformerType.Stateful;
-
-	/**
-	 * An instance of the stateful transformer produced by the factory.
-	 */
-	transformer: StatefulTransformer;
+	factory: StatefulTransformerFactory;
 }

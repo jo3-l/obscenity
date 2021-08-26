@@ -39,7 +39,7 @@ describe('collapseDuplicatesTransformer()', () => {
 					['a', 2],
 					['z', 3],
 				]),
-			});
+			}).factory();
 			expect(CollapseDuplicatesTransformer).toHaveBeenCalledTimes(1);
 			expect(CollapseDuplicatesTransformer.mock.calls[0][0]).toMatchObject({
 				customThresholds: new Map([
@@ -58,7 +58,7 @@ describe('collapseDuplicatesTransformer()', () => {
 				['z', 3],
 			]),
 		};
-		collapseDuplicatesTransformer(options);
+		collapseDuplicatesTransformer(options).factory();
 		expect(CollapseDuplicatesTransformer).toHaveBeenCalledTimes(1);
 		expect(CollapseDuplicatesTransformer).toHaveBeenLastCalledWith({
 			defaultThreshold: 5,
@@ -76,7 +76,7 @@ describe('collapseDuplicatesTransformer()', () => {
 				['z', 3],
 			]),
 		};
-		collapseDuplicatesTransformer(options);
+		collapseDuplicatesTransformer(options).factory();
 		expect(CollapseDuplicatesTransformer).toHaveBeenCalledTimes(1);
 		expect(CollapseDuplicatesTransformer).toHaveBeenLastCalledWith({
 			defaultThreshold: 1,
@@ -91,7 +91,7 @@ describe('collapseDuplicatesTransformer()', () => {
 		const options: CollapseDuplicatesTransformerOptions = {
 			defaultThreshold: 1,
 		};
-		collapseDuplicatesTransformer(options);
+		collapseDuplicatesTransformer(options).factory();
 		expect(CollapseDuplicatesTransformer).toHaveBeenCalledTimes(1);
 		expect(CollapseDuplicatesTransformer).toHaveBeenLastCalledWith({ ...options, customThresholds: new Map() });
 	});
@@ -99,6 +99,6 @@ describe('collapseDuplicatesTransformer()', () => {
 	it('should return a stateful transformer container', () => {
 		const container = collapseDuplicatesTransformer();
 		expect(container.type).toBe(TransformerType.Stateful);
-		expect(container.transformer).toBeInstanceOf(CollapseDuplicatesTransformer);
+		expect(container.factory).toStrictEqual(expect.any(Function));
 	});
 });

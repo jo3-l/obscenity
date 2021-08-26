@@ -48,7 +48,8 @@ export class PatternMatcher {
 	private currentId = 0; // Current generated pattern ID.
 
 	private readonly whitelistedTermMatcher: WhitelistedTermMatcher;
-	private readonly transformers: TransformerSet;
+	private readonly slowTransformers: TransformerSet;
+	private readonly fastTransformers: TransformerSet;
 
 	// Use two iterators: one fast, and one slow. The fast iterator will
 	// constantly be |maxTrailingWildcardCount| positions head of the slow
@@ -130,7 +131,8 @@ export class PatternMatcher {
 			terms: whitelistedTerms,
 			transformers: whitelistMatcherTransformers,
 		});
-		this.transformers = new TransformerSet(blacklistMatcherTransformers);
+		this.slowTransformers = new TransformerSet(blacklistMatcherTransformers);
+		this.fastTransformers = new TransformerSet(blacklistMatcherTransformers);
 		this.ensureNoDuplicates(blacklistedTerms.map((p) => p.id));
 		this.buildTrie(blacklistedTerms);
 		this.constructLinks();
@@ -187,7 +189,8 @@ export class PatternMatcher {
 		this.fastIter.setInput(input);
 		this.whitelistedIntervals = this.whitelistedTermMatcher.getMatches(input);
 		this.currentNode = this.rootNode;
-		this.transformers.resetAll();
+		this.slowTransformers.resetAll();
+		this.fastTransformers.resetAll();
 		this.usedIndices.clear();
 		this.futureIndices.clear();
 		this.partialMatches.clear();
@@ -202,7 +205,7 @@ export class PatternMatcher {
 				// Iterator is done.
 				this.futureIndices.push(undefined);
 			} else {
-				const transformed = this.transformers.applyTo(char);
+				const transformed = this.fastTransformers.applyTo(char);
 				// Only add the position if the character didn't become
 				// undefined after transformation.
 				if (transformed !== undefined) this.futureIndices.push(this.fastIter.position);
@@ -210,7 +213,7 @@ export class PatternMatcher {
 		}
 
 		for (const char of this.slowIter) {
-			const transformed = this.transformers.applyTo(char);
+			const transformed = this.slowTransformers.applyTo(char);
 			if (transformed === undefined) continue;
 
 			// Advance the index window forward.
@@ -226,7 +229,7 @@ export class PatternMatcher {
 			if (this.maxTrailingWildcardCount > 0) {
 				let found = false;
 				while (!this.fastIter.done && !found) {
-					found = this.transformers.applyTo(this.fastIter.next().value!) !== undefined;
+					found = this.fastTransformers.applyTo(this.fastIter.next().value!) !== undefined;
 					if (found) this.futureIndices.push(this.fastIter.position);
 				}
 				if (!found) this.futureIndices.push(undefined);
