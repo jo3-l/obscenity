@@ -90,7 +90,7 @@ console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sw
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:81](https://github.com/jo3-l/obscenity/blob/81e1bc5/src/matcher/regexp/RegExpMatcher.ts#L81)
+[src/matcher/regexp/RegExpMatcher.ts:81](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/matcher/regexp/RegExpMatcher.ts#L81)
 
 ## Methods
 
@@ -121,7 +121,7 @@ which is typically more efficient.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:97](https://github.com/jo3-l/obscenity/blob/81e1bc5/src/matcher/regexp/RegExpMatcher.ts#L97)
+[src/matcher/regexp/RegExpMatcher.ts:97](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/matcher/regexp/RegExpMatcher.ts#L97)
 
 ___
 
@@ -150,4 +150,4 @@ checking the result, though it depends on the implementation.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:129](https://github.com/jo3-l/obscenity/blob/81e1bc5/src/matcher/regexp/RegExpMatcher.ts#L129)
+[src/matcher/regexp/RegExpMatcher.ts:129](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/matcher/regexp/RegExpMatcher.ts#L129)
