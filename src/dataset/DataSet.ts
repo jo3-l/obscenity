@@ -35,9 +35,9 @@ export class DataSet<MetadataType> {
 	 *
 	 * @example
 	 * ```typescript
-	 * const customDataset = new DataSet()
+	 * const customDataset = new DataSet<{ originalWord: string }>()
 	 * 	.addAll(englishDataset)
-	 * 	.removePhrasesIf((phrase) => phrase.metadata.displayName === 'fuck');
+	 * 	.removePhrasesIf((phrase) => phrase.metadata.originalWord === 'fuck');
 	 * ```
 	 *
 	 * @param predicate - A predicate that determines whether or not a phrase should be removed.
@@ -61,8 +61,8 @@ export class DataSet<MetadataType> {
 	 *
 	 * @example
 	 * ```typescript
-	 * const data = new DataSet()
-	 * 	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'fuck' })
+	 * const data = new DataSet<{ originalWord: string }>()
+	 * 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'fuck' })
 	 * 		.addPattern(pattern`fuck`)
 	 * 		.addPattern(pattern`f[?]ck`)
 	 * 		.addWhitelistedTerm('Afck'))

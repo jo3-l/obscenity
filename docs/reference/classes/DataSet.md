@@ -62,7 +62,7 @@ const customDataset = new DataSet().addAll(englishDataset);
 
 #### Defined in
 
-[src/dataset/DataSet.ts:28](https://github.com/jo3-l/obscenity/blob/6156277/src/dataset/DataSet.ts#L28)
+[src/dataset/DataSet.ts:28](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/dataset/DataSet.ts#L28)
 
 ___
 
@@ -74,8 +74,8 @@ Adds a phrase to this dataset.
 
 **`example`**
 ```typescript
-const data = new DataSet()
-	.addPhrase((phrase) => phrase.setMetadata({ displayName: 'fuck' })
+const data = new DataSet<{ originalWord: string }>()
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'fuck' })
 		.addPattern(pattern`fuck`)
 		.addPattern(pattern`f[?]ck`)
 		.addWhitelistedTerm('Afck'))
@@ -94,7 +94,7 @@ const data = new DataSet()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/6156277/src/dataset/DataSet.ts#L75)
+[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/dataset/DataSet.ts#L75)
 
 ___
 
@@ -129,7 +129,7 @@ const matcher = new NfaMatcher({
 
 #### Defined in
 
-[src/dataset/DataSet.ts:129](https://github.com/jo3-l/obscenity/blob/6156277/src/dataset/DataSet.ts#L129)
+[src/dataset/DataSet.ts:129](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/dataset/DataSet.ts#L129)
 
 ___
 
@@ -160,7 +160,7 @@ const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
 
 #### Defined in
 
-[src/dataset/DataSet.ts:95](https://github.com/jo3-l/obscenity/blob/6156277/src/dataset/DataSet.ts#L95)
+[src/dataset/DataSet.ts:95](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/dataset/DataSet.ts#L95)
 
 ___
 
@@ -172,9 +172,9 @@ Removes phrases that match the predicate given.
 
 **`example`**
 ```typescript
-const customDataset = new DataSet()
+const customDataset = new DataSet<{ originalWord: string }>()
 	.addAll(englishDataset)
-	.removePhrasesIf((phrase) => phrase.metadata.displayName === 'fuck');
+	.removePhrasesIf((phrase) => phrase.metadata.originalWord === 'fuck');
 ```
 
 #### Parameters
@@ -189,4 +189,4 @@ const customDataset = new DataSet()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/6156277/src/dataset/DataSet.ts#L46)
+[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/dataset/DataSet.ts#L46)
