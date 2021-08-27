@@ -13,7 +13,9 @@ test
 docs
 examples
 CONTRIBUTING.md
+CHANGELOG.md
 INTERNALS.md
+LICENSE.md
 
 # Config
 .commitlintrc.json
