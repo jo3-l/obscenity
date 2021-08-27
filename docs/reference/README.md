@@ -82,7 +82,7 @@ should be a set of characters that map to the transformed character.
 
 #### Defined in
 
-[src/transformer/remap-characters/index.ts:64](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/transformer/remap-characters/index.ts#L64)
+[src/transformer/remap-characters/index.ts:64](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/transformer/remap-characters/index.ts#L64)
 
 ___
 
@@ -94,7 +94,7 @@ All the profane words that are included in the [english dataset](README.md#engli
 
 #### Defined in
 
-[src/preset/english.ts:379](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/preset/english.ts#L379)
+[src/preset/english.ts:379](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/preset/english.ts#L379)
 
 ___
 
@@ -106,7 +106,7 @@ All the possible kinds of nodes.
 
 #### Defined in
 
-[src/pattern/Nodes.ts:24](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/pattern/Nodes.ts#L24)
+[src/pattern/Nodes.ts:24](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/pattern/Nodes.ts#L24)
 
 ___
 
@@ -133,7 +133,7 @@ replacement string.
 
 #### Defined in
 
-[src/censor/TextCensor.ts:99](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/censor/TextCensor.ts#L99)
+[src/censor/TextCensor.ts:99](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/censor/TextCensor.ts#L99)
 
 ## Variables
 
@@ -191,7 +191,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #### Defined in
 
-[src/preset/english.ts:105](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/preset/english.ts#L105)
+[src/preset/english.ts:105](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/preset/english.ts#L105)
 
 ___
 
@@ -204,7 +204,7 @@ A set of transformers to be used when matching blacklisted patterns with the
 
 #### Defined in
 
-[src/preset/english.ts:14](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/preset/english.ts#L14)
+[src/preset/english.ts:14](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/preset/english.ts#L14)
 
 ___
 
@@ -216,7 +216,7 @@ Recommended transformers to be used with the [english word dataset](README.md#en
 
 #### Defined in
 
-[src/preset/english.ts:48](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/preset/english.ts#L48)
+[src/preset/english.ts:48](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/preset/english.ts#L48)
 
 ___
 
@@ -229,7 +229,7 @@ A set of transformers to be used when matching whitelisted terms with the
 
 #### Defined in
 
-[src/preset/english.ts:36](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/preset/english.ts#L36)
+[src/preset/english.ts:36](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/preset/english.ts#L36)
 
 ___
 
@@ -241,7 +241,7 @@ The current version of the library, formatted as `MAJOR.MINOR.PATCH`.
 
 #### Defined in
 
-[src/index.ts:28](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/index.ts#L28)
+[src/index.ts:28](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/index.ts#L28)
 
 ## Functions
 
@@ -279,7 +279,7 @@ to the [RegExpMatcher](classes/RegExpMatcher.md) or [NfaMatcher](classes/NfaMatc
 
 #### Defined in
 
-[src/matcher/BlacklistedTerm.ts:38](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/matcher/BlacklistedTerm.ts#L38)
+[src/matcher/BlacklistedTerm.ts:38](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/matcher/BlacklistedTerm.ts#L38)
 
 ___
 
@@ -305,7 +305,7 @@ A [TextCensorStrategy](README.md#textcensorstrategy) for use with the [TextCenso
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:75](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/censor/BuiltinStrategies.ts#L75)
+[src/censor/BuiltinStrategies.ts:75](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/censor/BuiltinStrategies.ts#L75)
 
 ___
 
@@ -366,7 +366,7 @@ A container holding the transformer, which can then be passed to the
 
 #### Defined in
 
-[src/transformer/collapse-duplicates/index.ts:48](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/transformer/collapse-duplicates/index.ts#L48)
+[src/transformer/collapse-duplicates/index.ts:48](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/transformer/collapse-duplicates/index.ts#L48)
 
 ___
 
@@ -407,7 +407,7 @@ than the first.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:57](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/matcher/MatchPayload.ts#L57)
+[src/matcher/MatchPayload.ts:57](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/matcher/MatchPayload.ts#L57)
 
 ___
 
@@ -440,7 +440,7 @@ A [TextCensorStrategy](README.md#textcensorstrategy) for use with the [TextCenso
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:142](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/censor/BuiltinStrategies.ts#L142)
+[src/censor/BuiltinStrategies.ts:142](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/censor/BuiltinStrategies.ts#L142)
 
 ___
 
@@ -482,7 +482,7 @@ A [TextCensorStrategy](README.md#textcensorstrategy) for use with the [TextCenso
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:122](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/censor/BuiltinStrategies.ts#L122)
+[src/censor/BuiltinStrategies.ts:122](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/censor/BuiltinStrategies.ts#L122)
 
 ___
 
@@ -510,7 +510,7 @@ A [TextCensorStrategy](README.md#textcensorstrategy) for use with the [TextCenso
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:94](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/censor/BuiltinStrategies.ts#L94)
+[src/censor/BuiltinStrategies.ts:94](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/censor/BuiltinStrategies.ts#L94)
 
 ___
 
@@ -543,7 +543,7 @@ A [TextCensorStrategy](README.md#textcensorstrategy) for use with the [TextCenso
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:54](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/censor/BuiltinStrategies.ts#L54)
+[src/censor/BuiltinStrategies.ts:54](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/censor/BuiltinStrategies.ts#L54)
 
 ___
 
@@ -586,7 +586,7 @@ A [TextCensorStrategy](README.md#textcensorstrategy) for use with the [TextCenso
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:30](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/censor/BuiltinStrategies.ts#L30)
+[src/censor/BuiltinStrategies.ts:30](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/censor/BuiltinStrategies.ts#L30)
 
 ___
 
@@ -619,7 +619,7 @@ The parsed pattern, which can then be used with the
 
 #### Defined in
 
-[src/pattern/Pattern.ts:132](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/pattern/Pattern.ts#L132)
+[src/pattern/Pattern.ts:132](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/pattern/Pattern.ts#L132)
 
 ___
 
@@ -745,7 +745,7 @@ The parsed pattern, which can then be used with the
 
 #### Defined in
 
-[src/pattern/Pattern.ts:109](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/pattern/Pattern.ts#L109)
+[src/pattern/Pattern.ts:109](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/pattern/Pattern.ts#L109)
 
 ___
 
@@ -778,7 +778,7 @@ A [TextCensorStrategy](README.md#textcensorstrategy) for use with the [TextCenso
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:164](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/censor/BuiltinStrategies.ts#L164)
+[src/censor/BuiltinStrategies.ts:164](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/censor/BuiltinStrategies.ts#L164)
 
 ___
 
@@ -834,7 +834,7 @@ A container holding the transformer, which can then be passed to the
 
 #### Defined in
 
-[src/transformer/remap-characters/index.ts:42](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/transformer/remap-characters/index.ts#L42)
+[src/transformer/remap-characters/index.ts:42](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/transformer/remap-characters/index.ts#L42)
 
 ___
 
@@ -866,7 +866,7 @@ A container holding the transformer, which can then be passed to the
 
 #### Defined in
 
-[src/transformer/resolve-confusables/index.ts:23](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/transformer/resolve-confusables/index.ts#L23)
+[src/transformer/resolve-confusables/index.ts:23](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/transformer/resolve-confusables/index.ts#L23)
 
 ___
 
@@ -898,7 +898,7 @@ A container holding the transformer, which can then be passed to the
 
 #### Defined in
 
-[src/transformer/resolve-leetspeak/index.ts:24](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/transformer/resolve-leetspeak/index.ts#L24)
+[src/transformer/resolve-leetspeak/index.ts:24](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/transformer/resolve-leetspeak/index.ts#L24)
 
 ___
 
@@ -931,7 +931,7 @@ A container holding the transformer, which can then be passed to the
 
 #### Defined in
 
-[src/transformer/skip-non-alphabetic/index.ts:24](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/transformer/skip-non-alphabetic/index.ts#L24)
+[src/transformer/skip-non-alphabetic/index.ts:24](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/transformer/skip-non-alphabetic/index.ts#L24)
 
 ___
 
@@ -958,4 +958,4 @@ A container holding the transformer, which can then be passed to the
 
 #### Defined in
 
-[src/transformer/to-ascii-lowercase/index.ts:18](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/transformer/to-ascii-lowercase/index.ts#L18)
+[src/transformer/to-ascii-lowercase/index.ts:18](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/transformer/to-ascii-lowercase/index.ts#L18)

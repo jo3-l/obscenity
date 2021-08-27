@@ -22,7 +22,7 @@ A list of nodes which make up the pattern.
 
 #### Defined in
 
-[src/pattern/Nodes.ts:18](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/pattern/Nodes.ts#L18)
+[src/pattern/Nodes.ts:18](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/pattern/Nodes.ts#L18)
 
 ___
 
@@ -34,7 +34,7 @@ Whether the pattern requires a word boundary at the end.
 
 #### Defined in
 
-[src/pattern/Nodes.ts:13](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/pattern/Nodes.ts#L13)
+[src/pattern/Nodes.ts:13](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/pattern/Nodes.ts#L13)
 
 ___
 
@@ -46,4 +46,4 @@ Whether the pattern requires a word boundary at the start.
 
 #### Defined in
 
-[src/pattern/Nodes.ts:8](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/pattern/Nodes.ts#L8)
+[src/pattern/Nodes.ts:8](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/pattern/Nodes.ts#L8)

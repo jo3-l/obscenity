@@ -90,13 +90,13 @@ console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sw
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:80](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/matcher/regexp/RegExpMatcher.ts#L80)
+[src/matcher/regexp/RegExpMatcher.ts:81](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/matcher/regexp/RegExpMatcher.ts#L81)
 
 ## Methods
 
 ### getAllMatches
 
-▸ **getAllMatches**(`input`): [`MatchPayload`](../interfaces/MatchPayload.md)[]
+▸ **getAllMatches**(`input`, `sorted?`): [`MatchPayload`](../interfaces/MatchPayload.md)[]
 
 Returns all matches of blacklisted terms in the text.
 
@@ -106,9 +106,10 @@ which is typically more efficient.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `input` | `string` |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `input` | `string` | `undefined` |
+| `sorted` | `boolean` | `false` |
 
 #### Returns
 
@@ -120,7 +121,7 @@ which is typically more efficient.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:98](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/matcher/regexp/RegExpMatcher.ts#L98)
+[src/matcher/regexp/RegExpMatcher.ts:97](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/matcher/regexp/RegExpMatcher.ts#L97)
 
 ___
 
@@ -149,4 +150,4 @@ checking the result, though it depends on the implementation.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:129](https://github.com/jo3-l/obscenity/blob/ba53cd3/src/matcher/regexp/RegExpMatcher.ts#L129)
+[src/matcher/regexp/RegExpMatcher.ts:129](https://github.com/jo3-l/obscenity/blob/c0d50c3/src/matcher/regexp/RegExpMatcher.ts#L129)
