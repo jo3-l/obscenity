@@ -33,7 +33,7 @@ threshold to be `2`, with the effect of leaving `book` unchanged.
 
 #### Defined in
 
-[src/transformer/collapse-duplicates/index.ts:103](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/transformer/collapse-duplicates/index.ts#L103)
+[src/transformer/collapse-duplicates/index.ts:103](https://github.com/jo3-l/obscenity/blob/6156277/src/transformer/collapse-duplicates/index.ts#L103)
 
 ___
 
@@ -51,4 +51,4 @@ would be transformed to `aa`.
 
 #### Defined in
 
-[src/transformer/collapse-duplicates/index.ts:86](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/transformer/collapse-duplicates/index.ts#L86)
+[src/transformer/collapse-duplicates/index.ts:86](https://github.com/jo3-l/obscenity/blob/6156277/src/transformer/collapse-duplicates/index.ts#L86)

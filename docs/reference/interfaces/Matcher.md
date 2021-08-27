@@ -53,7 +53,7 @@ otherwise, their order is unspecified.
 
 #### Defined in
 
-[src/matcher/Matcher.ts:41](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/Matcher.ts#L41)
+[src/matcher/Matcher.ts:41](https://github.com/jo3-l/obscenity/blob/6156277/src/matcher/Matcher.ts#L41)
 
 ___
 
@@ -78,4 +78,4 @@ checking the result, though it depends on the implementation.
 
 #### Defined in
 
-[src/matcher/Matcher.ts:23](https://github.com/jo3-l/obscenity/blob/d2c70b7/src/matcher/Matcher.ts#L23)
+[src/matcher/Matcher.ts:23](https://github.com/jo3-l/obscenity/blob/6156277/src/matcher/Matcher.ts#L23)
