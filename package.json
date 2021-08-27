@@ -20,7 +20,7 @@
 		"lint": "eslint src test",
 		"lint:fix": "eslint src test --fix",
 		"prepare": "is-ci || husky install",
-		"release": "git checkout main && git pull origin main && pnpm i && pnpm lint && pnpm test && pnpm build && pnpm docs && git add -A && standard-version -a",
+		"release": "git checkout main && git pull origin main && pnpm i && pnpm lint && pnpm test && pnpm build && pnpm build:docs && git add -A && standard-version -a",
 		"release:tags": "git push --follow-tags origin main",
 		"release:github": "conventional-github-releaser -p angular",
 		"release:publish": "pnpm publish --access public"
