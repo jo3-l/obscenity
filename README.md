@@ -1,6 +1,6 @@
 # Obscenity
 
-> Robust, extensible profanity filter for NodeJS
+> Robust, extensible profanity filter for NodeJS.
 
 <a href="https://github.com/jo3-l/obscenity/actions"><img src="https://img.shields.io/github/workflow/status/jo3-l/obscenity/Continuous%20Integration?style=for-the-badge" alt="Build status"></a>
 <a href="https://app.codecov.io/gh/jo3-l/obscenity/"><img src="https://img.shields.io/codecov/c/github/jo3-l/obscenity?style=for-the-badge" alt="Codecov status"></a>
