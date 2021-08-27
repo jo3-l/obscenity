@@ -216,3 +216,18 @@ describe('RegExpMatcher#hasMatch()', () => {
 		expect(matcher.hasMatch('yo 🌉')).toBeFalsy();
 	});
 });
+
+describe('RegExpMatcher#getAllMatches()', () => {
+	it('should sort the matches if the sorted parameter is true', () => {
+		const matcher = new RegExpMatcher({
+			blacklistedTerms: [
+				{ id: 0, pattern: pattern`fuck` },
+				{ id: 1, pattern: pattern`bitch` },
+			],
+		});
+		expect(matcher.getAllMatches('bitch fuck', true)).toStrictEqual([
+			{ termId: 1, startIndex: 0, endIndex: 4, matchLength: 5 },
+			{ termId: 0, startIndex: 6, endIndex: 9, matchLength: 4 },
+		]);
+	});
+});

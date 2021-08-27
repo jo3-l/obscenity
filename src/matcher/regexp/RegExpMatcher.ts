@@ -7,6 +7,7 @@ import type { BlacklistedTerm } from '../BlacklistedTerm';
 import { IntervalCollection } from '../IntervalCollection';
 import type { Matcher } from '../Matcher';
 import type { MatchPayload } from '../MatchPayload';
+import { compareMatchByPositionAndId } from '../MatchPayload';
 
 /**
  * An implementation of the [[Matcher]] interface using regular expressions and
@@ -93,9 +94,7 @@ export class RegExpMatcher implements Matcher {
 		this.whitelistMatcherTransformers = new TransformerSet(whitelistMatcherTransformers);
 	}
 
-	// Note: No |sorted| parameter as the output is already sorted as a
-	// byproduct of how the method is implemented.
-	public getAllMatches(input: string) {
+	public getAllMatches(input: string, sorted = false) {
 		const whitelistedIntervals = this.getWhitelistedIntervals(input);
 		const [indices, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
 
@@ -123,6 +122,7 @@ export class RegExpMatcher implements Matcher {
 			blacklistedTerm.regExp.lastIndex = 0;
 		}
 
+		if (sorted) matches.sort(compareMatchByPositionAndId);
 		return matches;
 	}
 
