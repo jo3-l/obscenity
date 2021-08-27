@@ -4,5 +4,13 @@
 	"singleQuote": true,
 	"quoteProps": "as-needed",
 	"trailingComma": "all",
-	"endOfLine": "auto"
+	"endOfLine": "auto",
+	"overrides": [
+		{
+			"files": ["README.md"],
+			"options": {
+				"printWidth": 80
+			}
+		}
+	]
 }

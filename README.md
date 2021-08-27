@@ -1,5 +1,7 @@
 # Obscenity
 
+> Robust, extensible profanity filter for NodeJS
+
 <a href="https://github.com/jo3-l/obscenity/actions"><img src="https://img.shields.io/github/workflow/status/jo3-l/obscenity/Continuous%20Integration?style=for-the-badge" alt="Build status"></a>
 <a href="https://app.codecov.io/gh/jo3-l/obscenity/"><img src="https://img.shields.io/codecov/c/github/jo3-l/obscenity?style=for-the-badge" alt="Codecov status"></a>
 <a href="https://npmjs.com/package/obscenity"><img src="https://img.shields.io/npm/v/obscenity?style=for-the-badge" alt="npm version"></a>
@@ -25,19 +27,32 @@ $ pnpm add obscenity
 First, import Obscenity:
 
 ```javascript
-const { RegExpMatcher, TextCensor, englishDataset, englishRecommendedTransformers } = require('obscenity');
+const {
+	RegExpMatcher,
+	TextCensor,
+	englishDataset,
+	englishRecommendedTransformers,
+} = require('obscenity');
 ```
 
 Or, in TypeScript/ESM:
 
 ```typescript
-import { RegExpMatcher, TextCensor, englishDataset, englishRecommendedTransformers } from 'obscenity';
+import {
+	RegExpMatcher,
+	TextCensor,
+	englishDataset,
+	englishRecommendedTransformers,
+} from 'obscenity';
 ```
 
 Now, we can create a new matcher using the English preset.
 
 ```javascript
-const matcher = new RegExpMatcher({ ...englishDataset.build(), ...englishRecommendedTransformers });
+const matcher = new RegExpMatcher({
+	...englishDataset.build(),
+	...englishRecommendedTransformers,
+});
 ```
 
 Now, we can use our matcher to search for profanities in the text. Here's two examples of what you can do:
@@ -45,8 +60,10 @@ Now, we can use our matcher to search for profanities in the text. Here's two ex
 **Check if there are any matches in some text:**
 
 ```javascript
-if (matcher.hasMatch('f.uck you')) console.log('The input text contains profanities.');
-// Logs "The input text contains profanities."
+if (matcher.hasMatch('f.uck you')) {
+	console.log('The input text contains profanities.');
+}
+// The input text contains profanities.
 ```
 
 **Output the positions of all matches along with the original word used:**
@@ -55,14 +72,14 @@ if (matcher.hasMatch('f.uck you')) console.log('The input text contains profanit
 // Pass "true" as the "sorted" parameter so the matches are sorted by their position.
 const matches = matcher.getAllMatches('ʃ𝐟ʃὗƈｋ ỹоứ 𝔟!!!ⁱẗ𝙘ɦ', true);
 for (const match of matches) {
-	const withMetadata = englishDataset.getPayloadWithPhraseMetadata(match);
+	const { phraseMetadata, startIndex, endIndex } =
+		englishDataset.getPayloadWithPhraseMetadata(match);
 	console.log(
-		`Match for word ${withMetadata.phraseMetadata.originalWord} found between ${withMetadata.startIndex} and ${withMetadata.endIndex}.`,
+		`Match for word ${phraseMetadata.originalWord} found between ${startIndex} and ${endIndex}.`,
 	);
 }
-// Logs:
-// 	Match for word fuck found between 0 and 6.
-// 	Match for word bitch found between 12 and 21.
+// Match for word fuck found between 0 and 6.
+// Match for word bitch found between 12 and 21.
 ```
 
 **Censoring matched text:**
@@ -77,7 +94,7 @@ const censor = new TextCensor();
 const input = 'fuck you little bitch';
 const matches = matcher.getAllMatches(input);
 console.log(censor.applyTo(input, matches));
-// Logs "%@$% you little **%@%".
+// %@$% you little **%@%
 ```
 
 This is just a small slice of what Obscenity can do: for more, check out the [documentation](#documentation).
