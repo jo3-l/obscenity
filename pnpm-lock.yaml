@@ -11,7 +11,7 @@ specifiers:
   eslint-config-marine: ^9.0.6
   eslint-config-prettier: ^8.3.0
   eslint-plugin-import: ^2.24.1
-  eslint-plugin-jest: ^24.4.0
+  eslint-plugin-jest: ^25.0.0
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-simple-import-sort: ^7.0.0
   fast-check: ^2.17.0
@@ -41,7 +41,7 @@ devDependencies:
   eslint-config-marine: 9.0.6
   eslint-config-prettier: 8.3.0_eslint@7.32.0
   eslint-plugin-import: 2.24.1_eslint@7.32.0
-  eslint-plugin-jest: 24.4.0_79d1595ac137e2cc60da3c9a0e522fb9
+  eslint-plugin-jest: 25.0.1_79d1595ac137e2cc60da3c9a0e522fb9
   eslint-plugin-prettier: 4.0.0_5a48a349ffec60f5257b5f148f5199c3
   eslint-plugin-simple-import-sort: 7.0.0_eslint@7.32.0
   fast-check: 2.17.0
@@ -2225,12 +2225,12 @@ packages:
       tsconfig-paths: 3.10.1
     dev: true
 
-  /eslint-plugin-jest/24.4.0_79d1595ac137e2cc60da3c9a0e522fb9:
-    resolution: {integrity: sha512-8qnt/hgtZ94E9dA6viqfViKBfkJwFHXgJmTWlMGDgunw1XJEGqm3eiPjDsTanM3/u/3Az82nyQM9GX7PM/QGmg==}
-    engines: {node: '>=10'}
+  /eslint-plugin-jest/25.0.1_79d1595ac137e2cc60da3c9a0e522fb9:
+    resolution: {integrity: sha512-h54W6EOFGWHvKmGQul1Ahc8nLfzWR7jbynjeb4NT/acg6yOaRPQv6MXeSuQO3a7+21xaVtmULowYANuu4JIimQ==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     peerDependencies:
-      '@typescript-eslint/eslint-plugin': '>= 4'
-      eslint: '>=5'
+      '@typescript-eslint/eslint-plugin': ^4.0.0
+      eslint: ^6.0.0 || ^7.0.0
     peerDependenciesMeta:
       '@typescript-eslint/eslint-plugin':
         optional: true
@@ -2585,6 +2585,7 @@ packages:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5599,6 +5600,7 @@ packages:
     resolution: {integrity: sha512-JhS3hmcVaXlp/xSo3PKY5R0JqKs5M3IV+exdLHW99qKvKivPO4Z8qbej6mte17SOPqAOVMjt/XGgWacnFSzM3g==}
     engines: {node: '>=0.8.0'}
     hasBin: true
+    requiresBuild: true
     dev: true
     optional: true
 
