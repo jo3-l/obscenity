@@ -53,8 +53,8 @@
 	"author": "Joe L. <https://github.com/jo3-l>",
 	"license": "MIT",
 	"devDependencies": {
-		"@commitlint/cli": "^13.1.0",
-		"@commitlint/config-angular": "^13.1.0",
+		"@commitlint/cli": "^17.0.0",
+		"@commitlint/config-angular": "^17.0.0",
 		"@types/jest": "^27.0.0",
 		"@typescript-eslint/eslint-plugin": "^4.29.2",
 		"@typescript-eslint/parser": "^4.29.2",
