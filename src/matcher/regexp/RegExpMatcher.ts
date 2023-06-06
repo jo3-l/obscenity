@@ -1,4 +1,4 @@
-import { compilePatternToRegExp } from '../../pattern/Util';
+import { compilePatternToRegExp, potentiallyMatchesEmptyString } from '../../pattern/Util';
 import type { TransformerContainer } from '../../transformer/Transformers';
 import { TransformerSet } from '../../transformer/TransformerSet';
 import { isHighSurrogate, isLowSurrogate } from '../../util/Char';
@@ -84,11 +84,7 @@ export class RegExpMatcher implements Matcher {
 		blacklistMatcherTransformers = [],
 		whitelistMatcherTransformers = [],
 	}: RegExpMatcherOptions) {
-		this.ensureNoDuplicateIds(blacklistedTerms);
-		this.blacklistedTerms = blacklistedTerms.map((term) => ({
-			id: term.id,
-			regExp: compilePatternToRegExp(term.pattern),
-		}));
+		this.blacklistedTerms = this.compileTerms(blacklistedTerms);
 		this.whitelistedTerms = whitelistedTerms;
 		this.blacklistMatcherTransformers = new TransformerSet(blacklistMatcherTransformers);
 		this.whitelistMatcherTransformers = new TransformerSet(whitelistMatcherTransformers);
@@ -195,12 +191,22 @@ export class RegExpMatcher implements Matcher {
 		return [indices, transformed];
 	}
 
-	private ensureNoDuplicateIds(terms: BlacklistedTerm[]) {
-		const seen = new Set<number>();
+	private compileTerms(terms: BlacklistedTerm[]) {
+		const compiled: CompiledBlacklistedTerm[] = [];
+		const seenIds = new Set<number>();
 		for (const term of terms) {
-			if (seen.has(term.id)) throw new Error(`Found duplicate blacklisted term ID ${term.id}.`);
-			seen.add(term.id);
+			if (seenIds.has(term.id)) throw new Error(`Duplicate blacklisted term ID ${term.id}.`);
+			if (potentiallyMatchesEmptyString(term.pattern)) {
+				throw new Error(`Pattern with ID ${term.id} potentially matches empty string; this is unsupported.`);
+			}
+
+			compiled.push({
+				id: term.id,
+				regExp: compilePatternToRegExp(term.pattern),
+			});
+			seenIds.add(term.id);
 		}
+		return compiled;
 	}
 }
 

@@ -2,6 +2,10 @@ import type { LiteralNode, Node, ParsedPattern } from './Nodes';
 import { SyntaxKind } from './Nodes';
 import type { SimpleNode } from './Simplifier';
 
+export function potentiallyMatchesEmptyString(pattern: ParsedPattern) {
+	return pattern.nodes.every((node) => node.kind === SyntaxKind.Optional);
+}
+
 export function compilePatternToRegExp(pattern: ParsedPattern) {
 	let regExpStr = '';
 	if (pattern.requireWordBoundaryAtStart) regExpStr += '\\b';
