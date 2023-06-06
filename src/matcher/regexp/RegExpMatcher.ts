@@ -1,4 +1,4 @@
-import { compilePatternToRegExp } from '../../pattern/Util';
+import { compilePatternToRegExp, potentiallyMatchesEmptyString } from '../../pattern/Util';
 import type { TransformerContainer } from '../../transformer/Transformers';
 import { TransformerSet } from '../../transformer/TransformerSet';
 import { isHighSurrogate, isLowSurrogate } from '../../util/Char';
@@ -84,11 +84,7 @@ export class RegExpMatcher implements Matcher {
 		blacklistMatcherTransformers = [],
 		whitelistMatcherTransformers = [],
 	}: RegExpMatcherOptions) {
-		this.ensureNoDuplicateIds(blacklistedTerms);
-		this.blacklistedTerms = blacklistedTerms.map((term) => ({
-			id: term.id,
-			regExp: compilePatternToRegExp(term.pattern),
-		}));
+		this.blacklistedTerms = this.compileTerms(blacklistedTerms);
 		this.whitelistedTerms = whitelistedTerms;
 		this.blacklistMatcherTransformers = new TransformerSet(blacklistMatcherTransformers);
 		this.whitelistMatcherTransformers = new TransformerSet(whitelistMatcherTransformers);
@@ -100,11 +96,11 @@ export class RegExpMatcher implements Matcher {
 
 		const matches: MatchPayload[] = [];
 		for (const blacklistedTerm of this.blacklistedTerms) {
-			let match: RegExpExecArray | null;
-			while ((match = blacklistedTerm.regExp.exec(transformed))) {
+			for (const match of transformed.matchAll(blacklistedTerm.regExp)) {
 				const matchLength = [...match[0]].length; // spread so we count code points, not code units
-				const startIndex = indices[match.index];
-				let endIndex = indices[match.index + matchLength - 1];
+				const startIndex = indices[match.index!];
+				// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+				let endIndex = indices[match.index! + matchLength - 1];
 				// Adjust the end index if needed.
 				if (
 					endIndex < transformed.length - 1 && // not the last character
@@ -118,8 +114,6 @@ export class RegExpMatcher implements Matcher {
 					matches.push({ termId: blacklistedTerm.id, startIndex, endIndex, matchLength });
 				}
 			}
-
-			blacklistedTerm.regExp.lastIndex = 0;
 		}
 
 		if (sorted) matches.sort(compareMatchByPositionAndId);
@@ -130,11 +124,11 @@ export class RegExpMatcher implements Matcher {
 		const whitelistedIntervals = this.getWhitelistedIntervals(input);
 		const [indices, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
 		for (const blacklistedTerm of this.blacklistedTerms) {
-			let match: RegExpExecArray | null;
-			while ((match = blacklistedTerm.regExp.exec(transformed))) {
+			for (const match of transformed.matchAll(blacklistedTerm.regExp)) {
 				const matchLength = [...match[0]].length; // spread so we count code points, not code units
-				const startIndex = indices[match.index];
-				let endIndex = indices[match.index + matchLength - 1];
+				const startIndex = indices[match.index!];
+				// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+				let endIndex = indices[match.index! + matchLength - 1];
 				// Adjust the end index if needed.
 				if (
 					endIndex < transformed.length - 1 && // not the last character
@@ -146,8 +140,6 @@ export class RegExpMatcher implements Matcher {
 
 				if (!whitelistedIntervals.query(startIndex, endIndex)) return true;
 			}
-
-			blacklistedTerm.regExp.lastIndex = 0;
 		}
 
 		return false;
@@ -199,12 +191,22 @@ export class RegExpMatcher implements Matcher {
 		return [indices, transformed];
 	}
 
-	private ensureNoDuplicateIds(terms: BlacklistedTerm[]) {
-		const seen = new Set<number>();
+	private compileTerms(terms: BlacklistedTerm[]) {
+		const compiled: CompiledBlacklistedTerm[] = [];
+		const seenIds = new Set<number>();
 		for (const term of terms) {
-			if (seen.has(term.id)) throw new Error(`Found duplicate blacklisted term ID ${term.id}.`);
-			seen.add(term.id);
+			if (seenIds.has(term.id)) throw new Error(`Duplicate blacklisted term ID ${term.id}.`);
+			if (potentiallyMatchesEmptyString(term.pattern)) {
+				throw new Error(`Pattern with ID ${term.id} potentially matches empty string; this is unsupported.`);
+			}
+
+			compiled.push({
+				id: term.id,
+				regExp: compilePatternToRegExp(term.pattern),
+			});
+			seenIds.add(term.id);
 		}
+		return compiled;
 	}
 }
 

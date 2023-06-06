@@ -3,7 +3,7 @@ import { SyntaxKind } from '../../pattern/Nodes';
 import type { SimpleNode } from '../../pattern/Simplifier';
 import { simplify } from '../../pattern/Simplifier';
 import type { LiteralGroup, WildcardGroup } from '../../pattern/Util';
-import { computePatternMatchLength, groupByNodeType } from '../../pattern/Util';
+import { computePatternMatchLength, groupByNodeType, potentiallyMatchesEmptyString } from '../../pattern/Util';
 import type { TransformerContainer } from '../../transformer/Transformers';
 import { TransformerSet } from '../../transformer/TransformerSet';
 import { isHighSurrogate, isLowSurrogate, isWordChar } from '../../util/Char';
@@ -416,16 +416,12 @@ export class NfaMatcher implements Matcher {
 	}
 
 	private registerTerm(term: BlacklistedTerm) {
-		if (term.pattern.nodes.length === 0) throw new Error('Unexpected empty blacklisted term.');
+		if (potentiallyMatchesEmptyString(term.pattern)) {
+			throw new Error(`Pattern with ID ${term.id} potentially matches empty string; this is unsupported.`);
+		}
 
 		const simplifiedPatterns = simplify(term.pattern.nodes);
 		for (const pattern of simplifiedPatterns) {
-			if (pattern.length === 0) {
-				throw new Error(
-					'Unexpected pattern that matches on the empty string; this is probably due to a pattern comprised of a single optional construct.',
-				);
-			}
-
 			// Each pattern may actually correspond to several simplified
 			// patterns, so use an incrementing numerical ID internally.
 			const id = this.currentId++;

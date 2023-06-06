@@ -26,7 +26,7 @@ describe('constructor', () => {
 				new NfaMatcher({
 					blacklistedTerms: [{ id: 10, pattern: pattern`` }],
 				}),
-		).toThrow(new Error('Unexpected empty blacklisted term.'));
+		).toThrow('potentially matches empty string');
 	});
 
 	it('should not accept patterns with optionals that have the empty string in their match set', () => {
@@ -35,11 +35,7 @@ describe('constructor', () => {
 				new NfaMatcher({
 					blacklistedTerms: [{ id: 10, pattern: pattern`[abc]` }],
 				}),
-		).toThrow(
-			new Error(
-				'Unexpected pattern that matches on the empty string; this is probably due to a pattern comprised of a single optional construct.',
-			),
-		);
+		).toThrow('potentially matches empty string');
 	});
 });
 
