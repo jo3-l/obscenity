@@ -1,15 +1,15 @@
 ---
 extends:
-  - marine/prettier/node
-  - plugin:import/errors
-  - plugin:import/warnings
-  - plugin:import/typescript
+  - neon/common
+  - neon/node
+  - neon/typescript
+  - neon/prettier
   - plugin:jest/recommended
   - plugin:jest/style
 
 plugins:
-  - simple-import-sort
   - jest
+  - prettier
 
 parserOptions:
   project:
@@ -21,7 +21,6 @@ rules:
   prettier/prettier:
     - error
     - endOfLine: auto
-  simple-import-sort/imports: error
   no-duplicate-imports: off
   '@typescript-eslint/no-duplicate-imports': error
   # The following rule conflicts with Prettier in certain cases.
@@ -30,10 +29,11 @@ rules:
   '@typescript-eslint/no-misused-promises':
     - error
     - checksVoidReturn: false
-  import/no-unresolved: off
   curly:
     - error
     - multi-line
+  import/extensions: off
+  id-length: off
   '@typescript-eslint/no-unnecessary-condition':
     - error
     - allowConstantLoopConditions: true
