@@ -100,11 +100,11 @@ export class RegExpMatcher implements Matcher {
 
 		const matches: MatchPayload[] = [];
 		for (const blacklistedTerm of this.blacklistedTerms) {
-			let match: RegExpExecArray | null;
-			while ((match = blacklistedTerm.regExp.exec(transformed))) {
+			for (const match of transformed.matchAll(blacklistedTerm.regExp)) {
 				const matchLength = [...match[0]].length; // spread so we count code points, not code units
-				const startIndex = indices[match.index];
-				let endIndex = indices[match.index + matchLength - 1];
+				const startIndex = indices[match.index!];
+				// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+				let endIndex = indices[match.index! + matchLength - 1];
 				// Adjust the end index if needed.
 				if (
 					endIndex < transformed.length - 1 && // not the last character
@@ -118,8 +118,6 @@ export class RegExpMatcher implements Matcher {
 					matches.push({ termId: blacklistedTerm.id, startIndex, endIndex, matchLength });
 				}
 			}
-
-			blacklistedTerm.regExp.lastIndex = 0;
 		}
 
 		if (sorted) matches.sort(compareMatchByPositionAndId);
@@ -130,11 +128,11 @@ export class RegExpMatcher implements Matcher {
 		const whitelistedIntervals = this.getWhitelistedIntervals(input);
 		const [indices, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
 		for (const blacklistedTerm of this.blacklistedTerms) {
-			let match: RegExpExecArray | null;
-			while ((match = blacklistedTerm.regExp.exec(transformed))) {
+			for (const match of transformed.matchAll(blacklistedTerm.regExp)) {
 				const matchLength = [...match[0]].length; // spread so we count code points, not code units
-				const startIndex = indices[match.index];
-				let endIndex = indices[match.index + matchLength - 1];
+				const startIndex = indices[match.index!];
+				// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+				let endIndex = indices[match.index! + matchLength - 1];
 				// Adjust the end index if needed.
 				if (
 					endIndex < transformed.length - 1 && // not the last character
@@ -146,8 +144,6 @@ export class RegExpMatcher implements Matcher {
 
 				if (!whitelistedIntervals.query(startIndex, endIndex)) return true;
 			}
-
-			blacklistedTerm.regExp.lastIndex = 0;
 		}
 
 		return false;
