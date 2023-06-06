@@ -29,7 +29,7 @@ Transformers will be applied in the order they appear.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:242](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/matcher/regexp/RegExpMatcher.ts#L242)
+[src/matcher/regexp/RegExpMatcher.ts:244](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L244)
 
 ___
 
@@ -41,7 +41,7 @@ A list of blacklisted terms.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:218](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/matcher/regexp/RegExpMatcher.ts#L218)
+[src/matcher/regexp/RegExpMatcher.ts:220](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L220)
 
 ___
 
@@ -59,7 +59,7 @@ Transformers will be applied in the order they appear.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:253](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/matcher/regexp/RegExpMatcher.ts#L253)
+[src/matcher/regexp/RegExpMatcher.ts:255](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L255)
 
 ___
 
@@ -79,4 +79,4 @@ than the sword.`
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:231](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/matcher/regexp/RegExpMatcher.ts#L231)
+[src/matcher/regexp/RegExpMatcher.ts:233](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L233)

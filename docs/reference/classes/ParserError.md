@@ -23,12 +23,6 @@ Custom error thrown by the parser when syntactical errors are detected.
 - [message](ParserError.md#message)
 - [name](ParserError.md#name)
 - [stack](ParserError.md#stack)
-- [prepareStackTrace](ParserError.md#preparestacktrace)
-- [stackTraceLimit](ParserError.md#stacktracelimit)
-
-### Methods
-
-- [captureStackTrace](ParserError.md#capturestacktrace)
 
 ## Constructors
 
@@ -50,7 +44,7 @@ Error.constructor
 
 #### Defined in
 
-[src/pattern/ParserError.ts:18](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/pattern/ParserError.ts#L18)
+[src/pattern/ParserError.ts:18](https://github.com/jo3-l/obscenity/blob/79cfa63/src/pattern/ParserError.ts#L18)
 
 ## Properties
 
@@ -63,7 +57,7 @@ Note that surrogate pairs are counted as 1 column wide, not 2.
 
 #### Defined in
 
-[src/pattern/ParserError.ts:16](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/pattern/ParserError.ts#L16)
+[src/pattern/ParserError.ts:16](https://github.com/jo3-l/obscenity/blob/79cfa63/src/pattern/ParserError.ts#L16)
 
 ___
 
@@ -75,7 +69,7 @@ The line on which the error occurred (one-based).
 
 #### Defined in
 
-[src/pattern/ParserError.ts:10](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/pattern/ParserError.ts#L10)
+[src/pattern/ParserError.ts:10](https://github.com/jo3-l/obscenity/blob/79cfa63/src/pattern/ParserError.ts#L10)
 
 ___
 
@@ -103,7 +97,7 @@ Error.name
 
 #### Defined in
 
-[src/pattern/ParserError.ts:5](https://github.com/jo3-l/obscenity/blob/9aba3bc/src/pattern/ParserError.ts#L5)
+[src/pattern/ParserError.ts:5](https://github.com/jo3-l/obscenity/blob/79cfa63/src/pattern/ParserError.ts#L5)
 
 ___
 
@@ -118,75 +112,3 @@ Error.stack
 #### Defined in
 
 node_modules/.pnpm/typescript@4.3.5/node_modules/typescript/lib/lib.es5.d.ts:975
-
-___
-
-### prepareStackTrace
-
-▪ `Static` `Optional` **prepareStackTrace**: (`err`: `Error`, `stackTraces`: `CallSite`[]) => `any`
-
-#### Type declaration
-
-▸ (`err`, `stackTraces`): `any`
-
-Optional override for formatting stack traces
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `err` | `Error` |
-| `stackTraces` | `CallSite`[] |
-
-##### Returns
-
-`any`
-
-#### Inherited from
-
-Error.prepareStackTrace
-
-#### Defined in
-
-node_modules/.pnpm/@types+node@16.4.10/node_modules/@types/node/globals.d.ts:11
-
-___
-
-### stackTraceLimit
-
-▪ `Static` **stackTraceLimit**: `number`
-
-#### Inherited from
-
-Error.stackTraceLimit
-
-#### Defined in
-
-node_modules/.pnpm/@types+node@16.4.10/node_modules/@types/node/globals.d.ts:13
-
-## Methods
-
-### captureStackTrace
-
-▸ `Static` **captureStackTrace**(`targetObject`, `constructorOpt?`): `void`
-
-Create .stack property on a target object
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `targetObject` | `object` |
-| `constructorOpt?` | `Function` |
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-Error.captureStackTrace
-
-#### Defined in
-
-node_modules/.pnpm/@types+node@16.4.10/node_modules/@types/node/globals.d.ts:4
