@@ -17,7 +17,25 @@ describe('constructor', () => {
 						{ id: 1, pattern: pattern`yo` },
 					],
 				}),
-		).toThrow(new Error('Found duplicate blacklisted term ID 1.'));
+		).toThrow('Duplicate blacklisted term');
+	});
+
+	it('should not accept empty patterns', () => {
+		expect(
+			() =>
+				new RegExpMatcher({
+					blacklistedTerms: [{ id: 10, pattern: pattern`` }],
+				}),
+		).toThrow('potentially matches empty string');
+	});
+
+	it('should not accept patterns with optionals that have the empty string in their match set', () => {
+		expect(
+			() =>
+				new RegExpMatcher({
+					blacklistedTerms: [{ id: 10, pattern: pattern`[abc]` }],
+				}),
+		).toThrow('potentially matches empty string');
 	});
 });
 

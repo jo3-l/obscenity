@@ -6,12 +6,64 @@ import {
 	computePatternMatchLength,
 	getRegExpStringForNode,
 	groupByNodeType,
+	potentiallyMatchesEmptyString,
 } from '../../src/pattern/Util';
 import { CharacterIterator } from '../../src/util/CharacterIterator';
 
 function toLiteralNode(str: string): LiteralNode {
 	return { kind: SyntaxKind.Literal, chars: [...new CharacterIterator(str)] };
 }
+
+describe('potentiallyMatchesEmptyString()', () => {
+	it('should return false for patterns with wildcards', () => {
+		expect(
+			potentiallyMatchesEmptyString({
+				requireWordBoundaryAtStart: false,
+				requireWordBoundaryAtEnd: false,
+				nodes: [{ kind: SyntaxKind.Wildcard }],
+			}),
+		).toBeFalsy();
+	});
+
+	it('should return false for literal patterns', () => {
+		expect(
+			potentiallyMatchesEmptyString({
+				requireWordBoundaryAtStart: false,
+				requireWordBoundaryAtEnd: false,
+				nodes: [toLiteralNode('foo')],
+			}),
+		).toBeFalsy();
+	});
+
+	it('should return false for patterns composed of combo of literals and optionals', () => {
+		expect(
+			potentiallyMatchesEmptyString({
+				requireWordBoundaryAtStart: false,
+				requireWordBoundaryAtEnd: false,
+				nodes: [toLiteralNode('foo'), { kind: SyntaxKind.Optional, childNode: toLiteralNode('bar') }],
+			}),
+		).toBeFalsy();
+	});
+
+	it('should return true for patterns solely composed of optionals', () => {
+		expect(
+			potentiallyMatchesEmptyString({
+				requireWordBoundaryAtStart: false,
+				requireWordBoundaryAtEnd: false,
+				nodes: [
+					{ kind: SyntaxKind.Optional, childNode: { kind: SyntaxKind.Wildcard } },
+					{ kind: SyntaxKind.Optional, childNode: toLiteralNode('bar') },
+				],
+			}),
+		).toBeTruthy();
+	});
+
+	it('should return true for empty patterns', () => {
+		expect(
+			potentiallyMatchesEmptyString({ requireWordBoundaryAtStart: false, requireWordBoundaryAtEnd: false, nodes: [] }),
+		).toBeTruthy();
+	});
+});
 
 describe('compilePatternToRegExp()', () => {
 	it('should add \\b at the begin if requireWordBoundaryAtStart is true', () => {
