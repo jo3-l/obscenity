@@ -3,9 +3,9 @@
  */
 export interface ParsedPattern {
 	/**
-	 * Whether the pattern requires a word boundary at the start.
+	 * A list of nodes which make up the pattern.
 	 */
-	requireWordBoundaryAtStart: boolean;
+	nodes: Node[];
 
 	/**
 	 * Whether the pattern requires a word boundary at the end.
@@ -13,15 +13,15 @@ export interface ParsedPattern {
 	requireWordBoundaryAtEnd: boolean;
 
 	/**
-	 * A list of nodes which make up the pattern.
+	 * Whether the pattern requires a word boundary at the start.
 	 */
-	nodes: Node[];
+	requireWordBoundaryAtStart: boolean;
 }
 
 /**
  * All the possible kinds of nodes.
  */
-export type Node = OptionalNode | WildcardNode | LiteralNode;
+export type Node = LiteralNode | OptionalNode | WildcardNode;
 
 /**
  * An enumeration of the kinds of nodes there are.
@@ -37,13 +37,13 @@ export enum SyntaxKind {
  * An optional node.
  */
 export interface OptionalNode {
-	kind: SyntaxKind.Optional;
-
 	/**
 	 * The node contained within the optional expression. For `[abc]`, this
 	 * would be a literal node with the value `abc`.
 	 */
 	childNode: LiteralNode | WildcardNode;
+
+	kind: SyntaxKind.Optional;
 }
 
 /**
@@ -57,12 +57,12 @@ export interface WildcardNode {
  * A literal node.
  */
 export interface LiteralNode {
-	kind: SyntaxKind.Literal;
-
 	/**
 	 * The code points that this literal matches.
 	 */
 	chars: number[];
+
+	kind: SyntaxKind.Literal;
 }
 
 /**

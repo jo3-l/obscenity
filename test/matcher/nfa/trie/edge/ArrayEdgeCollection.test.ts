@@ -15,6 +15,7 @@ describe('ArrayEdgeCollection#set()', () => {
 
 	it('should overwrite an existing edge if possible', () => {
 		coll.set(1, 'y');
+		// eslint-disable-next-line sonarjs/no-element-overwrite
 		coll.set(1, 'z');
 		expect([...coll]).toBePermutationOf([[1, 'z']]);
 	});

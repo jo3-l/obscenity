@@ -9,6 +9,7 @@ export class ArrayEdgeCollection<T> implements EdgeCollection<T> {
 	private static readonly binarySearchThreshold = 10;
 
 	private readonly edges: Edge<T>[] = [];
+
 	private dirty = false;
 
 	public set(char: number, node: T) {
@@ -27,6 +28,7 @@ export class ArrayEdgeCollection<T> implements EdgeCollection<T> {
 			for (const edge of this.edges) {
 				if (edge[0] === char) return edge[1];
 			}
+
 			return;
 		}
 

@@ -1,17 +1,21 @@
-import type { TransformerContainer } from '../../transformer/Transformers';
 import { TransformerSet } from '../../transformer/TransformerSet';
+import type { TransformerContainer } from '../../transformer/Transformers';
 import { CharacterIterator } from '../../util/CharacterIterator';
 import { CircularBuffer } from '../../util/CircularBuffer';
 import { Queue } from '../../util/Queue';
 import { IntervalCollection } from '../IntervalCollection';
-import type { ForwardingEdgeCollection } from './trie/edge/ForwardingEdgeCollection';
 import { WhitelistTrieNode } from './trie/WhitelistTrieNode';
+import type { ForwardingEdgeCollection } from './trie/edge/ForwardingEdgeCollection';
 
 export class WhitelistedTermMatcher {
 	private readonly rootNode = new WhitelistTrieNode();
+
 	private currentId = 0;
+
 	private readonly matchLengths = new Map<number, number>(); // term ID -> match length
+
 	private maxMatchLength = 0;
+
 	private readonly transformers: TransformerSet;
 
 	public constructor({ terms, transformers = [] }: WhitelistedTermMatcherOptions) {
@@ -39,6 +43,7 @@ export class WhitelistedTermMatcher {
 			while (currentNode !== this.rootNode && !currentNode.edges.get(transformed)) {
 				currentNode = currentNode.failureLink;
 			}
+
 			currentNode = currentNode.edges.get(transformed) ?? this.rootNode;
 
 			// Report matches as needed.

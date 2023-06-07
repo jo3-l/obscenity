@@ -21,9 +21,12 @@
  * ```
  */
 export class Queue<T> {
-	private data = new Array<T | undefined>(4).fill(undefined);
+	private data = Array.from<T | undefined>({ length: 4 }).fill(undefined);
+
 	private mask = 0x3;
+
 	private head = 0;
+
 	private tail = 0;
 
 	public push(value: T) {

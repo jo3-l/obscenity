@@ -2,8 +2,11 @@ import { convertSurrogatePairToCodePoint, isHighSurrogate, isLowSurrogate } from
 
 export class CharacterIterator implements IterableIterator<number> {
 	private _input: string;
+
 	private lastPosition = -1;
+
 	private currentPosition = 0;
+
 	private _lastWidth = 0;
 
 	public constructor(input?: string) {

@@ -88,17 +88,14 @@ const parser = new Parser();
  * ```typescript
  * const parsed = pattern`hello?`; // match "hello", then any character
  * ```
- *
  * @example
  * ```typescript
  * const parsed = pattern`w[o]rld`; // match "wrld" or "world"
  * ```
- *
  * @example
  * ```typescript
  * const parsed = pattern`my initials are \[??\]`; // match "my initials are [", then any two characters, then a "]"
  * ```
- *
  * @returns The parsed pattern, which can then be used with the
  * [[RegExpMatcher]] or the [[NfaMatcher]].
  * @throws [[ParserError]] if a syntactical error was detected while parsing the
@@ -108,10 +105,11 @@ const parser = new Parser();
  */
 export function pattern(strings: TemplateStringsArray, ...expressions: unknown[]) {
 	let result = strings.raw[0];
-	for (let i = 0; i < expressions.length; i++) {
-		result += expressions[i];
+	for (const [i, expression] of expressions.entries()) {
+		result += expression;
 		result += strings.raw[i + 1];
 	}
+
 	return parser.parse(result);
 }
 

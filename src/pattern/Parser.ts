@@ -16,11 +16,15 @@ const eof = -1;
 
 export class Parser {
 	private input = '';
+
 	private line = 1;
+
 	private column = 1;
+
 	private position = 0;
 
 	private lastColumn = 1;
+
 	private lastWidth = 0;
 
 	public parse(input: string): ParsedPattern {
@@ -47,6 +51,7 @@ export class Parser {
 					pos,
 				);
 			}
+
 			requireWordBoundaryAtEnd = true;
 		}
 
@@ -71,6 +76,7 @@ export class Parser {
 				return this.parseOptional();
 			case CharacterCode.RightSquareBracket:
 				this.reportError(`Unexpected ']' with no corresponding '['.`);
+			// eslint-disable-next-line no-fallthrough
 			case CharacterCode.QuestionMark:
 				return this.parseWildcard();
 			case CharacterCode.VerticalBar:
@@ -99,8 +105,9 @@ export class Parser {
 				postOpenBracketPos,
 			);
 		}
+
 		if (!this.accept(']')) this.reportError("Unexpected unclosed '['.");
-		return { kind: SyntaxKind.Optional, childNode: childNode as WildcardNode | LiteralNode };
+		return { kind: SyntaxKind.Optional, childNode: childNode as LiteralNode | WildcardNode };
 	}
 
 	// Wildcard ::= '?'
@@ -150,7 +157,7 @@ export class Parser {
 			}
 		}
 
-		return { kind: SyntaxKind.Literal, chars: chars };
+		return { kind: SyntaxKind.Literal, chars };
 	}
 
 	private reportError(message: string, { line = this.line, column = this.column } = {}): never {
@@ -169,6 +176,7 @@ export class Parser {
 		for (const char of iter) {
 			if (char === next) return true;
 		}
+
 		this.backup();
 		return false;
 	}

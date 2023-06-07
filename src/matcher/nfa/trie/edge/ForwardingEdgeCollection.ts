@@ -5,7 +5,9 @@ import type { EdgeCollection } from './EdgeCollection';
 
 export class ForwardingEdgeCollection<T> implements EdgeCollection<T> {
 	private _underlyingImplementation: EdgeCollection<T> = new ArrayEdgeCollection<T>();
+
 	private implementation = Implementation.Array;
+
 	private areKeysAllLowerCase = true;
 
 	public set(char: number, node: T) {

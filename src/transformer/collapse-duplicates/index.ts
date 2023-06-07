@@ -33,14 +33,12 @@ import { CollapseDuplicatesTransformer } from './transformer';
  * const transformer = collapseDuplicatesTransformer();
  * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
- *
  * @example
  * ```typescript
  * // Collapse runs of characters other than 'a'.
  * const transformer = collapseDuplicatesTransformer({ customThresholds: new Map([['a', Infinity]]) });
  * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
- *
  * @param options - Options for the transformer.
  * @returns A container holding the transformer, which can then be passed to the
  * [[RegExpMatcher]] or the [[NfaMatcher]].
@@ -62,29 +60,19 @@ function createCharacterToThresholdMap(customThresholds: Map<string, number>) {
 		const char = getAndAssertSingleCodePoint(str);
 		map.set(char, threshold);
 	}
+
 	return map;
 }
 
 export interface ProcessedCollapseDuplicatesTransformerOptions {
-	defaultThreshold: number;
 	customThresholds: Map<number, number>;
+	defaultThreshold: number;
 }
 
 /**
  * Options for the collapse duplicates transformer.
  */
 export interface CollapseDuplicatesTransformerOptions {
-	/**
-	 * The maximum number of characters in a run that will be accepted before
-	 * they will be collapsed.
-	 *
-	 * For example, if this value was `2`, `aa` would stay the same but `aaa`
-	 * would be transformed to `aa`.
-	 *
-	 * @default 1
-	 */
-	defaultThreshold?: number;
-
 	/**
 	 * Custom thresholds for characters. If a character has an entry
 	 * corresponding to it, the value of tne entry will be used as the maximum
@@ -101,4 +89,15 @@ export interface CollapseDuplicatesTransformerOptions {
 	 * @default new Map()
 	 */
 	customThresholds?: Map<string, number>;
+
+	/**
+	 * The maximum number of characters in a run that will be accepted before
+	 * they will be collapsed.
+	 *
+	 * For example, if this value was `2`, `aa` would stay the same but `aaa`
+	 * would be transformed to `aa`.
+	 *
+	 * @default 1
+	 */
+	defaultThreshold?: number;
 }

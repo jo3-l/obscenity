@@ -36,7 +36,7 @@ export const englishRecommendedBlacklistMatcherTransformers = [
 export const englishRecommendedWhitelistMatcherTransformers = [
 	toAsciiLowerCaseTransformer(),
 	collapseDuplicatesTransformer({
-		defaultThreshold: Infinity,
+		defaultThreshold: Number.POSITIVE_INFINITY,
 		customThresholds: new Map([[' ', 1]]), // collapse spaces
 	}),
 ];
@@ -63,7 +63,6 @@ export const englishRecommendedTransformers: Pick<
  * 	...englishRecommendedTransformers,
  * });
  * ```
- *
  * @example
  * ```typescript
  * // Extending the data-set by adding a new word and removing an existing one.
@@ -72,7 +71,6 @@ export const englishRecommendedTransformers: Pick<
  * 	.removePhrasesIf((phrase) => phrase.metadata.originalWord === 'vagina')
  * 	.addPhrase((phrase) => phrase.addPattern(pattern`|balls|`));
  * ```
- *
  * @copyright
  * The words are taken from the [cuss](https://github.com/words/cuss) project,
  * with some modifications.
@@ -385,53 +383,53 @@ export type EnglishProfaneWord =
 	| 'arabush'
 	| 'arse'
 	| 'ass'
-	| 'bestiality'
 	| 'bastard'
-	| 'boob'
-	| 'boonga'
+	| 'bestiality'
 	| 'bitch'
 	| 'blowjob'
+	| 'boob'
+	| 'boonga'
+	| 'buttplug'
 	| 'chingchong'
 	| 'chink'
 	| 'cock'
+	| 'cuck'
 	| 'cum'
 	| 'cunt'
 	| 'deepthroat'
 	| 'dick'
+	| 'dildo'
 	| 'doggystyle'
+	| 'double penetration'
 	| 'ejaculate'
 	| 'fag'
-	| 'fellatio'
 	| 'felch'
+	| 'fellatio'
+	| 'finger bang'
 	| 'fisting'
 	| 'fuck'
 	| 'gangbang'
 	| 'handjob'
+	| 'hentai'
+	| 'hooker'
+	| 'incest'
+	| 'jerk off'
 	| 'jizz'
 	| 'lubejob'
 	| 'masturbate'
 	| 'nigger'
 	| 'orgasm'
 	| 'orgy'
-	| 'porn'
-	| 'hentai'
-	| 'pussy'
-	| 'vagina'
 	| 'penis'
+	| 'porn'
+	| 'pussy'
 	| 'rape'
 	| 'retard'
 	| 'scat'
-	| 'slut'
 	| 'semen'
 	| 'sex'
+	| 'slut'
 	| 'tit'
-	| 'whore'
-	| 'dildo'
-	| 'double penetration'
-	| 'finger bang'
-	| 'hooker'
-	| 'jerk off'
-	| 'incest'
 	| 'tranny'
-	| 'buttplug'
-	| 'cuck';
+	| 'vagina'
+	| 'whore';

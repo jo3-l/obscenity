@@ -1,13 +1,13 @@
 import { compilePatternToRegExp, potentiallyMatchesEmptyString } from '../../pattern/Util';
-import type { TransformerContainer } from '../../transformer/Transformers';
 import { TransformerSet } from '../../transformer/TransformerSet';
+import type { TransformerContainer } from '../../transformer/Transformers';
 import { isHighSurrogate, isLowSurrogate } from '../../util/Char';
 import { CharacterIterator } from '../../util/CharacterIterator';
 import type { BlacklistedTerm } from '../BlacklistedTerm';
 import { IntervalCollection } from '../IntervalCollection';
-import type { Matcher } from '../Matcher';
 import type { MatchPayload } from '../MatchPayload';
 import { compareMatchByPositionAndId } from '../MatchPayload';
+import type { Matcher } from '../Matcher';
 
 /**
  * An implementation of the [[Matcher]] interface using regular expressions and
@@ -22,8 +22,11 @@ import { compareMatchByPositionAndId } from '../MatchPayload';
  */
 export class RegExpMatcher implements Matcher {
 	private readonly blacklistedTerms: CompiledBlacklistedTerm[];
+
 	private readonly whitelistedTerms: string[];
+
 	private readonly blacklistMatcherTransformers: TransformerSet;
+
 	private readonly whitelistMatcherTransformers: TransformerSet;
 
 	/**
@@ -37,7 +40,6 @@ export class RegExpMatcher implements Matcher {
 	 * 	...englishRecommendedTransformers,
 	 * });
 	 * ```
-	 *
 	 * @example
 	 * ```typescript
 	 * // Simple matcher that only has blacklisted patterns.
@@ -53,7 +55,6 @@ export class RegExpMatcher implements Matcher {
 	 * // Check whether some string matches any of the patterns.
 	 * const doesMatch = matcher.hasMatch('fuck you bitch');
 	 * ```
-	 *
 	 * @example
 	 * ```typescript
 	 * // A more advanced example, with transformers and whitelisted terms.
@@ -75,7 +76,6 @@ export class RegExpMatcher implements Matcher {
 	 * // Output all matches.
 	 * console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sword!'));
 	 * ```
-	 *
 	 * @param options - Options to use.
 	 */
 	public constructor({
@@ -206,6 +206,7 @@ export class RegExpMatcher implements Matcher {
 			});
 			seenIds.add(term.id);
 		}
+
 		return compiled;
 	}
 }
@@ -215,9 +216,31 @@ export class RegExpMatcher implements Matcher {
  */
 export interface RegExpMatcherOptions {
 	/**
+	 * A set of transformers that should be applied to the input text before
+	 * blacklisted patterns are matched. This does not affect the matching of
+	 * whitelisted terms.
+	 *
+	 * Transformers will be applied in the order they appear.
+	 *
+	 * @default []
+	 */
+	blacklistMatcherTransformers?: TransformerContainer[];
+
+	/**
 	 * A list of blacklisted terms.
 	 */
 	blacklistedTerms: BlacklistedTerm[];
+
+	/**
+	 * A set of transformers that should be applied to the input text before
+	 * whitelisted terms are matched. This does not affect the matching of
+	 * blacklisted terms.
+	 *
+	 * Transformers will be applied in the order they appear.
+	 *
+	 * @default []
+	 */
+	whitelistMatcherTransformers?: TransformerContainer[];
 
 	/**
 	 * A list of whitelisted terms. If a whitelisted term matches some part of
@@ -231,28 +254,6 @@ export interface RegExpMatcherOptions {
 	 * @default []
 	 */
 	whitelistedTerms?: string[];
-
-	/**
-	 * A set of transformers that should be applied to the input text before
-	 * blacklisted patterns are matched. This does not affect the matching of
-	 * whitelisted terms.
-	 *
-	 * Transformers will be applied in the order they appear.
-	 *
-	 * @default []
-	 */
-	blacklistMatcherTransformers?: TransformerContainer[];
-
-	/**
-	 * A set of transformers that should be applied to the input text before
-	 * whitelisted terms are matched. This does not affect the matching of
-	 * blacklisted terms.
-	 *
-	 * Transformers will be applied in the order they appear.
-	 *
-	 * @default []
-	 */
-	whitelistMatcherTransformers?: TransformerContainer[];
 }
 
 interface CompiledBlacklistedTerm {

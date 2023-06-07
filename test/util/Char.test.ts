@@ -64,9 +64,9 @@ describe('isHighSurrogate()', () => {
 		expect(isHighSurrogate(0)).toBeFalsy();
 		expect(isHighSurrogate(32)).toBeFalsy();
 		expect(isHighSurrogate(300)).toBeFalsy();
-		expect(isHighSurrogate(4848)).toBeFalsy();
-		expect(isHighSurrogate(Infinity)).toBeFalsy();
-		expect(isHighSurrogate(NaN)).toBeFalsy();
+		expect(isHighSurrogate(4_848)).toBeFalsy();
+		expect(isHighSurrogate(Number.POSITIVE_INFINITY)).toBeFalsy();
+		expect(isHighSurrogate(Number.NaN)).toBeFalsy();
 	});
 });
 
@@ -89,9 +89,9 @@ describe('isLowSurrogate()', () => {
 		expect(isLowSurrogate(-548)).toBeFalsy();
 		expect(isLowSurrogate(0)).toBeFalsy();
 		expect(isLowSurrogate(56)).toBeFalsy();
-		expect(isLowSurrogate(3894)).toBeFalsy();
-		expect(isLowSurrogate(Infinity)).toBeFalsy();
-		expect(isLowSurrogate(NaN)).toBeFalsy();
+		expect(isLowSurrogate(3_894)).toBeFalsy();
+		expect(isLowSurrogate(Number.POSITIVE_INFINITY)).toBeFalsy();
+		expect(isLowSurrogate(Number.NaN)).toBeFalsy();
 	});
 });
 
@@ -147,8 +147,8 @@ describe('isWordChar()', () => {
 	});
 
 	it('should return false for everything else', () => {
-		expect(isWordChar(Infinity)).toBeFalsy();
-		expect(isWordChar(NaN)).toBeFalsy();
+		expect(isWordChar(Number.POSITIVE_INFINITY)).toBeFalsy();
+		expect(isWordChar(Number.NaN)).toBeFalsy();
 		expect(isWordChar(CharacterCode.QuestionMark)).toBeFalsy();
 		expect(isWordChar(-1)).toBeFalsy();
 		expect(isWordChar(CharacterCode.Newline)).toBeFalsy();
@@ -172,8 +172,8 @@ describe('isDigit()', () => {
 	it('should return false for everything else', () => {
 		expect(isDigit(CharacterCode.LowerA + 20)).toBeFalsy();
 		expect(isDigit(CharacterCode.UpperA)).toBeFalsy();
-		expect(isDigit(Infinity)).toBeFalsy();
-		expect(isDigit(NaN)).toBeFalsy();
+		expect(isDigit(Number.POSITIVE_INFINITY)).toBeFalsy();
+		expect(isDigit(Number.NaN)).toBeFalsy();
 		expect(isDigit(CharacterCode.QuestionMark)).toBeFalsy();
 		expect(isDigit(-1)).toBeFalsy();
 		expect(isDigit(CharacterCode.Newline)).toBeFalsy();
@@ -212,8 +212,8 @@ describe('isAlphabetic()', () => {
 	it('should return false for everything else', () => {
 		expect(isAlphabetic(CharacterCode.Zero + 4)).toBeFalsy();
 		expect(isAlphabetic(CharacterCode.Nine)).toBeFalsy();
-		expect(isAlphabetic(Infinity)).toBeFalsy();
-		expect(isAlphabetic(NaN)).toBeFalsy();
+		expect(isAlphabetic(Number.POSITIVE_INFINITY)).toBeFalsy();
+		expect(isAlphabetic(Number.NaN)).toBeFalsy();
 		expect(isAlphabetic(CharacterCode.QuestionMark)).toBeFalsy();
 		expect(isAlphabetic(-1)).toBeFalsy();
 		expect(isAlphabetic(CharacterCode.Newline)).toBeFalsy();
@@ -238,8 +238,8 @@ describe('isLowerCase()', () => {
 	it('should return false for everything else', () => {
 		expect(isLowerCase(CharacterCode.UpperA)).toBeFalsy();
 		expect(isLowerCase(CharacterCode.UpperZ)).toBeFalsy();
-		expect(isLowerCase(Infinity)).toBeFalsy();
-		expect(isLowerCase(NaN)).toBeFalsy();
+		expect(isLowerCase(Number.POSITIVE_INFINITY)).toBeFalsy();
+		expect(isLowerCase(Number.NaN)).toBeFalsy();
 		expect(isLowerCase(CharacterCode.QuestionMark)).toBeFalsy();
 		expect(isLowerCase(-1)).toBeFalsy();
 		expect(isLowerCase(CharacterCode.Newline)).toBeFalsy();
@@ -264,8 +264,8 @@ describe('isUpperCase()', () => {
 	it('should return false for everything else', () => {
 		expect(isUpperCase(CharacterCode.LowerA)).toBeFalsy();
 		expect(isUpperCase(CharacterCode.LowerZ)).toBeFalsy();
-		expect(isUpperCase(Infinity)).toBeFalsy();
-		expect(isUpperCase(NaN)).toBeFalsy();
+		expect(isUpperCase(Number.POSITIVE_INFINITY)).toBeFalsy();
+		expect(isUpperCase(Number.NaN)).toBeFalsy();
 		expect(isUpperCase(CharacterCode.QuestionMark)).toBeFalsy();
 		expect(isUpperCase(-1)).toBeFalsy();
 		expect(isUpperCase(CharacterCode.Newline)).toBeFalsy();

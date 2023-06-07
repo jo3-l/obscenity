@@ -25,7 +25,7 @@ describe('ForwardingEdgeCollection#set()', () => {
 
 	it('should switch to the bucket implementation if the number of edges is > 10 and the keys are all lowercase', () => {
 		const spy = jest.spyOn(BucketEdgeCollection.prototype, 'set');
-		const edges = [...new Array(11).keys()].map<Edge<number>>((i) => [i + CharacterCode.LowerA, i]);
+		const edges = [...Array.from({ length: 11 }).keys()].map<Edge<number>>((i) => [i + CharacterCode.LowerA, i]);
 		for (const edge of edges) coll.set(...edge);
 		expect(coll.underlyingImplementation).toBeInstanceOf(BucketEdgeCollection);
 		expect(spy).toHaveBeenCalledTimes(11);
@@ -35,7 +35,7 @@ describe('ForwardingEdgeCollection#set()', () => {
 	it('should switch back to the array implementation if currently using the bucket implementation and an edge with a non-lowercase key is added', () => {
 		const bucketImplSpy = jest.spyOn(BucketEdgeCollection.prototype, 'set');
 		const arrayImplSpy = jest.spyOn(ArrayEdgeCollection.prototype, 'set');
-		const edges = [...new Array(11).keys()].map<Edge<number>>((i) => [i + CharacterCode.LowerA, i]);
+		const edges = [...Array.from({ length: 11 }).keys()].map<Edge<number>>((i) => [i + CharacterCode.LowerA, i]);
 		for (const edge of edges) coll.set(...edge);
 		coll.set(5, 19);
 		expect(bucketImplSpy).toHaveBeenCalledTimes(11);
@@ -47,7 +47,7 @@ describe('ForwardingEdgeCollection#set()', () => {
 
 	it('should use the map implementation if the number of edges is > 35', () => {
 		const spy = jest.spyOn(Map.prototype, 'set');
-		const edges = [...new Array(36).keys()].map<Edge<number>>((i) => [i, i + 5]);
+		const edges = [...Array.from({ length: 36 }).keys()].map<Edge<number>>((i) => [i, i + 5]);
 		for (const edge of edges) coll.set(...edge);
 		expect(coll.underlyingImplementation).toBeInstanceOf(Map);
 		expect(spy).toHaveBeenCalledTimes(36);

@@ -1,15 +1,15 @@
 ---
 extends:
-  - marine/prettier/node
-  - plugin:import/errors
-  - plugin:import/warnings
-  - plugin:import/typescript
+  - neon/common
+  - neon/node
+  - neon/typescript
+  - neon/prettier
   - plugin:jest/recommended
   - plugin:jest/style
 
 plugins:
-  - simple-import-sort
   - jest
+  - prettier
 
 parserOptions:
   project:
@@ -21,8 +21,27 @@ rules:
   prettier/prettier:
     - error
     - endOfLine: auto
-  simple-import-sort/imports: error
   no-duplicate-imports: off
+  curly:
+    - error
+    - multi-line
+  import/extensions: off
+  id-length: off
+  unicorn/prefer-code-point: off
+  unicorn/consistent-function-scoping:
+    - error
+    - checkArrowFunctions: false
+  tsdoc/syntax: off
+  jsdoc/check-param-names:
+    - error
+    - checkDestructured: false
+  '@typescript-eslint/consistent-type-definitions':
+    - error
+    - interface
+  '@typescript-eslint/prefer-literal-enum-member':
+    - error
+    - allowBitwiseExpressions: true
+  '@typescript-eslint/no-use-before-define': off
   '@typescript-eslint/no-duplicate-imports': error
   # The following rule conflicts with Prettier in certain cases.
   # Also see https://github.com/typescript-eslint/typescript-eslint/issues/1824.
@@ -30,10 +49,6 @@ rules:
   '@typescript-eslint/no-misused-promises':
     - error
     - checksVoidReturn: false
-  import/no-unresolved: off
-  curly:
-    - error
-    - multi-line
   '@typescript-eslint/no-unnecessary-condition':
     - error
     - allowConstantLoopConditions: true
@@ -63,6 +78,9 @@ rules:
       format:
         - strictCamelCase
         - PascalCase
+      filter:
+        regex: '\d+'
+        match: false
       leadingUnderscore: allow
       trailingUnderscore: forbid
 

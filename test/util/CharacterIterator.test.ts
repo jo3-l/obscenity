@@ -160,6 +160,7 @@ describe('iterating over it', () => {
 		for (const char of iter) {
 			chars.push(char);
 		}
+
 		expect(String.fromCodePoint(...chars)).toBe('hello!');
 	});
 });

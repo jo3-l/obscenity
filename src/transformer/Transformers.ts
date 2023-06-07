@@ -26,7 +26,6 @@ export type TransformerContainer = SimpleTransformerContainer | StatefulTransfor
  * const transformer = createSimpleTransformer(lowercaseToUppercase);
  * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
- *
  * @example
  * ```typescript
  * function ignoreAllNonDigitChars(char) {
@@ -36,7 +35,6 @@ export type TransformerContainer = SimpleTransformerContainer | StatefulTransfor
  * const transformer = createSimpleTransformer(ignoreAllNonDigitChars);
  * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
- *
  * @param transformer - Function that applies the transformation. It should
  * accept one argument, the input character, and return the transformed
  * character. A return value of `undefined` indicates that the character should
@@ -61,12 +59,12 @@ export type TransformerFn = (char: number) => number | undefined;
  * Container for simple transformers.
  */
 export interface SimpleTransformerContainer {
-	type: TransformerType.Simple;
-
 	/**
 	 * The transformer function.
 	 */
 	transform: TransformerFn;
+
+	type: TransformerType.Simple;
 }
 
 /**
@@ -94,7 +92,6 @@ export interface SimpleTransformerContainer {
  * const transformer = createStatefulTransformer(() => new IgnoreDuplicateCharactersTransformer());
  * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
- *
  * @param factory A function that returns an instance of the stateful
  * transformer.
  * @returns A container holding the stateful transformer, which can then be
@@ -114,6 +111,11 @@ export type StatefulTransformerFactory = () => StatefulTransformer;
  */
 export interface StatefulTransformer {
 	/**
+	 * Resets the state of the transformer.
+	 */
+	reset(): void;
+
+	/**
 	 * Transforms input characters.
 	 *
 	 * @param char - Input character.
@@ -121,17 +123,12 @@ export interface StatefulTransformer {
 	 * that the character should be ignored.
 	 */
 	transform: TransformerFn;
-
-	/**
-	 * Resets the state of the transformer.
-	 */
-	reset(): void;
 }
 
 /**
  * Container for stateful transformers.
  */
 export interface StatefulTransformerContainer {
-	type: TransformerType.Stateful;
 	factory: StatefulTransformerFactory;
+	type: TransformerType.Stateful;
 }

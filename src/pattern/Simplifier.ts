@@ -52,7 +52,8 @@ function mergeLiteralNodeRuns(nodes: SimpleNode[]) {
 		while (i < nodes.length && nodes[i].kind === SyntaxKind.Literal) {
 			chars.push(...(nodes[i++] as LiteralNode).chars);
 		}
-		merged.push({ kind: SyntaxKind.Literal, chars: chars });
+
+		merged.push({ kind: SyntaxKind.Literal, chars });
 	}
 
 	return merged;

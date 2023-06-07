@@ -1,5 +1,5 @@
-import { toAsciiLowerCaseTransformer } from '../../../src/transformer/to-ascii-lowercase';
 import { TransformerType } from '../../../src/transformer/Transformers';
+import { toAsciiLowerCaseTransformer } from '../../../src/transformer/to-ascii-lowercase';
 import { CharacterCode } from '../../../src/util/Char';
 
 describe('toAsciiLowerCaseTransformer()', () => {
