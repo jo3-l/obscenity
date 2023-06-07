@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Please make sure to [search existing issues](https://github.com/jo3-l/obscenity/issues) before creating a new one!
-        If you found an already existing request similar or equal to yours, please "thumbs-up" that instead.
+        Please first [check through existing issues](https://github.com/jo3-l/obscenity/issues) in case your request
+        has already been raised.
   - type: textarea
     attributes:
       label: Description
