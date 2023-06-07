@@ -12,7 +12,7 @@
 	"scripts": {
 		"build": "rimraf dist && tsc -b src && gen-esm-wrapper dist/index.js dist/index.mjs",
 		"build:benchmarks": "tsc -b benchmarks",
-		"build:docs": "rimraf docs/references && typedoc",
+		"build:docs": "rimraf docs/references && typedoc --plugin typedoc-plugin-markdown",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:ci": "jest --ci --no-stack-trace --verbose",

@@ -2,6 +2,7 @@ import type { Interval } from '../util/Interval';
 
 export class IntervalCollection implements Iterable<Interval> {
 	private dirty = false;
+
 	private readonly intervals: Interval[] = [];
 
 	public insert(lowerBound: number, upperBound: number) {

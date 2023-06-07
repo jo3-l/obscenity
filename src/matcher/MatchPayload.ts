@@ -8,9 +8,12 @@ import { compareIntervals } from '../util/Interval';
  */
 export interface MatchPayload {
 	/**
-	 * ID of the blacklisted term that matched.
+	 * End index of the match, inclusive.
+	 *
+	 * If the last character of the pattern is a surrogate pair,
+	 * then this points to the index of the low surrogate.
 	 */
-	termId: number;
+	endIndex: number;
 
 	/**
 	 * Total number of of code points that matched.
@@ -23,30 +26,27 @@ export interface MatchPayload {
 	startIndex: number;
 
 	/**
-	 * End index of the match, inclusive.
-	 *
-	 * If the last character of the pattern is a surrogate pair,
-	 * then this points to the index of the low surrogate.
+	 * ID of the blacklisted term that matched.
 	 */
-	endIndex: number;
+	termId: number;
 }
 
 /**
  * Compares two match payloads.
  *
- * * If the first match payload's start index is less than the second's, `-1` is
+ * If the first match payload's start index is less than the second's, `-1` is
  *   returned;
- * * If the second match payload's start index is less than the first's, `1` is
+ * If the second match payload's start index is less than the first's, `1` is
  *   returned;
- * * If the first match payload's end index is less than the second's, `-1` is
+ * If the first match payload's end index is less than the second's, `-1` is
  *   returned;
- * * If the second match payload's end index is less than the first's, `1` is
+ * If the second match payload's end index is less than the first's, `1` is
  *   returned;
- * * If the first match payload's term ID is less than the second's, `-1` is
+ * If the first match payload's term ID is less than the second's, `-1` is
  *   returned;
- * * If the first match payload's term ID is equal to the second's, `0` is
+ * If the first match payload's term ID is equal to the second's, `0` is
  *   returned;
- * * Otherwise, `1` is returned.
+ * Otherwise, `1` is returned.
  *
  * @param a - First match payload.
  * @param b - Second match payload.

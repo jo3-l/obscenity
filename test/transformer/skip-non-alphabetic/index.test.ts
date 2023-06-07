@@ -1,5 +1,5 @@
-import { skipNonAlphabeticTransformer } from '../../../src/transformer/skip-non-alphabetic';
 import { TransformerType } from '../../../src/transformer/Transformers';
+import { skipNonAlphabeticTransformer } from '../../../src/transformer/skip-non-alphabetic';
 import { CharacterCode } from '../../../src/util/Char';
 
 describe('skipNonAlphabeticTransformer()', () => {

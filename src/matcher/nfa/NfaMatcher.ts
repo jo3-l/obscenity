@@ -4,21 +4,21 @@ import type { SimpleNode } from '../../pattern/Simplifier';
 import { simplify } from '../../pattern/Simplifier';
 import type { LiteralGroup, WildcardGroup } from '../../pattern/Util';
 import { computePatternMatchLength, groupByNodeType, potentiallyMatchesEmptyString } from '../../pattern/Util';
-import type { TransformerContainer } from '../../transformer/Transformers';
 import { TransformerSet } from '../../transformer/TransformerSet';
+import type { TransformerContainer } from '../../transformer/Transformers';
 import { isHighSurrogate, isLowSurrogate, isWordChar } from '../../util/Char';
 import { CharacterIterator } from '../../util/CharacterIterator';
 import { CircularBuffer } from '../../util/CircularBuffer';
 import { Queue } from '../../util/Queue';
 import type { BlacklistedTerm } from '../BlacklistedTerm';
 import { IntervalCollection } from '../IntervalCollection';
-import type { Matcher } from '../Matcher';
 import type { MatchPayload } from '../MatchPayload';
 import { compareMatchByPositionAndId } from '../MatchPayload';
-import type { PartialMatchData } from './trie/BlacklistTrieNode';
-import { BlacklistTrieNode, hashPartialMatch, NodeFlag, PartialMatchFlag, SharedFlag } from './trie/BlacklistTrieNode';
-import type { ForwardingEdgeCollection } from './trie/edge/ForwardingEdgeCollection';
+import type { Matcher } from '../Matcher';
 import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
+import type { PartialMatchData } from './trie/BlacklistTrieNode';
+import { BlacklistTrieNode, NodeFlag, PartialMatchFlag, SharedFlag, hashPartialMatch } from './trie/BlacklistTrieNode';
+import type { ForwardingEdgeCollection } from './trie/edge/ForwardingEdgeCollection';
 
 /**
  * An implementation of the [[Matcher]] interface using finite automata
@@ -49,16 +49,22 @@ import { WhitelistedTermMatcher } from './WhitelistedTermMatcher';
  */
 export class NfaMatcher implements Matcher {
 	private readonly rootNode = new BlacklistTrieNode();
+
 	private readonly originalIds: number[] = []; // originalIds[i] is the term ID of the the pattern with ID i
+
 	private readonly matchLengths: number[] = []; // matchLengths[i] is the match length of the pattern with ID i
+
 	private readonly partialMatchStepCounts = new Map<number, number>(); // partialMatchStepCounts[i] is the total number of steps of the pattern with ID i. Only applies to partial matches.
+
 	private readonly wildcardOnlyPatterns: WildcardOnlyPatternData[] = [];
+
 	// Maximum number of trailing wildcards.
 	//
 	// x x x ? y y ? ? ? ?
 	//             ^^^^^^^
 	//        4 trailing wildcards
 	private maxTrailingWildcardCount = 0;
+
 	// Maximum distance between the start of a partial pattern and the end of the partial pattern following it.
 	//
 	// x x x ? ? ? y y y y
@@ -68,17 +74,22 @@ export class NfaMatcher implements Matcher {
 	//
 	// This value is equal to how long we need to keep partial matches around.
 	private maxPartialPatternDistance = 0;
+
 	private maxMatchLength = 0; // Maximum match length of any pattern, equal to how many indices to the left of the current position we need to track.
+
 	private currentId = 0; // Current generated pattern ID.
 
 	private readonly whitelistedTermMatcher: WhitelistedTermMatcher;
+
 	private readonly slowTransformers: TransformerSet;
+
 	private readonly fastTransformers: TransformerSet;
 
 	// Use two iterators: one fast, and one slow. The fast iterator will
 	// constantly be |maxTrailingWildcardCount| positions head of the slow
 	// iterator.
 	private readonly slowIter = new CharacterIterator();
+
 	private readonly fastIter = new CharacterIterator();
 
 	// Sliding window of indices used for matching.
@@ -89,6 +100,7 @@ export class NfaMatcher implements Matcher {
 	// ^^^^^^^^^^^^^^^^^
 	//  maxMatchLength
 	private readonly usedIndices: CircularBuffer<number>;
+
 	// Sliding window of indices to the right of the current position.
 	//
 	// current position
@@ -97,9 +109,13 @@ export class NfaMatcher implements Matcher {
 	//   ^^^^^^^^^^^^^^^^^^^^^^^^^^
 	//    maxTrailingWildcardCount
 	private readonly futureIndices: CircularBuffer<number | undefined>;
+
 	private matches: MatchPayload[] = [];
+
 	private readonly partialMatches: CircularBuffer<Set<string> | undefined>; // partial matches found; value is a set of partial match hashes
+
 	private currentNode = this.rootNode;
+
 	private whitelistedIntervals = new IntervalCollection();
 
 	/**
@@ -113,7 +129,6 @@ export class NfaMatcher implements Matcher {
 	 * 	...englishRecommendedTransformers,
 	 * });
 	 * ```
-	 *
 	 * @example
 	 * ```typescript
 	 * // Simple matcher that only has blacklisted patterns.
@@ -129,7 +144,6 @@ export class NfaMatcher implements Matcher {
 	 * // Check whether some string matches any of the patterns.
 	 * const doesMatch = matcher.hasMatch('fuck you bitch');
 	 * ```
-	 *
 	 * @example
 	 * ```typescript
 	 * // A more advanced example, with transformers and whitelisted terms.
@@ -151,7 +165,6 @@ export class NfaMatcher implements Matcher {
 	 * // Output all matches.
 	 * console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sword!'));
 	 * ```
-	 *
 	 * @param options - Options to use.
 	 */
 	public constructor({
@@ -183,8 +196,7 @@ export class NfaMatcher implements Matcher {
 
 	public hasMatch(input: string) {
 		this.setInput(input);
-		const hasMatch = this.run(true);
-		return hasMatch;
+		return this.run(true);
 	}
 
 	public getAllMatches(input: string, sorted = false) {
@@ -242,6 +254,7 @@ export class NfaMatcher implements Matcher {
 					found = this.fastTransformers.applyTo(this.fastIter.next().value!) !== undefined;
 					if (found) this.futureIndices.push(this.fastIter.position);
 				}
+
 				if (!found) this.futureIndices.push(undefined);
 			}
 
@@ -249,6 +262,7 @@ export class NfaMatcher implements Matcher {
 			while (this.currentNode !== this.rootNode && !this.currentNode.edges.get(transformed)) {
 				this.currentNode = this.currentNode.failureLink;
 			}
+
 			this.currentNode = this.currentNode.edges.get(transformed) ?? this.rootNode;
 
 			// Emit matches for wildcard-only patterns. Patterns of the form
@@ -309,6 +323,7 @@ export class NfaMatcher implements Matcher {
 					);
 					if (matched && breakAfterFirstMatch) return true;
 				}
+
 				outputLink = outputLink.outputLink;
 			}
 		}
@@ -455,7 +470,7 @@ export class NfaMatcher implements Matcher {
 		this.maxMatchLength = Math.max(this.maxMatchLength, matchLength);
 
 		const data: WildcardOnlyPatternData = {
-			id: id,
+			id,
 			flags: 0,
 			wildcardCount: matchLength,
 		};
@@ -596,9 +611,31 @@ export class NfaMatcher implements Matcher {
  */
 export interface NfaMatcherOptions {
 	/**
+	 * A set of transformers that should be applied to the input text before
+	 * blacklisted patterns are matched. This does not affect the matching of
+	 * whitelisted terms.
+	 *
+	 * Transformers will be applied in the order they appear.
+	 *
+	 * @default []
+	 */
+	blacklistMatcherTransformers?: TransformerContainer[];
+
+	/**
 	 * A list of blacklisted terms.
 	 */
 	blacklistedTerms: BlacklistedTerm[];
+
+	/**
+	 * A set of transformers that should be applied to the input text before
+	 * whitelisted terms are matched. This does not affect the matching of
+	 * blacklisted terms.
+	 *
+	 * Transformers will be applied in the order they appear.
+	 *
+	 * @default []
+	 */
+	whitelistMatcherTransformers?: TransformerContainer[];
 
 	/**
 	 * A list of whitelisted terms. If a whitelisted term matches some part of
@@ -612,37 +649,15 @@ export interface NfaMatcherOptions {
 	 * @default []
 	 */
 	whitelistedTerms?: string[];
-
-	/**
-	 * A set of transformers that should be applied to the input text before
-	 * blacklisted patterns are matched. This does not affect the matching of
-	 * whitelisted terms.
-	 *
-	 * Transformers will be applied in the order they appear.
-	 *
-	 * @default []
-	 */
-	blacklistMatcherTransformers?: TransformerContainer[];
-
-	/**
-	 * A set of transformers that should be applied to the input text before
-	 * whitelisted terms are matched. This does not affect the matching of
-	 * blacklisted terms.
-	 *
-	 * Transformers will be applied in the order they appear.
-	 *
-	 * @default []
-	 */
-	whitelistMatcherTransformers?: TransformerContainer[];
 }
 
 interface WildcardOnlyPatternData {
-	id: number;
 	flags: number;
+	id: number;
 	wildcardCount: number;
 }
 
 const enum WildcardOnlyPatternFlag {
-	RequireWordBoundaryAtStart = 1 << 0,
+	RequireWordBoundaryAtStart = 1,
 	RequireWordBoundaryAtEnd = 1 << 1,
 }

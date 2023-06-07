@@ -3,7 +3,8 @@ import type { Edge, EdgeCollection } from './EdgeCollection';
 
 export class BucketEdgeCollection<T> implements EdgeCollection<T> {
 	private _size = 0;
-	private buckets = new Array<T | undefined>(26);
+
+	private buckets = Array.from<T | undefined>({ length: 26 });
 
 	public set(char: number, node: T) {
 		const k = char - CharacterCode.LowerA;

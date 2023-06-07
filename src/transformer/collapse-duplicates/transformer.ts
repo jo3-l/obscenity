@@ -3,8 +3,11 @@ import type { ProcessedCollapseDuplicatesTransformerOptions } from '.';
 
 export class CollapseDuplicatesTransformer implements StatefulTransformer {
 	private readonly defaultThreshold: number;
+
 	private readonly customThresholds: Map<number, number>;
+
 	private remaining = -1;
+
 	private lastChar = -1;
 
 	public constructor({ defaultThreshold, customThresholds }: ProcessedCollapseDuplicatesTransformerOptions) {

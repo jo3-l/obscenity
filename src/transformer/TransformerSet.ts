@@ -3,11 +3,12 @@ import { TransformerType } from './Transformers';
 
 export class TransformerSet {
 	private readonly transformers: TransformerContainer[];
+
 	private readonly statefulTransformers: (StatefulTransformer | undefined)[];
 
 	public constructor(transformers: TransformerContainer[]) {
 		this.transformers = transformers;
-		this.statefulTransformers = new Array<StatefulTransformer | undefined>(this.transformers.length);
+		this.statefulTransformers = Array.from({ length: this.transformers.length });
 		for (let i = 0; i < this.transformers.length; i++) {
 			const transformer = this.transformers[i];
 			if (transformer.type === TransformerType.Stateful) {

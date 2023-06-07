@@ -101,19 +101,19 @@ export type TextCensorStrategy = (ctx: CensorContext) => string;
 /**
  * Context passed to [[TextCensorStrategy | text censoring strategies]].
  */
-export interface CensorContext extends MatchPayload {
+export type CensorContext = MatchPayload & {
 	/**
 	 * The entire input text, without any censoring applied to it.
 	 */
 	input: string;
 
 	/**
-	 * Whether the current region overlaps at the start with some other region.
-	 */
-	overlapsAtStart: boolean;
-
-	/**
 	 * Whether the current region overlaps at the end with some other region.
 	 */
 	overlapsAtEnd: boolean;
-}
+
+	/**
+	 * Whether the current region overlaps at the start with some other region.
+	 */
+	overlapsAtStart: boolean;
+};

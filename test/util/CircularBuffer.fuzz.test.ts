@@ -1,5 +1,4 @@
 import * as fc from 'fast-check';
-
 import { CircularBuffer } from '../../src/util/CircularBuffer';
 
 test('adding the elements of an array a of size > 0 in a sliding window fashion to a circular buffer should cause it to hold the values in the current window', () => {

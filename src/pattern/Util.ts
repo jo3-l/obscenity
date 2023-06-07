@@ -26,8 +26,10 @@ export function getRegExpStringForNode(node: Node): string {
 				if (regExpSpecialChars.includes(char)) str += '\\';
 				str += String.fromCodePoint(char);
 			}
+
 			return str;
 		}
+
 		case SyntaxKind.Optional:
 			return `(?:${getRegExpStringForNode(node.childNode)})?`;
 		case SyntaxKind.Wildcard:

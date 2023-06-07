@@ -13,6 +13,22 @@ import type { MatchPayload } from './MatchPayload';
  */
 export interface Matcher {
 	/**
+	 * Returns all matches of blacklisted terms in the text.
+	 *
+	 * If you only need to check for the presence of a match, and do not need
+	 * more specific information about the matches, use the `hasMatch()` method,
+	 * which is typically more efficient.
+	 *
+	 * @param input - Text to find profanities in.
+	 * @param sorted - Whether the resulting list of matches should be sorted
+	 * using [[compareMatchByPositionAndId]]. Defaults to `false`.
+	 * @returns A list of matches of the matcher on the text. The matches are
+	 * guaranteed to be sorted if and only if the `sorted` parameter is `true`,
+	 * otherwise, their order is unspecified.
+	 */
+	getAllMatches(input: string, sorted?: boolean): MatchPayload[];
+
+	/**
 	 * Checks whether there is a match for any blacklisted term in the text.
 	 *
 	 * This is typically more efficient than calling `getAllMatches` and
@@ -21,22 +37,4 @@ export interface Matcher {
 	 * @param input - Text to check.
 	 */
 	hasMatch(input: string): boolean;
-
-	/**
-	 * Returns all matches of blacklisted terms in the text.
-	 *
-	 * If you only need to check for the presence of a match, and do not need
-	 * more specific information about the matches, use the `hasMatch()` method,
-	 * which is typically more efficient.
-	 *
-	 * @param input - Text to find profanities in.
-	 *
-	 * @param sorted - Whether the resulting list of matches should be sorted
-	 * using [[compareMatchByPositionAndId]]. Defaults to `false`.
-	 *
-	 * @returns A list of matches of the matcher on the text. The matches are
-	 * guaranteed to be sorted if and only if the `sorted` parameter is `true`,
-	 * otherwise, their order is unspecified.
-	 */
-	getAllMatches(input: string, sorted?: boolean): MatchPayload[];
 }

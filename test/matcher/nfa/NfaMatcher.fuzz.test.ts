@@ -1,5 +1,4 @@
 import * as fc from 'fast-check';
-
 import { assignIncrementingIds } from '../../../src/matcher/BlacklistedTerm';
 import { NfaMatcher } from '../../../src/matcher/nfa/NfaMatcher';
 import type { LiteralNode, ParsedPattern } from '../../../src/pattern/Nodes';
@@ -20,18 +19,21 @@ test('running the pattern matcher on a set of patterns and input should have the
 						: fc.array(
 								fc.tuple(
 									fc
-										.tuple(fc.integer(0, input.length - 1), fc.integer(0, input.length - 1))
+										.tuple(fc.integer({ min: 0, max: input.length - 1 }), fc.integer({ min: 0, max: input.length - 1 }))
 										.filter(([a, b]) => a !== b)
 										.chain(([a, b]) => {
+											// eslint-disable-next-line no-param-reassign
 											if (a > b) [a, b] = [b, a];
-											return fc.tuple(fc.constant(input.slice(a, b)), fc.set(fc.integer(a, b)));
+											return fc.tuple(fc.constant(input.slice(a, b)), fc.uniqueArray(fc.integer({ min: a, max: b })));
 										})
 										.map(([pattern, wildcardIndices]) => {
 											let patternWithWildcards = '';
+											// eslint-disable-next-line unicorn/no-for-loop
 											for (let i = 0; i < pattern.length; i++) {
 												if (wildcardIndices.includes(i)) patternWithWildcards += '?';
 												else patternWithWildcards += pattern[i];
 											}
+
 											return patternWithWildcards;
 										}),
 									fc.boolean(),
@@ -60,6 +62,7 @@ test('running the pattern matcher on a set of patterns and input should have the
 						seen.add(pattern[0]);
 					}
 				}
+
 				for (const pattern of substrPatterns) {
 					// Similar.
 					if (!seen.has(pattern[0])) {
@@ -79,6 +82,7 @@ test('running the pattern matcher on a set of patterns and input should have the
 				const matchedRegions = matcher.getAllMatches(input);
 				const transformedMatches: Record<number, Interval[]> = {};
 				for (const payload of matchedRegions) {
+					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					(transformedMatches[payload.termId] ??= []).push([payload.startIndex, payload.endIndex]);
 				}
 
@@ -98,10 +102,10 @@ test('running the pattern matcher on a set of patterns and input should have the
 
 function bruteForceMatch(regExps: RegExp[], input: string) {
 	const result: Record<number, Interval[]> = {};
-	for (let i = 0; i < regExps.length; i++) {
-		const regExp = regExps[i];
+	for (const [i, regExp] of regExps.entries()) {
 		let match: RegExpExecArray | null;
 		while ((match = regExp.exec(input))) {
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			(result[i] ??= []).push([match.index, match.index + match[0].length - 1]);
 			regExp.lastIndex = match.index + 1;
 		}
@@ -121,6 +125,7 @@ function toRegExp(pattern: string, requireWordBoundaryAtStart: boolean, requireW
 		else if (char === '?') regexpStr += '.';
 		else regexpStr += char;
 	}
+
 	if (requireWordBoundaryAtEnd) regexpStr += '(?=[^\\dA-Za-z]|$)';
 	return new RegExp(regexpStr, 'gs');
 }

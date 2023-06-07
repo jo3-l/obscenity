@@ -1,5 +1,4 @@
 import * as fc from 'fast-check';
-
 import { WhitelistedTermMatcher } from '../../../src/matcher/nfa/WhitelistedTermMatcher';
 import type { Interval } from '../../../src/util/Interval';
 
@@ -13,9 +12,9 @@ test('running the whitelist matcher with a set of terms and input should have th
 						? fc.constant([])
 						: fc.array(
 								fc
-									.tuple(fc.integer(0, input.length - 1), fc.integer(0, input.length - 1))
+									.tuple(fc.integer({ min: 0, max: input.length - 1 }), fc.integer({ min: 0, max: input.length - 1 }))
 									.map(([a, b]) => {
-										if (a > b) [a, b] = [b, a];
+										if (a > b) return input.slice(b, a);
 										return input.slice(a, b);
 									})
 									.filter((p) => p.length > 0),
@@ -48,5 +47,6 @@ function bruteForceMatch(patterns: string[], input: string) {
 			}
 		}
 	}
+
 	return result;
 }

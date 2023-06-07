@@ -1,7 +1,10 @@
 export class CircularBuffer<T> implements Iterable<T> {
 	private readonly data: (T | undefined)[];
+
 	private head: number;
+
 	private _length = 0;
+
 	private readonly mask: number;
 
 	// Note: calling this constructor with a certain capacity does not guarantee that
@@ -10,7 +13,7 @@ export class CircularBuffer<T> implements Iterable<T> {
 	public constructor(capacity: number) {
 		this.head = 0;
 		// Round up to the nearest higher power of two.
-		this.data = new Array<T | undefined>(1 << Math.ceil(Math.log2(capacity)));
+		this.data = Array.from({ length: 1 << Math.ceil(Math.log2(capacity)) });
 		this.mask = this.capacity - 1;
 	}
 

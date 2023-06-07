@@ -12,7 +12,9 @@ import type { ParsedPattern } from '../pattern/Nodes';
  */
 export class DataSet<MetadataType> {
 	private readonly containers: PhraseContainer<MetadataType>[] = [];
+
 	private patternCount = 0;
+
 	private readonly patternIdToPhraseContainer = new Map<number, number>(); // pattern ID => index of its container
 
 	/**
@@ -22,7 +24,6 @@ export class DataSet<MetadataType> {
 	 * ```typescript
 	 * const customDataset = new DataSet().addAll(englishDataset);
 	 * ```
-	 *
 	 * @param other - Other dataset.
 	 */
 	public addAll(other: DataSet<MetadataType>) {
@@ -39,7 +40,6 @@ export class DataSet<MetadataType> {
 	 * 	.addAll(englishDataset)
 	 * 	.removePhrasesIf((phrase) => phrase.metadata.originalWord === 'fuck');
 	 * ```
-	 *
 	 * @param predicate - A predicate that determines whether or not a phrase should be removed.
 	 * Return `true` to remove, `false` to keep.
 	 */
@@ -53,6 +53,7 @@ export class DataSet<MetadataType> {
 			const remove = predicate(container);
 			if (!remove) this.registerContainer(container);
 		}
+
 		return this;
 	}
 
@@ -68,7 +69,6 @@ export class DataSet<MetadataType> {
 	 * 		.addWhitelistedTerm('Afck'))
 	 * 	.build();
 	 * ```
-	 *
 	 * @param fn - A function that takes a [[PhraseBuilder]], adds
 	 * patterns/whitelisted terms/metadata to it, and returns it.
 	 */
@@ -89,7 +89,6 @@ export class DataSet<MetadataType> {
 	 * // Now we can access the 'phraseMetadata' property:
 	 * const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
 	 * ```
-	 *
 	 * @param payload - Original match payload.
 	 */
 	public getPayloadWithPhraseMetadata(payload: MatchPayload): MatchPayloadWithPhraseMetadata<MetadataType> {
@@ -116,7 +115,6 @@ export class DataSet<MetadataType> {
 	 * 	// additional options here
 	 * });
 	 * ```
-	 *
 	 * @example
 	 * ```typescript
 	 * // With the NfaMatcher:
@@ -147,7 +145,9 @@ export class DataSet<MetadataType> {
  */
 export class PhraseBuilder<MetadataType> {
 	private readonly patterns: ParsedPattern[] = [];
+
 	private readonly whitelistedTerms: string[] = [];
+
 	private metadata?: MetadataType;
 
 	/**
@@ -196,17 +196,22 @@ export class PhraseBuilder<MetadataType> {
 /**
  * Extends the default match payload by adding phrase metadata.
  */
-export interface MatchPayloadWithPhraseMetadata<MetadataType> extends MatchPayload {
+export type MatchPayloadWithPhraseMetadata<MetadataType> = MatchPayload & {
 	/**
 	 * Phrase metadata associated with the pattern that matched.
 	 */
 	phraseMetadata?: MetadataType;
-}
+};
 
 /**
  * Represents a phrase.
  */
 export interface PhraseContainer<MetadataType> {
+	/**
+	 * Metadata associated with this phrase.
+	 */
+	metadata?: MetadataType;
+
 	/**
 	 * Patterns associated with this phrase.
 	 */
@@ -216,9 +221,4 @@ export interface PhraseContainer<MetadataType> {
 	 * Whitelisted terms associated with this phrase.
 	 */
 	whitelistedTerms: string[];
-
-	/**
-	 * Metadata associated with this phrase.
-	 */
-	metadata?: MetadataType;
 }

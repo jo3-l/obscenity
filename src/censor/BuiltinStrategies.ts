@@ -12,7 +12,6 @@ import type { CensorContext, TextCensorStrategy } from './TextCensor';
  * // Before: 'fuck you'
  * // After: 'f$@* you'
  * ```
- *
  * @example
  * ```typescript
  * // Since keepEndCensorStrategy() returns another text censoring strategy, you can use it
@@ -22,7 +21,6 @@ import type { CensorContext, TextCensorStrategy } from './TextCensor';
  * // Before: 'fuck you'
  * // After: 'f**k you'
  * ```
- *
  * @param baseStrategy - Strategy to extend. It will be used to produce the end of
  * the generated string.
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].
@@ -46,7 +44,6 @@ export function keepStartCensorStrategy(baseStrategy: TextCensorStrategy): TextC
  * // Before: 'fuck you'
  * // After: '***k you'
  * ```
- *
  * @param baseStrategy - Strategy to extend. It will be used to produce the start
  * of the generated string.
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].
@@ -69,7 +66,6 @@ export function keepEndCensorStrategy(baseStrategy: TextCensorStrategy): TextCen
  * // Before: 'fuck you'
  * // After: '**** you'
  * ```
- *
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].
  */
 export function asteriskCensorStrategy() {
@@ -88,7 +84,6 @@ export function asteriskCensorStrategy() {
  * // Before: 'fuck you'
  * // After: '%@&* you'
  * ```
- *
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].
  */
 export function grawlixCensorStrategy() {
@@ -107,7 +102,6 @@ export function grawlixCensorStrategy() {
  * // Before: 'fuck you'
  * // After: ' you'
  * ```
- *
  * @example
  * ```typescript
  * const strategy = fixedPhraseCensorStrategy('fudge');
@@ -115,7 +109,6 @@ export function grawlixCensorStrategy() {
  * // Before: 'fuck you'
  * // After: 'fudge you'
  * ```
- *
  * @param phrase - Replacement phrase to use.
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].
  */
@@ -126,7 +119,7 @@ export function fixedPhraseCensorStrategy(phrase: string): TextCensorStrategy {
 /**
  * A text censoring strategy that generates replacement strings that are made up
  * of the character given, repeated as many times as needed.
-
+ *
  * @example
  * ```typescript
  * const strategy = fixedCharCensorStrategy('*');
@@ -134,7 +127,6 @@ export function fixedPhraseCensorStrategy(phrase: string): TextCensorStrategy {
  * // Before: 'fuck you'
  * // After: '**** you'.
  * ```
- *
  * @param char - String that represents the code point which should be used when
  * generating the replacement string. Must be exactly one code point in length.
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].
@@ -156,7 +148,6 @@ export function fixedCharCensorStrategy(char: string): TextCensorStrategy {
  * // Before: 'fuck you!'
  * // After: '!##$ you!'
  * ```
- *
  * @param charset - Set of characters from which the replacement string should
  * be constructed. Must not be empty.
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].

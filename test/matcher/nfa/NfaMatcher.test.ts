@@ -3,8 +3,8 @@ import type { MatchPayload } from '../../../src/matcher/MatchPayload';
 import { NfaMatcher } from '../../../src/matcher/nfa/NfaMatcher';
 import { WhitelistedTermMatcher } from '../../../src/matcher/nfa/WhitelistedTermMatcher';
 import { parseRawPattern, pattern } from '../../../src/pattern/Pattern';
-import { skipNonAlphabeticTransformer } from '../../../src/transformer/skip-non-alphabetic';
 import { createSimpleTransformer } from '../../../src/transformer/Transformers';
+import { skipNonAlphabeticTransformer } from '../../../src/transformer/skip-non-alphabetic';
 import { CharacterCode } from '../../../src/util/Char';
 
 describe('constructor', () => {

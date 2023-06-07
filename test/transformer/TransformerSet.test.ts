@@ -1,6 +1,6 @@
+import { TransformerSet } from '../../src/transformer/TransformerSet';
 import type { StatefulTransformer } from '../../src/transformer/Transformers';
 import { createSimpleTransformer, createStatefulTransformer } from '../../src/transformer/Transformers';
-import { TransformerSet } from '../../src/transformer/TransformerSet';
 
 it('should create multiple instances of stateful transformers', () => {
 	const spy = jest.fn();
@@ -104,10 +104,12 @@ describe('TransformerSet#applyTo()', () => {
 			calls.push(0);
 			return c + 1;
 		};
+
 		const fn1 = (c: number) => {
 			calls.push(1);
 			return c + 2;
 		};
+
 		expect(new TransformerSet([createSimpleTransformer(fn0), createSimpleTransformer(fn1)]).applyTo(5)).toBe(8);
 		expect(calls).toStrictEqual([0, 1]);
 	});
