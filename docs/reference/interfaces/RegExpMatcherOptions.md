@@ -2,7 +2,7 @@
 
 # Interface: RegExpMatcherOptions
 
-Options for the [RegExpMatcher](../classes/RegExpMatcher.md).
+Options for the [[RegExpMatcher]].
 
 ## Table of contents
 
@@ -25,11 +25,15 @@ whitelisted terms.
 
 Transformers will be applied in the order they appear.
 
-**`default`** []
+**`Default`**
+
+```ts
+[]
+```
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:244](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L244)
+[src/matcher/regexp/RegExpMatcher.ts:227](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/regexp/RegExpMatcher.ts#L227)
 
 ___
 
@@ -41,7 +45,7 @@ A list of blacklisted terms.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:220](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L220)
+[src/matcher/regexp/RegExpMatcher.ts:232](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/regexp/RegExpMatcher.ts#L232)
 
 ___
 
@@ -55,11 +59,15 @@ blacklisted terms.
 
 Transformers will be applied in the order they appear.
 
-**`default`** []
+**`Default`**
+
+```ts
+[]
+```
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:255](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L255)
+[src/matcher/regexp/RegExpMatcher.ts:243](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/regexp/RegExpMatcher.ts#L243)
 
 ___
 
@@ -75,8 +83,12 @@ For example, if we had a pattern `penis` and a whitelisted term `pen is`,
 only no matches would be reported for the input text `the pen is mightier
 than the sword.`
 
-**`default`** []
+**`Default`**
+
+```ts
+[]
+```
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:233](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L233)
+[src/matcher/regexp/RegExpMatcher.ts:256](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/regexp/RegExpMatcher.ts#L256)

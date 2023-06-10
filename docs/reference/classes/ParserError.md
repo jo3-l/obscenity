@@ -44,7 +44,7 @@ Error.constructor
 
 #### Defined in
 
-[src/pattern/ParserError.ts:18](https://github.com/jo3-l/obscenity/blob/79cfa63/src/pattern/ParserError.ts#L18)
+[src/pattern/ParserError.ts:18](https://github.com/jo3-l/obscenity/blob/563159b/src/pattern/ParserError.ts#L18)
 
 ## Properties
 
@@ -57,7 +57,7 @@ Note that surrogate pairs are counted as 1 column wide, not 2.
 
 #### Defined in
 
-[src/pattern/ParserError.ts:16](https://github.com/jo3-l/obscenity/blob/79cfa63/src/pattern/ParserError.ts#L16)
+[src/pattern/ParserError.ts:16](https://github.com/jo3-l/obscenity/blob/563159b/src/pattern/ParserError.ts#L16)
 
 ___
 
@@ -69,7 +69,7 @@ The line on which the error occurred (one-based).
 
 #### Defined in
 
-[src/pattern/ParserError.ts:10](https://github.com/jo3-l/obscenity/blob/79cfa63/src/pattern/ParserError.ts#L10)
+[src/pattern/ParserError.ts:10](https://github.com/jo3-l/obscenity/blob/563159b/src/pattern/ParserError.ts#L10)
 
 ___
 
@@ -83,7 +83,7 @@ Error.message
 
 #### Defined in
 
-node_modules/.pnpm/typescript@4.3.5/node_modules/typescript/lib/lib.es5.d.ts:974
+node_modules/.pnpm/typescript@5.1.3/node_modules/typescript/lib/lib.es5.d.ts:1068
 
 ___
 
@@ -97,7 +97,7 @@ Error.name
 
 #### Defined in
 
-[src/pattern/ParserError.ts:5](https://github.com/jo3-l/obscenity/blob/79cfa63/src/pattern/ParserError.ts#L5)
+[src/pattern/ParserError.ts:5](https://github.com/jo3-l/obscenity/blob/563159b/src/pattern/ParserError.ts#L5)
 
 ___
 
@@ -111,4 +111,4 @@ Error.stack
 
 #### Defined in
 
-node_modules/.pnpm/typescript@4.3.5/node_modules/typescript/lib/lib.es5.d.ts:975
+node_modules/.pnpm/typescript@5.1.3/node_modules/typescript/lib/lib.es5.d.ts:1069

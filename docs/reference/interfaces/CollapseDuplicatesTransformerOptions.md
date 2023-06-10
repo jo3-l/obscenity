@@ -29,11 +29,15 @@ two `o`s in a row, and matches `book`. With this transformer, though,
 The fix would be to add an entry corresponding to `o` that overrides its
 threshold to be `2`, with the effect of leaving `book` unchanged.
 
-**`default`** new Map()
+**`Default`**
+
+```ts
+new Map()
+```
 
 #### Defined in
 
-[src/transformer/collapse-duplicates/index.ts:103](https://github.com/jo3-l/obscenity/blob/79cfa63/src/transformer/collapse-duplicates/index.ts#L103)
+[src/transformer/collapse-duplicates/index.ts:91](https://github.com/jo3-l/obscenity/blob/563159b/src/transformer/collapse-duplicates/index.ts#L91)
 
 ___
 
@@ -47,8 +51,12 @@ they will be collapsed.
 For example, if this value was `2`, `aa` would stay the same but `aaa`
 would be transformed to `aa`.
 
-**`default`** 1
+**`Default`**
+
+```ts
+1
+```
 
 #### Defined in
 
-[src/transformer/collapse-duplicates/index.ts:86](https://github.com/jo3-l/obscenity/blob/79cfa63/src/transformer/collapse-duplicates/index.ts#L86)
+[src/transformer/collapse-duplicates/index.ts:102](https://github.com/jo3-l/obscenity/blob/563159b/src/transformer/collapse-duplicates/index.ts#L102)

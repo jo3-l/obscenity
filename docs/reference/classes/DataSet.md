@@ -45,7 +45,8 @@ associating metadata with them.
 
 Adds all the phrases from the dataset provided to this one.
 
-**`example`**
+**`Example`**
+
 ```typescript
 const customDataset = new DataSet().addAll(englishDataset);
 ```
@@ -62,7 +63,7 @@ const customDataset = new DataSet().addAll(englishDataset);
 
 #### Defined in
 
-[src/dataset/DataSet.ts:28](https://github.com/jo3-l/obscenity/blob/79cfa63/src/dataset/DataSet.ts#L28)
+[src/dataset/DataSet.ts:29](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L29)
 
 ___
 
@@ -72,7 +73,8 @@ ___
 
 Adds a phrase to this dataset.
 
-**`example`**
+**`Example`**
+
 ```typescript
 const data = new DataSet<{ originalWord: string }>()
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'fuck' })
@@ -86,7 +88,7 @@ const data = new DataSet<{ originalWord: string }>()
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `fn` | (`builder`: [`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\>) => [`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\> | A function that takes a [PhraseBuilder](PhraseBuilder.md), adds patterns/whitelisted terms/metadata to it, and returns it. |
+| `fn` | (`builder`: [`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\>) => [`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\> | A function that takes a [[PhraseBuilder]], adds patterns/whitelisted terms/metadata to it, and returns it. |
 
 #### Returns
 
@@ -94,7 +96,7 @@ const data = new DataSet<{ originalWord: string }>()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/79cfa63/src/dataset/DataSet.ts#L75)
+[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L75)
 
 ___
 
@@ -102,10 +104,11 @@ ___
 
 ▸ **build**(): `Pick`<[`NfaMatcherOptions`](../interfaces/NfaMatcherOptions.md), ``"blacklistedTerms"`` \| ``"whitelistedTerms"``\>
 
-Returns the dataset in a format suitable for usage with the [RegExpMatcher](RegExpMatcher.md)
-or the [NfaMatcher](NfaMatcher.md).
+Returns the dataset in a format suitable for usage with the [[RegExpMatcher]]
+or the [[NfaMatcher]].
 
-**`example`**
+**`Example`**
+
 ```typescript
 // With the RegExpMatcher:
 const matcher = new RegExpMatcher({
@@ -114,7 +117,8 @@ const matcher = new RegExpMatcher({
 });
 ```
 
-**`example`**
+**`Example`**
+
 ```typescript
 // With the NfaMatcher:
 const matcher = new NfaMatcher({
@@ -129,18 +133,19 @@ const matcher = new NfaMatcher({
 
 #### Defined in
 
-[src/dataset/DataSet.ts:129](https://github.com/jo3-l/obscenity/blob/79cfa63/src/dataset/DataSet.ts#L129)
+[src/dataset/DataSet.ts:127](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L127)
 
 ___
 
 ### getPayloadWithPhraseMetadata
 
-▸ **getPayloadWithPhraseMetadata**(`payload`): [`MatchPayloadWithPhraseMetadata`](../interfaces/MatchPayloadWithPhraseMetadata.md)<`MetadataType`\>
+▸ **getPayloadWithPhraseMetadata**(`payload`): [`MatchPayloadWithPhraseMetadata`](../README.md#matchpayloadwithphrasemetadata)<`MetadataType`\>
 
 Retrieves the phrase metadata associated with a pattern and returns a
 copy of the match payload with said metadata attached to it.
 
-**`example`**
+**`Example`**
+
 ```typescript
 const matches = matcher.getAllMatches(input);
 const matchesWithPhraseMetadata = matches.map((match) => dataset.getPayloadWithPhraseMetadata(match));
@@ -156,11 +161,11 @@ const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
 
 #### Returns
 
-[`MatchPayloadWithPhraseMetadata`](../interfaces/MatchPayloadWithPhraseMetadata.md)<`MetadataType`\>
+[`MatchPayloadWithPhraseMetadata`](../README.md#matchpayloadwithphrasemetadata)<`MetadataType`\>
 
 #### Defined in
 
-[src/dataset/DataSet.ts:95](https://github.com/jo3-l/obscenity/blob/79cfa63/src/dataset/DataSet.ts#L95)
+[src/dataset/DataSet.ts:94](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L94)
 
 ___
 
@@ -170,7 +175,8 @@ ___
 
 Removes phrases that match the predicate given.
 
-**`example`**
+**`Example`**
+
 ```typescript
 const customDataset = new DataSet<{ originalWord: string }>()
 	.addAll(englishDataset)
@@ -189,4 +195,4 @@ const customDataset = new DataSet<{ originalWord: string }>()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/79cfa63/src/dataset/DataSet.ts#L46)
+[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L46)

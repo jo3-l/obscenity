@@ -2,7 +2,7 @@
 
 # Interface: NfaMatcherOptions
 
-Options for the [NfaMatcher](../classes/NfaMatcher.md).
+Options for the [[NfaMatcher]].
 
 ## Table of contents
 
@@ -25,11 +25,15 @@ whitelisted terms.
 
 Transformers will be applied in the order they appear.
 
-**`default`** []
+**`Default`**
+
+```ts
+[]
+```
 
 #### Defined in
 
-[src/matcher/nfa/NfaMatcher.ts:625](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/nfa/NfaMatcher.ts#L625)
+[src/matcher/nfa/NfaMatcher.ts:622](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/nfa/NfaMatcher.ts#L622)
 
 ___
 
@@ -41,7 +45,7 @@ A list of blacklisted terms.
 
 #### Defined in
 
-[src/matcher/nfa/NfaMatcher.ts:601](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/nfa/NfaMatcher.ts#L601)
+[src/matcher/nfa/NfaMatcher.ts:627](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/nfa/NfaMatcher.ts#L627)
 
 ___
 
@@ -55,11 +59,15 @@ blacklisted terms.
 
 Transformers will be applied in the order they appear.
 
-**`default`** []
+**`Default`**
+
+```ts
+[]
+```
 
 #### Defined in
 
-[src/matcher/nfa/NfaMatcher.ts:636](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/nfa/NfaMatcher.ts#L636)
+[src/matcher/nfa/NfaMatcher.ts:638](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/nfa/NfaMatcher.ts#L638)
 
 ___
 
@@ -75,8 +83,12 @@ For example, if we had a pattern `penis` and a whitelisted term `pen is`,
 only no matches would be reported for the input text `the pen is mightier
 than the sword.`
 
-**`default`** []
+**`Default`**
+
+```ts
+[]
+```
 
 #### Defined in
 
-[src/matcher/nfa/NfaMatcher.ts:614](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/nfa/NfaMatcher.ts#L614)
+[src/matcher/nfa/NfaMatcher.ts:651](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/nfa/NfaMatcher.ts#L651)

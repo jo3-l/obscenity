@@ -2,8 +2,8 @@
 
 # Class: TextCensor
 
-Censors regions of text matched by a [Matcher](../interfaces/Matcher.md), supporting flexible
-[censoring strategies](../README.md#textcensorstrategy).
+Censors regions of text matched by a [[Matcher]], supporting flexible
+[[TextCensorStrategy | censoring strategies]].
 
 ## Table of contents
 
@@ -38,7 +38,7 @@ of this method guarantees that overlapping regions will always be
 replaced, following the rules below:
 
 - Replacement text for matched regions will be generated in the order
-  specified by [compareMatchByPositionAndId](../README.md#comparematchbypositionandid);
+  specified by [[compareMatchByPositionAndId]];
 - When generating replacements for regions that overlap at the start with
   some other region, the start index of the censor context passed to the
   censoring strategy will be the end index of the first region, plus one.
@@ -58,7 +58,7 @@ The censored text.
 
 #### Defined in
 
-[src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/79cfa63/src/censor/TextCensor.ts#L66)
+[src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/TextCensor.ts#L66)
 
 ___
 
@@ -69,27 +69,27 @@ ___
 Sets the censoring strategy, which is responsible for generating
 replacement text for regions of the text that should be censored.
 
-The default censoring strategy is the [grawlixCensorStrategy](../README.md#grawlixcensorstrategy),
+The default censoring strategy is the [[grawlixCensorStrategy]],
 generating text like `$%@*`. There are several other built-in strategies
 available:
-- [keepStartCensorStrategy](../README.md#keepstartcensorstrategy) - extends another strategy and keeps the
+- [[keepStartCensorStrategy]] - extends another strategy and keeps the
   first character matched, e.g. `f***`.
-- [keepEndCensorStrategy](../README.md#keependcensorstrategy) - extends another strategy and keeps the last
+- [[keepEndCensorStrategy]] - extends another strategy and keeps the last
   character matched, e.g. `***k`.
-- [asteriskCensorStrategy](../README.md#asteriskcensorstrategy) - replaces the text with asterisks, e.g.
+- [[asteriskCensorStrategy]] - replaces the text with asterisks, e.g.
   `****`.
-- [grawlixCensorStrategy](../README.md#grawlixcensorstrategy) - the default strategy, discussed earlier.
+- [[grawlixCensorStrategy]] - the default strategy, discussed earlier.
 
 Note that since censoring strategies are just functions (see the
-documentation for [TextCensorStrategy](../README.md#textcensorstrategy)), it is relatively simple to
+documentation for [[TextCensorStrategy]]), it is relatively simple to
 create your own.
 
 To ease creation of common censoring strategies, we provide a number of
 utility functions:
-- [fixedPhraseCensorStrategy](../README.md#fixedphrasecensorstrategy) - generates a fixed phrase, e.g. `fudge`.
-- [fixedCharCensorStrategy](../README.md#fixedcharcensorstrategy) - generates replacement strings constructed
+- [[fixedPhraseCensorStrategy]] - generates a fixed phrase, e.g. `fudge`.
+- [[fixedCharCensorStrategy]] - generates replacement strings constructed
   from the character given, repeated as many times as needed.
-- [randomCharFromSetCensorStrategy](../README.md#randomcharfromsetcensorstrategy) - generates replacement strings
+- [[randomCharFromSetCensorStrategy]] - generates replacement strings
   made up of random characters from the set of characters provided.
 
 #### Parameters
@@ -104,4 +104,4 @@ utility functions:
 
 #### Defined in
 
-[src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/79cfa63/src/censor/TextCensor.ts#L41)
+[src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/TextCensor.ts#L41)

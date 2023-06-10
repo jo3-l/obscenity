@@ -2,10 +2,10 @@
 
 # Class: NfaMatcher
 
-An implementation of the [Matcher](../interfaces/Matcher.md) interface using finite automata
+An implementation of the [[Matcher]] interface using finite automata
 techniques.
 
-It is theoretically faster than the [RegExpMatcher](RegExpMatcher.md): the `hasMatch()` and
+It is theoretically faster than the [[RegExpMatcher]]: the `hasMatch()` and
 `getAllMatches()` execute in time proportional only to that of the length of
 the input text and the number of matches. In other words, it _theoretically_
 should not degrade in performance as you add more terms - matching with 100
@@ -15,7 +15,7 @@ automaton](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm) from
 the input patterns.
 
 In practice, its high constant factors make it slower than the
-[RegExpMatcher](RegExpMatcher.md) until about ~100 patterns, at which point both
+[[RegExpMatcher]] until about ~100 patterns, at which point both
 implementations have approximately the same performance.
 
 The regular-expression matcher should be preferred to this one if at all
@@ -25,7 +25,7 @@ appropriate if:
 
 - You have a large number of patterns (> 100);
 - You expect to be matching on long text;
-- You have benchmarked the implementations and found the [NfaMatcher](NfaMatcher.md) to be
+- You have benchmarked the implementations and found the [[NfaMatcher]] to be
   noticeably faster.
 
 ## Implements
@@ -47,11 +47,12 @@ appropriate if:
 
 ### constructor
 
-• **new NfaMatcher**(`__namedParameters`)
+• **new NfaMatcher**(`options`)
 
-Creates a new [NfaMatcher](NfaMatcher.md) with the options given.
+Creates a new [[NfaMatcher]] with the options given.
 
-**`example`**
+**`Example`**
+
 ```typescript
 // Use the options provided by the English preset.
 const matcher = new NfaMatcher({
@@ -60,7 +61,8 @@ const matcher = new NfaMatcher({
 });
 ```
 
-**`example`**
+**`Example`**
+
 ```typescript
 // Simple matcher that only has blacklisted patterns.
 const matcher = new NfaMatcher({
@@ -76,7 +78,8 @@ const matcher = new NfaMatcher({
 const doesMatch = matcher.hasMatch('fuck you bitch');
 ```
 
-**`example`**
+**`Example`**
+
 ```typescript
 // A more advanced example, with transformers and whitelisted terms.
 const matcher = new NfaMatcher({
@@ -100,13 +103,13 @@ console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sw
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `__namedParameters` | [`NfaMatcherOptions`](../interfaces/NfaMatcherOptions.md) |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `options` | [`NfaMatcherOptions`](../interfaces/NfaMatcherOptions.md) | Options to use. |
 
 #### Defined in
 
-[src/matcher/nfa/NfaMatcher.ts:157](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/nfa/NfaMatcher.ts#L157)
+[src/matcher/nfa/NfaMatcher.ts:170](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/nfa/NfaMatcher.ts#L170)
 
 ## Methods
 
@@ -122,14 +125,18 @@ which is typically more efficient.
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `input` | `string` | `undefined` |
-| `sorted` | `boolean` | `false` |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `input` | `string` | `undefined` | Text to find profanities in. |
+| `sorted` | `boolean` | `false` | Whether the resulting list of matches should be sorted using [[compareMatchByPositionAndId]]. Defaults to `false`. |
 
 #### Returns
 
 [`MatchPayload`](../interfaces/MatchPayload.md)[]
+
+A list of matches of the matcher on the text. The matches are
+guaranteed to be sorted if and only if the `sorted` parameter is `true`,
+otherwise, their order is unspecified.
 
 #### Implementation of
 
@@ -137,7 +144,7 @@ which is typically more efficient.
 
 #### Defined in
 
-[src/matcher/nfa/NfaMatcher.ts:190](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/nfa/NfaMatcher.ts#L190)
+[src/matcher/nfa/NfaMatcher.ts:202](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/nfa/NfaMatcher.ts#L202)
 
 ___
 
@@ -152,9 +159,9 @@ checking the result, though it depends on the implementation.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `input` | `string` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `input` | `string` | Text to check. |
 
 #### Returns
 
@@ -166,4 +173,4 @@ checking the result, though it depends on the implementation.
 
 #### Defined in
 
-[src/matcher/nfa/NfaMatcher.ts:184](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/nfa/NfaMatcher.ts#L184)
+[src/matcher/nfa/NfaMatcher.ts:197](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/nfa/NfaMatcher.ts#L197)

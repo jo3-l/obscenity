@@ -5,15 +5,7 @@
 Information emitted on a successful match.
 
 If you require more information about matches than what is provided here, see
-the [DataSet](../classes/DataSet.md) class, which supports associating metadata with patterns.
-
-## Hierarchy
-
-- **`MatchPayload`**
-
-  ↳ [`CensorContext`](CensorContext.md)
-
-  ↳ [`MatchPayloadWithPhraseMetadata`](MatchPayloadWithPhraseMetadata.md)
+the [[DataSet]] class, which supports associating metadata with patterns.
 
 ## Table of contents
 
@@ -37,7 +29,7 @@ then this points to the index of the low surrogate.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:31](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/MatchPayload.ts#L31)
+[src/matcher/MatchPayload.ts:16](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/MatchPayload.ts#L16)
 
 ___
 
@@ -49,7 +41,7 @@ Total number of of code points that matched.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:18](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/MatchPayload.ts#L18)
+[src/matcher/MatchPayload.ts:21](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/MatchPayload.ts#L21)
 
 ___
 
@@ -61,7 +53,7 @@ Start index of the match, inclusive.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:23](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/MatchPayload.ts#L23)
+[src/matcher/MatchPayload.ts:26](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/MatchPayload.ts#L26)
 
 ___
 
@@ -73,4 +65,4 @@ ID of the blacklisted term that matched.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:13](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/MatchPayload.ts#L13)
+[src/matcher/MatchPayload.ts:31](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/MatchPayload.ts#L31)

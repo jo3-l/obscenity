@@ -18,4 +18,4 @@ A wildcard node.
 
 #### Defined in
 
-[src/pattern/Nodes.ts:53](https://github.com/jo3-l/obscenity/blob/79cfa63/src/pattern/Nodes.ts#L53)
+[src/pattern/Nodes.ts:53](https://github.com/jo3-l/obscenity/blob/563159b/src/pattern/Nodes.ts#L53)

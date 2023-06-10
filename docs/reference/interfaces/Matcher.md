@@ -6,8 +6,8 @@ Searches for blacklisted terms in text, ignoring parts matched by whitelisted
 terms.
 
 See:
-- [NfaMatcher](../classes/NfaMatcher.md) for an implementation using finite automata;
-- [RegExpMatcher](../classes/RegExpMatcher.md) for an implementation using regular expressions.
+- [[NfaMatcher]] for an implementation using finite automata;
+- [[RegExpMatcher]] for an implementation using regular expressions.
 
 Refer to the documentation of the classes mentioned above for discussion of
 which circumstances one should prefer one over the other.
@@ -41,7 +41,7 @@ which is typically more efficient.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `input` | `string` | Text to find profanities in. |
-| `sorted?` | `boolean` | Whether the resulting list of matches should be sorted using [compareMatchByPositionAndId](../README.md#comparematchbypositionandid). Defaults to `false`. |
+| `sorted?` | `boolean` | Whether the resulting list of matches should be sorted using [[compareMatchByPositionAndId]]. Defaults to `false`. |
 
 #### Returns
 
@@ -53,7 +53,7 @@ otherwise, their order is unspecified.
 
 #### Defined in
 
-[src/matcher/Matcher.ts:41](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/Matcher.ts#L41)
+[src/matcher/Matcher.ts:29](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/Matcher.ts#L29)
 
 ___
 
@@ -78,4 +78,4 @@ checking the result, though it depends on the implementation.
 
 #### Defined in
 
-[src/matcher/Matcher.ts:23](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/Matcher.ts#L23)
+[src/matcher/Matcher.ts:39](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/Matcher.ts#L39)

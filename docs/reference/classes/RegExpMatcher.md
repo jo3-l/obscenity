@@ -2,14 +2,14 @@
 
 # Class: RegExpMatcher
 
-An implementation of the [Matcher](../interfaces/Matcher.md) interface using regular expressions and
+An implementation of the [[Matcher]] interface using regular expressions and
 string searching methods.
 
 It should be the default choice for users of this package, as though it is
-theoretically slower than the more complex [NfaMatcher](NfaMatcher.md), it uses much less
+theoretically slower than the more complex [[NfaMatcher]], it uses much less
 memory and is more efficient for low/medium numbers of patterns.
 
-Refer to the documentation of the [NfaMatcher](NfaMatcher.md) class for further discussion
+Refer to the documentation of the [[NfaMatcher]] class for further discussion
 on when to choose that implementation over this one.
 
 ## Implements
@@ -31,11 +31,12 @@ on when to choose that implementation over this one.
 
 ### constructor
 
-• **new RegExpMatcher**(`__namedParameters`)
+• **new RegExpMatcher**(`options`)
 
-Creates a new [RegExpMatcher](RegExpMatcher.md) with the options given.
+Creates a new [[RegExpMatcher]] with the options given.
 
-**`example`**
+**`Example`**
+
 ```typescript
 // Use the options provided by the English preset.
 const matcher = new RegExpMatcher({
@@ -44,7 +45,8 @@ const matcher = new RegExpMatcher({
 });
 ```
 
-**`example`**
+**`Example`**
+
 ```typescript
 // Simple matcher that only has blacklisted patterns.
 const matcher = new RegExpMatcher({
@@ -60,7 +62,8 @@ const matcher = new RegExpMatcher({
 const doesMatch = matcher.hasMatch('fuck you bitch');
 ```
 
-**`example`**
+**`Example`**
+
 ```typescript
 // A more advanced example, with transformers and whitelisted terms.
 const matcher = new RegExpMatcher({
@@ -84,13 +87,13 @@ console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sw
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `__namedParameters` | [`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md) |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `options` | [`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md) | Options to use. |
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:81](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L81)
+[src/matcher/regexp/RegExpMatcher.ts:81](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/regexp/RegExpMatcher.ts#L81)
 
 ## Methods
 
@@ -106,14 +109,18 @@ which is typically more efficient.
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `input` | `string` | `undefined` |
-| `sorted` | `boolean` | `false` |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `input` | `string` | `undefined` | Text to find profanities in. |
+| `sorted` | `boolean` | `false` | Whether the resulting list of matches should be sorted using [[compareMatchByPositionAndId]]. Defaults to `false`. |
 
 #### Returns
 
 [`MatchPayload`](../interfaces/MatchPayload.md)[]
+
+A list of matches of the matcher on the text. The matches are
+guaranteed to be sorted if and only if the `sorted` parameter is `true`,
+otherwise, their order is unspecified.
 
 #### Implementation of
 
@@ -121,7 +128,7 @@ which is typically more efficient.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:93](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L93)
+[src/matcher/regexp/RegExpMatcher.ts:93](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/regexp/RegExpMatcher.ts#L93)
 
 ___
 
@@ -136,9 +143,9 @@ checking the result, though it depends on the implementation.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `input` | `string` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `input` | `string` | Text to check. |
 
 #### Returns
 
@@ -150,4 +157,4 @@ checking the result, though it depends on the implementation.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:123](https://github.com/jo3-l/obscenity/blob/79cfa63/src/matcher/regexp/RegExpMatcher.ts#L123)
+[src/matcher/regexp/RegExpMatcher.ts:123](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/regexp/RegExpMatcher.ts#L123)
