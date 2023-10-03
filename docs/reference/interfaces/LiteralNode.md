@@ -21,7 +21,7 @@ The code points that this literal matches.
 
 #### Defined in
 
-[src/pattern/Nodes.ts:63](https://github.com/jo3-l/obscenity/blob/563159b/src/pattern/Nodes.ts#L63)
+[src/pattern/Nodes.ts:63](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/pattern/Nodes.ts#L63)
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 #### Defined in
 
-[src/pattern/Nodes.ts:65](https://github.com/jo3-l/obscenity/blob/563159b/src/pattern/Nodes.ts#L65)
+[src/pattern/Nodes.ts:65](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/pattern/Nodes.ts#L65)

@@ -63,7 +63,7 @@ const customDataset = new DataSet().addAll(englishDataset);
 
 #### Defined in
 
-[src/dataset/DataSet.ts:29](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L29)
+[src/dataset/DataSet.ts:29](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L29)
 
 ___
 
@@ -96,16 +96,15 @@ const data = new DataSet<{ originalWord: string }>()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L75)
+[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L75)
 
 ___
 
 ### build
 
-▸ **build**(): `Pick`<[`NfaMatcherOptions`](../interfaces/NfaMatcherOptions.md), ``"blacklistedTerms"`` \| ``"whitelistedTerms"``\>
+▸ **build**(): `Pick`<[`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md), ``"blacklistedTerms"`` \| ``"whitelistedTerms"``\>
 
-Returns the dataset in a format suitable for usage with the [[RegExpMatcher]]
-or the [[NfaMatcher]].
+Returns the dataset in a format suitable for usage with the [[RegExpMatcher]].
 
 **`Example`**
 
@@ -117,23 +116,13 @@ const matcher = new RegExpMatcher({
 });
 ```
 
-**`Example`**
-
-```typescript
-// With the NfaMatcher:
-const matcher = new NfaMatcher({
-	...dataset.build(),
-	// additional options here
-});
-```
-
 #### Returns
 
-`Pick`<[`NfaMatcherOptions`](../interfaces/NfaMatcherOptions.md), ``"blacklistedTerms"`` \| ``"whitelistedTerms"``\>
+`Pick`<[`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md), ``"blacklistedTerms"`` \| ``"whitelistedTerms"``\>
 
 #### Defined in
 
-[src/dataset/DataSet.ts:127](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L127)
+[src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L118)
 
 ___
 
@@ -165,7 +154,7 @@ const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
 
 #### Defined in
 
-[src/dataset/DataSet.ts:94](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L94)
+[src/dataset/DataSet.ts:94](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L94)
 
 ___
 
@@ -195,4 +184,4 @@ const customDataset = new DataSet<{ originalWord: string }>()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L46)
+[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L46)

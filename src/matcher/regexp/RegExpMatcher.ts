@@ -12,13 +12,6 @@ import type { Matcher } from '../Matcher';
 /**
  * An implementation of the [[Matcher]] interface using regular expressions and
  * string searching methods.
- *
- * It should be the default choice for users of this package, as though it is
- * theoretically slower than the more complex [[NfaMatcher]], it uses much less
- * memory and is more efficient for low/medium numbers of patterns.
- *
- * Refer to the documentation of the [[NfaMatcher]] class for further discussion
- * on when to choose that implementation over this one.
  */
 export class RegExpMatcher implements Matcher {
 	private readonly blacklistedTerms: CompiledBlacklistedTerm[];

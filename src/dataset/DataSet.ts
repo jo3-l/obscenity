@@ -1,6 +1,6 @@
 import { assignIncrementingIds } from '../matcher/BlacklistedTerm';
 import type { MatchPayload } from '../matcher/MatchPayload';
-import type { NfaMatcherOptions } from '../matcher/nfa/NfaMatcher';
+import type { RegExpMatcherOptions } from '../matcher/regexp/RegExpMatcher';
 import type { ParsedPattern } from '../pattern/Nodes';
 
 /**
@@ -104,8 +104,7 @@ export class DataSet<MetadataType> {
 	}
 
 	/**
-	 * Returns the dataset in a format suitable for usage with the [[RegExpMatcher]]
-	 * or the [[NfaMatcher]].
+	 * Returns the dataset in a format suitable for usage with the [[RegExpMatcher]].
 	 *
 	 * @example
 	 * ```typescript
@@ -115,16 +114,8 @@ export class DataSet<MetadataType> {
 	 * 	// additional options here
 	 * });
 	 * ```
-	 * @example
-	 * ```typescript
-	 * // With the NfaMatcher:
-	 * const matcher = new NfaMatcher({
-	 * 	...dataset.build(),
-	 * 	// additional options here
-	 * });
-	 * ```
 	 */
-	public build(): Pick<NfaMatcherOptions, 'blacklistedTerms' | 'whitelistedTerms'> {
+	public build(): Pick<RegExpMatcherOptions, 'blacklistedTerms' | 'whitelistedTerms'> {
 		return {
 			blacklistedTerms: assignIncrementingIds(this.containers.flatMap((p) => p.patterns)),
 			whitelistedTerms: this.containers.flatMap((p) => p.whitelistedTerms),

@@ -4,7 +4,6 @@ export * from './censor/TextCensor';
 export * from './dataset/DataSet';
 
 export * from './matcher/regexp/RegExpMatcher';
-export * from './matcher/nfa/NfaMatcher';
 export * from './matcher/BlacklistedTerm';
 export * from './matcher/MatchPayload';
 export * from './matcher/Matcher';

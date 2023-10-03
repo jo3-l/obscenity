@@ -31,7 +31,7 @@ import { createSimpleTransformer } from '../Transformers';
  * ```
  * @param mapping - A map/object mapping certain characters to others.
  * @returns A container holding the transformer, which can then be passed to the
- * [[RegExpMatcher]] or the [[NfaMatcher]].
+ * [[RegExpMatcher]].
  * @see [[resolveConfusablesTransformer|  Transformer that handles confusable Unicode characters]]
  * @see [[resolveLeetSpeakTransformer | Transformer that handles leet-speak]]
  */

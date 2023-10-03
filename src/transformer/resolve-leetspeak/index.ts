@@ -18,7 +18,7 @@ import { dictionary } from './dictionary';
  * const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transformer] });
  * ```
  * @returns A container holding the transformer, which can then be passed to the
- * [[RegExpMatcher]] or the [[NfaMatcher]].
+ * [[RegExpMatcher]].
  */
 export function resolveLeetSpeakTransformer() {
 	return remapCharactersTransformer(dictionary);

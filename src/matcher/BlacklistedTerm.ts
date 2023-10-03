@@ -32,7 +32,7 @@ export interface BlacklistedTerm {
  * ```
  * @param patterns - List of parsed patterns.
  * @returns A list of blacklisted terms with valid IDs which can then be passed
- * to the [[RegExpMatcher]] or [[NfaMatcher]].
+ * to the [[RegExpMatcher]].
  */
 export function assignIncrementingIds(patterns: ParsedPattern[]) {
 	let currentId = 0;

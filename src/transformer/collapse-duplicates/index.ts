@@ -41,7 +41,7 @@ import { CollapseDuplicatesTransformer } from './transformer';
  * ```
  * @param options - Options for the transformer.
  * @returns A container holding the transformer, which can then be passed to the
- * [[RegExpMatcher]] or the [[NfaMatcher]].
+ * [[RegExpMatcher]].
  */
 export function collapseDuplicatesTransformer({
 	defaultThreshold = 1,

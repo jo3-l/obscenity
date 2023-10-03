@@ -4,28 +4,20 @@
 
 We've previously discussed patterns and transformers. It's time to learn about how to use Obscenity to search for blacklisted terms in text, while respecting whitelisted terms.
 
-Obscenity provides two matchers which implement this behavior, which are quite similar: the `RegExpMatcher` and the `NfaMatcher`. Both have their pros and cons, which we'll discuss briefly here.
+To facilitate this, Obscenity provides the `RegExpMatcher`, which -- as the name suggests -- implements matching using regular expressions and string searching methods. At a high level, all it does is:
 
-- The `RegExpMatcher` implements matching using regular expressions and string searching methods. At a high level, all it does is:
+```
+apply transformations to text before matching whitelisted terms
+find whitelisted terms in text
 
-  ```
-  apply transformations to text before matching whitelisted terms
-  find whitelisted terms in text
+apply transformations to text before matching blacklisted terms
+for each blacklisted term
+	for all matches of the blacklisted term in the text
+		if a whitelisted term did not match this part of the text
+			emit match
+```
 
-  apply transformations to text before matching blacklisted terms
-  for each blacklisted term
-  	for all matches of the blacklisted term in the text
-  		if a whitelisted term did not match this part of the text
-  			emit match
-  ```
-
-  The `RegExpMatcher` is the implementation we recommend for most applications, as it performs better than the `NfaMatcher` on small - medium numbers of patterns and consumes less memory as well.
-
-- The `NfaMatcher` implements matching using finite automata (more specifically, it builds a heavily modified [Aho-Corasick automaton](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm) from the patterns and runs through the text once, walking the trie as it does so).
-
-  It is, in theory, more efficient than the `RegExpMatcher` as it uses a single pass to match all the patterns, but the performance difference is only noticeable when you have a high number of patterns (> 100). Furthermore, as it has to build a trie from the patterns, it consumes more memory than the `RegExpMatcher` as well.
-
-> **Note:** For the rest of this article, we will be using the `RegExpMatcher`, but it applies equally to the `NfaMatcher`.
+For now, the `RegExpMatcher` is the only matcher implementation offered by Obscenity, though this may change in future versions.
 
 ## Providing matcher options
 

@@ -1,5 +1,5 @@
 import { DataSet } from '../dataset/DataSet';
-import type { NfaMatcherOptions } from '../matcher/nfa/NfaMatcher';
+import type { RegExpMatcherOptions } from '../matcher/regexp/RegExpMatcher';
 import { pattern } from '../pattern/Pattern';
 import { collapseDuplicatesTransformer } from '../transformer/collapse-duplicates';
 import { resolveConfusablesTransformer } from '../transformer/resolve-confusables';
@@ -43,10 +43,10 @@ export const englishRecommendedWhitelistMatcherTransformers = [
 
 /**
  * Recommended transformers to be used with the [[englishDataset | english word
- * dataset]] and the [[RegExpMatcher]] or the [[NfaMatcher]].
+ * dataset]] and the [[RegExpMatcher]].
  */
 export const englishRecommendedTransformers: Pick<
-	NfaMatcherOptions,
+	RegExpMatcherOptions,
 	'blacklistMatcherTransformers' | 'whitelistMatcherTransformers'
 > = {
 	blacklistMatcherTransformers: englishRecommendedBlacklistMatcherTransformers,

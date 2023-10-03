@@ -5,13 +5,6 @@
 An implementation of the [[Matcher]] interface using regular expressions and
 string searching methods.
 
-It should be the default choice for users of this package, as though it is
-theoretically slower than the more complex [[NfaMatcher]], it uses much less
-memory and is more efficient for low/medium numbers of patterns.
-
-Refer to the documentation of the [[NfaMatcher]] class for further discussion
-on when to choose that implementation over this one.
-
 ## Implements
 
 - [`Matcher`](../interfaces/Matcher.md)
@@ -93,7 +86,7 @@ console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sw
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:81](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/regexp/RegExpMatcher.ts#L81)
+[src/matcher/regexp/RegExpMatcher.ts:74](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/matcher/regexp/RegExpMatcher.ts#L74)
 
 ## Methods
 
@@ -128,7 +121,7 @@ otherwise, their order is unspecified.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:93](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/regexp/RegExpMatcher.ts#L93)
+[src/matcher/regexp/RegExpMatcher.ts:86](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/matcher/regexp/RegExpMatcher.ts#L86)
 
 ___
 
@@ -157,4 +150,4 @@ checking the result, though it depends on the implementation.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:123](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/regexp/RegExpMatcher.ts#L123)
+[src/matcher/regexp/RegExpMatcher.ts:116](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/matcher/regexp/RegExpMatcher.ts#L116)

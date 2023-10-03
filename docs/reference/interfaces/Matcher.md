@@ -6,15 +6,10 @@ Searches for blacklisted terms in text, ignoring parts matched by whitelisted
 terms.
 
 See:
-- [[NfaMatcher]] for an implementation using finite automata;
 - [[RegExpMatcher]] for an implementation using regular expressions.
-
-Refer to the documentation of the classes mentioned above for discussion of
-which circumstances one should prefer one over the other.
 
 ## Implemented by
 
-- [`NfaMatcher`](../classes/NfaMatcher.md)
 - [`RegExpMatcher`](../classes/RegExpMatcher.md)
 
 ## Table of contents
@@ -53,7 +48,7 @@ otherwise, their order is unspecified.
 
 #### Defined in
 
-[src/matcher/Matcher.ts:29](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/Matcher.ts#L29)
+[src/matcher/Matcher.ts:25](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/matcher/Matcher.ts#L25)
 
 ___
 
@@ -78,4 +73,4 @@ checking the result, though it depends on the implementation.
 
 #### Defined in
 
-[src/matcher/Matcher.ts:39](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/Matcher.ts#L39)
+[src/matcher/Matcher.ts:35](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/matcher/Matcher.ts#L35)

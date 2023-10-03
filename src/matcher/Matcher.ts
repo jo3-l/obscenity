@@ -5,11 +5,7 @@ import type { MatchPayload } from './MatchPayload';
  * terms.
  *
  * See:
- * - [[NfaMatcher]] for an implementation using finite automata;
  * - [[RegExpMatcher]] for an implementation using regular expressions.
- *
- * Refer to the documentation of the classes mentioned above for discussion of
- * which circumstances one should prefer one over the other.
  */
 export interface Matcher {
 	/**

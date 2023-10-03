@@ -11,7 +11,6 @@ obscenity
 ### Classes
 
 - [DataSet](classes/DataSet.md)
-- [NfaMatcher](classes/NfaMatcher.md)
 - [ParserError](classes/ParserError.md)
 - [PhraseBuilder](classes/PhraseBuilder.md)
 - [RegExpMatcher](classes/RegExpMatcher.md)
@@ -25,7 +24,6 @@ obscenity
 - [LiteralNode](interfaces/LiteralNode.md)
 - [MatchPayload](interfaces/MatchPayload.md)
 - [Matcher](interfaces/Matcher.md)
-- [NfaMatcherOptions](interfaces/NfaMatcherOptions.md)
 - [OptionalNode](interfaces/OptionalNode.md)
 - [ParsedPattern](interfaces/ParsedPattern.md)
 - [PhraseContainer](interfaces/PhraseContainer.md)
@@ -80,7 +78,7 @@ Context passed to [[TextCensorStrategy | text censoring strategies]].
 
 #### Defined in
 
-[src/censor/TextCensor.ts:104](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/TextCensor.ts#L104)
+[src/censor/TextCensor.ts:104](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/censor/TextCensor.ts#L104)
 
 ___
 
@@ -94,7 +92,7 @@ should be a set of characters that map to the transformed character.
 
 #### Defined in
 
-[src/transformer/remap-characters/index.ts:60](https://github.com/jo3-l/obscenity/blob/563159b/src/transformer/remap-characters/index.ts#L60)
+[src/transformer/remap-characters/index.ts:60](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/transformer/remap-characters/index.ts#L60)
 
 ___
 
@@ -106,7 +104,7 @@ All the profane words that are included in the [[englishDataset | english datase
 
 #### Defined in
 
-[src/preset/english.ts:377](https://github.com/jo3-l/obscenity/blob/563159b/src/preset/english.ts#L377)
+[src/preset/english.ts:377](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/preset/english.ts#L377)
 
 ___
 
@@ -124,7 +122,7 @@ Extends the default match payload by adding phrase metadata.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:199](https://github.com/jo3-l/obscenity/blob/563159b/src/dataset/DataSet.ts#L199)
+[src/dataset/DataSet.ts:190](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L190)
 
 ___
 
@@ -136,7 +134,7 @@ All the possible kinds of nodes.
 
 #### Defined in
 
-[src/pattern/Nodes.ts:24](https://github.com/jo3-l/obscenity/blob/563159b/src/pattern/Nodes.ts#L24)
+[src/pattern/Nodes.ts:24](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/pattern/Nodes.ts#L24)
 
 ___
 
@@ -163,7 +161,7 @@ replacement string.
 
 #### Defined in
 
-[src/censor/TextCensor.ts:99](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/TextCensor.ts#L99)
+[src/censor/TextCensor.ts:99](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/censor/TextCensor.ts#L99)
 
 ## Variables
 
@@ -224,7 +222,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #### Defined in
 
-[src/preset/english.ts:103](https://github.com/jo3-l/obscenity/blob/563159b/src/preset/english.ts#L103)
+[src/preset/english.ts:103](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/preset/english.ts#L103)
 
 ___
 
@@ -237,20 +235,20 @@ A set of transformers to be used when matching blacklisted patterns with the
 
 #### Defined in
 
-[src/preset/english.ts:14](https://github.com/jo3-l/obscenity/blob/563159b/src/preset/english.ts#L14)
+[src/preset/english.ts:14](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/preset/english.ts#L14)
 
 ___
 
 ### englishRecommendedTransformers
 
-• `Const` **englishRecommendedTransformers**: `Pick`<[`NfaMatcherOptions`](interfaces/NfaMatcherOptions.md), ``"blacklistMatcherTransformers"`` \| ``"whitelistMatcherTransformers"``\>
+• `Const` **englishRecommendedTransformers**: `Pick`<[`RegExpMatcherOptions`](interfaces/RegExpMatcherOptions.md), ``"blacklistMatcherTransformers"`` \| ``"whitelistMatcherTransformers"``\>
 
 Recommended transformers to be used with the [[englishDataset | english word
-dataset]] and the [[RegExpMatcher]] or the [[NfaMatcher]].
+dataset]] and the [[RegExpMatcher]].
 
 #### Defined in
 
-[src/preset/english.ts:48](https://github.com/jo3-l/obscenity/blob/563159b/src/preset/english.ts#L48)
+[src/preset/english.ts:48](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/preset/english.ts#L48)
 
 ___
 
@@ -263,7 +261,7 @@ A set of transformers to be used when matching whitelisted terms with the
 
 #### Defined in
 
-[src/preset/english.ts:36](https://github.com/jo3-l/obscenity/blob/563159b/src/preset/english.ts#L36)
+[src/preset/english.ts:36](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/preset/english.ts#L36)
 
 ___
 
@@ -275,7 +273,7 @@ The current version of the library, formatted as `MAJOR.MINOR.PATCH`.
 
 #### Defined in
 
-[src/index.ts:28](https://github.com/jo3-l/obscenity/blob/563159b/src/index.ts#L28)
+[src/index.ts:27](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/index.ts#L27)
 
 ## Functions
 
@@ -310,11 +308,11 @@ const matcher = new RegExpMatcher({
 [`BlacklistedTerm`](interfaces/BlacklistedTerm.md)[]
 
 A list of blacklisted terms with valid IDs which can then be passed
-to the [[RegExpMatcher]] or [[NfaMatcher]].
+to the [[RegExpMatcher]].
 
 #### Defined in
 
-[src/matcher/BlacklistedTerm.ts:37](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/BlacklistedTerm.ts#L37)
+[src/matcher/BlacklistedTerm.ts:37](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/matcher/BlacklistedTerm.ts#L37)
 
 ___
 
@@ -341,7 +339,7 @@ A [[TextCensorStrategy]] for use with the [[TextCensor]].
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:71](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/BuiltinStrategies.ts#L71)
+[src/censor/BuiltinStrategies.ts:71](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/censor/BuiltinStrategies.ts#L71)
 
 ___
 
@@ -400,11 +398,11 @@ const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transfor
 `StatefulTransformerContainer`
 
 A container holding the transformer, which can then be passed to the
-[[RegExpMatcher]] or the [[NfaMatcher]].
+[[RegExpMatcher]].
 
 #### Defined in
 
-[src/transformer/collapse-duplicates/index.ts:46](https://github.com/jo3-l/obscenity/blob/563159b/src/transformer/collapse-duplicates/index.ts#L46)
+[src/transformer/collapse-duplicates/index.ts:46](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/transformer/collapse-duplicates/index.ts#L46)
 
 ___
 
@@ -445,7 +443,7 @@ than the first.
 
 #### Defined in
 
-[src/matcher/MatchPayload.ts:57](https://github.com/jo3-l/obscenity/blob/563159b/src/matcher/MatchPayload.ts#L57)
+[src/matcher/MatchPayload.ts:57](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/matcher/MatchPayload.ts#L57)
 
 ___
 
@@ -479,7 +477,7 @@ A [[TextCensorStrategy]] for use with the [[TextCensor]].
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:134](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/BuiltinStrategies.ts#L134)
+[src/censor/BuiltinStrategies.ts:134](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/censor/BuiltinStrategies.ts#L134)
 
 ___
 
@@ -523,7 +521,7 @@ A [[TextCensorStrategy]] for use with the [[TextCensor]].
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:115](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/BuiltinStrategies.ts#L115)
+[src/censor/BuiltinStrategies.ts:115](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/censor/BuiltinStrategies.ts#L115)
 
 ___
 
@@ -552,7 +550,7 @@ A [[TextCensorStrategy]] for use with the [[TextCensor]].
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:89](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/BuiltinStrategies.ts#L89)
+[src/censor/BuiltinStrategies.ts:89](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/censor/BuiltinStrategies.ts#L89)
 
 ___
 
@@ -586,7 +584,7 @@ A [[TextCensorStrategy]] for use with the [[TextCensor]].
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:51](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/BuiltinStrategies.ts#L51)
+[src/censor/BuiltinStrategies.ts:51](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/censor/BuiltinStrategies.ts#L51)
 
 ___
 
@@ -631,7 +629,7 @@ A [[TextCensorStrategy]] for use with the [[TextCensor]].
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:28](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/BuiltinStrategies.ts#L28)
+[src/censor/BuiltinStrategies.ts:28](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/censor/BuiltinStrategies.ts#L28)
 
 ___
 
@@ -662,11 +660,11 @@ pattern.
 [`ParsedPattern`](interfaces/ParsedPattern.md)
 
 The parsed pattern, which can then be used with the
-[[RegExpMatcher]] or the [[NfaMatcher]].
+[[RegExpMatcher]].
 
 #### Defined in
 
-[src/pattern/Pattern.ts:130](https://github.com/jo3-l/obscenity/blob/563159b/src/pattern/Pattern.ts#L130)
+[src/pattern/Pattern.ts:130](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/pattern/Pattern.ts#L130)
 
 ___
 
@@ -795,11 +793,11 @@ using a template tag.
 [`ParsedPattern`](interfaces/ParsedPattern.md)
 
 The parsed pattern, which can then be used with the
-[[RegExpMatcher]] or the [[NfaMatcher]].
+[[RegExpMatcher]].
 
 #### Defined in
 
-[src/pattern/Pattern.ts:106](https://github.com/jo3-l/obscenity/blob/563159b/src/pattern/Pattern.ts#L106)
+[src/pattern/Pattern.ts:106](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/pattern/Pattern.ts#L106)
 
 ___
 
@@ -833,7 +831,7 @@ A [[TextCensorStrategy]] for use with the [[TextCensor]].
 
 #### Defined in
 
-[src/censor/BuiltinStrategies.ts:155](https://github.com/jo3-l/obscenity/blob/563159b/src/censor/BuiltinStrategies.ts#L155)
+[src/censor/BuiltinStrategies.ts:155](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/censor/BuiltinStrategies.ts#L155)
 
 ___
 
@@ -889,11 +887,11 @@ const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transfor
 `SimpleTransformerContainer`
 
 A container holding the transformer, which can then be passed to the
-[[RegExpMatcher]] or the [[NfaMatcher]].
+[[RegExpMatcher]].
 
 #### Defined in
 
-[src/transformer/remap-characters/index.ts:38](https://github.com/jo3-l/obscenity/blob/563159b/src/transformer/remap-characters/index.ts#L38)
+[src/transformer/remap-characters/index.ts:38](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/transformer/remap-characters/index.ts#L38)
 
 ___
 
@@ -922,11 +920,11 @@ const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transfor
 `SimpleTransformerContainer`
 
 A container holding the transformer, which can then be passed to the
-[[RegExpMatcher]] or the [[NfaMatcher]].
+[[RegExpMatcher]].
 
 #### Defined in
 
-[src/transformer/resolve-confusables/index.ts:22](https://github.com/jo3-l/obscenity/blob/563159b/src/transformer/resolve-confusables/index.ts#L22)
+[src/transformer/resolve-confusables/index.ts:22](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/transformer/resolve-confusables/index.ts#L22)
 
 ___
 
@@ -956,11 +954,11 @@ const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transfor
 `SimpleTransformerContainer`
 
 A container holding the transformer, which can then be passed to the
-[[RegExpMatcher]] or the [[NfaMatcher]].
+[[RegExpMatcher]].
 
 #### Defined in
 
-[src/transformer/resolve-leetspeak/index.ts:23](https://github.com/jo3-l/obscenity/blob/563159b/src/transformer/resolve-leetspeak/index.ts#L23)
+[src/transformer/resolve-leetspeak/index.ts:23](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/transformer/resolve-leetspeak/index.ts#L23)
 
 ___
 
@@ -990,11 +988,11 @@ const matcher = new RegExpMatcher({ ..., blacklistMatcherTransformers: [transfor
 `SimpleTransformerContainer`
 
 A container holding the transformer, which can then be passed to the
-[[RegExpMatcher]] or the [[NfaMatcher]].
+[[RegExpMatcher]].
 
 #### Defined in
 
-[src/transformer/skip-non-alphabetic/index.ts:23](https://github.com/jo3-l/obscenity/blob/563159b/src/transformer/skip-non-alphabetic/index.ts#L23)
+[src/transformer/skip-non-alphabetic/index.ts:23](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/transformer/skip-non-alphabetic/index.ts#L23)
 
 ___
 
@@ -1017,8 +1015,8 @@ of varying cases.
 `SimpleTransformerContainer`
 
 A container holding the transformer, which can then be passed to the
-[[RegExpMatcher]] or the [[NfaMatcher]].
+[[RegExpMatcher]].
 
 #### Defined in
 
-[src/transformer/to-ascii-lowercase/index.ts:18](https://github.com/jo3-l/obscenity/blob/563159b/src/transformer/to-ascii-lowercase/index.ts#L18)
+[src/transformer/to-ascii-lowercase/index.ts:18](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/transformer/to-ascii-lowercase/index.ts#L18)

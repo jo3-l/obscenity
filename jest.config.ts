@@ -5,8 +5,14 @@ const config: Config.InitialOptions = {
 	testEnvironment: 'node',
 	testRunner: 'jest-circus/runner',
 	testMatch: ['<rootDir>/test/**/*.test.ts'],
-	globals: {
-		'ts-jest': { tsconfig: '<rootDir>/test/tsconfig.json' },
+	transform: {
+		// eslint-disable-next-line @typescript-eslint/naming-convention
+		'^.+\\.ts$': [
+			'ts-jest',
+			{
+				tsconfig: '<rootDir>/test/tsconfig.json',
+			},
+		],
 	},
 	collectCoverage: true,
 	collectCoverageFrom: ['<rootDir>/src/**/*.ts'],

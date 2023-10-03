@@ -40,7 +40,7 @@ export type TransformerContainer = SimpleTransformerContainer | StatefulTransfor
  * character. A return value of `undefined` indicates that the character should
  * be ignored.
  * @returns A container holding the transformer, which can then be passed to the
- * [[RegExpMatcher]] or the [[NfaMatcher]].
+ * [[RegExpMatcher]].
  */
 export function createSimpleTransformer(transformer: TransformerFn): SimpleTransformerContainer {
 	return { type: TransformerType.Simple, transform: transformer };
@@ -95,7 +95,7 @@ export interface SimpleTransformerContainer {
  * @param factory A function that returns an instance of the stateful
  * transformer.
  * @returns A container holding the stateful transformer, which can then be
- * passed to the [[RegExpMatcher]] or the [[NfaMatcher]].
+ * passed to the [[RegExpMatcher]].
  */
 export function createStatefulTransformer(factory: StatefulTransformerFactory): StatefulTransformerContainer {
 	return { type: TransformerType.Stateful, factory };

@@ -97,7 +97,7 @@ const parser = new Parser();
  * const parsed = pattern`my initials are \[??\]`; // match "my initials are [", then any two characters, then a "]"
  * ```
  * @returns The parsed pattern, which can then be used with the
- * [[RegExpMatcher]] or the [[NfaMatcher]].
+ * [[RegExpMatcher]].
  * @throws [[ParserError]] if a syntactical error was detected while parsing the
  * pattern.
  * @see [[parseRawPattern]] if you want to parse a string into a pattern without
@@ -125,7 +125,7 @@ export function pattern(strings: TemplateStringsArray, ...expressions: unknown[]
  * @throws [[ParserError]] if a syntactical error was detected while parsing the
  * pattern.
  * @returns The parsed pattern, which can then be used with the
- * [[RegExpMatcher]] or the [[NfaMatcher]].
+ * [[RegExpMatcher]].
  */
 export function parseRawPattern(pattern: string) {
 	return parser.parse(pattern);
