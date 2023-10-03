@@ -63,7 +63,7 @@ const customDataset = new DataSet().addAll(englishDataset);
 
 #### Defined in
 
-[src/dataset/DataSet.ts:29](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L29)
+[src/dataset/DataSet.ts:29](https://github.com/jo3-l/obscenity/blob/74dc406/src/dataset/DataSet.ts#L29)
 
 ___
 
@@ -96,7 +96,7 @@ const data = new DataSet<{ originalWord: string }>()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L75)
+[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/74dc406/src/dataset/DataSet.ts#L75)
 
 ___
 
@@ -122,7 +122,7 @@ const matcher = new RegExpMatcher({
 
 #### Defined in
 
-[src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L118)
+[src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/74dc406/src/dataset/DataSet.ts#L118)
 
 ___
 
@@ -154,7 +154,7 @@ const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
 
 #### Defined in
 
-[src/dataset/DataSet.ts:94](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L94)
+[src/dataset/DataSet.ts:94](https://github.com/jo3-l/obscenity/blob/74dc406/src/dataset/DataSet.ts#L94)
 
 ___
 
@@ -184,4 +184,4 @@ const customDataset = new DataSet<{ originalWord: string }>()
 
 #### Defined in
 
-[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/dataset/DataSet.ts#L46)
+[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/74dc406/src/dataset/DataSet.ts#L46)

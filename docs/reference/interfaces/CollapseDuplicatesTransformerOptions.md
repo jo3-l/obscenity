@@ -37,7 +37,7 @@ new Map()
 
 #### Defined in
 
-[src/transformer/collapse-duplicates/index.ts:91](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/transformer/collapse-duplicates/index.ts#L91)
+[src/transformer/collapse-duplicates/index.ts:91](https://github.com/jo3-l/obscenity/blob/74dc406/src/transformer/collapse-duplicates/index.ts#L91)
 
 ___
 
@@ -59,4 +59,4 @@ would be transformed to `aa`.
 
 #### Defined in
 
-[src/transformer/collapse-duplicates/index.ts:102](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/transformer/collapse-duplicates/index.ts#L102)
+[src/transformer/collapse-duplicates/index.ts:102](https://github.com/jo3-l/obscenity/blob/74dc406/src/transformer/collapse-duplicates/index.ts#L102)

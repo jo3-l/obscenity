@@ -18,4 +18,4 @@ A boundary assertion node.
 
 #### Defined in
 
-[src/pattern/Nodes.ts:72](https://github.com/jo3-l/obscenity/blob/ae4df1a/src/pattern/Nodes.ts#L72)
+[src/pattern/Nodes.ts:72](https://github.com/jo3-l/obscenity/blob/74dc406/src/pattern/Nodes.ts#L72)
