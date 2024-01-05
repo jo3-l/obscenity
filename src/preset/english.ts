@@ -283,10 +283,6 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addPattern(pattern`n[i]gga`)
 			.addPattern(pattern`|nig|`)
 			.addPattern(pattern`|nigs|`)
-			.addPattern(pattern`?igge`)
-			.addWhitelistedTerm('bigge')
-			.addWhitelistedTerm('digge')
-			.addWhitelistedTerm('rigge')
 			.addWhitelistedTerm('snigger'),
 	)
 	.addPhrase((phrase) =>
