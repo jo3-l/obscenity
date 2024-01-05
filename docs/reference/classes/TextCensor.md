@@ -58,7 +58,7 @@ The censored text.
 
 #### Defined in
 
-[src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/0b48eca/src/censor/TextCensor.ts#L66)
+[src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/5bb1ef1/src/censor/TextCensor.ts#L66)
 
 ___
 
@@ -104,4 +104,4 @@ utility functions:
 
 #### Defined in
 
-[src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/0b48eca/src/censor/TextCensor.ts#L41)
+[src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/5bb1ef1/src/censor/TextCensor.ts#L41)
