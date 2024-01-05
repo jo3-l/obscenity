@@ -4,7 +4,6 @@ import { pattern } from '../pattern/Pattern';
 import { collapseDuplicatesTransformer } from '../transformer/collapse-duplicates';
 import { resolveConfusablesTransformer } from '../transformer/resolve-confusables';
 import { resolveLeetSpeakTransformer } from '../transformer/resolve-leetspeak';
-import { skipNonAlphabeticTransformer } from '../transformer/skip-non-alphabetic';
 import { toAsciiLowerCaseTransformer } from '../transformer/to-ascii-lowercase';
 
 /**
@@ -15,7 +14,8 @@ export const englishRecommendedBlacklistMatcherTransformers = [
 	resolveConfusablesTransformer(),
 	resolveLeetSpeakTransformer(),
 	toAsciiLowerCaseTransformer(),
-	skipNonAlphabeticTransformer(),
+	// See #23 and #46.
+	// skipNonAlphabeticTransformer(),
 	collapseDuplicatesTransformer({
 		defaultThreshold: 1,
 		customThresholds: new Map([

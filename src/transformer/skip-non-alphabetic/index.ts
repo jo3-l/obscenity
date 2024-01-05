@@ -7,10 +7,18 @@ import { createSimpleTransformer } from '../Transformers';
  * comprised of alphabetic characters (the pattern `hello` does not match
  * `h.e.l.l.o` by default, but does with this transformer).
  *
+ * **Warning**
+ *
+ * This transformation is not part of the default set of transformations, as
+ * there are some known rough edges with false negatives; see
+ * [#23](https://github.com/jo3-l/obscenity/issues/23) and
+ * [#46](https://github.com/jo3-l/obscenity/issues/46) on the GitHub issue
+ * tracker.
+ *
  * **Application order**
  *
  * It is recommended that this transformer be applied near the end of the
- * transformer chain.
+ * transformer chain, if at all.
  *
  * @example
  * ```typescript

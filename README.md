@@ -109,8 +109,7 @@ With the English preset, Obscenity (correctly) finds matches in all of the follo
 - **fk** you
 - **ffuk** you
 - i like **a$$es**
-- **ʃ𝐟ʃὗƈ ｋ** ỹоứ
-- **f .... !!! uuuuuuuuu ccc k**
+- <!-- prettier-ignore --> ʃ𝐟ʃὗƈｋ ỹоứ
 
 ...and it **does not match** on the following:
 
