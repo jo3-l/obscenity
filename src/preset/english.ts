@@ -342,6 +342,16 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 	)
 	.addPhrase((phrase) =>
 		phrase
+			.setMetadata({ originalWord: 'shit' })
+			.addPattern(pattern`shit`)
+			.addWhitelistedTerm('s hit')
+			.addWhitelistedTerm('sh it')
+			.addWhitelistedTerm('shi t')
+			.addWhitelistedTerm('shitake')
+			.addWhitelistedTerm('mishit'),
+	)
+	.addPhrase((phrase) =>
+		phrase
 			.setMetadata({ originalWord: 'tit' })
 			.addPattern(pattern`|tit|`)
 			.addPattern(pattern`|tits|`)
@@ -428,6 +438,7 @@ export type EnglishProfaneWord =
 	| 'scat'
 	| 'semen'
 	| 'sex'
+	| 'shit'
 	| 'slut'
 	| 'tit'
 	| 'tranny'
