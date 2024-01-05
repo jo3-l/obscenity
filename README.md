@@ -11,7 +11,7 @@
 ## Why Obscenity?
 
 - **Accurate:** Though Obscenity is far from perfect (as with all profanity filters), it makes reducing false positives as simple as possible: adding whitelisted phrases is as easy as adding a new string to an array, and using word boundaries is equally simple.
-- **Robust:** Obscenity's transformer-based design allows it to match on variants of phrases other libraries are typically unable to, e.g. `f...u c k`, `fuuuuuuuckkk`, `ʃṳ𝒸𝗄`, `wordsbeforefuckandafter` and so on. There's no need to manually write out all the variants either: just adding the pattern `fuck` will match all of the cases above by default.
+- **Robust:** Obscenity's transformer-based design allows it to match on variants of phrases other libraries are typically unable to, e.g. `fuuuuuuuckkk`, `ʃṳ𝒸𝗄`, `wordsbeforefuckandafter` and so on. There's no need to manually write out all the variants either: just adding the pattern `fuck` will match all of the cases above by default.
 - **Extensible:** With Obscenity, you aren't locked into anything - removing phrases that you don't agree with from the default set of words is trivial, as is disabling any transformations you don't like (perhaps you feel that leet-speak decoding is too error-prone for you).
 
 ## Installation
@@ -60,7 +60,7 @@ Now, we can use our matcher to search for profanities in the text. Here's two ex
 **Check if there are any matches in some text:**
 
 ```javascript
-if (matcher.hasMatch('f.uck you')) {
+if (matcher.hasMatch('fuck you')) {
 	console.log('The input text contains profanities.');
 }
 // The input text contains profanities.
@@ -70,7 +70,7 @@ if (matcher.hasMatch('f.uck you')) {
 
 ```javascript
 // Pass "true" as the "sorted" parameter so the matches are sorted by their position.
-const matches = matcher.getAllMatches('ʃ𝐟ʃὗƈｋ ỹоứ 𝔟!!!ⁱẗ𝙘ɦ', true);
+const matches = matcher.getAllMatches('ʃ𝐟ʃὗƈｋ ỹоứ 𝔟ⁱẗ𝙘ɦ', true);
 for (const match of matches) {
 	const { phraseMetadata, startIndex, endIndex } =
 		englishDataset.getPayloadWithPhraseMetadata(match);
@@ -79,7 +79,7 @@ for (const match of matches) {
 	);
 }
 // Match for word fuck found between 0 and 6.
-// Match for word bitch found between 12 and 21.
+// Match for word bitch found between 12 and 18.
 ```
 
 **Censoring matched text:**
