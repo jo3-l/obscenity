@@ -44,7 +44,7 @@ Error.constructor
 
 #### Defined in
 
-[src/pattern/ParserError.ts:18](https://github.com/jo3-l/obscenity/blob/74dc406/src/pattern/ParserError.ts#L18)
+[src/pattern/ParserError.ts:18](https://github.com/jo3-l/obscenity/blob/6cfee56/src/pattern/ParserError.ts#L18)
 
 ## Properties
 
@@ -57,7 +57,7 @@ Note that surrogate pairs are counted as 1 column wide, not 2.
 
 #### Defined in
 
-[src/pattern/ParserError.ts:16](https://github.com/jo3-l/obscenity/blob/74dc406/src/pattern/ParserError.ts#L16)
+[src/pattern/ParserError.ts:16](https://github.com/jo3-l/obscenity/blob/6cfee56/src/pattern/ParserError.ts#L16)
 
 ___
 
@@ -69,7 +69,7 @@ The line on which the error occurred (one-based).
 
 #### Defined in
 
-[src/pattern/ParserError.ts:10](https://github.com/jo3-l/obscenity/blob/74dc406/src/pattern/ParserError.ts#L10)
+[src/pattern/ParserError.ts:10](https://github.com/jo3-l/obscenity/blob/6cfee56/src/pattern/ParserError.ts#L10)
 
 ___
 
@@ -97,7 +97,7 @@ Error.name
 
 #### Defined in
 
-[src/pattern/ParserError.ts:5](https://github.com/jo3-l/obscenity/blob/74dc406/src/pattern/ParserError.ts#L5)
+[src/pattern/ParserError.ts:5](https://github.com/jo3-l/obscenity/blob/6cfee56/src/pattern/ParserError.ts#L5)
 
 ___
 

@@ -17,7 +17,7 @@
 
 #### Defined in
 
-[src/transformer/collapse-duplicates/index.ts:68](https://github.com/jo3-l/obscenity/blob/74dc406/src/transformer/collapse-duplicates/index.ts#L68)
+[src/transformer/collapse-duplicates/index.ts:68](https://github.com/jo3-l/obscenity/blob/6cfee56/src/transformer/collapse-duplicates/index.ts#L68)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[src/transformer/collapse-duplicates/index.ts:69](https://github.com/jo3-l/obscenity/blob/74dc406/src/transformer/collapse-duplicates/index.ts#L69)
+[src/transformer/collapse-duplicates/index.ts:69](https://github.com/jo3-l/obscenity/blob/6cfee56/src/transformer/collapse-duplicates/index.ts#L69)
