@@ -101,12 +101,7 @@ export const englishRecommendedTransformers: Pick<
  * ```
  */
 export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>()
-	.addPhrase((phrase) =>
-		phrase
-			.setMetadata({ originalWord: 'abbo' })
-			.addPattern(pattern`abbo`)
-			.addWhitelistedTerm('abbot'),
-	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'abo' }).addPattern(pattern`|ab[b]o[s]|`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'abeed' }).addPattern(pattern`ab[b]eed`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'africoon' }).addPattern(pattern`africoon`))
 	.addPhrase((phrase) =>
@@ -185,7 +180,7 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addWhitelistedTerm('assu'),
 	)
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'bastard' }).addPattern(pattern`bas[s]tard`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'bestiality' }).addPattern(pattern`be[e]s[s]tial`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'bestiality' }).addPattern(pattern`be[e][a]s[s]tial`))
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'bitch' })
@@ -235,7 +230,12 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addWhitelistedTerm('cumu')
 			.addWhitelistedTerm('cumb'),
 	)
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'cunt' }).addPattern(pattern`|cunt`))
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ originalWord: 'cunt' })
+			.addPattern(pattern`|cunt`)
+			.addPattern(pattern`cunt|`),
+	)
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'deepthroat' })
@@ -418,7 +418,7 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
  * All the profane words that are included in the [[englishDataset | english dataset]] by default.
  */
 export type EnglishProfaneWord =
-	| 'abbo'
+	| 'abo'
 	| 'abeed'
 	| 'africoon'
 	| 'anal'
