@@ -188,11 +188,7 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addPattern(pattern`bich|`),
 	)
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'blowjob' }).addPattern(pattern`b[b]l[l][o]wj[o]b`))
-	.addPhrase((phrase) =>
-		phrase
-			.setMetadata({ originalWord: 'bollocks' })
-			.addPattern(pattern`bol[l]ock`),
-	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'bollocks' }).addPattern(pattern`bol[l]ock`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'boob' }).addPattern(pattern`boob`))
 	.addPhrase((phrase) =>
 		phrase
@@ -418,8 +414,8 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
  * All the profane words that are included in the [[englishDataset | english dataset]] by default.
  */
 export type EnglishProfaneWord =
-	| 'abo'
 	| 'abeed'
+	| 'abo'
 	| 'africoon'
 	| 'anal'
 	| 'anus'
@@ -485,5 +481,5 @@ export type EnglishProfaneWord =
 	| 'turd'
 	| 'twat'
 	| 'vagina'
-	| 'wanker'
+	| 'wank'
 	| 'whore';
