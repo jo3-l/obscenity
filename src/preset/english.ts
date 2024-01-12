@@ -101,12 +101,7 @@ export const englishRecommendedTransformers: Pick<
  * ```
  */
 export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>()
-	.addPhrase((phrase) =>
-		phrase
-			.setMetadata({ originalWord: 'abbo' })
-			.addPattern(pattern`abbo`)
-			.addWhitelistedTerm('abbot'),
-	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'abo' }).addPattern(pattern`|ab[b]o[s]|`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'abeed' }).addPattern(pattern`ab[b]eed`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'africoon' }).addPattern(pattern`africoon`))
 	.addPhrase((phrase) =>
@@ -184,15 +179,8 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addWhitelistedTerm('assoi')
 			.addWhitelistedTerm('assu'),
 	)
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'bestiality' }).addPattern(pattern`be[e]s[s]tial`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'bastard' }).addPattern(pattern`bas[s]tard`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'boob' }).addPattern(pattern`boob`))
-	.addPhrase((phrase) =>
-		phrase
-			.setMetadata({ originalWord: 'boonga' })
-			.addPattern(pattern`boonga`)
-			.addWhitelistedTerm('baboon ga'),
-	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'bestiality' }).addPattern(pattern`be[e][a]s[s]tial`))
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'bitch' })
@@ -200,6 +188,19 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addPattern(pattern`bich|`),
 	)
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'blowjob' }).addPattern(pattern`b[b]l[l][o]wj[o]b`))
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ originalWord: 'bollocks' })
+			.addPattern(pattern`bol[l]ock`),
+	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'boob' }).addPattern(pattern`boob`))
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ originalWord: 'boonga' })
+			.addPattern(pattern`boonga`)
+			.addWhitelistedTerm('baboon ga'),
+	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'buttplug' }).addPattern(pattern`buttplug`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'chingchong' }).addPattern(pattern`chingchong`))
 	.addPhrase((phrase) =>
 		phrase
@@ -218,12 +219,23 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 	)
 	.addPhrase((phrase) =>
 		phrase
+			.setMetadata({ originalWord: 'cuck' })
+			.addPattern(pattern`cuck`)
+			.addWhitelistedTerm('cuckoo'),
+	)
+	.addPhrase((phrase) =>
+		phrase
 			.setMetadata({ originalWord: 'cum' })
 			.addPattern(pattern`|cum`)
 			.addWhitelistedTerm('cumu')
 			.addWhitelistedTerm('cumb'),
 	)
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'cunt' }).addPattern(pattern`|cunt`))
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ originalWord: 'cunt' })
+			.addPattern(pattern`|cunt`)
+			.addPattern(pattern`cunt|`),
+	)
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'deepthroat' })
@@ -241,7 +253,15 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addWhitelistedTerm('benedick')
 			.addWhitelistedTerm('dickens'),
 	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'dildo' }).addPattern(pattern`dildo`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'doggystyle' }).addPattern(pattern`d[o]g[g]ys[s]t[y]l[l]`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'double penetration' }).addPattern(pattern`double penetra`))
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ originalWord: 'dyke' })
+			.addPattern(pattern`dyke`)
+			.addWhitelistedTerm('van dyke'),
+	)
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'ejaculate' })
@@ -255,8 +275,9 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addPattern(pattern`|fag`)
 			.addPattern(pattern`fggot`),
 	)
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'fellatio' }).addPattern(pattern`f[e][e]llat`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'felch' }).addPattern(pattern`fe[e]l[l]ch`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'fellatio' }).addPattern(pattern`f[e][e]llat`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'finger bang' }).addPattern(pattern`fingerbang`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'fisting' }).addPattern(pattern`fistin`))
 	.addPhrase((phrase) =>
 		phrase
@@ -268,13 +289,27 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 	)
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'gangbang' }).addPattern(pattern`g[?]ngbang`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'handjob' }).addPattern(pattern`h[?]ndjob`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'hentai' }).addPattern(pattern`h[e][e]ntai`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'hooker' }).addPattern(pattern`hooker`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'incest' }).addPattern(pattern`incest`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'jerk off' }).addPattern(pattern`jerkoff`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'jizz' }).addPattern(pattern`jizz`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'kike' }).addPattern(pattern`kike`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'lubejob' }).addPattern(pattern`lubejob`))
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'masturbate' })
 			.addPattern(pattern`m[?]sturbate`)
 			.addPattern(pattern`masterbate`),
+	)
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ originalWord: 'negro' })
+			.addPattern(pattern`negro`)
+			.addWhitelistedTerm('montenegro')
+			.addWhitelistedTerm('negron')
+			.addWhitelistedTerm('stoneground')
+			.addWhitelistedTerm('winegrow'),
 	)
 	.addPhrase((phrase) =>
 		phrase
@@ -300,26 +335,21 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 	)
 	.addPhrase((phrase) =>
 		phrase
-			.setMetadata({ originalWord: 'porn' })
-			.addPattern(pattern`|prn|`)
-			.addPattern(pattern`porn`)
-			.addWhitelistedTerm('p orna'),
-	)
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'hentai' }).addPattern(pattern`h[e][e]ntai`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'pussy' }).addPattern(pattern`p[u]ssy`))
-	.addPhrase((phrase) =>
-		phrase
-			.setMetadata({ originalWord: 'vagina' })
-			.addPattern(pattern`vagina`)
-			.addPattern(pattern`|v[?]gina`),
-	)
-	.addPhrase((phrase) =>
-		phrase
 			.setMetadata({ originalWord: 'penis' })
 			.addPattern(pattern`pe[e]nis`)
 			.addPattern(pattern`|pnis`)
 			.addWhitelistedTerm('pen is'),
 	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'piss' }).addPattern(pattern`|piss`))
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ originalWord: 'porn' })
+			.addPattern(pattern`|prn|`)
+			.addPattern(pattern`porn`)
+			.addWhitelistedTerm('p orna'),
+	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'prick' }).addPattern(pattern`|prick[s]|`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'pussy' }).addPattern(pattern`p[u]ssy`))
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'rape' })
@@ -328,7 +358,6 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 	)
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'retard' }).addPattern(pattern`retard`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'scat' }).addPattern(pattern`|s[s]cat|`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'slut' }).addPattern(pattern`s[s]lut`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'semen' }).addPattern(pattern`|s[s]e[e]me[e]n`))
 	.addPhrase((phrase) =>
 		phrase
@@ -346,6 +375,8 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addWhitelistedTerm('shitake')
 			.addWhitelistedTerm('mishit'),
 	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'slut' }).addPattern(pattern`s[s]lut`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'spastic' }).addPattern(pattern`|spastic`))
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'tit' })
@@ -355,33 +386,39 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addPattern(pattern`|tiddies`)
 			.addPattern(pattern`|tities`),
 	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'tranny' }).addPattern(pattern`tranny`))
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ originalWord: 'turd' })
+			.addPattern(pattern`|turd`)
+			.addWhitelistedTerm('turducken'),
+	)
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ originalWord: 'twat' })
+			.addPattern(pattern`|twat`)
+			.addWhitelistedTerm('twattle'),
+	)
+	.addPhrase((phrase) =>
+		phrase
+			.setMetadata({ originalWord: 'vagina' })
+			.addPattern(pattern`vagina`)
+			.addPattern(pattern`|v[?]gina`),
+	)
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'wank' }).addPattern(pattern`|wank`))
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'whore' })
 			.addPattern(pattern`|wh[o]re|`)
 			.addPattern(pattern`|who[o]res[s]|`)
 			.addWhitelistedTerm("who're"),
-	)
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'dildo' }).addPattern(pattern`dildo`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'double penetration' }).addPattern(pattern`double penetra`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'finger bang' }).addPattern(pattern`fingerbang`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'hooker' }).addPattern(pattern`hooker`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'jerk off' }).addPattern(pattern`jerkoff`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'incest' }).addPattern(pattern`incest`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'tranny' }).addPattern(pattern`tranny`))
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'buttplug' }).addPattern(pattern`buttplug`))
-	.addPhrase((phrase) =>
-		phrase
-			.setMetadata({ originalWord: 'cuck' })
-			.addPattern(pattern`cuck`)
-			.addWhitelistedTerm('cuckoo'),
 	);
 
 /**
  * All the profane words that are included in the [[englishDataset | english dataset]] by default.
  */
 export type EnglishProfaneWord =
-	| 'abbo'
+	| 'abo'
 	| 'abeed'
 	| 'africoon'
 	| 'anal'
@@ -393,6 +430,7 @@ export type EnglishProfaneWord =
 	| 'bestiality'
 	| 'bitch'
 	| 'blowjob'
+	| 'bollocks'
 	| 'boob'
 	| 'boonga'
 	| 'buttplug'
@@ -407,6 +445,7 @@ export type EnglishProfaneWord =
 	| 'dildo'
 	| 'doggystyle'
 	| 'double penetration'
+	| 'dyke'
 	| 'ejaculate'
 	| 'fag'
 	| 'felch'
@@ -421,13 +460,17 @@ export type EnglishProfaneWord =
 	| 'incest'
 	| 'jerk off'
 	| 'jizz'
+	| 'kike'
 	| 'lubejob'
 	| 'masturbate'
+	| 'negro'
 	| 'nigger'
 	| 'orgasm'
 	| 'orgy'
 	| 'penis'
+	| 'piss'
 	| 'porn'
+	| 'prick'
 	| 'pussy'
 	| 'rape'
 	| 'retard'
@@ -436,7 +479,11 @@ export type EnglishProfaneWord =
 	| 'sex'
 	| 'shit'
 	| 'slut'
+	| 'spastic'
 	| 'tit'
 	| 'tranny'
+	| 'turd'
+	| 'twat'
 	| 'vagina'
+	| 'wanker'
 	| 'whore';
