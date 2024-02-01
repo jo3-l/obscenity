@@ -19,7 +19,7 @@ jobs:
           version: latest
 
       - name: Install Node.js v19
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 19
           cache: pnpm
@@ -47,7 +47,7 @@ jobs:
           version: latest
 
       - name: Install Node.js v18
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
@@ -75,7 +75,7 @@ jobs:
           version: latest
 
       - name: Install Node.js v19
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 19
           cache: pnpm
