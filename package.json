@@ -65,7 +65,7 @@
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"conventional-github-releaser": "^3.1.5",
-		"eslint": "^8.42.0",
+		"eslint": "^9.0.0",
 		"eslint-config-neon": "^0.1.47",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-jest": "^27.2.1",
