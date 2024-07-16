@@ -20,8 +20,3 @@ export * from './transformer/resolve-confusables';
 export * from './transformer/resolve-leetspeak';
 export * from './transformer/skip-non-alphabetic';
 export * from './transformer/to-ascii-lowercase';
-
-/**
- * The current version of the library, formatted as `MAJOR.MINOR.PATCH`.
- */
-export const version = '0.1.0';
