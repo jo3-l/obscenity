@@ -2,6 +2,10 @@
 	"name": "obscenity",
 	"version": "0.3.0",
 	"description": "Robust, extensible profanity filter.",
+	"files": [
+		"/dist",
+		"!/dist/*.tsbuildinfo"
+	],
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
