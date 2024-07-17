@@ -281,7 +281,9 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addPattern(pattern`f[?]ck`)
 			.addPattern(pattern`|fk`)
 			.addPattern(pattern`|fu|`)
-			.addPattern(pattern`|fuk`),
+			.addPattern(pattern`|fuk`)
+			.addWhitelistedTerm('kung-fu')
+			.addWhitelistedTerm('kung fu'),
 	)
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'gangbang' }).addPattern(pattern`g[?]ngbang`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'handjob' }).addPattern(pattern`h[?]ndjob`))
