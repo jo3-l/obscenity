@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/jo3-l/obscenity/compare/v0.2.1...v0.2.2) (2024-07-17)
+
+
+### Features
+
+* **english-preset:** add more blacklisted terms ([#50](https://github.com/jo3-l/obscenity/issues/50)) ([4653de5](https://github.com/jo3-l/obscenity/commit/4653de51e63bd3457daca57316c2b2c851752072))
+
+
+### Bug Fixes
+
+* **english-preset:** whitelist 'kung-fu' ([d60b4f4](https://github.com/jo3-l/obscenity/commit/d60b4f4b766592785ba7c9c51d6d0607c5f26c57)), closes [#67](https://github.com/jo3-l/obscenity/issues/67)
+
 ### [0.2.1](https://github.com/jo3-l/obscenity/compare/v0.2.0...v0.2.1) (2024-03-03)
 
 

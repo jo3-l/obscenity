@@ -1,6 +1,6 @@
 {
 	"name": "obscenity",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"description": "Robust, extensible profanity filter.",
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
