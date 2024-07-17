@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/jo3-l/obscenity/compare/v0.2.2...v0.3.0) (2024-07-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* The library no longer exports a version constant.
+
+* drop version constant ([2810674](https://github.com/jo3-l/obscenity/commit/2810674de20d82d7372c617d2e8ef76e911f27ad))
+
 ### [0.2.2](https://github.com/jo3-l/obscenity/compare/v0.2.1...v0.2.2) (2024-07-17)
 
 
