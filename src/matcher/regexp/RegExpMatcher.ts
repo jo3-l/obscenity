@@ -140,7 +140,7 @@ export class RegExpMatcher implements Matcher {
 
 	private getWhitelistedIntervals(input: string) {
 		const matches = new IntervalCollection();
-		const [indices, transformed] = this.applyTransformers(input, this.whitelistMatcherTransformers);
+		const [origIndices, transformed] = this.applyTransformers(input, this.whitelistMatcherTransformers);
 		for (const whitelistedTerm of this.whitelistedTerms) {
 			const length = [...whitelistedTerm].length;
 
@@ -150,18 +150,18 @@ export class RegExpMatcher implements Matcher {
 				startIndex !== -1;
 				startIndex = transformed.indexOf(whitelistedTerm, lastEnd)
 			) {
-				let endIndex = indices[startIndex + length - 1];
+				let origEndIndex = origIndices[startIndex + length - 1];
 				// Adjust the end index if needed.
 				if (
-					endIndex < transformed.length - 1 && // not the last character
-					isHighSurrogate(transformed.charCodeAt(endIndex)) && // character is a high surrogate
-					isLowSurrogate(transformed.charCodeAt(endIndex + 1)) // next character is a low surrogate
+					origEndIndex < transformed.length - 1 && // not the last character
+					isHighSurrogate(transformed.charCodeAt(origEndIndex)) && // character is a high surrogate
+					isLowSurrogate(transformed.charCodeAt(origEndIndex + 1)) // next character is a low surrogate
 				) {
-					endIndex++;
+					origEndIndex++;
 				}
 
-				matches.insert(indices[startIndex], endIndex);
-				lastEnd = endIndex + 1;
+				matches.insert(origIndices[startIndex], origEndIndex);
+				lastEnd = startIndex + whitelistedTerm.length;
 			}
 		}
 
