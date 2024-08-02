@@ -106,6 +106,10 @@ describe('matching with whitelisted terms', () => {
 		]);
 	});
 
+	it('does not accept empty whitelist patterns', () => {
+		expect(() => new RegExpMatcher({ blacklistedTerms: [], whitelistedTerms: [''] })).toThrow('empty string');
+	});
+
 	it('issue #49', () => {
 		const input = `    "" ""
     "" ""

@@ -78,6 +78,7 @@ export class RegExpMatcher implements Matcher {
 		whitelistMatcherTransformers = [],
 	}: RegExpMatcherOptions) {
 		this.blacklistedTerms = this.compileTerms(blacklistedTerms);
+		this.validateWhitelistedTerms(whitelistedTerms);
 		this.whitelistedTerms = whitelistedTerms;
 		this.blacklistMatcherTransformers = new TransformerSet(blacklistMatcherTransformers);
 		this.whitelistMatcherTransformers = new TransformerSet(whitelistMatcherTransformers);
@@ -201,6 +202,12 @@ export class RegExpMatcher implements Matcher {
 		}
 
 		return compiled;
+	}
+
+	private validateWhitelistedTerms(whitelist: string[]) {
+		if (whitelist.some((term) => term.length === 0)) {
+			throw new Error('Whitelisted term set contains empty string; this is unsupported.');
+		}
 	}
 }
 
