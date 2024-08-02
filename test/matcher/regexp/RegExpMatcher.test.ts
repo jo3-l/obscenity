@@ -55,6 +55,12 @@ describe('matching', () => {
 		['should only match on the term exactly', ['her'], 'h he! her', { 0: [[6, 8, 3]] }],
 		['should work with terms that normalize to a different string', ['豈'], '豈', { 0: [[0, 0, 1]] }],
 		['should work with the null character', ['\u0000'], '\u0000', { 0: [[0, 0, 1]] }],
+		[
+			'issue #71: correct match indices with codepoints encoded as multiple UTF-16 code units',
+			['ass'],
+			'🤣ass',
+			{ 0: [[2, 4, 3]] },
+		],
 	])('%s', (_, patterns, input, matches) => {
 		const expected: MatchPayload[] = [];
 		for (const [idStr, matchData] of Object.entries(matches)) {

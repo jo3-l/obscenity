@@ -1,7 +1,7 @@
+import { isHighSurrogate, isLowSurrogate } from '../../util/Char';
 import { compilePatternToRegExp, potentiallyMatchesEmptyString } from '../../pattern/Util';
 import { TransformerSet } from '../../transformer/TransformerSet';
 import type { TransformerContainer } from '../../transformer/Transformers';
-import { isHighSurrogate, isLowSurrogate } from '../../util/Char';
 import { CharacterIterator } from '../../util/CharacterIterator';
 import type { BlacklistedTerm } from '../BlacklistedTerm';
 import { IntervalCollection } from '../IntervalCollection';
@@ -86,26 +86,29 @@ export class RegExpMatcher implements Matcher {
 
 	public getAllMatches(input: string, sorted = false) {
 		const whitelistedIntervals = this.getWhitelistedIntervals(input);
-		const [indices, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
+		const [transformedToOrigIndex, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
 
 		const matches: MatchPayload[] = [];
 		for (const blacklistedTerm of this.blacklistedTerms) {
 			for (const match of transformed.matchAll(blacklistedTerm.regExp)) {
-				const matchLength = [...match[0]].length; // spread so we count code points, not code units
-				const startIndex = indices[match.index!];
-				// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-				let endIndex = indices[match.index! + matchLength - 1];
-				// Adjust the end index if needed.
+				const origStartIndex = transformedToOrigIndex[match.index!];
+				let origEndIndex = transformedToOrigIndex[match.index! + match[0].length - 1];
+				// End index is (unfortunately) inclusive, so adjust as necessary.
 				if (
-					endIndex < transformed.length - 1 && // not the last character
-					isHighSurrogate(transformed.charCodeAt(endIndex)) && // character is a high surrogate
-					isLowSurrogate(transformed.charCodeAt(endIndex + 1)) // next character is a low surrogate
+					origEndIndex < input.length - 1 && // not the last character
+					isHighSurrogate(input.charCodeAt(origEndIndex)) && // character is a high surrogate
+					isLowSurrogate(input.charCodeAt(origEndIndex + 1)) // next character is a low surrogate
 				) {
-					endIndex++;
+					origEndIndex++;
 				}
 
-				if (!whitelistedIntervals.query(startIndex, endIndex)) {
-					matches.push({ termId: blacklistedTerm.id, startIndex, endIndex, matchLength });
+				if (!whitelistedIntervals.query(origStartIndex, origEndIndex)) {
+					matches.push({
+						termId: blacklistedTerm.id,
+						startIndex: origStartIndex,
+						endIndex: origEndIndex,
+						matchLength: [...match[0]].length,
+					});
 				}
 			}
 		}
@@ -116,23 +119,21 @@ export class RegExpMatcher implements Matcher {
 
 	public hasMatch(input: string) {
 		const whitelistedIntervals = this.getWhitelistedIntervals(input);
-		const [indices, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
+		const [transformedToOrigIndex, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
 		for (const blacklistedTerm of this.blacklistedTerms) {
 			for (const match of transformed.matchAll(blacklistedTerm.regExp)) {
-				const matchLength = [...match[0]].length; // spread so we count code points, not code units
-				const startIndex = indices[match.index!];
-				// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-				let endIndex = indices[match.index! + matchLength - 1];
-				// Adjust the end index if needed.
+				const origStartIndex = transformedToOrigIndex[match.index!];
+				let origEndIndex = transformedToOrigIndex[match.index! + match[0].length - 1];
+				// End index is (unfortunately) inclusive, so adjust as necessary.
 				if (
-					endIndex < transformed.length - 1 && // not the last character
-					isHighSurrogate(transformed.charCodeAt(endIndex)) && // character is a high surrogate
-					isLowSurrogate(transformed.charCodeAt(endIndex + 1)) // next character is a low surrogate
+					origEndIndex < input.length - 1 && // not the last character
+					isHighSurrogate(input.charCodeAt(origEndIndex)) && // character is a high surrogate
+					isLowSurrogate(input.charCodeAt(origEndIndex + 1)) // next character is a low surrogate
 				) {
-					endIndex++;
+					origEndIndex++;
 				}
 
-				if (!whitelistedIntervals.query(startIndex, endIndex)) return true;
+				if (!whitelistedIntervals.query(origStartIndex, origEndIndex)) return true;
 			}
 		}
 
@@ -141,27 +142,25 @@ export class RegExpMatcher implements Matcher {
 
 	private getWhitelistedIntervals(input: string) {
 		const matches = new IntervalCollection();
-		const [origIndices, transformed] = this.applyTransformers(input, this.whitelistMatcherTransformers);
+		const [transformedToOrigIndex, transformed] = this.applyTransformers(input, this.whitelistMatcherTransformers);
 		for (const whitelistedTerm of this.whitelistedTerms) {
-			const length = [...whitelistedTerm].length;
-
 			let lastEnd = 0;
 			for (
 				let startIndex = transformed.indexOf(whitelistedTerm, lastEnd);
 				startIndex !== -1;
 				startIndex = transformed.indexOf(whitelistedTerm, lastEnd)
 			) {
-				let origEndIndex = origIndices[startIndex + length - 1];
-				// Adjust the end index if needed.
+				let origEndIndex = transformedToOrigIndex[startIndex + whitelistedTerm.length - 1];
+				// End index is (unfortunately) inclusive, so adjust as necessary.
 				if (
-					origEndIndex < transformed.length - 1 && // not the last character
-					isHighSurrogate(transformed.charCodeAt(origEndIndex)) && // character is a high surrogate
-					isLowSurrogate(transformed.charCodeAt(origEndIndex + 1)) // next character is a low surrogate
+					origEndIndex < input.length - 1 && // not the last character
+					isHighSurrogate(input.charCodeAt(origEndIndex)) && // character is a high surrogate
+					isLowSurrogate(input.charCodeAt(origEndIndex + 1)) // next character is a low surrogate
 				) {
 					origEndIndex++;
 				}
 
-				matches.insert(origIndices[startIndex], origEndIndex);
+				matches.insert(transformedToOrigIndex[startIndex], origEndIndex);
 				lastEnd = startIndex + whitelistedTerm.length;
 			}
 		}
@@ -169,20 +168,23 @@ export class RegExpMatcher implements Matcher {
 		return matches;
 	}
 
-	private applyTransformers(input: string, transformers: TransformerSet): [indices: number[], transformed: string] {
-		const indices: number[] = [];
+	private applyTransformers(
+		input: string,
+		transformers: TransformerSet,
+	): [transformedToOrigIndex: number[], transformed: string] {
+		const transformedToOrigIndex: number[] = [];
 		let transformed = '';
 		const iter = new CharacterIterator(input);
 		for (const char of iter) {
 			const transformedChar = transformers.applyTo(char);
 			if (transformedChar !== undefined) {
-				indices.push(iter.position);
 				transformed += String.fromCodePoint(transformedChar);
+				while (transformedToOrigIndex.length < transformed.length) transformedToOrigIndex.push(iter.position);
 			}
 		}
 
 		transformers.resetAll();
-		return [indices, transformed];
+		return [transformedToOrigIndex, transformed];
 	}
 
 	private compileTerms(terms: BlacklistedTerm[]) {
