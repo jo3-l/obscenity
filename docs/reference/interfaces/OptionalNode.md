@@ -22,7 +22,7 @@ would be a literal node with the value `abc`.
 
 #### Defined in
 
-[src/pattern/Nodes.ts:44](https://github.com/jo3-l/obscenity/blob/37976b6/src/pattern/Nodes.ts#L44)
+[src/pattern/Nodes.ts:44](https://github.com/jo3-l/obscenity/blob/f14df6c/src/pattern/Nodes.ts#L44)
 
 ___
 
@@ -32,4 +32,4 @@ ___
 
 #### Defined in
 
-[src/pattern/Nodes.ts:46](https://github.com/jo3-l/obscenity/blob/37976b6/src/pattern/Nodes.ts#L46)
+[src/pattern/Nodes.ts:46](https://github.com/jo3-l/obscenity/blob/f14df6c/src/pattern/Nodes.ts#L46)

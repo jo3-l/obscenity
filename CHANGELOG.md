@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/jo3-l/obscenity/compare/v0.3.1...v0.4.0) (2024-08-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **regexp-matcher:** Passing an empty whitelisted term to the RegExpMatcher will result in a runtime error.
+
+This was unsupported previously and likely did not work correctly. Make it a real error.
+
+### Bug Fixes
+
+* **regexp-matcher:** advance index correctly in whitelist matcher ([ebf95ad](https://github.com/jo3-l/obscenity/commit/ebf95add62be8297f693ca6d8aafefc10afc1a8b)), closes [#49](https://github.com/jo3-l/obscenity/issues/49)
+* **regexp-matcher:** correctly remap to original indices in all cases ([3a49579](https://github.com/jo3-l/obscenity/commit/3a49579f3c242d3e159e88707df090e3f6dc0121)), closes [#71](https://github.com/jo3-l/obscenity/issues/71)
+* **regexp-matcher:** reject empty whitelist terms ([9a46113](https://github.com/jo3-l/obscenity/commit/9a461130b98920e22d5acf92650146ae48d2226b))
+
 ### [0.3.1](https://github.com/jo3-l/obscenity/compare/v0.3.0...v0.3.1) (2024-07-17)
 
 ## [0.3.0](https://github.com/jo3-l/obscenity/compare/v0.2.2...v0.3.0) (2024-07-17)
