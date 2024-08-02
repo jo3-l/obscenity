@@ -2,6 +2,7 @@ import { assignIncrementingIds } from '../../../src/matcher/BlacklistedTerm';
 import type { MatchPayload } from '../../../src/matcher/MatchPayload';
 import { RegExpMatcher } from '../../../src/matcher/regexp/RegExpMatcher';
 import { parseRawPattern, pattern } from '../../../src/pattern/Pattern';
+import { englishDataset, englishRecommendedTransformers } from '../../../src/preset/english';
 import { createSimpleTransformer } from '../../../src/transformer/Transformers';
 import { skipNonAlphabeticTransformer } from '../../../src/transformer/skip-non-alphabetic';
 import { CharacterCode } from '../../../src/util/Char';
@@ -103,6 +104,19 @@ describe('matching with whitelisted terms', () => {
 				matchLength: 5,
 			},
 		]);
+	});
+
+	it('issue #49', () => {
+		const input = `    "" ""
+    "" ""
+    "" ""
+Assamese -> Assam`;
+
+		const matcher = new RegExpMatcher({
+			...englishDataset.build(),
+			...englishRecommendedTransformers,
+		});
+		expect(matcher.getAllMatches(input)).toHaveLength(0);
 	});
 });
 
