@@ -62,8 +62,6 @@
 	"author": "Joe L. <https://github.com/jo3-l>",
 	"license": "MIT",
 	"devDependencies": {
-		"@commitlint/cli": "^18.0.0",
-		"@commitlint/config-angular": "^18.0.0",
 		"@fast-check/jest": "^2.0.1",
 		"@jest/types": "^29.5.0",
 		"@types/jest": "^29.5.2",
