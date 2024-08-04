@@ -25,6 +25,9 @@ rules:
   import/extensions: off
   id-length: off
   tsdoc/syntax: off
+  jest/expect-expect:
+    - error
+    - assertFunctionNames: expect.*
   '@typescript-eslint/restrict-plus-operands': off
   '@typescript-eslint/no-explicit-any': off
   '@typescript-eslint/no-unsafe-enum-comparison': off

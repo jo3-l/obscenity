@@ -1,13 +1,25 @@
-import { isHighSurrogate, isLowSurrogate } from '../../util/Char';
 import { compilePatternToRegExp, potentiallyMatchesEmptyString } from '../../pattern/Util';
+import type { SourceIndex, TransformedIndex } from '../../transformer/TransformerSet';
 import { TransformerSet } from '../../transformer/TransformerSet';
 import type { TransformerContainer } from '../../transformer/Transformers';
-import { CharacterIterator } from '../../util/CharacterIterator';
 import type { BlacklistedTerm } from '../BlacklistedTerm';
-import { IntervalCollection } from '../IntervalCollection';
 import type { MatchPayload } from '../MatchPayload';
 import { compareMatchByPositionAndId } from '../MatchPayload';
 import type { Matcher } from '../Matcher';
+
+interface CompiledBlacklistedTerm {
+	id: number;
+	regExp: RegExp;
+}
+
+interface WhitelistedSpan {
+	start: SourceIndex;
+	end: SourceIndex;
+}
+
+function isWhitelisted(spans: WhitelistedSpan[], start: SourceIndex, end: SourceIndex) {
+	return spans.some((span) => span.start <= start && end <= span.end);
+}
 
 /**
  * An implementation of the [[Matcher]] interface using regular expressions and
@@ -85,28 +97,21 @@ export class RegExpMatcher implements Matcher {
 	}
 
 	public getAllMatches(input: string, sorted = false) {
-		const whitelistedIntervals = this.getWhitelistedIntervals(input);
-		const [transformedToOrigIndex, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
-
+		const whitelistedSpans = this.getWhitelistedSpans(input);
+		const [mapping, transformed] = this.blacklistMatcherTransformers.transform(input);
 		const matches: MatchPayload[] = [];
-		for (const blacklistedTerm of this.blacklistedTerms) {
-			for (const match of transformed.matchAll(blacklistedTerm.regExp)) {
-				const origStartIndex = transformedToOrigIndex[match.index!];
-				let origEndIndex = transformedToOrigIndex[match.index! + match[0].length - 1];
-				// End index is (unfortunately) inclusive, so adjust as necessary.
-				if (
-					origEndIndex < input.length - 1 && // not the last character
-					isHighSurrogate(input.charCodeAt(origEndIndex)) && // character is a high surrogate
-					isLowSurrogate(input.charCodeAt(origEndIndex + 1)) // next character is a low surrogate
-				) {
-					origEndIndex++;
-				}
+		for (const term of this.blacklistedTerms) {
+			for (const match of transformed.matchAll(term.regExp)) {
+				const [srcStartIdx, srcEndIdx] = mapping.toSourceSpan(
+					match.index! as TransformedIndex,
+					(match.index! + match[0].length - 1) as TransformedIndex, // -1 since inclusive
+				);
 
-				if (!whitelistedIntervals.query(origStartIndex, origEndIndex)) {
+				if (!isWhitelisted(whitelistedSpans, srcStartIdx, srcEndIdx)) {
 					matches.push({
-						termId: blacklistedTerm.id,
-						startIndex: origStartIndex,
-						endIndex: origEndIndex,
+						termId: term.id,
+						startIndex: srcStartIdx,
+						endIndex: srcEndIdx,
 						matchLength: [...match[0]].length,
 					});
 				}
@@ -118,73 +123,43 @@ export class RegExpMatcher implements Matcher {
 	}
 
 	public hasMatch(input: string) {
-		const whitelistedIntervals = this.getWhitelistedIntervals(input);
-		const [transformedToOrigIndex, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
-		for (const blacklistedTerm of this.blacklistedTerms) {
-			for (const match of transformed.matchAll(blacklistedTerm.regExp)) {
-				const origStartIndex = transformedToOrigIndex[match.index!];
-				let origEndIndex = transformedToOrigIndex[match.index! + match[0].length - 1];
-				// End index is (unfortunately) inclusive, so adjust as necessary.
-				if (
-					origEndIndex < input.length - 1 && // not the last character
-					isHighSurrogate(input.charCodeAt(origEndIndex)) && // character is a high surrogate
-					isLowSurrogate(input.charCodeAt(origEndIndex + 1)) // next character is a low surrogate
-				) {
-					origEndIndex++;
-				}
+		const whitelistedSpans = this.getWhitelistedSpans(input);
+		const [mapping, transformed] = this.blacklistMatcherTransformers.transform(input);
+		for (const term of this.blacklistedTerms) {
+			for (const match of transformed.matchAll(term.regExp)) {
+				const [srcStartIdx, srcEndIdx] = mapping.toSourceSpan(
+					match.index! as TransformedIndex,
+					(match.index! + match[0].length - 1) as TransformedIndex, // -1 since inclusive
+				);
 
-				if (!whitelistedIntervals.query(origStartIndex, origEndIndex)) return true;
+				if (!isWhitelisted(whitelistedSpans, srcStartIdx, srcEndIdx)) return true;
 			}
 		}
 
 		return false;
 	}
 
-	private getWhitelistedIntervals(input: string) {
-		const matches = new IntervalCollection();
-		const [transformedToOrigIndex, transformed] = this.applyTransformers(input, this.whitelistMatcherTransformers);
-		for (const whitelistedTerm of this.whitelistedTerms) {
-			let lastEnd = 0;
+	private getWhitelistedSpans(input: string) {
+		const matches: WhitelistedSpan[] = [];
+		const [mapping, transformed] = this.whitelistMatcherTransformers.transform(input);
+		for (const term of this.whitelistedTerms) {
+			let cursor = 0 as TransformedIndex;
 			for (
-				let startIndex = transformed.indexOf(whitelistedTerm, lastEnd);
-				startIndex !== -1;
-				startIndex = transformed.indexOf(whitelistedTerm, lastEnd)
+				let startIdx = transformed.indexOf(term, cursor) as TransformedIndex;
+				startIdx !== -1;
+				startIdx = transformed.indexOf(term, cursor) as TransformedIndex
 			) {
-				let origEndIndex = transformedToOrigIndex[startIndex + whitelistedTerm.length - 1];
-				// End index is (unfortunately) inclusive, so adjust as necessary.
-				if (
-					origEndIndex < input.length - 1 && // not the last character
-					isHighSurrogate(input.charCodeAt(origEndIndex)) && // character is a high surrogate
-					isLowSurrogate(input.charCodeAt(origEndIndex + 1)) // next character is a low surrogate
-				) {
-					origEndIndex++;
-				}
+				const [srcStart, srcEnd] = mapping.toSourceSpan(
+					startIdx,
+					(startIdx + term.length - 1) as TransformedIndex, // -1 since inclusive
+				);
+				matches.push({ start: srcStart, end: srcEnd });
 
-				matches.insert(transformedToOrigIndex[startIndex], origEndIndex);
-				lastEnd = startIndex + whitelistedTerm.length;
+				cursor = (startIdx + term.length) as TransformedIndex;
 			}
 		}
 
 		return matches;
-	}
-
-	private applyTransformers(
-		input: string,
-		transformers: TransformerSet,
-	): [transformedToOrigIndex: number[], transformed: string] {
-		const transformedToOrigIndex: number[] = [];
-		let transformed = '';
-		const iter = new CharacterIterator(input);
-		for (const char of iter) {
-			const transformedChar = transformers.applyTo(char);
-			if (transformedChar !== undefined) {
-				transformed += String.fromCodePoint(transformedChar);
-				while (transformedToOrigIndex.length < transformed.length) transformedToOrigIndex.push(iter.position);
-			}
-		}
-
-		transformers.resetAll();
-		return [transformedToOrigIndex, transformed];
 	}
 
 	private compileTerms(terms: BlacklistedTerm[]) {
@@ -206,10 +181,13 @@ export class RegExpMatcher implements Matcher {
 		return compiled;
 	}
 
-	private validateWhitelistedTerms(whitelist: string[]) {
-		if (whitelist.some((term) => term.length === 0)) {
-			throw new Error('Whitelisted term set contains empty string; this is unsupported.');
+	private validateWhitelistedTerms(terms: string[]) {
+		if (terms.some((t) => t.length === 0)) {
+			throw new Error(
+				'Empty whitelisted terms are not supported; filter out empty strings before creating the matcher if necessary.',
+			);
 		}
+		return terms;
 	}
 }
 
@@ -256,9 +234,4 @@ export interface RegExpMatcherOptions {
 	 * @default []
 	 */
 	whitelistedTerms?: string[];
-}
-
-interface CompiledBlacklistedTerm {
-	id: number;
-	regExp: RegExp;
 }

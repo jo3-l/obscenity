@@ -1,138 +1,165 @@
-import { TransformerSet } from '../../src/transformer/TransformerSet';
-import type { StatefulTransformer } from '../../src/transformer/Transformers';
-import { createSimpleTransformer, createStatefulTransformer } from '../../src/transformer/Transformers';
+import { test, fc } from '@fast-check/jest';
+import { SourceIndex, TransformedIndex, TransformerSet } from '../../src/transformer/TransformerSet';
+import {
+	createSimpleTransformer,
+	createStatefulTransformer,
+	StatefulTransformer,
+} from '../../src/transformer/Transformers';
+import { CharacterCode } from '../../src/util/Char';
 
-it('should create multiple instances of stateful transformers', () => {
-	const spy = jest.fn();
-	class MyTransformer implements StatefulTransformer {
-		public constructor() {
-			spy();
-		}
+function charof(c: string) {
+	return c.codePointAt(0)!;
+}
 
-		public transform() {
-			return 0;
+function expectTransformOutput(ts: TransformerSet, input: string, want: string) {
+	const [_, got] = ts.transform(input);
+	expect(got).toBe(want);
+}
+
+test('no transformers is noop', () => {
+	const ts = new TransformerSet([]);
+	const input = '☺️ hello world 😁\ude00';
+	expectTransformOutput(ts, input, input); // noop
+});
+
+test('1 simple transformer', () => {
+	const t = createSimpleTransformer((c) => c + 1);
+	const ts = new TransformerSet([t]);
+	expectTransformOutput(ts, 'abcdefgh', 'bcdefghi');
+});
+
+test.prop([fc.oneof(fc.fullUnicodeString(), fc.string16bits())])('operates on code points', (str) => {
+	const codepoints = [...str].map((c) => c.codePointAt(0)!);
+
+	const t = jest.fn((c) => c);
+	const ts = new TransformerSet([createSimpleTransformer(t)]);
+	expectTransformOutput(ts, str, str);
+	expect(t.mock.calls.map((callArgs) => callArgs[0])).toStrictEqual(codepoints);
+});
+
+test('empty input', () => {
+	const noop = createSimpleTransformer((c) => c);
+	const ts = new TransformerSet([noop]);
+	expectTransformOutput(ts, '', '');
+});
+
+test('2 simple transformers in sequence', () => {
+	const nextletter = createSimpleTransformer((c) => c + 1);
+	const swapcase = createSimpleTransformer((c) => c ^ 32);
+	const ts = new TransformerSet([nextletter, swapcase]);
+	expectTransformOutput(ts, 'abcdefghijk', 'BCDEFGHIJKL');
+});
+
+test('returning undefined deletes char', () => {
+	const t = createSimpleTransformer((c) => (c === charof('a') ? undefined : c));
+	const ts = new TransformerSet([t]);
+	const input = 'bbbaaaaaddaeecaaa';
+	expectTransformOutput(ts, input, input.replace(/a/g, ''));
+});
+
+test('returning undefined short circuits', () => {
+	const removeA = createSimpleTransformer((c) => (c === charof('a') ? undefined : c));
+	const identity = createSimpleTransformer(jest.fn((c) => c));
+
+	const ts = new TransformerSet([removeA, identity]);
+
+	const input = 'dddaadaadaadd';
+	expectTransformOutput(ts, input, input.replace(/a/g, ''));
+	expect(identity.transform).not.toHaveBeenCalledWith(charof('a')); // removeA called before identity
+	expect(identity.transform).toHaveBeenCalledWith(charof('d')); // prevletter causes d -> c
+});
+
+test('1 stateful transformer', () => {
+	class RemoveEverySecondChar implements StatefulTransformer {
+		private keep = true;
+
+		public transform(c: number) {
+			const out = this.keep ? c : undefined;
+			this.keep = !this.keep;
+			return out;
 		}
 
 		public reset() {
-			// do nothing
+			this.keep = true;
+		}
+	}
+	const t = createStatefulTransformer(() => new RemoveEverySecondChar());
+	const ts = new TransformerSet([t]);
+	expectTransformOutput(ts, 'abcdefgh', 'aceg');
+});
+
+test('stateful transformer reset for each call', () => {
+	class KeepOnlyFirst implements StatefulTransformer {
+		private done = false;
+
+		public transform(c: number) {
+			if (this.done) return undefined;
+			this.done = true;
+			return c;
+		}
+
+		public reset() {
+			this.done = false;
 		}
 	}
 
-	const transformer = createStatefulTransformer(() => new MyTransformer());
-	new TransformerSet([transformer]);
-	expect(spy).toHaveBeenCalledTimes(1);
-	new TransformerSet([transformer]);
-	expect(spy).toHaveBeenCalledTimes(2);
+	const t = createStatefulTransformer(() => new KeepOnlyFirst());
+	const ts = new TransformerSet([t]);
+	expectTransformOutput(ts, 'abc', 'a');
+	expectTransformOutput(ts, '007', '0'); // if transformer not reset, erroneously returns '' since done=true
 });
 
-describe('TransformerSet#applyTo()', () => {
-	it('should be a noop if no transformers were provided', () => {
-		expect(new TransformerSet([]).applyTo(32)).toBe(32);
-	});
+// Generate an array of (source character, transformed character | undefined), which effectively
+// defines a source string and a transformed string. Then, verify that each codepoint in the
+// transformed string maps to the correct source codepoint.
+test.prop([
+	fc.array(
+		fc.record({
+			srcChar: fc.oneof(
+				fc.fullUnicode(),
+				// lone high surrogate
+				fc
+					.integer({ min: CharacterCode.HighSurrogateStart, max: CharacterCode.HighSurrogateEnd })
+					.map((c) => String.fromCodePoint(c)),
+			),
+			transformedChar: fc.option(fc.char16bits(), { nil: undefined }),
+		}),
+	),
+])('generates correct transformed-to-source index mapping', (data) => {
+	const srcText = data.map((v) => v.srcChar).join('');
+	const expectedTransformedText = data.map((v) => v.transformedChar).join('');
 
-	it('should work with simple transformers', () => {
-		const fn = jest.fn((c: number) => c + 1);
-		expect(new TransformerSet([createSimpleTransformer(fn)]).applyTo(5)).toBe(6);
-		expect(fn).toHaveBeenCalledTimes(1);
-		expect(fn).toHaveBeenLastCalledWith(5);
-	});
+	// A transformation that outputs `expectedTransformedText` codepoint by codepoint.
+	const transform = {
+		i: 0,
+		transform() {
+			return data[this.i++].transformedChar?.codePointAt(0);
+		},
+		reset() {
+			this.i = 0;
+		},
+	};
+	const ts = new TransformerSet([createStatefulTransformer(() => transform)]);
+	const [mapping, transformed] = ts.transform(srcText);
+	expect(transformed).toBe(expectedTransformedText);
 
-	it('should work with stateful transformers', () => {
-		const instance = {
-			transform: jest.fn<number, [number]>((c) => c + 1),
-			reset: jest.fn(),
-		};
-		expect(new TransformerSet([createStatefulTransformer(() => instance)]).applyTo(7)).toBe(8);
-		expect(instance.transform).toHaveBeenCalledTimes(1);
-		expect(instance.transform).toHaveBeenLastCalledWith(7);
-		expect(instance.reset).not.toHaveBeenCalled();
-	});
+	let srcTextCursor = 0 as SourceIndex;
+	let transformedTextCursor = 0 as TransformedIndex;
+	// Ensure that mapping.toSourceSpan(span of transformedChar) == span of srcChar.
+	for (const { srcChar, transformedChar } of data) {
+		if (transformedChar) {
+			expect(
+				mapping.toSourceSpan(
+					transformedTextCursor,
+					(transformedTextCursor + transformedChar.length - 1) as TransformedIndex,
+				),
+			).toStrictEqual([srcTextCursor, (srcTextCursor + srcChar.length - 1) as SourceIndex]);
 
-	it('should pass the transformed value to the next transformer', () => {
-		const fn0 = jest.fn((c: number) => c + 1);
-		const fn1 = jest.fn((c: number) => c + 2);
-		expect(new TransformerSet([createSimpleTransformer(fn0), createSimpleTransformer(fn1)]).applyTo(5)).toBe(8);
-		expect(fn0).toHaveBeenCalledTimes(1);
-		expect(fn0).toHaveBeenLastCalledWith(5);
-		expect(fn1).toHaveBeenCalledTimes(1);
-		expect(fn1).toHaveBeenLastCalledWith(6);
-	});
+			// @ts-expect-error TS doesn't like incrementing branded numbers
+			transformedTextCursor += transformedChar.length as TransformedIndex;
+		}
 
-	it('should short circuit if a transformer returns undefined', () => {
-		const fn0 = jest.fn((c: number) => c + 1);
-		const fn1 = jest.fn(() => undefined);
-		const fn2 = jest.fn((c: number) => c + 3);
-		expect(
-			new TransformerSet([
-				createSimpleTransformer(fn0),
-				createSimpleTransformer(fn1),
-				createSimpleTransformer(fn2),
-			]).applyTo(6),
-		).toBeUndefined();
-		expect(fn0).toHaveBeenCalledTimes(1);
-		expect(fn0).toHaveBeenLastCalledWith(6);
-		expect(fn1).toHaveBeenCalledTimes(1);
-		expect(fn1).toHaveBeenLastCalledWith(7);
-		expect(fn2).not.toHaveBeenCalled();
-	});
-
-	it('should work with a mix of different types of transformers', () => {
-		const instance = {
-			transform: jest.fn<number, [number]>((c) => c + 1),
-			reset: jest.fn(),
-		};
-		const fn0 = jest.fn((c: number) => c + 2);
-		const fn1 = jest.fn((c: number) => c + 3);
-		expect(
-			new TransformerSet([
-				createStatefulTransformer(() => instance),
-				createSimpleTransformer(fn0),
-				createSimpleTransformer(fn1),
-			]).applyTo(5),
-		).toBe(11);
-		expect(instance.transform).toHaveBeenCalledTimes(1);
-		expect(instance.transform).toHaveBeenLastCalledWith(5);
-		expect(fn0).toHaveBeenCalledTimes(1);
-		expect(fn0).toHaveBeenLastCalledWith(6);
-		expect(fn1).toHaveBeenCalledTimes(1);
-		expect(fn1).toHaveBeenLastCalledWith(8);
-	});
-
-	it('should apply transformers in order', () => {
-		const calls: number[] = [];
-		const fn0 = (c: number) => {
-			calls.push(0);
-			return c + 1;
-		};
-
-		const fn1 = (c: number) => {
-			calls.push(1);
-			return c + 2;
-		};
-
-		expect(new TransformerSet([createSimpleTransformer(fn0), createSimpleTransformer(fn1)]).applyTo(5)).toBe(8);
-		expect(calls).toStrictEqual([0, 1]);
-	});
-});
-
-describe('TransformerSet#resetAll()', () => {
-	it('should call the reset() method of all stateful transformers once', () => {
-		const instance0 = {
-			transform: (c: number) => c + 1,
-			reset: jest.fn(),
-		};
-		const fn = (c: number) => c + 1;
-		const instance1 = {
-			transform: (c: number) => c + 2,
-			reset: jest.fn(),
-		};
-		const transformers = new TransformerSet([
-			createStatefulTransformer(() => instance0),
-			createSimpleTransformer(fn),
-			createStatefulTransformer(() => instance1),
-		]);
-		transformers.resetAll();
-		expect(instance0.reset).toHaveBeenCalledTimes(1);
-		expect(instance1.reset).toHaveBeenCalledTimes(1);
-	});
+		// @ts-expect-error
+		srcTextCursor += srcChar.length as SourceIndex;
+	}
 });

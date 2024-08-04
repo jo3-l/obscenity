@@ -1,3 +1,4 @@
+import { test, fc } from '@fast-check/jest';
 import { CharacterCode } from '../../src/util/Char';
 import { CharacterIterator } from '../../src/util/CharacterIterator';
 
@@ -164,3 +165,11 @@ describe('iterating over it', () => {
 		expect(String.fromCodePoint(...chars)).toBe('hello!');
 	});
 });
+
+test.prop([fc.oneof(fc.string16bits(), fc.fullUnicodeString())])(
+	'character iterator should yield same codepoints as spread syntax (fuzzing string16bits)',
+	(str) => {
+		const expected = [...str].map((c) => c.codePointAt(0)!);
+		expect([...new CharacterIterator(str)]).toStrictEqual(expected);
+	},
+);
