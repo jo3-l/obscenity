@@ -52,7 +52,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run unit tests
-        run: pnpm test:ci
+        run: pnpm test
 
       - name: Upload coverage
         uses: codecov/codecov-action@v4
