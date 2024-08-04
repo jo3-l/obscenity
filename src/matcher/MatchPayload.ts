@@ -16,7 +16,7 @@ export interface MatchPayload {
 	endIndex: number;
 
 	/**
-	 * Total number of of code points that matched.
+	 * Total number of code points that matched.
 	 */
 	matchLength: number;
 
