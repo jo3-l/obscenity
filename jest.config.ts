@@ -22,7 +22,6 @@ const config: Config.InitialOptions = {
 		'<rootDir>/src/index\\.ts', // library entry point
 		'<rootDir>/src/preset/.*\\.ts', // presets
 	],
-	setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
 };
 
 export default config;

@@ -76,7 +76,7 @@ describe('matching', () => {
 		}
 
 		const matcher = new RegExpMatcher({ blacklistedTerms: assignIncrementingIds(patterns.map(parseRawPattern)) });
-		expect(matcher.getAllMatches(input)).toBePermutationOf(expected);
+		expect(matcher.getAllMatches(input)).toStrictEqual(expected);
 	});
 });
 
