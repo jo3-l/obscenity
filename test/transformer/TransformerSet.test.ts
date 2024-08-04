@@ -1,10 +1,8 @@
 import { test, fc } from '@fast-check/jest';
-import { SourceIndex, TransformedIndex, TransformerSet } from '../../src/transformer/TransformerSet';
-import {
-	createSimpleTransformer,
-	createStatefulTransformer,
-	StatefulTransformer,
-} from '../../src/transformer/Transformers';
+import type { SourceIndex, TransformedIndex } from '../../src/transformer/TransformerSet';
+import { TransformerSet } from '../../src/transformer/TransformerSet';
+import type { StatefulTransformer } from '../../src/transformer/Transformers';
+import { createSimpleTransformer, createStatefulTransformer } from '../../src/transformer/Transformers';
 import { CharacterCode } from '../../src/util/Char';
 
 function charof(c: string) {
@@ -31,7 +29,7 @@ test('1 simple transformer', () => {
 test.prop([fc.oneof(fc.fullUnicodeString(), fc.string16bits())])('operates on code points', (str) => {
 	const codepoints = [...str].map((c) => c.codePointAt(0)!);
 
-	const t = jest.fn((c) => c);
+	const t = jest.fn((c: number) => c);
 	const ts = new TransformerSet([createSimpleTransformer(t)]);
 	expectTransformOutput(ts, str, str);
 	expect(t.mock.calls.map((callArgs) => callArgs[0])).toStrictEqual(codepoints);
@@ -155,11 +153,11 @@ test.prop([
 				),
 			).toStrictEqual([srcTextCursor, (srcTextCursor + srcChar.length - 1) as SourceIndex]);
 
-			// @ts-expect-error TS doesn't like incrementing branded numbers
+			// @ts-expect-error: TS doesn't like incrementing branded numbers
 			transformedTextCursor += transformedChar.length as TransformedIndex;
 		}
 
-		// @ts-expect-error
+		// @ts-expect-error: see above
 		srcTextCursor += srcChar.length as SourceIndex;
 	}
 });

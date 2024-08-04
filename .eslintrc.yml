@@ -1,11 +1,9 @@
 ---
 extends:
   - plugin:@typescript-eslint/recommended-type-checked
-  - plugin:jest/recommended
-  - plugin:jest/style
+  - plugin:prettier/recommended
 
 plugins:
-  - jest
   - prettier
 
 parserOptions:
@@ -22,101 +20,19 @@ rules:
   curly:
     - error
     - multi-line
-  import/extensions: off
-  id-length: off
-  tsdoc/syntax: off
-  jest/expect-expect:
-    - error
-    - assertFunctionNames: expect.*
+  '@typescript-eslint/no-unsafe-enum-comparison': off
   '@typescript-eslint/restrict-plus-operands': off
   '@typescript-eslint/no-explicit-any': off
-  '@typescript-eslint/no-unsafe-enum-comparison': off
   '@typescript-eslint/consistent-type-definitions':
     - error
     - interface
   '@typescript-eslint/prefer-literal-enum-member':
     - error
     - allowBitwiseExpressions: true
-  '@typescript-eslint/no-use-before-define': off
-  # The following rule conflicts with Prettier in certain cases.
-  # Also see https://github.com/typescript-eslint/typescript-eslint/issues/1824.
+  # The following rule conflicts with Prettier. See
+  # https://github.com/typescript-eslint/typescript-eslint/issues/1824.
   '@typescript-eslint/indent': off
-  '@typescript-eslint/no-misused-promises':
-    - error
-    - checksVoidReturn: false
-  '@typescript-eslint/no-unnecessary-condition':
-    - error
-    - allowConstantLoopConditions: true
-  '@typescript-eslint/no-throw-literal': off
-  '@typescript-eslint/naming-convention':
-    - error
-    - selector:
-        - enumMember
-        - typeAlias
-        - interface
-        - enum
-        - class
-      format:
-        - PascalCase
-      leadingUnderscore: forbid
-      trailingUnderscore: forbid
-
-    - selector:
-        - method
-        - accessor
-        - parameterProperty
-      format:
-        - strictCamelCase
-
-    - selector:
-        - property
-      format:
-        - strictCamelCase
-        - PascalCase
-      filter:
-        regex: '\d+'
-        match: false
-      leadingUnderscore: allow
-      trailingUnderscore: forbid
-
-    - selector: typeParameter
-      format:
-        - PascalCase
-
-    - selector: variable
-      format:
-        - strictCamelCase
-        - UPPER_CASE
-      leadingUnderscore: allow
-      trailingUnderscore: forbid
-
-    - selector: function
-      format:
-        - strictCamelCase
-      leadingUnderscore: forbid
-      trailingUnderscore: forbid
-  '@typescript-eslint/member-ordering':
-    - error
-    - default:
-        - public-static-field
-        - protected-static-field
-        - private-static-field
-        - static-field
-        - public-static-method
-        - protected-static-method
-        - private-static-method
-        - static-method
-        - signature
-        - public-instance-field
-        - protected-instance-field
-        - private-instance-field
-        - instance-field
-        - public-constructor
-        - protected-constructor
-        - private-constructor
-        - constructor
-        - public-instance-method
-        - protected-instance-method
-        - private-instance-method
-        - instance-method
   '@typescript-eslint/consistent-type-imports': error
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - varsIgnorePattern: ^_

@@ -1,5 +1,6 @@
 import { test, fc } from '@fast-check/jest';
-import { compareMatchByPositionAndId as cmp, MatchPayload } from '../../src/matcher/MatchPayload';
+import type { MatchPayload } from '../../src/matcher/MatchPayload';
+import { compareMatchByPositionAndId as cmp } from '../../src/matcher/MatchPayload';
 
 function span(startIndex: number, endIndex: number) {
 	return { startIndex, endIndex };
