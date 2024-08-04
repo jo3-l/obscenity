@@ -1,6 +1,8 @@
-import { TransformerType } from '../../../src/transformer/Transformers';
-import { resolveLeetSpeakTransformer } from '../../../src/transformer/resolve-leetspeak';
-import { CharacterCode } from '../../../src/util/Char';
+import { describe, it, expect } from 'vitest';
+
+import { TransformerType } from '@/transformer/Transformers';
+import { resolveLeetSpeakTransformer } from '@/transformer/resolve-leetspeak';
+import { CharacterCode } from '@/util/Char';
 
 describe('resolveLeetSpeakTransformer()', () => {
 	it('should return a simple transformer container', () => {

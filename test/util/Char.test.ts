@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
+import { describe, it, expect } from 'vitest';
+
 import {
 	CharacterCode,
 	convertSurrogatePairToCodePoint,
@@ -11,7 +12,7 @@ import {
 	isLowSurrogate,
 	isUpperCase,
 	isWordChar,
-} from '../../src/util/Char';
+} from '@/util/Char';
 
 describe('CharacterCode()', () => {
 	describe.each([

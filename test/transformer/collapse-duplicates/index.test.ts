@@ -1,13 +1,15 @@
-import { TransformerType } from '../../../src/transformer/Transformers';
-import type { CollapseDuplicatesTransformerOptions } from '../../../src/transformer/collapse-duplicates/index';
-import { collapseDuplicatesTransformer } from '../../../src/transformer/collapse-duplicates/index';
-import { CollapseDuplicatesTransformer as _CollapseDuplicatesTransformer } from '../../../src/transformer/collapse-duplicates/transformer';
-import { CharacterCode } from '../../../src/util/Char';
+import type { MockedClass } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-jest.mock('../../../src/transformer/collapse-duplicates/transformer');
+import { TransformerType } from '@/transformer/Transformers';
+import type { CollapseDuplicatesTransformerOptions } from '@/transformer/collapse-duplicates/index';
+import { collapseDuplicatesTransformer } from '@/transformer/collapse-duplicates/index';
+import { CollapseDuplicatesTransformer as _CollapseDuplicatesTransformer } from '@/transformer/collapse-duplicates/transformer';
+import { CharacterCode } from '@/util/Char';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const CollapseDuplicatesTransformer = _CollapseDuplicatesTransformer as jest.MockedClass<
+vi.mock('@/transformer/collapse-duplicates/transformer');
+
+const CollapseDuplicatesTransformer = _CollapseDuplicatesTransformer as MockedClass<
 	typeof _CollapseDuplicatesTransformer
 >;
 

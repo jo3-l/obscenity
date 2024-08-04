@@ -1,11 +1,13 @@
-import { assignIncrementingIds } from '../../../src/matcher/BlacklistedTerm';
-import type { MatchPayload } from '../../../src/matcher/MatchPayload';
-import { RegExpMatcher } from '../../../src/matcher/regexp/RegExpMatcher';
-import { parseRawPattern, pattern } from '../../../src/pattern/Pattern';
-import { englishDataset, englishRecommendedTransformers } from '../../../src/preset/english';
-import { createSimpleTransformer } from '../../../src/transformer/Transformers';
-import { skipNonAlphabeticTransformer } from '../../../src/transformer/skip-non-alphabetic';
-import { CharacterCode } from '../../../src/util/Char';
+import { describe, expect, it } from 'vitest';
+
+import { assignIncrementingIds } from '@/matcher/BlacklistedTerm';
+import type { MatchPayload } from '@/matcher/MatchPayload';
+import { RegExpMatcher } from '@/matcher/regexp/RegExpMatcher';
+import { parseRawPattern, pattern } from '@/pattern/Pattern';
+import { englishDataset, englishRecommendedTransformers } from '@/preset/english';
+import { createSimpleTransformer } from '@/transformer/Transformers';
+import { skipNonAlphabeticTransformer } from '@/transformer/skip-non-alphabetic';
+import { CharacterCode } from '@/util/Char';
 
 describe('constructor', () => {
 	it('should not accept duplicate term IDs', () => {

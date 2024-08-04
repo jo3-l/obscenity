@@ -1,6 +1,8 @@
-import { test, fc } from '@fast-check/jest';
-import { CharacterCode } from '../../src/util/Char';
-import { CharacterIterator } from '../../src/util/CharacterIterator';
+import { it, fc } from '@fast-check/vitest';
+import { describe, expect } from 'vitest';
+
+import { CharacterCode } from '@/util/Char';
+import { CharacterIterator } from '@/util/CharacterIterator';
 
 describe('constructor', () => {
 	it('should default the input to an empty string if not provided', () => {
@@ -166,7 +168,7 @@ describe('iterating over it', () => {
 	});
 });
 
-test.prop([fc.oneof(fc.string16bits(), fc.fullUnicodeString())])(
+it.prop([fc.oneof(fc.string16bits(), fc.fullUnicodeString())])(
 	'character iterator should yield same codepoints as spread syntax (fuzzing string16bits)',
 	(str) => {
 		const expected = [...str].map((c) => c.codePointAt(0)!);

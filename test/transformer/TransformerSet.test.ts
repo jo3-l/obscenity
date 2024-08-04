@@ -1,9 +1,11 @@
-import { test, fc } from '@fast-check/jest';
-import type { SourceIndex, TransformedIndex } from '../../src/transformer/TransformerSet';
-import { TransformerSet } from '../../src/transformer/TransformerSet';
-import type { StatefulTransformer } from '../../src/transformer/Transformers';
-import { createSimpleTransformer, createStatefulTransformer } from '../../src/transformer/Transformers';
-import { CharacterCode } from '../../src/util/Char';
+import { test, fc } from '@fast-check/vitest';
+import { expect, vi } from 'vitest';
+
+import type { SourceIndex, TransformedIndex } from '@/transformer/TransformerSet';
+import { TransformerSet } from '@/transformer/TransformerSet';
+import type { StatefulTransformer } from '@/transformer/Transformers';
+import { createSimpleTransformer, createStatefulTransformer } from '@/transformer/Transformers';
+import { CharacterCode } from '@/util/Char';
 
 function charof(c: string) {
 	return c.codePointAt(0)!;
@@ -29,7 +31,7 @@ test('1 simple transformer', () => {
 test.prop([fc.oneof(fc.fullUnicodeString(), fc.string16bits())])('operates on code points', (str) => {
 	const codepoints = [...str].map((c) => c.codePointAt(0)!);
 
-	const t = jest.fn((c: number) => c);
+	const t = vi.fn((c: number) => c);
 	const ts = new TransformerSet([createSimpleTransformer(t)]);
 	expectTransformOutput(ts, str, str);
 	expect(t.mock.calls.map((callArgs) => callArgs[0])).toStrictEqual(codepoints);
@@ -57,7 +59,7 @@ test('returning undefined deletes char', () => {
 
 test('returning undefined short circuits', () => {
 	const removeA = createSimpleTransformer((c) => (c === charof('a') ? undefined : c));
-	const identity = createSimpleTransformer(jest.fn((c) => c));
+	const identity = createSimpleTransformer(vi.fn((c: number) => c));
 
 	const ts = new TransformerSet([removeA, identity]);
 

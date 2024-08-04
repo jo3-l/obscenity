@@ -1,4 +1,6 @@
-import { CollapseDuplicatesTransformer } from '../../../src/transformer/collapse-duplicates/transformer';
+import { describe, expect, it } from 'vitest';
+
+import { CollapseDuplicatesTransformer } from '@/transformer/collapse-duplicates/transformer';
 
 describe('CollapseDuplicatesTransformer#transform()', () => {
 	describe('threshold selection', () => {

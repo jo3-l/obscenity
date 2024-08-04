@@ -1,9 +1,7 @@
-import type { StatefulTransformer } from '../../src/transformer/Transformers';
-import {
-	createSimpleTransformer,
-	createStatefulTransformer,
-	TransformerType,
-} from '../../src/transformer/Transformers';
+import { describe, it, expect } from 'vitest';
+
+import type { StatefulTransformer } from '@/transformer/Transformers';
+import { createSimpleTransformer, createStatefulTransformer, TransformerType } from '@/transformer/Transformers';
 
 describe('TransformerType', () => {
 	describe('TransformerType.Simple', () => {

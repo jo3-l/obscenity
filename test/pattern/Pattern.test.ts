@@ -1,5 +1,7 @@
-import { Parser } from '../../src/pattern/Parser';
-import { parseRawPattern, pattern } from '../../src/pattern/Pattern';
+import { describe, expect, it } from 'vitest';
+
+import { Parser } from '@/pattern/Parser';
+import { parseRawPattern, pattern } from '@/pattern/Pattern';
 
 const parser = new Parser();
 

@@ -1,6 +1,8 @@
-import { TransformerType } from '../../../src/transformer/Transformers';
-import { toAsciiLowerCaseTransformer } from '../../../src/transformer/to-ascii-lowercase';
-import { CharacterCode } from '../../../src/util/Char';
+import { describe, it, expect } from 'vitest';
+
+import { TransformerType } from '@/transformer/Transformers';
+import { toAsciiLowerCaseTransformer } from '@/transformer/to-ascii-lowercase';
+import { CharacterCode } from '@/util/Char';
 
 describe('toAsciiLowerCaseTransformer()', () => {
 	it('should return a simple transformer container', () => {

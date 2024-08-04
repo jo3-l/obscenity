@@ -1,6 +1,8 @@
-import { TransformerType } from '../../../src/transformer/Transformers';
-import { resolveConfusablesTransformer } from '../../../src/transformer/resolve-confusables';
-import { CharacterCode } from '../../../src/util/Char';
+import { describe, it, expect } from 'vitest';
+
+import { TransformerType } from '@/transformer/Transformers';
+import { resolveConfusablesTransformer } from '@/transformer/resolve-confusables';
+import { CharacterCode } from '@/util/Char';
 
 describe('resolveConfusablesTransformer()', () => {
 	it('should return a simple transformer container', () => {

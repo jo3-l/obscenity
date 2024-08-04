@@ -1,6 +1,8 @@
-import { TransformerType } from '../../../src/transformer/Transformers';
-import { remapCharactersTransformer } from '../../../src/transformer/remap-characters';
-import { CharacterCode } from '../../../src/util/Char';
+import { describe, it, expect } from 'vitest';
+
+import { TransformerType } from '@/transformer/Transformers';
+import { remapCharactersTransformer } from '@/transformer/remap-characters';
+import { CharacterCode } from '@/util/Char';
 
 describe('remapCharactersTransformer()', () => {
 	it('should return a simple transformer container', () => {

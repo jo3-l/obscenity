@@ -1,4 +1,6 @@
-import { ParserError } from '../../src/pattern/ParserError';
+import { describe, expect, it } from 'vitest';
+
+import { ParserError } from '@/pattern/ParserError';
 
 describe('ParserError#name', () => {
 	it("should be equal to 'ParserError'", () => {

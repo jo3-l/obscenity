@@ -1,5 +1,7 @@
-import { assignIncrementingIds } from '../../src/matcher/BlacklistedTerm';
-import { pattern } from '../../src/pattern/Pattern';
+import { describe, expect, it } from 'vitest';
+
+import { assignIncrementingIds } from '@/matcher/BlacklistedTerm';
+import { pattern } from '@/pattern/Pattern';
 
 describe('assignIncrementingIds()', () => {
 	it('should assign incrementing, unique IDs to the input patterns', () => {

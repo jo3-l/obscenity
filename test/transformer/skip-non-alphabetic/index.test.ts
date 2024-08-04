@@ -1,6 +1,8 @@
-import { TransformerType } from '../../../src/transformer/Transformers';
-import { skipNonAlphabeticTransformer } from '../../../src/transformer/skip-non-alphabetic';
-import { CharacterCode } from '../../../src/util/Char';
+import { describe, it, expect } from 'vitest';
+
+import { TransformerType } from '@/transformer/Transformers';
+import { skipNonAlphabeticTransformer } from '@/transformer/skip-non-alphabetic';
+import { CharacterCode } from '@/util/Char';
 
 describe('skipNonAlphabeticTransformer()', () => {
 	it('should return a simple transformer container', () => {

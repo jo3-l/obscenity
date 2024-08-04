@@ -1,3 +1,5 @@
+import { describe, expect, it, vi, afterEach } from 'vitest';
+
 import {
 	asteriskCensorStrategy,
 	fixedCharCensorStrategy,
@@ -6,8 +8,8 @@ import {
 	keepEndCensorStrategy,
 	keepStartCensorStrategy,
 	randomCharFromSetCensorStrategy,
-} from '../../src/censor/BuiltinStrategies';
-import type { CensorContext } from '../../src/censor/TextCensor';
+} from '@/censor/BuiltinStrategies';
+import type { TextCensorStrategy } from '@/censor/TextCensor';
 
 const partialCtx = {
 	input: '',
@@ -19,7 +21,7 @@ const partialCtx = {
 };
 
 describe('keepStartCensorStrategy()', () => {
-	const baseStrategy = jest.fn<string, [CensorContext]>().mockImplementation((k) => '.'.repeat(k.matchLength));
+	const baseStrategy = vi.fn<TextCensorStrategy>().mockImplementation((k) => '.'.repeat(k.matchLength));
 
 	afterEach(() => {
 		baseStrategy.mockClear();
@@ -52,7 +54,7 @@ describe('keepStartCensorStrategy()', () => {
 });
 
 describe('keepEndCensorStrategy()', () => {
-	const baseStrategy = jest.fn<string, [CensorContext]>().mockImplementation((k) => '.'.repeat(k.matchLength));
+	const baseStrategy = vi.fn<TextCensorStrategy>().mockImplementation((k) => '.'.repeat(k.matchLength));
 
 	afterEach(() => {
 		baseStrategy.mockClear();

@@ -1,8 +1,10 @@
-import { SyntaxKind } from '../../src/pattern/Nodes';
-import { Parser } from '../../src/pattern/Parser';
-import { ParserError } from '../../src/pattern/ParserError';
-import { CharacterCode } from '../../src/util/Char';
-import { CharacterIterator } from '../../src/util/CharacterIterator';
+import { describe, expect, it } from 'vitest';
+
+import { SyntaxKind } from '@/pattern/Nodes';
+import { Parser } from '@/pattern/Parser';
+import { ParserError } from '@/pattern/ParserError';
+import { CharacterCode } from '@/util/Char';
+import { CharacterIterator } from '@/util/CharacterIterator';
 
 const parser = new Parser();
 

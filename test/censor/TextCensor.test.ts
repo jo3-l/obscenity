@@ -1,6 +1,8 @@
-import { grawlixCensorStrategy } from '../../src/censor/BuiltinStrategies';
-import type { CensorContext } from '../../src/censor/TextCensor';
-import { TextCensor } from '../../src/censor/TextCensor';
+import { describe, expect, it, vi, afterEach } from 'vitest';
+
+import { grawlixCensorStrategy } from '@/censor/BuiltinStrategies';
+import type { TextCensorStrategy } from '@/censor/TextCensor';
+import { TextCensor } from '@/censor/TextCensor';
 
 describe('TextCensor#setStrategy()', () => {
 	it('should return the text censor', () => {
@@ -10,7 +12,7 @@ describe('TextCensor#setStrategy()', () => {
 });
 
 describe('TextCensor#applyTo()', () => {
-	const strategy = jest.fn<string, [CensorContext]>().mockImplementation((k) => '.'.repeat(k.matchLength));
+	const strategy = vi.fn<TextCensorStrategy>().mockImplementation((k) => '.'.repeat(k.matchLength));
 
 	afterEach(() => {
 		strategy.mockClear();

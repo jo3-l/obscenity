@@ -1,7 +1,9 @@
-import type { LiteralNode, OptionalNode } from '../../src/pattern/Nodes';
-import { SyntaxKind } from '../../src/pattern/Nodes';
-import { compilePatternToRegExp, getRegExpStringForNode, potentiallyMatchesEmptyString } from '../../src/pattern/Util';
-import { CharacterIterator } from '../../src/util/CharacterIterator';
+import { describe, expect, it } from 'vitest';
+
+import type { LiteralNode, OptionalNode } from '@/pattern/Nodes';
+import { SyntaxKind } from '@/pattern/Nodes';
+import { compilePatternToRegExp, getRegExpStringForNode, potentiallyMatchesEmptyString } from '@/pattern/Util';
+import { CharacterIterator } from '@/util/CharacterIterator';
 
 function toLiteralNode(str: string): LiteralNode {
 	return { kind: SyntaxKind.Literal, chars: [...new CharacterIterator(str)] };

@@ -1,5 +1,7 @@
-import { DataSet, PhraseBuilder } from '../../src/dataset/DataSet';
-import { pattern } from '../../src/pattern/Pattern';
+import { describe, expect, it } from 'vitest';
+
+import { DataSet, PhraseBuilder } from '@/dataset/DataSet';
+import { pattern } from '@/pattern/Pattern';
 
 describe('DataSet#addAll()', () => {
 	it('should add all the data from the other dataset to the current one', () => {
