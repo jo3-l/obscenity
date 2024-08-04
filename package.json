@@ -24,6 +24,7 @@
 		"build:benchmarks": "tsc -b benchmarks",
 		"build:docs": "rimraf docs/references && typedoc --plugin typedoc-plugin-markdown",
 		"test": "vitest",
+		"test:ci": "vitest run --coverage --reporter=verbose",
 		"style": "prettier --write src/**/*.ts test/**/*.ts",
 		"lint": "eslint src test",
 		"lint:fix": "eslint src test --fix",
