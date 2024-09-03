@@ -12,3 +12,6 @@ coverage
 # Logs
 pnpm-debug.log*
 *.log
+
+# IDE
+.idea
