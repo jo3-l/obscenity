@@ -87,7 +87,7 @@ export function asteriskCensorStrategy() {
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].
  */
 export function grawlixCensorStrategy() {
-	return randomCharFromSetCensorStrategy('%@$&*');
+	return randomCharFromSetCensorStrategy('%@$&*', ['@$$']);
 }
 
 /**
@@ -152,12 +152,15 @@ export function fixedCharCensorStrategy(char: string): TextCensorStrategy {
  * be constructed. Must not be empty.
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].
  */
-export function randomCharFromSetCensorStrategy(charset: string): TextCensorStrategy {
+export function randomCharFromSetCensorStrategy(charset: string, blacklist?: string[]): TextCensorStrategy {
 	const chars = [...charset];
 	if (chars.length === 0) throw new Error('The character set passed must not be empty.');
 	return (ctx: CensorContext) => {
-		let censored = '';
-		for (let i = 0; i < ctx.matchLength; i++) censored += chars[Math.floor(Math.random() * chars.length)];
-		return censored;
+		for (;;) {
+			let censored = '';
+			for (let i = 0; i < ctx.matchLength; i++) censored += chars[Math.floor(Math.random() * chars.length)];
+			if (blacklist !== undefined && blacklist.includes(censored)) continue;
+			return censored;
+		}
 	};
 }

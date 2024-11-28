@@ -144,4 +144,11 @@ describe('randomCharFromSetCensorStrategy()', () => {
 		const strategy = randomCharFromSetCensorStrategy(charset);
 		expect([...strategy({ ...partialCtx, matchLength: 5 })].every((c) => charset.includes(c))).toBeTruthy();
 	});
+
+	it('should respect blacklist', () => {
+		const strategy = randomCharFromSetCensorStrategy('@$', ['@$$']);
+		for (let i = 0; i < 100; i++) {
+			expect(strategy({ ...partialCtx, matchLength: 3 })).not.toBe('@$$');
+		}
+	});
 });
