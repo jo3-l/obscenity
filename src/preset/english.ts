@@ -241,9 +241,6 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'dick' })
-			.addPattern(pattern`d?ck|`)
-			.addPattern(pattern`d?cke[e]s|`)
-			.addPattern(pattern`d?cks|`)
 			.addPattern(pattern`|dck|`)
 			.addPattern(pattern`dick`)
 			.addWhitelistedTerm('benedick')
