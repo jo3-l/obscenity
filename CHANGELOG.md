@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1](https://github.com/jo3-l/obscenity/compare/v0.4.0...v0.4.1) (2024-12-03)
+
+
+### Bug Fixes
+
+* **preset/english:** add "fickle" to whitelist ([#87](https://github.com/jo3-l/obscenity/issues/87)) ([da754da](https://github.com/jo3-l/obscenity/commit/da754da8d42cf4b36534141b2ceafaa4810b99b5))
+* **preset/english:** remove erroneous patterns for `dick` ([e43d502](https://github.com/jo3-l/obscenity/commit/e43d50260d8f3c55374bd1da65be0dff33a1fd6d)), closes [#86](https://github.com/jo3-l/obscenity/issues/86)
+
 ## [0.4.0](https://github.com/jo3-l/obscenity/compare/v0.3.1...v0.4.0) (2024-08-02)
 
 
