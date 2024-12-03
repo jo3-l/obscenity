@@ -282,6 +282,7 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addPattern(pattern`|fk`)
 			.addPattern(pattern`|fu|`)
 			.addPattern(pattern`|fuk`)
+			.addWhitelistedTerm('fickle')
 			.addWhitelistedTerm('kung-fu')
 			.addWhitelistedTerm('kung fu'),
 	)
