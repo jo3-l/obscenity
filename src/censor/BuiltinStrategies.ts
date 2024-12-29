@@ -139,25 +139,37 @@ export function fixedCharCensorStrategy(char: string): TextCensorStrategy {
 
 /**
  * A text censoring strategy that generates replacement strings made up of
- * random characters from the set of characters provided.
+ * random characters from the set of characters provided. The strings never
+ * contain two of the same character in a row.
  *
  * @example
  * ```typescript
  * const strategy = randomCharFromSetCensorStrategy('$#!');
  * const censor = new TextCensor().setStrategy(strategy);
  * // Before: 'fuck you!'
- * // After: '!##$ you!'
+ * // After: '!#$# you!'
  * ```
  * @param charset - Set of characters from which the replacement string should
- * be constructed. Must not be empty.
+ * be constructed. Must have at least two characters.
  * @returns A [[TextCensorStrategy]] for use with the [[TextCensor]].
  */
 export function randomCharFromSetCensorStrategy(charset: string): TextCensorStrategy {
 	const chars = [...charset];
-	if (chars.length === 0) throw new Error('The character set passed must not be empty.');
+	if (chars.length < 2) throw new Error('The character set passed must have at least 2 characters.');
 	return (ctx: CensorContext) => {
-		let censored = '';
-		for (let i = 0; i < ctx.matchLength; i++) censored += chars[Math.floor(Math.random() * chars.length)];
+		if (ctx.matchLength === 0) return '';
+
+		let lastIdx = Math.floor(Math.random() * chars.length);
+		let censored = chars[lastIdx];
+		for (let i = 1; i < ctx.matchLength; i++) {
+			let idx = Math.floor(Math.random() * (chars.length - 1));
+			// Transform the distribution for idx from [0, len-1) to
+			// [0, lastIdx) ∪ (lastIdx, len) to exclude lastIdx while
+			// ensuring a uniform distribution of generated characters.
+			if (idx >= lastIdx) idx++;
+			lastIdx = idx;
+			censored += chars[idx];
+		}
 		return censored;
 	};
 }

@@ -130,8 +130,13 @@ describe('fixedCharCensorStrategy()', () => {
 });
 
 describe('randomCharFromSetCensorStrategy()', () => {
-	it('should throw if the charset is empty', () => {
-		expect(() => randomCharFromSetCensorStrategy('')).toThrow(new Error('The character set passed must not be empty.'));
+	it('should throw if the charset has less than 2 characters', () => {
+		expect(() => randomCharFromSetCensorStrategy('')).toThrow(
+			new Error('The character set passed must have at least 2 characters.'),
+		);
+		expect(() => randomCharFromSetCensorStrategy('a')).toThrow(
+			new Error('The character set passed must have at least 2 characters.'),
+		);
 	});
 
 	it('should work for matchLength 0', () => {
@@ -143,5 +148,12 @@ describe('randomCharFromSetCensorStrategy()', () => {
 		const charset = 'abcdefghijk';
 		const strategy = randomCharFromSetCensorStrategy(charset);
 		expect([...strategy({ ...partialCtx, matchLength: 5 })].every((c) => charset.includes(c))).toBeTruthy();
+	});
+
+	it('should not repeat the same character twice in a row', () => {
+		const strategy = randomCharFromSetCensorStrategy('ab');
+		for (let i = 0; i < 100; i++) {
+			expect(['aba', 'bab']).toContain(strategy({ ...partialCtx, matchLength: 3 }));
+		}
 	});
 });
