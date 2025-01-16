@@ -376,7 +376,10 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addWhitelistedTerm('ashita')
 			.addWhitelistedTerm('pushita')
 			.addWhitelistedTerm('vishita')
+			.addWhitelistedTerm('rushita')
 			.addWhitelistedTerm('rashita')
+			.addWhitelistedTerm('yashita')
+			.addWhitelistedTerm('trishita')
 			.addWhitelistedTerm('harshit')
 			.addWhitelistedTerm('harshita'),
 	)
