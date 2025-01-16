@@ -369,7 +369,16 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addWhitelistedTerm('sh it')
 			.addWhitelistedTerm('shi t')
 			.addWhitelistedTerm('shitake')
-			.addWhitelistedTerm('mishit'),
+			.addWhitelistedTerm('mishit')
+			.addWhitelistedTerm('harshit')
+			.addWhitelistedTerm('akshit')
+			.addWhitelistedTerm('nishita')
+			.addWhitelistedTerm('ashita')
+			.addWhitelistedTerm('pushita')
+			.addWhitelistedTerm('vishita')
+			.addWhitelistedTerm('rashita')
+			.addWhitelistedTerm('harshit')
+			.addWhitelistedTerm('harshita'),
 	)
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'slut' }).addPattern(pattern`s[s]lut`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'spastic' }).addPattern(pattern`|spastic`))
