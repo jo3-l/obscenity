@@ -55,7 +55,7 @@ Associates a pattern with this phrase.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:149](https://github.com/jo3-l/obscenity/blob/da754da/src/dataset/DataSet.ts#L149)
+[src/dataset/DataSet.ts:149](https://github.com/jo3-l/obscenity/blob/0d1046d/src/dataset/DataSet.ts#L149)
 
 ___
 
@@ -77,7 +77,7 @@ Associates a whitelisted pattern with this phrase.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:159](https://github.com/jo3-l/obscenity/blob/da754da/src/dataset/DataSet.ts#L159)
+[src/dataset/DataSet.ts:159](https://github.com/jo3-l/obscenity/blob/0d1046d/src/dataset/DataSet.ts#L159)
 
 ___
 
@@ -94,7 +94,7 @@ Builds the phrase, returning a [[PhraseContainer]] for use with the
 
 #### Defined in
 
-[src/dataset/DataSet.ts:178](https://github.com/jo3-l/obscenity/blob/da754da/src/dataset/DataSet.ts#L178)
+[src/dataset/DataSet.ts:178](https://github.com/jo3-l/obscenity/blob/0d1046d/src/dataset/DataSet.ts#L178)
 
 ___
 
@@ -116,4 +116,4 @@ Associates some metadata with this phrase.
 
 #### Defined in
 
-[src/dataset/DataSet.ts:169](https://github.com/jo3-l/obscenity/blob/da754da/src/dataset/DataSet.ts#L169)
+[src/dataset/DataSet.ts:169](https://github.com/jo3-l/obscenity/blob/0d1046d/src/dataset/DataSet.ts#L169)

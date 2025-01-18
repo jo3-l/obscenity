@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/jo3-l/obscenity/compare/v0.4.1...v0.4.2) (2025-01-18)
+
+
+### Features
+
+* add more characters to leet transformer ([#78](https://github.com/jo3-l/obscenity/issues/78)) ([fa673e6](https://github.com/jo3-l/obscenity/commit/fa673e66226e13388401274610e7d1bd0801ade0))
+
+
+### Bug Fixes
+
+* **censor:** don't generate the same character twice in a row ([#85](https://github.com/jo3-l/obscenity/issues/85)) ([58f2715](https://github.com/jo3-l/obscenity/commit/58f271556aa878e619457054f8a2f423e8b574ca)), closes [#82](https://github.com/jo3-l/obscenity/issues/82)
+* **preset/english:** add word boundary to 'shit' pattern ([9554e7c](https://github.com/jo3-l/obscenity/commit/9554e7cc7b796f64a80baa272ed3e49ad03466a3)), closes [#93](https://github.com/jo3-l/obscenity/issues/93)
+* **preset/english:** whitelist "fick" ([#88](https://github.com/jo3-l/obscenity/issues/88)) ([40f66fb](https://github.com/jo3-l/obscenity/commit/40f66fb17524f49b1e4be6a2fe1037f3e1b468c2))
+
 ### [0.4.1](https://github.com/jo3-l/obscenity/compare/v0.4.0...v0.4.1) (2024-12-03)
 
 

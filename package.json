@@ -1,6 +1,6 @@
 {
 	"name": "obscenity",
-	"version": "0.4.1",
+	"version": "0.4.2",
 	"description": "Robust, extensible profanity filter.",
 	"files": [
 		"/dist",
