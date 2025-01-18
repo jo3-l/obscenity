@@ -364,12 +364,11 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 	.addPhrase((phrase) =>
 		phrase
 			.setMetadata({ originalWord: 'shit' })
-			.addPattern(pattern`shit`)
+			.addPattern(pattern`|shit`)
 			.addWhitelistedTerm('s hit')
 			.addWhitelistedTerm('sh it')
 			.addWhitelistedTerm('shi t')
-			.addWhitelistedTerm('shitake')
-			.addWhitelistedTerm('mishit'),
+			.addWhitelistedTerm('shitake'),
 	)
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'slut' }).addPattern(pattern`s[s]lut`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'spastic' }).addPattern(pattern`|spastic`))
