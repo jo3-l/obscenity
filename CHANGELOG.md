@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.3](https://github.com/jo3-l/obscenity/compare/v0.4.2...v0.4.3) (2025-01-26)
+
+
+### Bug Fixes
+
+* **preset/english:** match 'shit' at end of word ([0299b49](https://github.com/jo3-l/obscenity/commit/0299b4978dec6d218a4e004fe20962a79500fe7c)), closes [#47](https://github.com/jo3-l/obscenity/issues/47)
+
 ### [0.4.2](https://github.com/jo3-l/obscenity/compare/v0.4.1...v0.4.2) (2025-01-18)
 
 

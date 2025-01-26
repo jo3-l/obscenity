@@ -86,7 +86,7 @@ console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sw
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:74](https://github.com/jo3-l/obscenity/blob/0d1046d/src/matcher/regexp/RegExpMatcher.ts#L74)
+[src/matcher/regexp/RegExpMatcher.ts:74](https://github.com/jo3-l/obscenity/blob/0299b49/src/matcher/regexp/RegExpMatcher.ts#L74)
 
 ## Methods
 
@@ -121,7 +121,7 @@ otherwise, their order is unspecified.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:87](https://github.com/jo3-l/obscenity/blob/0d1046d/src/matcher/regexp/RegExpMatcher.ts#L87)
+[src/matcher/regexp/RegExpMatcher.ts:87](https://github.com/jo3-l/obscenity/blob/0299b49/src/matcher/regexp/RegExpMatcher.ts#L87)
 
 ___
 
@@ -150,4 +150,4 @@ checking the result, though it depends on the implementation.
 
 #### Defined in
 
-[src/matcher/regexp/RegExpMatcher.ts:120](https://github.com/jo3-l/obscenity/blob/0d1046d/src/matcher/regexp/RegExpMatcher.ts#L120)
+[src/matcher/regexp/RegExpMatcher.ts:120](https://github.com/jo3-l/obscenity/blob/0299b49/src/matcher/regexp/RegExpMatcher.ts#L120)
