@@ -365,6 +365,7 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 		phrase
 			.setMetadata({ originalWord: 'shit' })
 			.addPattern(pattern`|shit`)
+			.addPattern(pattern`shit|`)
 			.addWhitelistedTerm('s hit')
 			.addWhitelistedTerm('sh it')
 			.addWhitelistedTerm('shi t')
