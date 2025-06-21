@@ -6,7 +6,7 @@
 
 # Interface: Matcher
 
-Defined in: [src/matcher/Matcher.ts:10](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/Matcher.ts#L10)
+Defined in: [src/matcher/Matcher.ts:10](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/Matcher.ts#L10)
 
 Searches for blacklisted terms in text, ignoring parts matched by whitelisted
 terms.
@@ -20,7 +20,7 @@ See:
 
 > **getAllMatches**(`input`, `sorted?`): [`MatchPayload`](MatchPayload.md)[]
 
-Defined in: [src/matcher/Matcher.ts:25](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/Matcher.ts#L25)
+Defined in: [src/matcher/Matcher.ts:25](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/Matcher.ts#L25)
 
 Returns all matches of blacklisted terms in the text.
 
@@ -57,7 +57,7 @@ otherwise, their order is unspecified.
 
 > **hasMatch**(`input`): `boolean`
 
-Defined in: [src/matcher/Matcher.ts:35](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/Matcher.ts#L35)
+Defined in: [src/matcher/Matcher.ts:35](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/Matcher.ts#L35)
 
 Checks whether there is a match for any blacklisted term in the text.
 

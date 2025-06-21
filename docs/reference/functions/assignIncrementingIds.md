@@ -8,7 +8,7 @@
 
 > **assignIncrementingIds**(`patterns`): [`BlacklistedTerm`](../interfaces/BlacklistedTerm.md)[]
 
-Defined in: [src/matcher/BlacklistedTerm.ts:37](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/BlacklistedTerm.ts#L37)
+Defined in: [src/matcher/BlacklistedTerm.ts:37](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/BlacklistedTerm.ts#L37)
 
 Assigns incrementing IDs to the patterns provided, starting with 0. It is
 useful if you have a list of patterns to match against but don't care about

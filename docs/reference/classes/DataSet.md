@@ -6,7 +6,7 @@
 
 # Class: DataSet\<MetadataType\>
 
-Defined in: [src/dataset/DataSet.ts:13](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L13)
+Defined in: [src/dataset/DataSet.ts:13](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L13)
 
 Holds phrases (groups of patterns and whitelisted terms), optionally
 associating metadata with them.
@@ -36,7 +36,7 @@ type is implicitly nullable.
 
 > **addAll**(`other`): `DataSet`\<`MetadataType`\>
 
-Defined in: [src/dataset/DataSet.ts:29](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L29)
+Defined in: [src/dataset/DataSet.ts:29](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L29)
 
 Adds all the phrases from the dataset provided to this one.
 
@@ -64,7 +64,7 @@ const customDataset = new DataSet().addAll(englishDataset);
 
 > **addPhrase**(`fn`): `DataSet`\<`MetadataType`\>
 
-Defined in: [src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L75)
+Defined in: [src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L75)
 
 Adds a phrase to this dataset.
 
@@ -98,7 +98,7 @@ const data = new DataSet<{ originalWord: string }>()
 
 > **build**(): `Pick`\<[`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md), `"blacklistedTerms"` \| `"whitelistedTerms"`\>
 
-Defined in: [src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L118)
+Defined in: [src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L118)
 
 Returns the dataset in a format suitable for usage with the [[RegExpMatcher]].
 
@@ -122,7 +122,7 @@ const matcher = new RegExpMatcher({
 
 > **getPayloadWithPhraseMetadata**(`payload`): [`MatchPayloadWithPhraseMetadata`](../type-aliases/MatchPayloadWithPhraseMetadata.md)\<`MetadataType`\>
 
-Defined in: [src/dataset/DataSet.ts:94](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L94)
+Defined in: [src/dataset/DataSet.ts:94](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L94)
 
 Retrieves the phrase metadata associated with a pattern and returns a
 copy of the match payload with said metadata attached to it.
@@ -154,7 +154,7 @@ const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
 
 > **removePhrasesIf**(`predicate`): `DataSet`\<`MetadataType`\>
 
-Defined in: [src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L46)
+Defined in: [src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L46)
 
 Removes phrases that match the predicate given.
 

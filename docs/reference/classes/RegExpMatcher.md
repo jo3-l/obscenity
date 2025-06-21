@@ -6,7 +6,7 @@
 
 # Class: RegExpMatcher
 
-Defined in: [src/matcher/regexp/RegExpMatcher.ts:16](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L16)
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:16](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/regexp/RegExpMatcher.ts#L16)
 
 An implementation of the [[Matcher]] interface using regular expressions and
 string searching methods.
@@ -21,7 +21,7 @@ string searching methods.
 
 > **new RegExpMatcher**(`options`): `RegExpMatcher`
 
-Defined in: [src/matcher/regexp/RegExpMatcher.ts:74](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L74)
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:74](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/regexp/RegExpMatcher.ts#L74)
 
 Creates a new [[RegExpMatcher]] with the options given.
 
@@ -89,7 +89,7 @@ console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sw
 
 > **getAllMatches**(`input`, `sorted`): [`MatchPayload`](../interfaces/MatchPayload.md)[]
 
-Defined in: [src/matcher/regexp/RegExpMatcher.ts:87](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L87)
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:87](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/regexp/RegExpMatcher.ts#L87)
 
 Returns all matches of blacklisted terms in the text.
 
@@ -130,7 +130,7 @@ otherwise, their order is unspecified.
 
 > **hasMatch**(`input`): `boolean`
 
-Defined in: [src/matcher/regexp/RegExpMatcher.ts:120](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L120)
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:120](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/regexp/RegExpMatcher.ts#L120)
 
 Checks whether there is a match for any blacklisted term in the text.
 

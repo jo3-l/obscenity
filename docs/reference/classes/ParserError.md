@@ -6,7 +6,7 @@
 
 # Class: ParserError
 
-Defined in: [src/pattern/ParserError.ts:4](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/ParserError.ts#L4)
+Defined in: [src/pattern/ParserError.ts:4](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/pattern/ParserError.ts#L4)
 
 Custom error thrown by the parser when syntactical errors are detected.
 
@@ -20,7 +20,7 @@ Custom error thrown by the parser when syntactical errors are detected.
 
 > **new ParserError**(`message`, `line`, `column`): `ParserError`
 
-Defined in: [src/pattern/ParserError.ts:18](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/ParserError.ts#L18)
+Defined in: [src/pattern/ParserError.ts:18](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/pattern/ParserError.ts#L18)
 
 #### Parameters
 
@@ -62,7 +62,7 @@ Defined in: node\_modules/.pnpm/typescript@5.8.3/node\_modules/typescript/lib/li
 
 > `readonly` **column**: `number`
 
-Defined in: [src/pattern/ParserError.ts:16](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/ParserError.ts#L16)
+Defined in: [src/pattern/ParserError.ts:16](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/pattern/ParserError.ts#L16)
 
 The column on which the error occurred (one-based).
 Note that surrogate pairs are counted as 1 column wide, not 2.
@@ -73,7 +73,7 @@ Note that surrogate pairs are counted as 1 column wide, not 2.
 
 > `readonly` **line**: `number`
 
-Defined in: [src/pattern/ParserError.ts:10](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/ParserError.ts#L10)
+Defined in: [src/pattern/ParserError.ts:10](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/pattern/ParserError.ts#L10)
 
 The line on which the error occurred (one-based).
 
@@ -95,7 +95,7 @@ Defined in: node\_modules/.pnpm/typescript@5.8.3/node\_modules/typescript/lib/li
 
 > `readonly` **name**: `"ParserError"` = `'ParserError'`
 
-Defined in: [src/pattern/ParserError.ts:5](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/ParserError.ts#L5)
+Defined in: [src/pattern/ParserError.ts:5](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/pattern/ParserError.ts#L5)
 
 #### Overrides
 

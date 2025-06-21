@@ -8,7 +8,7 @@
 
 > `const` **englishDataset**: [`DataSet`](../classes/DataSet.md)\<\{ `originalWord`: [`EnglishProfaneWord`](../type-aliases/EnglishProfaneWord.md); \}\>
 
-Defined in: [src/preset/english.ts:103](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/preset/english.ts#L103)
+Defined in: [src/preset/english.ts:103](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/preset/english.ts#L103)
 
 A dataset of profane English words.
 

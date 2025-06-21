@@ -8,7 +8,7 @@
 
 > **MatchPayloadWithPhraseMetadata**\<`MetadataType`\> = [`MatchPayload`](../interfaces/MatchPayload.md) & `object`
 
-Defined in: [src/dataset/DataSet.ts:190](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L190)
+Defined in: [src/dataset/DataSet.ts:190](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L190)
 
 Extends the default match payload by adding phrase metadata.
 

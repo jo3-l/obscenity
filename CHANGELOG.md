@@ -1,6 +1,13 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [0.4.4](https://github.com/jo3-l/obscenity/compare/v0.4.3...v0.4.4) (2025-06-21)
+
+
+### Bug Fixes
+
+* **transformers:** add missing export ([#101](https://github.com/jo3-l/obscenity/issues/101)) ([9ca1004](https://github.com/jo3-l/obscenity/commit/9ca1004a46ea54cd85d825f7675ed8e3ca8381e9))
 
 ### [0.4.3](https://github.com/jo3-l/obscenity/compare/v0.4.2...v0.4.3) (2025-01-26)
 

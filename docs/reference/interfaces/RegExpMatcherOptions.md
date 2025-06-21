@@ -6,7 +6,7 @@
 
 # Interface: RegExpMatcherOptions
 
-Defined in: [src/matcher/regexp/RegExpMatcher.ts:219](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L219)
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:219](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/regexp/RegExpMatcher.ts#L219)
 
 Options for the [[RegExpMatcher]].
 
@@ -16,7 +16,7 @@ Options for the [[RegExpMatcher]].
 
 > **blacklistedTerms**: [`BlacklistedTerm`](BlacklistedTerm.md)[]
 
-Defined in: [src/matcher/regexp/RegExpMatcher.ts:234](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L234)
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:234](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/regexp/RegExpMatcher.ts#L234)
 
 A list of blacklisted terms.
 
@@ -26,7 +26,7 @@ A list of blacklisted terms.
 
 > `optional` **blacklistMatcherTransformers**: [`TransformerContainer`](../type-aliases/TransformerContainer.md)[]
 
-Defined in: [src/matcher/regexp/RegExpMatcher.ts:229](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L229)
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:229](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/regexp/RegExpMatcher.ts#L229)
 
 A set of transformers that should be applied to the input text before
 blacklisted patterns are matched. This does not affect the matching of
@@ -46,7 +46,7 @@ Transformers will be applied in the order they appear.
 
 > `optional` **whitelistedTerms**: `string`[]
 
-Defined in: [src/matcher/regexp/RegExpMatcher.ts:258](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L258)
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:258](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/regexp/RegExpMatcher.ts#L258)
 
 A list of whitelisted terms. If a whitelisted term matches some part of
 the text, a match of a blacklisted pattern within that part of the text
@@ -68,7 +68,7 @@ than the sword.`
 
 > `optional` **whitelistMatcherTransformers**: [`TransformerContainer`](../type-aliases/TransformerContainer.md)[]
 
-Defined in: [src/matcher/regexp/RegExpMatcher.ts:245](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L245)
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:245](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/regexp/RegExpMatcher.ts#L245)
 
 A set of transformers that should be applied to the input text before
 whitelisted terms are matched. This does not affect the matching of

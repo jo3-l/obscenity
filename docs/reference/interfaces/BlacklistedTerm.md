@@ -6,7 +6,7 @@
 
 # Interface: BlacklistedTerm
 
-Defined in: [src/matcher/BlacklistedTerm.ts:6](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/BlacklistedTerm.ts#L6)
+Defined in: [src/matcher/BlacklistedTerm.ts:6](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/BlacklistedTerm.ts#L6)
 
 Represents a blacklisted term.
 
@@ -16,7 +16,7 @@ Represents a blacklisted term.
 
 > **id**: `number`
 
-Defined in: [src/matcher/BlacklistedTerm.ts:10](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/BlacklistedTerm.ts#L10)
+Defined in: [src/matcher/BlacklistedTerm.ts:10](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/BlacklistedTerm.ts#L10)
 
 The identifier of the pattern; should be unique across all patterns.
 
@@ -26,6 +26,6 @@ The identifier of the pattern; should be unique across all patterns.
 
 > **pattern**: [`ParsedPattern`](ParsedPattern.md)
 
-Defined in: [src/matcher/BlacklistedTerm.ts:15](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/BlacklistedTerm.ts#L15)
+Defined in: [src/matcher/BlacklistedTerm.ts:15](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/BlacklistedTerm.ts#L15)
 
 The parsed pattern.

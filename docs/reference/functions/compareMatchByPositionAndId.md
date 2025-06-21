@@ -8,7 +8,7 @@
 
 > **compareMatchByPositionAndId**(`a`, `b`): `-1` \| `0` \| `1`
 
-Defined in: [src/matcher/MatchPayload.ts:57](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/MatchPayload.ts#L57)
+Defined in: [src/matcher/MatchPayload.ts:57](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/MatchPayload.ts#L57)
 
 Compares two match payloads.
 

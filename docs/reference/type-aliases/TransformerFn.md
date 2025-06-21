@@ -8,7 +8,7 @@
 
 > **TransformerFn** = (`char`) => `number` \| `undefined`
 
-Defined in: [src/transformer/Transformers.ts:56](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/transformer/Transformers.ts#L56)
+Defined in: [src/transformer/Transformers.ts:56](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/transformer/Transformers.ts#L56)
 
 Transforms input characters.
 

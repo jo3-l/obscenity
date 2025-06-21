@@ -8,7 +8,7 @@
 
 > **pattern**(`strings`, ...`expressions`): [`ParsedPattern`](../interfaces/ParsedPattern.md)
 
-Defined in: [src/pattern/Pattern.ts:106](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/Pattern.ts#L106)
+Defined in: [src/pattern/Pattern.ts:106](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/pattern/Pattern.ts#L106)
 
 Parses a pattern, which matches a set of strings; see the `Syntax` section
 for details. This function is intended to be called as a [template

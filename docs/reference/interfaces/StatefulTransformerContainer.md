@@ -6,7 +6,7 @@
 
 # Interface: StatefulTransformerContainer
 
-Defined in: [src/transformer/Transformers.ts:131](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/transformer/Transformers.ts#L131)
+Defined in: [src/transformer/Transformers.ts:131](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/transformer/Transformers.ts#L131)
 
 Container for stateful transformers.
 
@@ -16,7 +16,7 @@ Container for stateful transformers.
 
 > **factory**: [`StatefulTransformerFactory`](../type-aliases/StatefulTransformerFactory.md)
 
-Defined in: [src/transformer/Transformers.ts:132](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/transformer/Transformers.ts#L132)
+Defined in: [src/transformer/Transformers.ts:132](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/transformer/Transformers.ts#L132)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [src/transformer/Transformers.ts:132](https://github.com/jo3-l/obsce
 
 > **type**: [`Stateful`](../enumerations/TransformerType.md#stateful)
 
-Defined in: [src/transformer/Transformers.ts:133](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/transformer/Transformers.ts#L133)
+Defined in: [src/transformer/Transformers.ts:133](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/transformer/Transformers.ts#L133)

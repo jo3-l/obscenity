@@ -8,7 +8,7 @@
 
 > **keepEndCensorStrategy**(`baseStrategy`): [`TextCensorStrategy`](../type-aliases/TextCensorStrategy.md)
 
-Defined in: [src/censor/BuiltinStrategies.ts:51](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/censor/BuiltinStrategies.ts#L51)
+Defined in: [src/censor/BuiltinStrategies.ts:51](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/censor/BuiltinStrategies.ts#L51)
 
 A text censoring strategy that extends another strategy, adding the last
 character matched at the end of the generated string.
