@@ -1,32 +1,33 @@
+[**obscenity**](../README.md)
+
+***
+
 [obscenity](../README.md) / TextCensor
 
 # Class: TextCensor
 
+Defined in: [src/censor/TextCensor.ts:9](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/censor/TextCensor.ts#L9)
+
 Censors regions of text matched by a [[Matcher]], supporting flexible
 [[TextCensorStrategy | censoring strategies]].
 
-## Table of contents
-
-### Constructors
-
-- [constructor](TextCensor.md#constructor)
-
-### Methods
-
-- [applyTo](TextCensor.md#applyto)
-- [setStrategy](TextCensor.md#setstrategy)
-
 ## Constructors
 
-### constructor
+### Constructor
 
-• **new TextCensor**()
+> **new TextCensor**(): `TextCensor`
+
+#### Returns
+
+`TextCensor`
 
 ## Methods
 
-### applyTo
+### applyTo()
 
-▸ **applyTo**(`input`, `matches`): `string`
+> **applyTo**(`input`, `matches`): `string`
+
+Defined in: [src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/censor/TextCensor.ts#L66)
 
 Applies the censoring strategy to the text, returning the censored text.
 
@@ -45,10 +46,17 @@ replaced, following the rules below:
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `input` | `string` | Input text. |
-| `matches` | [`MatchPayload`](../interfaces/MatchPayload.md)[] | A list of matches. |
+##### input
+
+`string`
+
+Input text.
+
+##### matches
+
+[`MatchPayload`](../interfaces/MatchPayload.md)[]
+
+A list of matches.
 
 #### Returns
 
@@ -56,15 +64,13 @@ replaced, following the rules below:
 
 The censored text.
 
-#### Defined in
+***
 
-[src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/0299b49/src/censor/TextCensor.ts#L66)
+### setStrategy()
 
-___
+> **setStrategy**(`strategy`): `TextCensor`
 
-### setStrategy
-
-▸ **setStrategy**(`strategy`): [`TextCensor`](TextCensor.md)
+Defined in: [src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/censor/TextCensor.ts#L41)
 
 Sets the censoring strategy, which is responsible for generating
 replacement text for regions of the text that should be censored.
@@ -94,14 +100,12 @@ utility functions:
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `strategy` | [`TextCensorStrategy`](../README.md#textcensorstrategy) | Text censoring strategy to use. |
+##### strategy
+
+[`TextCensorStrategy`](../type-aliases/TextCensorStrategy.md)
+
+Text censoring strategy to use.
 
 #### Returns
 
-[`TextCensor`](TextCensor.md)
-
-#### Defined in
-
-[src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/0299b49/src/censor/TextCensor.ts#L41)
+`TextCensor`

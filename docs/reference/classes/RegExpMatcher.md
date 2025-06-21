@@ -1,6 +1,12 @@
+[**obscenity**](../README.md)
+
+***
+
 [obscenity](../README.md) / RegExpMatcher
 
 # Class: RegExpMatcher
+
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:16](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L16)
 
 An implementation of the [[Matcher]] interface using regular expressions and
 string searching methods.
@@ -9,26 +15,29 @@ string searching methods.
 
 - [`Matcher`](../interfaces/Matcher.md)
 
-## Table of contents
-
-### Constructors
-
-- [constructor](RegExpMatcher.md#constructor)
-
-### Methods
-
-- [getAllMatches](RegExpMatcher.md#getallmatches)
-- [hasMatch](RegExpMatcher.md#hasmatch)
-
 ## Constructors
 
-### constructor
+### Constructor
 
-• **new RegExpMatcher**(`options`)
+> **new RegExpMatcher**(`options`): `RegExpMatcher`
+
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:74](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L74)
 
 Creates a new [[RegExpMatcher]] with the options given.
 
-**`Example`**
+#### Parameters
+
+##### options
+
+[`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md)
+
+Options to use.
+
+#### Returns
+
+`RegExpMatcher`
+
+#### Examples
 
 ```typescript
 // Use the options provided by the English preset.
@@ -37,8 +46,6 @@ const matcher = new RegExpMatcher({
 	...englishRecommendedTransformers,
 });
 ```
-
-**`Example`**
 
 ```typescript
 // Simple matcher that only has blacklisted patterns.
@@ -54,8 +61,6 @@ const matcher = new RegExpMatcher({
 // Check whether some string matches any of the patterns.
 const doesMatch = matcher.hasMatch('fuck you bitch');
 ```
-
-**`Example`**
 
 ```typescript
 // A more advanced example, with transformers and whitelisted terms.
@@ -78,21 +83,13 @@ const matcher = new RegExpMatcher({
 console.log(matcher.getAllMatches('fu.....uuuuCK the pen is mightier than the sword!'));
 ```
 
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `options` | [`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md) | Options to use. |
-
-#### Defined in
-
-[src/matcher/regexp/RegExpMatcher.ts:74](https://github.com/jo3-l/obscenity/blob/0299b49/src/matcher/regexp/RegExpMatcher.ts#L74)
-
 ## Methods
 
-### getAllMatches
+### getAllMatches()
 
-▸ **getAllMatches**(`input`, `sorted?`): [`MatchPayload`](../interfaces/MatchPayload.md)[]
+> **getAllMatches**(`input`, `sorted`): [`MatchPayload`](../interfaces/MatchPayload.md)[]
+
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:87](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L87)
 
 Returns all matches of blacklisted terms in the text.
 
@@ -102,10 +99,18 @@ which is typically more efficient.
 
 #### Parameters
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `input` | `string` | `undefined` | Text to find profanities in. |
-| `sorted` | `boolean` | `false` | Whether the resulting list of matches should be sorted using [[compareMatchByPositionAndId]]. Defaults to `false`. |
+##### input
+
+`string`
+
+Text to find profanities in.
+
+##### sorted
+
+`boolean` = `false`
+
+Whether the resulting list of matches should be sorted
+using [[compareMatchByPositionAndId]]. Defaults to `false`.
 
 #### Returns
 
@@ -117,17 +122,15 @@ otherwise, their order is unspecified.
 
 #### Implementation of
 
-[Matcher](../interfaces/Matcher.md).[getAllMatches](../interfaces/Matcher.md#getallmatches)
+[`Matcher`](../interfaces/Matcher.md).[`getAllMatches`](../interfaces/Matcher.md#getallmatches)
 
-#### Defined in
+***
 
-[src/matcher/regexp/RegExpMatcher.ts:87](https://github.com/jo3-l/obscenity/blob/0299b49/src/matcher/regexp/RegExpMatcher.ts#L87)
+### hasMatch()
 
-___
+> **hasMatch**(`input`): `boolean`
 
-### hasMatch
-
-▸ **hasMatch**(`input`): `boolean`
+Defined in: [src/matcher/regexp/RegExpMatcher.ts:120](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/regexp/RegExpMatcher.ts#L120)
 
 Checks whether there is a match for any blacklisted term in the text.
 
@@ -136,9 +139,11 @@ checking the result, though it depends on the implementation.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `input` | `string` | Text to check. |
+##### input
+
+`string`
+
+Text to check.
 
 #### Returns
 
@@ -146,8 +151,4 @@ checking the result, though it depends on the implementation.
 
 #### Implementation of
 
-[Matcher](../interfaces/Matcher.md).[hasMatch](../interfaces/Matcher.md#hasmatch)
-
-#### Defined in
-
-[src/matcher/regexp/RegExpMatcher.ts:120](https://github.com/jo3-l/obscenity/blob/0299b49/src/matcher/regexp/RegExpMatcher.ts#L120)
+[`Matcher`](../interfaces/Matcher.md).[`hasMatch`](../interfaces/Matcher.md#hasmatch)

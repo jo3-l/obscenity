@@ -1,114 +1,114 @@
+[**obscenity**](../README.md)
+
+***
+
 [obscenity](../README.md) / ParserError
 
 # Class: ParserError
 
+Defined in: [src/pattern/ParserError.ts:4](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/ParserError.ts#L4)
+
 Custom error thrown by the parser when syntactical errors are detected.
 
-## Hierarchy
+## Extends
 
 - `Error`
 
-  ↳ **`ParserError`**
-
-## Table of contents
-
-### Constructors
-
-- [constructor](ParserError.md#constructor)
-
-### Properties
-
-- [column](ParserError.md#column)
-- [line](ParserError.md#line)
-- [message](ParserError.md#message)
-- [name](ParserError.md#name)
-- [stack](ParserError.md#stack)
-
 ## Constructors
 
-### constructor
+### Constructor
 
-• **new ParserError**(`message`, `line`, `column`)
+> **new ParserError**(`message`, `line`, `column`): `ParserError`
+
+Defined in: [src/pattern/ParserError.ts:18](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/ParserError.ts#L18)
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `message` | `string` |
-| `line` | `number` |
-| `column` | `number` |
+##### message
+
+`string`
+
+##### line
+
+`number`
+
+##### column
+
+`number`
+
+#### Returns
+
+`ParserError`
 
 #### Overrides
 
-Error.constructor
-
-#### Defined in
-
-[src/pattern/ParserError.ts:18](https://github.com/jo3-l/obscenity/blob/0299b49/src/pattern/ParserError.ts#L18)
+`Error.constructor`
 
 ## Properties
 
+### cause?
+
+> `optional` **cause**: `unknown`
+
+Defined in: node\_modules/.pnpm/typescript@5.8.3/node\_modules/typescript/lib/lib.es2022.error.d.ts:26
+
+#### Inherited from
+
+`Error.cause`
+
+***
+
 ### column
 
-• `Readonly` **column**: `number`
+> `readonly` **column**: `number`
+
+Defined in: [src/pattern/ParserError.ts:16](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/ParserError.ts#L16)
 
 The column on which the error occurred (one-based).
 Note that surrogate pairs are counted as 1 column wide, not 2.
 
-#### Defined in
-
-[src/pattern/ParserError.ts:16](https://github.com/jo3-l/obscenity/blob/0299b49/src/pattern/ParserError.ts#L16)
-
-___
+***
 
 ### line
 
-• `Readonly` **line**: `number`
+> `readonly` **line**: `number`
+
+Defined in: [src/pattern/ParserError.ts:10](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/ParserError.ts#L10)
 
 The line on which the error occurred (one-based).
 
-#### Defined in
-
-[src/pattern/ParserError.ts:10](https://github.com/jo3-l/obscenity/blob/0299b49/src/pattern/ParserError.ts#L10)
-
-___
+***
 
 ### message
 
-• **message**: `string`
+> **message**: `string`
+
+Defined in: node\_modules/.pnpm/typescript@5.8.3/node\_modules/typescript/lib/lib.es5.d.ts:1077
 
 #### Inherited from
 
-Error.message
+`Error.message`
 
-#### Defined in
-
-node_modules/.pnpm/typescript@5.2.2/node_modules/typescript/lib/lib.es5.d.ts:1068
-
-___
+***
 
 ### name
 
-• `Readonly` **name**: ``"ParserError"``
+> `readonly` **name**: `"ParserError"` = `'ParserError'`
+
+Defined in: [src/pattern/ParserError.ts:5](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/ParserError.ts#L5)
 
 #### Overrides
 
-Error.name
+`Error.name`
 
-#### Defined in
+***
 
-[src/pattern/ParserError.ts:5](https://github.com/jo3-l/obscenity/blob/0299b49/src/pattern/ParserError.ts#L5)
+### stack?
 
-___
+> `optional` **stack**: `string`
 
-### stack
-
-• `Optional` **stack**: `string`
+Defined in: node\_modules/.pnpm/typescript@5.8.3/node\_modules/typescript/lib/lib.es5.d.ts:1078
 
 #### Inherited from
 
-Error.stack
-
-#### Defined in
-
-node_modules/.pnpm/typescript@5.2.2/node_modules/typescript/lib/lib.es5.d.ts:1069
+`Error.stack`

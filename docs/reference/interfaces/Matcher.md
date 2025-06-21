@@ -1,6 +1,12 @@
+[**obscenity**](../README.md)
+
+***
+
 [obscenity](../README.md) / Matcher
 
 # Interface: Matcher
+
+Defined in: [src/matcher/Matcher.ts:10](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/Matcher.ts#L10)
 
 Searches for blacklisted terms in text, ignoring parts matched by whitelisted
 terms.
@@ -8,22 +14,13 @@ terms.
 See:
 - [[RegExpMatcher]] for an implementation using regular expressions.
 
-## Implemented by
-
-- [`RegExpMatcher`](../classes/RegExpMatcher.md)
-
-## Table of contents
-
-### Methods
-
-- [getAllMatches](Matcher.md#getallmatches)
-- [hasMatch](Matcher.md#hasmatch)
-
 ## Methods
 
-### getAllMatches
+### getAllMatches()
 
-▸ **getAllMatches**(`input`, `sorted?`): [`MatchPayload`](MatchPayload.md)[]
+> **getAllMatches**(`input`, `sorted?`): [`MatchPayload`](MatchPayload.md)[]
+
+Defined in: [src/matcher/Matcher.ts:25](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/Matcher.ts#L25)
 
 Returns all matches of blacklisted terms in the text.
 
@@ -33,10 +30,18 @@ which is typically more efficient.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `input` | `string` | Text to find profanities in. |
-| `sorted?` | `boolean` | Whether the resulting list of matches should be sorted using [[compareMatchByPositionAndId]]. Defaults to `false`. |
+##### input
+
+`string`
+
+Text to find profanities in.
+
+##### sorted?
+
+`boolean`
+
+Whether the resulting list of matches should be sorted
+using [[compareMatchByPositionAndId]]. Defaults to `false`.
 
 #### Returns
 
@@ -46,15 +51,13 @@ A list of matches of the matcher on the text. The matches are
 guaranteed to be sorted if and only if the `sorted` parameter is `true`,
 otherwise, their order is unspecified.
 
-#### Defined in
+***
 
-[src/matcher/Matcher.ts:25](https://github.com/jo3-l/obscenity/blob/0299b49/src/matcher/Matcher.ts#L25)
+### hasMatch()
 
-___
+> **hasMatch**(`input`): `boolean`
 
-### hasMatch
-
-▸ **hasMatch**(`input`): `boolean`
+Defined in: [src/matcher/Matcher.ts:35](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/matcher/Matcher.ts#L35)
 
 Checks whether there is a match for any blacklisted term in the text.
 
@@ -63,14 +66,12 @@ checking the result, though it depends on the implementation.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `input` | `string` | Text to check. |
+##### input
+
+`string`
+
+Text to check.
 
 #### Returns
 
 `boolean`
-
-#### Defined in
-
-[src/matcher/Matcher.ts:35](https://github.com/jo3-l/obscenity/blob/0299b49/src/matcher/Matcher.ts#L35)

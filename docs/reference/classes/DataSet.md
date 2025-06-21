@@ -1,79 +1,87 @@
+[**obscenity**](../README.md)
+
+***
+
 [obscenity](../README.md) / DataSet
 
-# Class: DataSet<MetadataType\>
+# Class: DataSet\<MetadataType\>
+
+Defined in: [src/dataset/DataSet.ts:13](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L13)
 
 Holds phrases (groups of patterns and whitelisted terms), optionally
 associating metadata with them.
 
-## Type parameters
+## Type Parameters
 
-| Name | Description |
-| :------ | :------ |
-| `MetadataType` | Metadata type for phrases. Note that the metadata type is implicitly nullable. |
+### MetadataType
 
-## Table of contents
+`MetadataType`
 
-### Constructors
-
-- [constructor](DataSet.md#constructor)
-
-### Methods
-
-- [addAll](DataSet.md#addall)
-- [addPhrase](DataSet.md#addphrase)
-- [build](DataSet.md#build)
-- [getPayloadWithPhraseMetadata](DataSet.md#getpayloadwithphrasemetadata)
-- [removePhrasesIf](DataSet.md#removephrasesif)
+Metadata type for phrases. Note that the metadata
+type is implicitly nullable.
 
 ## Constructors
 
-### constructor
+### Constructor
 
-• **new DataSet**<`MetadataType`\>()
+> **new DataSet**\<`MetadataType`\>(): `DataSet`\<`MetadataType`\>
 
-#### Type parameters
+#### Returns
 
-| Name |
-| :------ |
-| `MetadataType` |
+`DataSet`\<`MetadataType`\>
 
 ## Methods
 
-### addAll
+### addAll()
 
-▸ **addAll**(`other`): [`DataSet`](DataSet.md)<`MetadataType`\>
+> **addAll**(`other`): `DataSet`\<`MetadataType`\>
+
+Defined in: [src/dataset/DataSet.ts:29](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L29)
 
 Adds all the phrases from the dataset provided to this one.
 
-**`Example`**
+#### Parameters
+
+##### other
+
+`DataSet`\<`MetadataType`\>
+
+Other dataset.
+
+#### Returns
+
+`DataSet`\<`MetadataType`\>
+
+#### Example
 
 ```typescript
 const customDataset = new DataSet().addAll(englishDataset);
 ```
 
-#### Parameters
+***
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `other` | [`DataSet`](DataSet.md)<`MetadataType`\> | Other dataset. |
+### addPhrase()
 
-#### Returns
+> **addPhrase**(`fn`): `DataSet`\<`MetadataType`\>
 
-[`DataSet`](DataSet.md)<`MetadataType`\>
-
-#### Defined in
-
-[src/dataset/DataSet.ts:29](https://github.com/jo3-l/obscenity/blob/0299b49/src/dataset/DataSet.ts#L29)
-
-___
-
-### addPhrase
-
-▸ **addPhrase**(`fn`): [`DataSet`](DataSet.md)<`MetadataType`\>
+Defined in: [src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L75)
 
 Adds a phrase to this dataset.
 
-**`Example`**
+#### Parameters
+
+##### fn
+
+(`builder`) => [`PhraseBuilder`](PhraseBuilder.md)\<`MetadataType`\>
+
+A function that takes a [[PhraseBuilder]], adds
+patterns/whitelisted terms/metadata to it, and returns it.
+
+#### Returns
+
+`DataSet`\<`MetadataType`\>
+
+#### Example
 
 ```typescript
 const data = new DataSet<{ originalWord: string }>()
@@ -84,29 +92,21 @@ const data = new DataSet<{ originalWord: string }>()
 	.build();
 ```
 
-#### Parameters
+***
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `fn` | (`builder`: [`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\>) => [`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\> | A function that takes a [[PhraseBuilder]], adds patterns/whitelisted terms/metadata to it, and returns it. |
+### build()
 
-#### Returns
+> **build**(): `Pick`\<[`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md), `"blacklistedTerms"` \| `"whitelistedTerms"`\>
 
-[`DataSet`](DataSet.md)<`MetadataType`\>
-
-#### Defined in
-
-[src/dataset/DataSet.ts:75](https://github.com/jo3-l/obscenity/blob/0299b49/src/dataset/DataSet.ts#L75)
-
-___
-
-### build
-
-▸ **build**(): `Pick`<[`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md), ``"blacklistedTerms"`` \| ``"whitelistedTerms"``\>
+Defined in: [src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L118)
 
 Returns the dataset in a format suitable for usage with the [[RegExpMatcher]].
 
-**`Example`**
+#### Returns
+
+`Pick`\<[`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md), `"blacklistedTerms"` \| `"whitelistedTerms"`\>
+
+#### Example
 
 ```typescript
 // With the RegExpMatcher:
@@ -116,24 +116,30 @@ const matcher = new RegExpMatcher({
 });
 ```
 
-#### Returns
+***
 
-`Pick`<[`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md), ``"blacklistedTerms"`` \| ``"whitelistedTerms"``\>
+### getPayloadWithPhraseMetadata()
 
-#### Defined in
+> **getPayloadWithPhraseMetadata**(`payload`): [`MatchPayloadWithPhraseMetadata`](../type-aliases/MatchPayloadWithPhraseMetadata.md)\<`MetadataType`\>
 
-[src/dataset/DataSet.ts:118](https://github.com/jo3-l/obscenity/blob/0299b49/src/dataset/DataSet.ts#L118)
-
-___
-
-### getPayloadWithPhraseMetadata
-
-▸ **getPayloadWithPhraseMetadata**(`payload`): [`MatchPayloadWithPhraseMetadata`](../README.md#matchpayloadwithphrasemetadata)<`MetadataType`\>
+Defined in: [src/dataset/DataSet.ts:94](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L94)
 
 Retrieves the phrase metadata associated with a pattern and returns a
 copy of the match payload with said metadata attached to it.
 
-**`Example`**
+#### Parameters
+
+##### payload
+
+[`MatchPayload`](../interfaces/MatchPayload.md)
+
+Original match payload.
+
+#### Returns
+
+[`MatchPayloadWithPhraseMetadata`](../type-aliases/MatchPayloadWithPhraseMetadata.md)\<`MetadataType`\>
+
+#### Example
 
 ```typescript
 const matches = matcher.getAllMatches(input);
@@ -142,46 +148,33 @@ const matchesWithPhraseMetadata = matches.map((match) => dataset.getPayloadWithP
 const phraseMetadata = matchesWithPhraseMetadata[0].phraseMetadata;
 ```
 
-#### Parameters
+***
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `payload` | [`MatchPayload`](../interfaces/MatchPayload.md) | Original match payload. |
+### removePhrasesIf()
 
-#### Returns
+> **removePhrasesIf**(`predicate`): `DataSet`\<`MetadataType`\>
 
-[`MatchPayloadWithPhraseMetadata`](../README.md#matchpayloadwithphrasemetadata)<`MetadataType`\>
-
-#### Defined in
-
-[src/dataset/DataSet.ts:94](https://github.com/jo3-l/obscenity/blob/0299b49/src/dataset/DataSet.ts#L94)
-
-___
-
-### removePhrasesIf
-
-▸ **removePhrasesIf**(`predicate`): [`DataSet`](DataSet.md)<`MetadataType`\>
+Defined in: [src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L46)
 
 Removes phrases that match the predicate given.
 
-**`Example`**
+#### Parameters
+
+##### predicate
+
+(`phrase`) => `boolean`
+
+A predicate that determines whether or not a phrase should be removed.
+Return `true` to remove, `false` to keep.
+
+#### Returns
+
+`DataSet`\<`MetadataType`\>
+
+#### Example
 
 ```typescript
 const customDataset = new DataSet<{ originalWord: string }>()
 	.addAll(englishDataset)
 	.removePhrasesIf((phrase) => phrase.metadata.originalWord === 'fuck');
 ```
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `predicate` | (`phrase`: [`PhraseContainer`](../interfaces/PhraseContainer.md)<`MetadataType`\>) => `boolean` | A predicate that determines whether or not a phrase should be removed. Return `true` to remove, `false` to keep. |
-
-#### Returns
-
-[`DataSet`](DataSet.md)<`MetadataType`\>
-
-#### Defined in
-
-[src/dataset/DataSet.ts:46](https://github.com/jo3-l/obscenity/blob/0299b49/src/dataset/DataSet.ts#L46)

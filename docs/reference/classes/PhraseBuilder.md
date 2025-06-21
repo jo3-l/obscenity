@@ -1,119 +1,108 @@
+[**obscenity**](../README.md)
+
+***
+
 [obscenity](../README.md) / PhraseBuilder
 
-# Class: PhraseBuilder<MetadataType\>
+# Class: PhraseBuilder\<MetadataType\>
+
+Defined in: [src/dataset/DataSet.ts:137](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L137)
 
 Builder for phrases.
 
-## Type parameters
+## Type Parameters
 
-| Name |
-| :------ |
-| `MetadataType` |
+### MetadataType
 
-## Table of contents
-
-### Constructors
-
-- [constructor](PhraseBuilder.md#constructor)
-
-### Methods
-
-- [addPattern](PhraseBuilder.md#addpattern)
-- [addWhitelistedTerm](PhraseBuilder.md#addwhitelistedterm)
-- [build](PhraseBuilder.md#build)
-- [setMetadata](PhraseBuilder.md#setmetadata)
+`MetadataType`
 
 ## Constructors
 
-### constructor
+### Constructor
 
-• **new PhraseBuilder**<`MetadataType`\>()
+> **new PhraseBuilder**\<`MetadataType`\>(): `PhraseBuilder`\<`MetadataType`\>
 
-#### Type parameters
+#### Returns
 
-| Name |
-| :------ |
-| `MetadataType` |
+`PhraseBuilder`\<`MetadataType`\>
 
 ## Methods
 
-### addPattern
+### addPattern()
 
-▸ **addPattern**(`pattern`): [`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\>
+> **addPattern**(`pattern`): `PhraseBuilder`\<`MetadataType`\>
+
+Defined in: [src/dataset/DataSet.ts:149](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L149)
 
 Associates a pattern with this phrase.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `pattern` | [`ParsedPattern`](../interfaces/ParsedPattern.md) | Pattern to add. |
+##### pattern
+
+[`ParsedPattern`](../interfaces/ParsedPattern.md)
+
+Pattern to add.
 
 #### Returns
 
-[`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\>
+`PhraseBuilder`\<`MetadataType`\>
 
-#### Defined in
+***
 
-[src/dataset/DataSet.ts:149](https://github.com/jo3-l/obscenity/blob/0299b49/src/dataset/DataSet.ts#L149)
+### addWhitelistedTerm()
 
-___
+> **addWhitelistedTerm**(`term`): `PhraseBuilder`\<`MetadataType`\>
 
-### addWhitelistedTerm
-
-▸ **addWhitelistedTerm**(`term`): [`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\>
+Defined in: [src/dataset/DataSet.ts:159](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L159)
 
 Associates a whitelisted pattern with this phrase.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `term` | `string` | Whitelisted term to add. |
+##### term
+
+`string`
+
+Whitelisted term to add.
 
 #### Returns
 
-[`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\>
+`PhraseBuilder`\<`MetadataType`\>
 
-#### Defined in
+***
 
-[src/dataset/DataSet.ts:159](https://github.com/jo3-l/obscenity/blob/0299b49/src/dataset/DataSet.ts#L159)
+### build()
 
-___
+> **build**(): [`PhraseContainer`](../interfaces/PhraseContainer.md)\<`MetadataType`\>
 
-### build
-
-▸ **build**(): [`PhraseContainer`](../interfaces/PhraseContainer.md)<`MetadataType`\>
+Defined in: [src/dataset/DataSet.ts:178](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L178)
 
 Builds the phrase, returning a [[PhraseContainer]] for use with the
 [[DataSet]].
 
 #### Returns
 
-[`PhraseContainer`](../interfaces/PhraseContainer.md)<`MetadataType`\>
+[`PhraseContainer`](../interfaces/PhraseContainer.md)\<`MetadataType`\>
 
-#### Defined in
+***
 
-[src/dataset/DataSet.ts:178](https://github.com/jo3-l/obscenity/blob/0299b49/src/dataset/DataSet.ts#L178)
+### setMetadata()
 
-___
+> **setMetadata**(`metadata?`): `PhraseBuilder`\<`MetadataType`\>
 
-### setMetadata
-
-▸ **setMetadata**(`metadata?`): [`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\>
+Defined in: [src/dataset/DataSet.ts:169](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/dataset/DataSet.ts#L169)
 
 Associates some metadata with this phrase.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `metadata?` | `MetadataType` | Metadata to use. |
+##### metadata?
+
+`MetadataType`
+
+Metadata to use.
 
 #### Returns
 
-[`PhraseBuilder`](PhraseBuilder.md)<`MetadataType`\>
-
-#### Defined in
-
-[src/dataset/DataSet.ts:169](https://github.com/jo3-l/obscenity/blob/0299b49/src/dataset/DataSet.ts#L169)
+`PhraseBuilder`\<`MetadataType`\>

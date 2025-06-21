@@ -1,49 +1,41 @@
+[**obscenity**](../README.md)
+
+***
+
 [obscenity](../README.md) / ParsedPattern
 
 # Interface: ParsedPattern
 
+Defined in: [src/pattern/Nodes.ts:4](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/Nodes.ts#L4)
+
 A parsed pattern.
-
-## Table of contents
-
-### Properties
-
-- [nodes](ParsedPattern.md#nodes)
-- [requireWordBoundaryAtEnd](ParsedPattern.md#requirewordboundaryatend)
-- [requireWordBoundaryAtStart](ParsedPattern.md#requirewordboundaryatstart)
 
 ## Properties
 
 ### nodes
 
-• **nodes**: [`Node`](../README.md#node)[]
+> **nodes**: [`Node`](../type-aliases/Node.md)[]
+
+Defined in: [src/pattern/Nodes.ts:8](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/Nodes.ts#L8)
 
 A list of nodes which make up the pattern.
 
-#### Defined in
-
-[src/pattern/Nodes.ts:8](https://github.com/jo3-l/obscenity/blob/0299b49/src/pattern/Nodes.ts#L8)
-
-___
+***
 
 ### requireWordBoundaryAtEnd
 
-• **requireWordBoundaryAtEnd**: `boolean`
+> **requireWordBoundaryAtEnd**: `boolean`
+
+Defined in: [src/pattern/Nodes.ts:13](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/Nodes.ts#L13)
 
 Whether the pattern requires a word boundary at the end.
 
-#### Defined in
-
-[src/pattern/Nodes.ts:13](https://github.com/jo3-l/obscenity/blob/0299b49/src/pattern/Nodes.ts#L13)
-
-___
+***
 
 ### requireWordBoundaryAtStart
 
-• **requireWordBoundaryAtStart**: `boolean`
+> **requireWordBoundaryAtStart**: `boolean`
+
+Defined in: [src/pattern/Nodes.ts:18](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/Nodes.ts#L18)
 
 Whether the pattern requires a word boundary at the start.
-
-#### Defined in
-
-[src/pattern/Nodes.ts:18](https://github.com/jo3-l/obscenity/blob/0299b49/src/pattern/Nodes.ts#L18)

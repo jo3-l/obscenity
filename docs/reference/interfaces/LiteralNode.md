@@ -1,34 +1,29 @@
+[**obscenity**](../README.md)
+
+***
+
 [obscenity](../README.md) / LiteralNode
 
 # Interface: LiteralNode
 
+Defined in: [src/pattern/Nodes.ts:59](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/Nodes.ts#L59)
+
 A literal node.
-
-## Table of contents
-
-### Properties
-
-- [chars](LiteralNode.md#chars)
-- [kind](LiteralNode.md#kind)
 
 ## Properties
 
 ### chars
 
-• **chars**: `number`[]
+> **chars**: `number`[]
+
+Defined in: [src/pattern/Nodes.ts:63](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/Nodes.ts#L63)
 
 The code points that this literal matches.
 
-#### Defined in
-
-[src/pattern/Nodes.ts:63](https://github.com/jo3-l/obscenity/blob/0299b49/src/pattern/Nodes.ts#L63)
-
-___
+***
 
 ### kind
 
-• **kind**: [`Literal`](../enums/SyntaxKind.md#literal)
+> **kind**: [`Literal`](../enumerations/SyntaxKind.md#literal)
 
-#### Defined in
-
-[src/pattern/Nodes.ts:65](https://github.com/jo3-l/obscenity/blob/0299b49/src/pattern/Nodes.ts#L65)
+Defined in: [src/pattern/Nodes.ts:65](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/pattern/Nodes.ts#L65)

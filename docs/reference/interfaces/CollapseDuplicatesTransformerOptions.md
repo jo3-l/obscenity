@@ -1,21 +1,22 @@
+[**obscenity**](../README.md)
+
+***
+
 [obscenity](../README.md) / CollapseDuplicatesTransformerOptions
 
 # Interface: CollapseDuplicatesTransformerOptions
 
+Defined in: [src/transformer/collapse-duplicates/index.ts:75](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/transformer/collapse-duplicates/index.ts#L75)
+
 Options for the collapse duplicates transformer.
-
-## Table of contents
-
-### Properties
-
-- [customThresholds](CollapseDuplicatesTransformerOptions.md#customthresholds)
-- [defaultThreshold](CollapseDuplicatesTransformerOptions.md#defaultthreshold)
 
 ## Properties
 
-### customThresholds
+### customThresholds?
 
-• `Optional` **customThresholds**: `Map`<`string`, `number`\>
+> `optional` **customThresholds**: `Map`\<`string`, `number`\>
+
+Defined in: [src/transformer/collapse-duplicates/index.ts:91](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/transformer/collapse-duplicates/index.ts#L91)
 
 Custom thresholds for characters. If a character has an entry
 corresponding to it, the value of tne entry will be used as the maximum
@@ -29,21 +30,19 @@ two `o`s in a row, and matches `book`. With this transformer, though,
 The fix would be to add an entry corresponding to `o` that overrides its
 threshold to be `2`, with the effect of leaving `book` unchanged.
 
-**`Default`**
+#### Default
 
 ```ts
 new Map()
 ```
 
-#### Defined in
+***
 
-[src/transformer/collapse-duplicates/index.ts:91](https://github.com/jo3-l/obscenity/blob/0299b49/src/transformer/collapse-duplicates/index.ts#L91)
+### defaultThreshold?
 
-___
+> `optional` **defaultThreshold**: `number`
 
-### defaultThreshold
-
-• `Optional` **defaultThreshold**: `number`
+Defined in: [src/transformer/collapse-duplicates/index.ts:102](https://github.com/jo3-l/obscenity/blob/a386fd116c14542130a643879987c21c9c8a4eb9/src/transformer/collapse-duplicates/index.ts#L102)
 
 The maximum number of characters in a run that will be accepted before
 they will be collapsed.
@@ -51,12 +50,8 @@ they will be collapsed.
 For example, if this value was `2`, `aa` would stay the same but `aaa`
 would be transformed to `aa`.
 
-**`Default`**
+#### Default
 
 ```ts
 1
 ```
-
-#### Defined in
-
-[src/transformer/collapse-duplicates/index.ts:102](https://github.com/jo3-l/obscenity/blob/0299b49/src/transformer/collapse-duplicates/index.ts#L102)
