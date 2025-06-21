@@ -58,7 +58,7 @@
 		"cussing"
 	],
 	"homepage": "https://github.com/jo3-l/obscenity#readme",
-	"author": "Joe L. <https://github.com/jo3-l>",
+	"author": "Joseph Liu <https://github.com/jo3-l>",
 	"license": "MIT",
 	"devDependencies": {
 		"@biomejs/biome": "^2.0.4",

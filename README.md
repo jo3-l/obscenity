@@ -116,8 +116,6 @@ Otherwise, refer to the [auto-generated API documentation](./docs/reference).
 Issues can be reported using the [issue tracker](https://github.com/jo3-l/obscenity/issues).
 If you'd like to submit a pull request, please read the [contribution guide](./CONTRIBUTING.md) first.
 
-## Author
+## License
 
-**Obscenity** © [Joe L.](https://github.com/jo3-l/) under the MIT license. Authored and maintained by Joe L.
-
-> GitHub [@jo3-l](https://github.com/jo3-l)
+MIT
