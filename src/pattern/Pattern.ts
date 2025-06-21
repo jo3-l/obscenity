@@ -106,7 +106,7 @@ const parser = new Parser();
 export function pattern(strings: TemplateStringsArray, ...expressions: unknown[]) {
 	let result = strings.raw[0];
 	for (const [i, expression] of expressions.entries()) {
-		result += expression;
+		result += String(expression);
 		result += strings.raw[i + 1];
 	}
 

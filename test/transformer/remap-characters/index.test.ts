@@ -15,7 +15,6 @@ describe('remapCharactersTransformer()', () => {
 		});
 
 		it('should throw if given an object where keys are empty strings', () => {
-			// eslint-disable-next-line @typescript-eslint/naming-convention
 			expect(() => remapCharactersTransformer({ '': 'cd' })).toThrow(RangeError);
 		});
 

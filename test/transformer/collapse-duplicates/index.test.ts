@@ -6,7 +6,6 @@ import { CharacterCode } from '../../../src/util/Char';
 
 jest.mock('../../../src/transformer/collapse-duplicates/transformer');
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const CollapseDuplicatesTransformer = _CollapseDuplicatesTransformer as jest.MockedClass<
 	typeof _CollapseDuplicatesTransformer
 >;

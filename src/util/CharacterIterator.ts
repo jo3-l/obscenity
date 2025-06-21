@@ -35,7 +35,6 @@ export class CharacterIterator implements IterableIterator<number> {
 
 		const char = this._input.charCodeAt(this.currentPosition++);
 		this._lastWidth = 1;
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.done || !isHighSurrogate(char)) return { done: false, value: char };
 
 		// Do we have a surrogate pair?

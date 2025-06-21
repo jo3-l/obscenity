@@ -44,7 +44,6 @@ export class Parser {
 				continue;
 			}
 
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			if (!this.done) {
 				this.reportError(
 					'Boundary assertions are not supported in this position; they are only allowed at the start / end of the pattern.',
@@ -76,7 +75,7 @@ export class Parser {
 				return this.parseOptional();
 			case CharacterCode.RightSquareBracket:
 				this.reportError(`Unexpected ']' with no corresponding '['.`);
-			// eslint-disable-next-line no-fallthrough
+
 			case CharacterCode.QuestionMark:
 				return this.parseWildcard();
 			case CharacterCode.VerticalBar:
@@ -135,7 +134,6 @@ export class Parser {
 
 			const next = this.next();
 			if (next === CharacterCode.Backslash) {
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (this.done) {
 					this.backup();
 					this.reportError('Unexpected trailing backslash.');
@@ -201,7 +199,7 @@ export class Parser {
 		}
 
 		this.lastColumn = this.column++;
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 		if (!isHighSurrogate(char) || this.done) return char;
 
 		// Do we have a surrogate pair?

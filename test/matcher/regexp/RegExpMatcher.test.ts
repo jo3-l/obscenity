@@ -148,7 +148,6 @@ describe('matching with blacklist transformers', () => {
 	});
 
 	it('should work with transformers that change chars (no match)', () => {
-		// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 		const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new RegExpMatcher({
 			blacklistedTerms: [{ id: 1, pattern: pattern`sa?e` }],
@@ -158,7 +157,6 @@ describe('matching with blacklist transformers', () => {
 	});
 
 	it('should work with transformers that change chars (with match)', () => {
-		// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 		const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new RegExpMatcher({
 			blacklistedTerms: [{ id: 1, pattern: pattern`hbllo?` }],
@@ -175,7 +173,6 @@ describe('matching with blacklist transformers', () => {
 	});
 
 	it('should not affect matching of whitelisted terms', () => {
-		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 		const ignoreAllAs = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new RegExpMatcher({
 			blacklistedTerms: [{ id: 1, pattern: pattern`bbb` }],
@@ -198,7 +195,6 @@ describe('matching with whitelist transformers', () => {
 	});
 
 	it('should work with transformers that change chars (no match)', () => {
-		// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 		const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new RegExpMatcher({
 			blacklistedTerms: [{ id: 1, pattern: pattern`biash` }],
@@ -211,7 +207,6 @@ describe('matching with whitelist transformers', () => {
 	});
 
 	it('should work with transformers that change chars (with match)', () => {
-		// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/restrict-plus-operands
 		const changeAToB = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new RegExpMatcher({
 			blacklistedTerms: [{ id: 1, pattern: pattern`ass` }],
@@ -222,7 +217,6 @@ describe('matching with whitelist transformers', () => {
 	});
 
 	it('should not affect matching of blacklisted terms', () => {
-		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 		const ignoreAllAs = createSimpleTransformer((c) => (c === CharacterCode.LowerA ? c + 1 : c));
 		const matcher = new RegExpMatcher({
 			blacklistedTerms: [{ id: 1, pattern: pattern`dader` }],

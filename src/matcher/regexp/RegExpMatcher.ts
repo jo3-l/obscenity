@@ -91,8 +91,8 @@ export class RegExpMatcher implements Matcher {
 		const matches: MatchPayload[] = [];
 		for (const blacklistedTerm of this.blacklistedTerms) {
 			for (const match of transformed.matchAll(blacklistedTerm.regExp)) {
-				const origStartIndex = transformedToOrigIndex[match.index!];
-				let origEndIndex = transformedToOrigIndex[match.index! + match[0].length - 1];
+				const origStartIndex = transformedToOrigIndex[match.index];
+				let origEndIndex = transformedToOrigIndex[match.index + match[0].length - 1];
 				// End index is (unfortunately) inclusive, so adjust as necessary.
 				if (
 					origEndIndex < input.length - 1 && // not the last character
@@ -122,8 +122,8 @@ export class RegExpMatcher implements Matcher {
 		const [transformedToOrigIndex, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
 		for (const blacklistedTerm of this.blacklistedTerms) {
 			for (const match of transformed.matchAll(blacklistedTerm.regExp)) {
-				const origStartIndex = transformedToOrigIndex[match.index!];
-				let origEndIndex = transformedToOrigIndex[match.index! + match[0].length - 1];
+				const origStartIndex = transformedToOrigIndex[match.index];
+				let origEndIndex = transformedToOrigIndex[match.index + match[0].length - 1];
 				// End index is (unfortunately) inclusive, so adjust as necessary.
 				if (
 					origEndIndex < input.length - 1 && // not the last character
