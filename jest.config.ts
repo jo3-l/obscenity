@@ -6,7 +6,6 @@ const config: Config.InitialOptions = {
 	testRunner: 'jest-circus/runner',
 	testMatch: ['<rootDir>/test/**/*.test.ts'],
 	transform: {
-		// eslint-disable-next-line @typescript-eslint/naming-convention
 		'^.+\\.ts$': [
 			'ts-jest',
 			{

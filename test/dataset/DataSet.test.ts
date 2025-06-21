@@ -4,12 +4,7 @@ import { pattern } from '../../src/pattern/Pattern';
 describe('DataSet#addAll()', () => {
 	it('should add all the data from the other dataset to the current one', () => {
 		const other = new DataSet()
-			.addPhrase((phrase) =>
-				phrase
-					.addPattern(pattern`hi`)
-					.addPattern(pattern`yo`)
-					.setMetadata(':D'),
-			)
+			.addPhrase((phrase) => phrase.addPattern(pattern`hi`).addPattern(pattern`yo`).setMetadata(':D'))
 			.addPhrase((phrase) => phrase.addPattern(pattern`hmm`).addWhitelistedTerm('whitelisted'));
 		const dataset = new DataSet()
 			.addPhrase((phrase) => phrase.setMetadata('yodog').addPattern(pattern`hmm2`))
@@ -64,11 +59,7 @@ describe('DataSet#removePhrasesIf()', () => {
 	it('should remove phrases that satisfy the predicate', () => {
 		const dataset = new DataSet()
 			.addPhrase((phrase) =>
-				phrase
-					.addPattern(pattern`hi`)
-					.addPattern(pattern`bye`)
-					.setMetadata('greetings')
-					.addWhitelistedTerm('a'),
+				phrase.addPattern(pattern`hi`).addPattern(pattern`bye`).setMetadata('greetings').addWhitelistedTerm('a'),
 			)
 			.addPhrase((phrase) =>
 				phrase
@@ -78,11 +69,7 @@ describe('DataSet#removePhrasesIf()', () => {
 					.addWhitelistedTerm('b'),
 			)
 			.addPhrase((phrase) =>
-				phrase
-					.addPattern(pattern`sad`)
-					.addPattern(pattern`happy`)
-					.setMetadata('emotions')
-					.addWhitelistedTerm('c'),
+				phrase.addPattern(pattern`sad`).addPattern(pattern`happy`).setMetadata('emotions').addWhitelistedTerm('c'),
 			)
 			.removePhrasesIf((phrase) => phrase.metadata === 'emotions' || phrase.metadata === 'greetings');
 		expect(dataset.build()).toStrictEqual({
@@ -135,18 +122,8 @@ describe('DataSet#getPayloadWithPhraseMetadata()', () => {
 
 	it('should use the correct phrase metadata', () => {
 		const dataset = new DataSet()
-			.addPhrase((phrase) =>
-				phrase
-					.addPattern(pattern`hi`)
-					.addPattern(pattern`bye`)
-					.setMetadata('greetings'),
-			)
-			.addPhrase((phrase) =>
-				phrase
-					.addPattern(pattern`sad`)
-					.addPattern(pattern`happy`)
-					.setMetadata('emotion'),
-			);
+			.addPhrase((phrase) => phrase.addPattern(pattern`hi`).addPattern(pattern`bye`).setMetadata('greetings'))
+			.addPhrase((phrase) => phrase.addPattern(pattern`sad`).addPattern(pattern`happy`).setMetadata('emotion'));
 		expect(dataset.getPayloadWithPhraseMetadata({ termId: 0, ...partialMatch })).toStrictEqual({
 			termId: 0,
 			...partialMatch,
@@ -171,24 +148,11 @@ describe('DataSet#getPayloadWithPhraseMetadata()', () => {
 
 	it('should use the correct phrase metadata after merging data from other dataset', () => {
 		const other = new DataSet().addPhrase((phrase) =>
-			phrase
-				.addPattern(pattern`:D`)
-				.addPattern(pattern`:(`)
-				.setMetadata('emojis'),
+			phrase.addPattern(pattern`:D`).addPattern(pattern`:(`).setMetadata('emojis'),
 		);
 		const dataset = new DataSet()
-			.addPhrase((phrase) =>
-				phrase
-					.addPattern(pattern`hi`)
-					.addPattern(pattern`bye`)
-					.setMetadata('greetings'),
-			)
-			.addPhrase((phrase) =>
-				phrase
-					.addPattern(pattern`sad`)
-					.addPattern(pattern`happy`)
-					.setMetadata('emotion'),
-			)
+			.addPhrase((phrase) => phrase.addPattern(pattern`hi`).addPattern(pattern`bye`).setMetadata('greetings'))
+			.addPhrase((phrase) => phrase.addPattern(pattern`sad`).addPattern(pattern`happy`).setMetadata('emotion'))
 			.addAll(other);
 		expect(dataset.getPayloadWithPhraseMetadata({ termId: 0, ...partialMatch })).toStrictEqual({
 			termId: 0,
@@ -224,24 +188,9 @@ describe('DataSet#getPayloadWithPhraseMetadata()', () => {
 
 	it('should use the correct phrase metadata after removing certain phrases', () => {
 		const dataset = new DataSet()
-			.addPhrase((phrase) =>
-				phrase
-					.addPattern(pattern`hi`)
-					.addPattern(pattern`bye`)
-					.setMetadata('greetings'),
-			)
-			.addPhrase((p) =>
-				p
-					.addPattern(pattern`sad`)
-					.addPattern(pattern`happy`)
-					.setMetadata('emotion'),
-			)
-			.addPhrase((p) =>
-				p
-					.addPattern(pattern`:D`)
-					.addPattern(pattern`:(`)
-					.setMetadata('emojis'),
-			)
+			.addPhrase((phrase) => phrase.addPattern(pattern`hi`).addPattern(pattern`bye`).setMetadata('greetings'))
+			.addPhrase((p) => p.addPattern(pattern`sad`).addPattern(pattern`happy`).setMetadata('emotion'))
+			.addPhrase((p) => p.addPattern(pattern`:D`).addPattern(pattern`:(`).setMetadata('emojis'))
 			.removePhrasesIf((phrase) => phrase.metadata === 'greetings');
 		expect(dataset.getPayloadWithPhraseMetadata({ termId: 0, ...partialMatch })).toStrictEqual({
 			termId: 0,

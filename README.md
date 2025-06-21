@@ -27,23 +27,13 @@ $ pnpm add obscenity
 First, import Obscenity:
 
 ```javascript
-const {
-	RegExpMatcher,
-	TextCensor,
-	englishDataset,
-	englishRecommendedTransformers,
-} = require('obscenity');
+const { RegExpMatcher, TextCensor, englishDataset, englishRecommendedTransformers } = require('obscenity');
 ```
 
 Or, in TypeScript/ESM:
 
 ```typescript
-import {
-	RegExpMatcher,
-	TextCensor,
-	englishDataset,
-	englishRecommendedTransformers,
-} from 'obscenity';
+import { RegExpMatcher, TextCensor, englishDataset, englishRecommendedTransformers } from 'obscenity';
 ```
 
 Now, we can create a new matcher using the English preset.
@@ -72,11 +62,8 @@ if (matcher.hasMatch('fuck you')) {
 // Pass "true" as the "sorted" parameter so the matches are sorted by their position.
 const matches = matcher.getAllMatches('ʃ𝐟ʃὗƈｋ ỹоứ 𝔟ⁱẗ𝙘ɦ', true);
 for (const match of matches) {
-	const { phraseMetadata, startIndex, endIndex } =
-		englishDataset.getPayloadWithPhraseMetadata(match);
-	console.log(
-		`Match for word ${phraseMetadata.originalWord} found between ${startIndex} and ${endIndex}.`,
-	);
+	const { phraseMetadata, startIndex, endIndex } = englishDataset.getPayloadWithPhraseMetadata(match);
+	console.log(`Match for word ${phraseMetadata.originalWord} found between ${startIndex} and ${endIndex}.`);
 }
 // Match for word fuck found between 0 and 6.
 // Match for word bitch found between 12 and 18.
@@ -109,7 +96,7 @@ With the English preset, Obscenity (correctly) finds matches in all of the follo
 - **fk** you
 - **ffuk** you
 - i like **a$$es**
-- <!-- prettier-ignore --> ʃ𝐟ʃὗƈｋ ỹоứ
+- <!-- biome-ignore format --> ʃ𝐟ʃὗƈｋ ỹоứ
 
 ...and it **does not match** on the following:
 

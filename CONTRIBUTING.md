@@ -1,6 +1,6 @@
 # Contributing
 
-If you wish to contribute to Obscenity, feel free to fork the repository and submit a pull request. We use [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) to enforce a consistent code style and catch possible issues; setting up relevant plugins for your editor of choice is highly recommended.
+If you wish to contribute to Obscenity, feel free to fork the repository and submit a pull request. We use [ESLint](https://eslint.org/) and [Biome](https://biomejs.dev/) to enforce a consistent code style and catch possible issues; setting up relevant plugins for your editor of choice is highly recommended.
 
 ## Setup
 
