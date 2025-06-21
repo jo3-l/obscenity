@@ -14,6 +14,7 @@ export * from './pattern/Pattern';
 
 export * from './preset/english';
 
+export * from './transformer/Transformers';
 export * from './transformer/collapse-duplicates';
 export * from './transformer/remap-characters';
 export * from './transformer/resolve-confusables';
