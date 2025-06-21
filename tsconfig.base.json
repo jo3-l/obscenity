@@ -1,13 +1,14 @@
 {
 	"compilerOptions": {
+		"target": "ES2022",
+		"lib": ["ES2022"],
+		"module": "CommonJS",
+
 		"strict": true,
 		"noUnusedLocals": true,
 		"noImplicitAny": true,
-		"alwaysStrict": true,
-		"pretty": true,
-		"module": "CommonJS",
-		"moduleResolution": "Node",
-		"target": "ES2022",
-		"lib": ["ES2022"]
+
+		"esModuleInterop": true,
+		"skipLibCheck": true
 	}
 }
