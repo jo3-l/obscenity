@@ -62,8 +62,6 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@biomejs/biome": "^2.0.4",
-		"@commitlint/cli": "^18.6.1",
-		"@commitlint/config-angular": "^18.6.1",
 		"@jest/types": "^29.6.3",
 		"@types/jest": "^29.5.14",
 		"commit-and-tag-version": "^12.5.1",
