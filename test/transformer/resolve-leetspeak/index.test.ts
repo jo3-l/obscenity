@@ -1,5 +1,5 @@
-import { TransformerType } from '../../../src/transformer/Transformers';
 import { resolveLeetSpeakTransformer } from '../../../src/transformer/resolve-leetspeak';
+import { TransformerType } from '../../../src/transformer/Transformers';
 import { CharacterCode } from '../../../src/util/Char';
 
 describe('resolveLeetSpeakTransformer()', () => {

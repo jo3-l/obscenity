@@ -1,5 +1,5 @@
-import { TransformerType } from '../../../src/transformer/Transformers';
 import { resolveConfusablesTransformer } from '../../../src/transformer/resolve-confusables';
+import { TransformerType } from '../../../src/transformer/Transformers';
 import { CharacterCode } from '../../../src/util/Char';
 
 describe('resolveConfusablesTransformer()', () => {

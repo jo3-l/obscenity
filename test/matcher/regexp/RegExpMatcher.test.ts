@@ -3,8 +3,8 @@ import type { MatchPayload } from '../../../src/matcher/MatchPayload';
 import { RegExpMatcher } from '../../../src/matcher/regexp/RegExpMatcher';
 import { parseRawPattern, pattern } from '../../../src/pattern/Pattern';
 import { englishDataset, englishRecommendedTransformers } from '../../../src/preset/english';
-import { createSimpleTransformer } from '../../../src/transformer/Transformers';
 import { skipNonAlphabeticTransformer } from '../../../src/transformer/skip-non-alphabetic';
+import { createSimpleTransformer } from '../../../src/transformer/Transformers';
 import { CharacterCode } from '../../../src/util/Char';
 
 describe('constructor', () => {

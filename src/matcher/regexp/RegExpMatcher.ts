@@ -1,13 +1,13 @@
-import { isHighSurrogate, isLowSurrogate } from '../../util/Char';
 import { compilePatternToRegExp, potentiallyMatchesEmptyString } from '../../pattern/Util';
 import { TransformerSet } from '../../transformer/TransformerSet';
 import type { TransformerContainer } from '../../transformer/Transformers';
+import { isHighSurrogate, isLowSurrogate } from '../../util/Char';
 import { CharacterIterator } from '../../util/CharacterIterator';
 import type { BlacklistedTerm } from '../BlacklistedTerm';
 import { IntervalCollection } from '../IntervalCollection';
+import type { Matcher } from '../Matcher';
 import type { MatchPayload } from '../MatchPayload';
 import { compareMatchByPositionAndId } from '../MatchPayload';
-import type { Matcher } from '../Matcher';
 
 /**
  * An implementation of the [[Matcher]] interface using regular expressions and
