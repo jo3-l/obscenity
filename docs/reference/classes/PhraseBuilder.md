@@ -6,7 +6,7 @@
 
 # Class: PhraseBuilder\<MetadataType\>
 
-Defined in: [src/dataset/DataSet.ts:137](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L137)
+Defined in: [src/dataset/DataSet.ts:137](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/dataset/DataSet.ts#L137)
 
 Builder for phrases.
 
@@ -32,7 +32,7 @@ Builder for phrases.
 
 > **addPattern**(`pattern`): `PhraseBuilder`\<`MetadataType`\>
 
-Defined in: [src/dataset/DataSet.ts:149](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L149)
+Defined in: [src/dataset/DataSet.ts:149](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/dataset/DataSet.ts#L149)
 
 Associates a pattern with this phrase.
 
@@ -54,7 +54,7 @@ Pattern to add.
 
 > **addWhitelistedTerm**(`term`): `PhraseBuilder`\<`MetadataType`\>
 
-Defined in: [src/dataset/DataSet.ts:159](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L159)
+Defined in: [src/dataset/DataSet.ts:159](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/dataset/DataSet.ts#L159)
 
 Associates a whitelisted pattern with this phrase.
 
@@ -76,7 +76,7 @@ Whitelisted term to add.
 
 > **build**(): [`PhraseContainer`](../interfaces/PhraseContainer.md)\<`MetadataType`\>
 
-Defined in: [src/dataset/DataSet.ts:178](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L178)
+Defined in: [src/dataset/DataSet.ts:178](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/dataset/DataSet.ts#L178)
 
 Builds the phrase, returning a [[PhraseContainer]] for use with the
 [[DataSet]].
@@ -91,7 +91,7 @@ Builds the phrase, returning a [[PhraseContainer]] for use with the
 
 > **setMetadata**(`metadata?`): `PhraseBuilder`\<`MetadataType`\>
 
-Defined in: [src/dataset/DataSet.ts:169](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/dataset/DataSet.ts#L169)
+Defined in: [src/dataset/DataSet.ts:169](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/dataset/DataSet.ts#L169)
 
 Associates some metadata with this phrase.
 

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.4.5](https://github.com/jo3-l/obscenity/compare/v0.4.4...v0.4.5) (2025-09-07)
+
+
+### Features
+
+* **leetspeak-transofrmer:** add / -> l mapping ([#110](https://github.com/jo3-l/obscenity/issues/110)) ([3e3a4aa](https://github.com/jo3-l/obscenity/commit/3e3a4aaeadbb09ca12af2682b4de7865e530ae9e))
+
+
+### Bug Fixes
+
+* **english-preset:** correct erroneous pattern ([907e5d7](https://github.com/jo3-l/obscenity/commit/907e5d7d34bb29e7d66f262535368ae2d124a8eb)), closes [#109](https://github.com/jo3-l/obscenity/issues/109) [#113](https://github.com/jo3-l/obscenity/issues/113)
+
 ## [0.4.4](https://github.com/jo3-l/obscenity/compare/v0.4.3...v0.4.4) (2025-06-21)
 
 

@@ -6,7 +6,7 @@
 
 # Interface: MatchPayload
 
-Defined in: [src/matcher/MatchPayload.ts:9](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/MatchPayload.ts#L9)
+Defined in: [src/matcher/MatchPayload.ts:9](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/matcher/MatchPayload.ts#L9)
 
 Information emitted on a successful match.
 
@@ -19,7 +19,7 @@ the [[DataSet]] class, which supports associating metadata with patterns.
 
 > **endIndex**: `number`
 
-Defined in: [src/matcher/MatchPayload.ts:16](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/MatchPayload.ts#L16)
+Defined in: [src/matcher/MatchPayload.ts:16](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/matcher/MatchPayload.ts#L16)
 
 End index of the match, inclusive.
 
@@ -32,7 +32,7 @@ then this points to the index of the low surrogate.
 
 > **matchLength**: `number`
 
-Defined in: [src/matcher/MatchPayload.ts:21](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/MatchPayload.ts#L21)
+Defined in: [src/matcher/MatchPayload.ts:21](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/matcher/MatchPayload.ts#L21)
 
 Total number of of code points that matched.
 
@@ -42,7 +42,7 @@ Total number of of code points that matched.
 
 > **startIndex**: `number`
 
-Defined in: [src/matcher/MatchPayload.ts:26](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/MatchPayload.ts#L26)
+Defined in: [src/matcher/MatchPayload.ts:26](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/matcher/MatchPayload.ts#L26)
 
 Start index of the match, inclusive.
 
@@ -52,6 +52,6 @@ Start index of the match, inclusive.
 
 > **termId**: `number`
 
-Defined in: [src/matcher/MatchPayload.ts:31](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/matcher/MatchPayload.ts#L31)
+Defined in: [src/matcher/MatchPayload.ts:31](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/matcher/MatchPayload.ts#L31)
 
 ID of the blacklisted term that matched.

@@ -8,7 +8,7 @@
 
 > **TextCensorStrategy** = (`ctx`) => `string`
 
-Defined in: [src/censor/TextCensor.ts:99](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/censor/TextCensor.ts#L99)
+Defined in: [src/censor/TextCensor.ts:99](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/censor/TextCensor.ts#L99)
 
 A text censoring strategy, which receives a [[CensorContext]] and returns a
 replacement string.

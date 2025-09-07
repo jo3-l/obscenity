@@ -8,7 +8,7 @@
 
 > **remapCharactersTransformer**(`mapping`): [`SimpleTransformerContainer`](../interfaces/SimpleTransformerContainer.md)
 
-Defined in: [src/transformer/remap-characters/index.ts:38](https://github.com/jo3-l/obscenity/blob/df55df57c9cde0cfef01d92ac049af8e5d6ff36a/src/transformer/remap-characters/index.ts#L38)
+Defined in: [src/transformer/remap-characters/index.ts:38](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/transformer/remap-characters/index.ts#L38)
 
 Maps certain characters to other characters, leaving other characters
 unchanged.
