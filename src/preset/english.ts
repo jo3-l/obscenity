@@ -349,7 +349,7 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addPattern(pattern`|tiddies`)
 			.addPattern(pattern`|tities`),
 	)
-	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'tranny' }).addPattern(pattern`tranny`))
+	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'tranny' }).addPattern(pattern`|trany`))
 	.addPhrase((phrase) =>
 		phrase.setMetadata({ originalWord: 'turd' }).addPattern(pattern`|turd`).addWhitelistedTerm('turducken'),
 	)
