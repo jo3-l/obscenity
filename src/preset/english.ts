@@ -100,7 +100,9 @@ export const englishRecommendedTransformers: Pick<
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * ```
  */
-export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>()
+export const englishDataset = new DataSet<{
+	originalWord: EnglishProfaneWord;
+}>()
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'abo' }).addPattern(pattern`|ab[b]o[s]|`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'abeed' }).addPattern(pattern`ab[b]eed`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'africoon' }).addPattern(pattern`africoon`))
@@ -321,7 +323,11 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'prick' }).addPattern(pattern`|prick[s]|`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'pussy' }).addPattern(pattern`p[u]ssy`))
 	.addPhrase((phrase) =>
-		phrase.setMetadata({ originalWord: 'rape' }).addPattern(pattern`|rape`).addPattern(pattern`|rapis[s]t`),
+		phrase
+			.setMetadata({ originalWord: 'rape' })
+			.addPattern(pattern`|rape`)
+			.addPattern(pattern`|rapis[s]t`)
+			.addWhitelistedTerm('rapper'),
 	)
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'retard' }).addPattern(pattern`retard`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'scat' }).addPattern(pattern`|s[s]cat|`))
