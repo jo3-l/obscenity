@@ -169,6 +169,7 @@ export const englishDataset = new DataSet<{ originalWord: EnglishProfaneWord }>(
 			.addWhitelistedTerm('assem')
 			.addWhitelistedTerm('assen')
 			.addWhitelistedTerm('asser')
+			.addWhitelistedTerm('assess')
 			.addWhitelistedTerm('asset')
 			.addWhitelistedTerm('assev')
 			.addWhitelistedTerm('assi')
