@@ -229,7 +229,9 @@ export const englishDataset = new DataSet<{
 			.addPattern(pattern`|dck|`)
 			.addPattern(pattern`dick`)
 			.addWhitelistedTerm('benedick')
-			.addWhitelistedTerm('dickens'),
+			.addWhitelistedTerm('dickens')
+			.addWhitelistedTerm('dickety')
+			.addWhitelistedTerm('dickory'),
 	)
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'dildo' }).addPattern(pattern`dildo`))
 	.addPhrase((phrase) => phrase.setMetadata({ originalWord: 'doggystyle' }).addPattern(pattern`d[o]g[g]ys[s]t[y]l[l]`))
