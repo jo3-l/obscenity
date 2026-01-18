@@ -6,7 +6,7 @@
 
 # Enumeration: TransformerType
 
-Defined in: [src/transformer/Transformers.ts:4](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/transformer/Transformers.ts#L4)
+Defined in: [src/transformer/Transformers.ts:4](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/transformer/Transformers.ts#L4)
 
 All the possible transformer types.
 
@@ -16,7 +16,7 @@ All the possible transformer types.
 
 > **Simple**: `0`
 
-Defined in: [src/transformer/Transformers.ts:5](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/transformer/Transformers.ts#L5)
+Defined in: [src/transformer/Transformers.ts:5](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/transformer/Transformers.ts#L5)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [src/transformer/Transformers.ts:5](https://github.com/jo3-l/obsceni
 
 > **Stateful**: `1`
 
-Defined in: [src/transformer/Transformers.ts:6](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/transformer/Transformers.ts#L6)
+Defined in: [src/transformer/Transformers.ts:6](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/transformer/Transformers.ts#L6)

@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.4.6](https://github.com/jo3-l/obscenity/compare/v0.4.5...v0.4.6) (2026-01-18)
+
+
+### Features
+
+* add React Native condition to exports for Metro compatibility ([#125](https://github.com/jo3-l/obscenity/issues/125)) ([ae4d979](https://github.com/jo3-l/obscenity/commit/ae4d9794c82884d20a8b302b776b16d7a17f2d99))
+
+
+### Bug Fixes
+
+* **preset-english:** whitelist "assess" ([c09308e](https://github.com/jo3-l/obscenity/commit/c09308e4b8855a37f47cc7cd822fe062c4a10a9a)), closes [#124](https://github.com/jo3-l/obscenity/issues/124)
+* **preset-english:** whitelist "rapper" ([d574bea](https://github.com/jo3-l/obscenity/commit/d574bea49183892956cea7c8367b59c46e4f3cd4)), closes [#122](https://github.com/jo3-l/obscenity/issues/122)
+* **preset-english:** whitelist 45s ([#119](https://github.com/jo3-l/obscenity/issues/119)) ([0c75298](https://github.com/jo3-l/obscenity/commit/0c752986aef1caaf30a3c2cfc4ebdc27f8b894a3)), closes [#105](https://github.com/jo3-l/obscenity/issues/105)
+* **preset-english:** whitelist Dickory/Dickety ([#118](https://github.com/jo3-l/obscenity/issues/118)) ([74138fa](https://github.com/jo3-l/obscenity/commit/74138fa743ccfb12a1f50b35b199d4acd050e728))
+
 ## [0.4.5](https://github.com/jo3-l/obscenity/compare/v0.4.4...v0.4.5) (2025-09-07)
 
 

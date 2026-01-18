@@ -6,7 +6,7 @@
 
 # Interface: CollapseDuplicatesTransformerOptions
 
-Defined in: [src/transformer/collapse-duplicates/index.ts:75](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/transformer/collapse-duplicates/index.ts#L75)
+Defined in: [src/transformer/collapse-duplicates/index.ts:75](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/transformer/collapse-duplicates/index.ts#L75)
 
 Options for the collapse duplicates transformer.
 
@@ -16,7 +16,7 @@ Options for the collapse duplicates transformer.
 
 > `optional` **customThresholds**: `Map`\<`string`, `number`\>
 
-Defined in: [src/transformer/collapse-duplicates/index.ts:91](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/transformer/collapse-duplicates/index.ts#L91)
+Defined in: [src/transformer/collapse-duplicates/index.ts:91](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/transformer/collapse-duplicates/index.ts#L91)
 
 Custom thresholds for characters. If a character has an entry
 corresponding to it, the value of tne entry will be used as the maximum
@@ -42,7 +42,7 @@ new Map()
 
 > `optional` **defaultThreshold**: `number`
 
-Defined in: [src/transformer/collapse-duplicates/index.ts:102](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/transformer/collapse-duplicates/index.ts#L102)
+Defined in: [src/transformer/collapse-duplicates/index.ts:102](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/transformer/collapse-duplicates/index.ts#L102)
 
 The maximum number of characters in a run that will be accepted before
 they will be collapsed.

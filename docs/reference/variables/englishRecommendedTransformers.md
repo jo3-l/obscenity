@@ -8,7 +8,7 @@
 
 > `const` **englishRecommendedTransformers**: `Pick`\<[`RegExpMatcherOptions`](../interfaces/RegExpMatcherOptions.md), `"blacklistMatcherTransformers"` \| `"whitelistMatcherTransformers"`\>
 
-Defined in: [src/preset/english.ts:48](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/preset/english.ts#L48)
+Defined in: [src/preset/english.ts:48](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/preset/english.ts#L48)
 
 Recommended transformers to be used with the [[englishDataset | english word
 dataset]] and the [[RegExpMatcher]].

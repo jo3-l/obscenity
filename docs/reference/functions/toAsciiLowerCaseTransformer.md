@@ -8,7 +8,7 @@
 
 > **toAsciiLowerCaseTransformer**(): [`SimpleTransformerContainer`](../interfaces/SimpleTransformerContainer.md)
 
-Defined in: [src/transformer/to-ascii-lowercase/index.ts:18](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/transformer/to-ascii-lowercase/index.ts#L18)
+Defined in: [src/transformer/to-ascii-lowercase/index.ts:18](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/transformer/to-ascii-lowercase/index.ts#L18)
 
 Creates a transformer that changes all ASCII alphabet characters to
 lower-case, leaving other characters unchanged.

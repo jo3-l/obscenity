@@ -8,7 +8,7 @@
 
 > **resolveConfusablesTransformer**(): [`SimpleTransformerContainer`](../interfaces/SimpleTransformerContainer.md)
 
-Defined in: [src/transformer/resolve-confusables/index.ts:22](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/transformer/resolve-confusables/index.ts#L22)
+Defined in: [src/transformer/resolve-confusables/index.ts:22](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/transformer/resolve-confusables/index.ts#L22)
 
 Creates a transformer that maps confusable Unicode characters to their
 normalized equivalent. For example, `⓵`, `➊`, and `⑴` become `1` when using

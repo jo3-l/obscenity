@@ -8,7 +8,7 @@
 
 > **createSimpleTransformer**(`transformer`): [`SimpleTransformerContainer`](../interfaces/SimpleTransformerContainer.md)
 
-Defined in: [src/transformer/Transformers.ts:45](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/transformer/Transformers.ts#L45)
+Defined in: [src/transformer/Transformers.ts:45](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/transformer/Transformers.ts#L45)
 
 Creates a container holding the transformer function provided. Simple
 transformers are suitable for stateless transformations, e.g., a

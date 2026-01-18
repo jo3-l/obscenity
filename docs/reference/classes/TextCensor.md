@@ -6,7 +6,7 @@
 
 # Class: TextCensor
 
-Defined in: [src/censor/TextCensor.ts:9](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/censor/TextCensor.ts#L9)
+Defined in: [src/censor/TextCensor.ts:9](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/censor/TextCensor.ts#L9)
 
 Censors regions of text matched by a [[Matcher]], supporting flexible
 [[TextCensorStrategy | censoring strategies]].
@@ -27,7 +27,7 @@ Censors regions of text matched by a [[Matcher]], supporting flexible
 
 > **applyTo**(`input`, `matches`): `string`
 
-Defined in: [src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/censor/TextCensor.ts#L66)
+Defined in: [src/censor/TextCensor.ts:66](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/censor/TextCensor.ts#L66)
 
 Applies the censoring strategy to the text, returning the censored text.
 
@@ -70,7 +70,7 @@ The censored text.
 
 > **setStrategy**(`strategy`): `TextCensor`
 
-Defined in: [src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/907e5d7d34bb29e7d66f262535368ae2d124a8eb/src/censor/TextCensor.ts#L41)
+Defined in: [src/censor/TextCensor.ts:41](https://github.com/jo3-l/obscenity/blob/ae4d9794c82884d20a8b302b776b16d7a17f2d99/src/censor/TextCensor.ts#L41)
 
 Sets the censoring strategy, which is responsible for generating
 replacement text for regions of the text that should be censored.
