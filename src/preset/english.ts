@@ -167,6 +167,7 @@ export const englishDataset = new DataSet<{
 		phrase
 			.setMetadata({ originalWord: 'ass' })
 			.addPattern(pattern`|ass`)
+			.addWhitelistedTerm('45s')
 			.addWhitelistedTerm('assa')
 			.addWhitelistedTerm('assem')
 			.addWhitelistedTerm('assen')
