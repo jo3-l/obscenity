@@ -4,15 +4,15 @@ import { TransformerType } from '../../../src/transformer/Transformers';
 import { CharacterCode } from '../../../src/util/Char';
 
 describe('resolveLeetSpeakTransformer()', () => {
-	it('should return a simple transformer container', () => {
+	it('should return a stateful transformer container', () => {
 		const container = resolveLeetSpeakTransformer();
-		expect(container.type).toBe(TransformerType.Simple);
-		expect(typeof container.transform).toBe('function');
+		expect(container.type).toBe(TransformerType.Stateful);
+		expect(typeof container.factory).toBe('function');
 	});
 
 	describe('character remapping', () => {
 		it('should remap relevant characters to their normalized equivalent', () => {
-			const transformer = resolveLeetSpeakTransformer();
+			const transformer = resolveLeetSpeakTransformer().factory();
 			expect(transformer.transform('@'.charCodeAt(0))).toBe(CharacterCode.LowerA);
 			expect(transformer.transform('4'.charCodeAt(0))).toBe(CharacterCode.LowerA);
 			expect(transformer.transform('('.charCodeAt(0))).toBe('c'.charCodeAt(0));
@@ -28,19 +28,37 @@ describe('resolveLeetSpeakTransformer()', () => {
 		});
 
 		it('should leave other characters as is', () => {
-			const transformer = resolveLeetSpeakTransformer();
+			const transformer = resolveLeetSpeakTransformer().factory();
 			expect(transformer.transform('f'.charCodeAt(0))).toBe('f'.charCodeAt(0));
 			expect(transformer.transform(CharacterCode.Backslash)).toBe(CharacterCode.Backslash);
-			// '!' should NOT be remapped; it is common sentence-ending punctuation
+		});
+
+		it('should only remap ! to i when it appears mid-word', () => {
+			const transformer = resolveLeetSpeakTransformer().factory();
+
+			// Preceded by nothing: leave as-is
 			expect(transformer.transform('!'.charCodeAt(0))).toBe('!'.charCodeAt(0));
+
+			transformer.reset();
+
+			// Preceded by space (non-alphabetic): leave as-is
+			transformer.transform(' '.charCodeAt(0));
+			expect(transformer.transform('!'.charCodeAt(0))).toBe('!'.charCodeAt(0));
+
+			transformer.reset();
+
+			// Preceded by 'd': remap to 'i'
+			transformer.transform('d'.charCodeAt(0));
+			expect(transformer.transform('!'.charCodeAt(0))).toBe('i'.charCodeAt(0));
+
+			// Preceded by 'i': remap to 'i'
+			expect(transformer.transform('!'.charCodeAt(0))).toBe('i'.charCodeAt(0));
 		});
 	});
 });
 
 describe('resolveLeetSpeakTransformer() - word boundary regression (#126)', () => {
 	it('should match a word followed by ! when a trailing word boundary is required', () => {
-		// Regression: '!' used to be remapped to 'i'
-		// which caused the trailing \b in the pattern to fail.
 		const matcher = new RegExpMatcher({
 			blacklistedTerms: [{ id: 1, pattern: pattern`|fuck|` }],
 			blacklistMatcherTransformers: [resolveLeetSpeakTransformer()],
@@ -52,8 +70,17 @@ describe('resolveLeetSpeakTransformer() - word boundary regression (#126)', () =
 		expect(matcher.hasMatch('fuckery')).toBe(false);
 	});
 
+	it('should match a word containing ! as an i', () => {
+		const matcher = new RegExpMatcher({
+			blacklistedTerms: [{ id: 1, pattern: pattern`|dick|` }],
+			blacklistMatcherTransformers: [resolveLeetSpeakTransformer()],
+		});
+		expect(matcher.hasMatch('d!ck')).toBe(true);
+		expect(matcher.hasMatch('d!ck!')).toBe(true);
+	});
+
 	it('should still remap | to i for leet-speak matching', () => {
-		const transformer = resolveLeetSpeakTransformer();
+		const transformer = resolveLeetSpeakTransformer().factory();
 		expect(transformer.transform('|'.charCodeAt(0))).toBe('i'.charCodeAt(0));
 	});
 });
