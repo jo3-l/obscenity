@@ -1,3 +1,4 @@
+import { RegExpMatcher, pattern } from '../../../src';
 import { resolveLeetSpeakTransformer } from '../../../src/transformer/resolve-leetspeak';
 import { TransformerType } from '../../../src/transformer/Transformers';
 import { CharacterCode } from '../../../src/util/Char';
@@ -17,7 +18,6 @@ describe('resolveLeetSpeakTransformer()', () => {
 			expect(transformer.transform('('.charCodeAt(0))).toBe('c'.charCodeAt(0));
 			expect(transformer.transform('3'.charCodeAt(0))).toBe('e'.charCodeAt(0));
 			expect(transformer.transform('1'.charCodeAt(0))).toBe('i'.charCodeAt(0));
-			expect(transformer.transform('!'.charCodeAt(0))).toBe('i'.charCodeAt(0));
 			expect(transformer.transform('|'.charCodeAt(0))).toBe('i'.charCodeAt(0));
 			expect(transformer.transform('6'.charCodeAt(0))).toBe('g'.charCodeAt(0));
 			expect(transformer.transform('0'.charCodeAt(0))).toBe('o'.charCodeAt(0));
@@ -31,6 +31,29 @@ describe('resolveLeetSpeakTransformer()', () => {
 			const transformer = resolveLeetSpeakTransformer();
 			expect(transformer.transform('f'.charCodeAt(0))).toBe('f'.charCodeAt(0));
 			expect(transformer.transform(CharacterCode.Backslash)).toBe(CharacterCode.Backslash);
+			// '!' should NOT be remapped; it is common sentence-ending punctuation
+			expect(transformer.transform('!'.charCodeAt(0))).toBe('!'.charCodeAt(0));
 		});
+	});
+});
+
+describe('resolveLeetSpeakTransformer() - word boundary regression (#126)', () => {
+	it('should match a word followed by ! when a trailing word boundary is required', () => {
+		// Regression: '!' used to be remapped to 'i'
+		// which caused the trailing \b in the pattern to fail.
+		const matcher = new RegExpMatcher({
+			blacklistedTerms: [{ id: 1, pattern: pattern`|fuck|` }],
+			blacklistMatcherTransformers: [resolveLeetSpeakTransformer()],
+		});
+		expect(matcher.hasMatch('fuck')).toBe(true);
+		expect(matcher.hasMatch('fuck!')).toBe(true);
+		expect(matcher.hasMatch('fuck.')).toBe(true);
+		expect(matcher.hasMatch('fuck,')).toBe(true);
+		expect(matcher.hasMatch('fuckery')).toBe(false);
+	});
+
+	it('should still remap | to i for leet-speak matching', () => {
+		const transformer = resolveLeetSpeakTransformer();
+		expect(transformer.transform('|'.charCodeAt(0))).toBe('i'.charCodeAt(0));
 	});
 });
