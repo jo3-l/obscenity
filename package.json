@@ -68,7 +68,7 @@
 		"@biomejs/biome": "^2.0.4",
 		"@jest/types": "^29.6.3",
 		"@types/jest": "^29.5.14",
-		"commit-and-tag-version": "^12.5.1",
+		"commit-and-tag-version": "^13.0.0",
 		"eslint": "^9.29.0",
 		"fast-check": "^2.25.0",
 		"gen-esm-wrapper": "^1.1.3",
