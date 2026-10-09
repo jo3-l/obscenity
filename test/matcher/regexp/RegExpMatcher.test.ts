@@ -3,6 +3,7 @@ import type { MatchPayload } from '../../../src/matcher/MatchPayload';
 import { RegExpMatcher } from '../../../src/matcher/regexp/RegExpMatcher';
 import { parseRawPattern, pattern } from '../../../src/pattern/Pattern';
 import { englishDataset, englishRecommendedTransformers } from '../../../src/preset/english';
+import { collapseDuplicatesTransformer } from '../../../src/transformer/collapse-duplicates';
 import { skipNonAlphabeticTransformer } from '../../../src/transformer/skip-non-alphabetic';
 import { createSimpleTransformer } from '../../../src/transformer/Transformers';
 import { CharacterCode } from '../../../src/util/Char';
@@ -180,6 +181,56 @@ describe('matching with blacklist transformers', () => {
 			blacklistMatcherTransformers: [ignoreAllAs],
 		});
 		expect(matcher.getAllMatches('!!!! $$aabbbaa## !!!')).toHaveLength(0);
+	});
+});
+
+describe('matching with transformers that collapse duplicates', () => {
+	const collapsing = (...extraTransformers: ReturnType<typeof skipNonAlphabeticTransformer>[]) =>
+		new RegExpMatcher({
+			blacklistedTerms: [{ id: 1, pattern: pattern`pit` }],
+			blacklistMatcherTransformers: [...extraTransformers, collapseDuplicatesTransformer({ defaultThreshold: 1 })],
+		});
+
+	it('should include collapsed duplicates of the last character in the match (issue #77)', () => {
+		expect(collapsing().getAllMatches('pppiiittt')).toStrictEqual([
+			{ termId: 1, startIndex: 0, endIndex: 8, matchLength: 3 },
+		]);
+	});
+
+	it('should end the match at the last collapsed duplicate', () => {
+		expect(collapsing().getAllMatches('a pittt b')).toStrictEqual([
+			{ termId: 1, startIndex: 2, endIndex: 6, matchLength: 3 },
+		]);
+	});
+
+	it('should not include skipped characters that follow the match', () => {
+		expect(collapsing(skipNonAlphabeticTransformer()).getAllMatches('pittt!!! b')).toStrictEqual([
+			{ termId: 1, startIndex: 0, endIndex: 4, matchLength: 3 },
+		]);
+	});
+
+	it('should include collapsed duplicates that are separated by skipped characters', () => {
+		expect(collapsing(skipNonAlphabeticTransformer()).getAllMatches('p i t t t')).toStrictEqual([
+			{ termId: 1, startIndex: 0, endIndex: 8, matchLength: 3 },
+		]);
+	});
+
+	it('should include both halves of a collapsed surrogate pair', () => {
+		const matcher = new RegExpMatcher({
+			blacklistedTerms: [{ id: 1, pattern: pattern`x🌉` }],
+			blacklistMatcherTransformers: [collapseDuplicatesTransformer({ defaultThreshold: 1 })],
+		});
+		expect(matcher.getAllMatches('x🌉🌉 y')).toStrictEqual([{ termId: 1, startIndex: 0, endIndex: 4, matchLength: 2 }]);
+	});
+
+	it('should not change which matches are whitelisted', () => {
+		const matcher = new RegExpMatcher({
+			blacklistedTerms: [{ id: 1, pattern: pattern`pit` }],
+			whitelistedTerms: ['spit'],
+			blacklistMatcherTransformers: [collapseDuplicatesTransformer({ defaultThreshold: 1 })],
+		});
+		expect(matcher.hasMatch('spittt')).toBe(false);
+		expect(matcher.getAllMatches('spittt')).toStrictEqual([]);
 	});
 });
 

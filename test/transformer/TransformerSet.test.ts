@@ -136,3 +136,54 @@ describe('TransformerSet#resetAll()', () => {
 		expect(instance1.reset).toHaveBeenCalledTimes(1);
 	});
 });
+
+describe('TransformerSet#lastCharWasDroppedAsRepeat()', () => {
+	const dropRepeats = () => {
+		let last = -1;
+		return createStatefulTransformer(() => ({
+			transform: (c: number) => (c === last ? undefined : (last = c)),
+			reset: () => {
+				last = -1;
+			},
+		}));
+	};
+	const dropSpaces = createSimpleTransformer((c) => (c === 32 ? undefined : c));
+
+	it('should be false for a character that was kept', () => {
+		const transformers = new TransformerSet([dropRepeats()]);
+		expect(transformers.applyTo(97)).toBe(97);
+		expect(transformers.lastCharWasDroppedAsRepeat()).toBeFalsy();
+	});
+
+	it('should be true for a character dropped by a transformer that just let the same character through', () => {
+		const transformers = new TransformerSet([dropRepeats()]);
+		transformers.applyTo(97);
+		expect(transformers.applyTo(97)).toBeUndefined();
+		expect(transformers.lastCharWasDroppedAsRepeat()).toBeTruthy();
+	});
+
+	it('should be false for a character that is always dropped', () => {
+		const transformers = new TransformerSet([dropSpaces]);
+		transformers.applyTo(32);
+		expect(transformers.applyTo(32)).toBeUndefined();
+		expect(transformers.lastCharWasDroppedAsRepeat()).toBeFalsy();
+	});
+
+	it('should see through characters dropped by an earlier transformer', () => {
+		const transformers = new TransformerSet([dropSpaces, dropRepeats()]);
+		transformers.applyTo(97);
+		transformers.applyTo(32);
+		expect(transformers.lastCharWasDroppedAsRepeat()).toBeFalsy();
+		expect(transformers.applyTo(97)).toBeUndefined();
+		expect(transformers.lastCharWasDroppedAsRepeat()).toBeTruthy();
+	});
+
+	it('should be cleared by resetAll()', () => {
+		const transformers = new TransformerSet([dropRepeats()]);
+		transformers.applyTo(97);
+		transformers.applyTo(97);
+		transformers.resetAll();
+		expect(transformers.lastCharWasDroppedAsRepeat()).toBeFalsy();
+		expect(transformers.applyTo(97)).toBe(97);
+	});
+});
