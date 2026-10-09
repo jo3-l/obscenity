@@ -86,7 +86,10 @@ export class RegExpMatcher implements Matcher {
 
 	public getAllMatches(input: string, sorted = false) {
 		const whitelistedIntervals = this.getWhitelistedIntervals(input);
-		const [transformedToOrigIndex, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
+		const [transformedToOrigIndex, transformed, transformedToOrigEndIndex] = this.applyTransformers(
+			input,
+			this.blacklistMatcherTransformers,
+		);
 
 		const matches: MatchPayload[] = [];
 		for (const blacklistedTerm of this.blacklistedTerms) {
@@ -106,7 +109,9 @@ export class RegExpMatcher implements Matcher {
 					matches.push({
 						termId: blacklistedTerm.id,
 						startIndex: origStartIndex,
-						endIndex: origEndIndex,
+						// Report the span up to the last character that was folded into the end of
+						// the match, so that "pittt" is covered in full when duplicates are collapsed.
+						endIndex: transformedToOrigEndIndex[match.index + match[0].length - 1],
 						matchLength: [...match[0]].length,
 					});
 				}
@@ -171,20 +176,28 @@ export class RegExpMatcher implements Matcher {
 	private applyTransformers(
 		input: string,
 		transformers: TransformerSet,
-	): [transformedToOrigIndex: number[], transformed: string] {
+	): [transformedToOrigIndex: number[], transformed: string, transformedToOrigEndIndex: number[]] {
 		const transformedToOrigIndex: number[] = [];
+		// The (inclusive) index of the last input character represented by each transformed
+		// character, which is past its own index if repeats of it were dropped after it.
+		const transformedToOrigEndIndex: number[] = [];
 		let transformed = '';
 		const iter = new CharacterIterator(input);
 		for (const char of iter) {
 			const transformedChar = transformers.applyTo(char);
 			if (transformedChar !== undefined) {
 				transformed += String.fromCodePoint(transformedChar);
-				while (transformedToOrigIndex.length < transformed.length) transformedToOrigIndex.push(iter.position);
+				while (transformedToOrigIndex.length < transformed.length) {
+					transformedToOrigIndex.push(iter.position);
+					transformedToOrigEndIndex.push(iter.position + iter.lastWidth - 1);
+				}
+			} else if (transformed.length > 0 && transformers.lastCharWasDroppedAsRepeat()) {
+				transformedToOrigEndIndex[transformed.length - 1] = iter.position + iter.lastWidth - 1;
 			}
 		}
 
 		transformers.resetAll();
-		return [transformedToOrigIndex, transformed];
+		return [transformedToOrigIndex, transformed, transformedToOrigEndIndex];
 	}
 
 	private compileTerms(terms: BlacklistedTerm[]) {
