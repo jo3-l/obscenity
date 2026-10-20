@@ -103,10 +103,21 @@ export class RegExpMatcher implements Matcher {
 				}
 
 				if (!whitelistedIntervals.query(origStartIndex, origEndIndex)) {
+					// A dropped character belongs to the preceding transformed character.
+					// Skip any remaining UTF-16 units from the same source character first:
+					// a wildcard can match only one half of a transformed surrogate pair.
+					let nextIndex = match.index + match[0].length;
+					while (
+						nextIndex < transformed.length &&
+						transformedToOrigIndex[nextIndex] === transformedToOrigIndex[nextIndex - 1]
+					) {
+						nextIndex++;
+					}
+
 					matches.push({
 						termId: blacklistedTerm.id,
 						startIndex: origStartIndex,
-						endIndex: origEndIndex,
+						endIndex: (transformedToOrigIndex[nextIndex] ?? input.length) - 1,
 						matchLength: [...match[0]].length,
 					});
 				}
