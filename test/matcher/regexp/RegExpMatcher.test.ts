@@ -1,3 +1,5 @@
+import { fixedPhraseCensorStrategy } from '../../../src/censor/BuiltinStrategies';
+import { TextCensor } from '../../../src/censor/TextCensor';
 import { assignIncrementingIds } from '../../../src/matcher/BlacklistedTerm';
 import type { MatchPayload } from '../../../src/matcher/MatchPayload';
 import { RegExpMatcher } from '../../../src/matcher/regexp/RegExpMatcher';
@@ -203,10 +205,43 @@ describe('matching with transformers that collapse duplicates', () => {
 		]);
 	});
 
-	it('should not include skipped characters that follow the match', () => {
+	it('should include skipped characters up to the next retained character', () => {
 		expect(collapsing(skipNonAlphabeticTransformer()).getAllMatches('pittt!!! b')).toStrictEqual([
+			{ termId: 1, startIndex: 0, endIndex: 8, matchLength: 3 },
+		]);
+	});
+
+	it('should include skipped characters at the end of the input', () => {
+		expect(collapsing(skipNonAlphabeticTransformer()).getAllMatches('pittt!!!')).toStrictEqual([
+			{ termId: 1, startIndex: 0, endIndex: 7, matchLength: 3 },
+		]);
+	});
+
+	it('should preserve punctuation and spaces when the transformers retain them', () => {
+		expect(collapsing().getAllMatches('pittt!!! b')).toStrictEqual([
 			{ termId: 1, startIndex: 0, endIndex: 4, matchLength: 3 },
 		]);
+	});
+
+	it('should respect custom thresholds and keep adjacent matches separate', () => {
+		const matcher = new RegExpMatcher({
+			blacklistedTerms: [{ id: 1, pattern: pattern`pitt` }],
+			blacklistMatcherTransformers: [collapseDuplicatesTransformer({ customThresholds: new Map([['t', 2]]) })],
+		});
+		expect(matcher.getAllMatches('pittttpittt')).toStrictEqual([
+			{ termId: 1, startIndex: 0, endIndex: 5, matchLength: 4 },
+			{ termId: 1, startIndex: 6, endIndex: 10, matchLength: 4 },
+		]);
+	});
+
+	it('should reset transformers between calls, including empty and entirely skipped inputs', () => {
+		const matcher = collapsing(skipNonAlphabeticTransformer());
+		for (const input of ['pittt', '', '!!!', 'pittt']) {
+			expect(matcher.hasMatch(input)).toBe(input === 'pittt');
+			expect(matcher.getAllMatches(input)).toStrictEqual(
+				input === 'pittt' ? [{ termId: 1, startIndex: 0, endIndex: 4, matchLength: 3 }] : [],
+			);
+		}
 	});
 
 	it('should include collapsed duplicates that are separated by skipped characters', () => {
@@ -231,6 +266,63 @@ describe('matching with transformers that collapse duplicates', () => {
 		});
 		expect(matcher.hasMatch('spittt')).toBe(false);
 		expect(matcher.getAllMatches('spittt')).toStrictEqual([]);
+	});
+
+	it('should keep a whitelist effective when the reported span would include skipped punctuation', () => {
+		const matcher = new RegExpMatcher({
+			blacklistedTerms: [{ id: 1, pattern: pattern`pit` }],
+			whitelistedTerms: ['spit'],
+			blacklistMatcherTransformers: [skipNonAlphabeticTransformer(), collapseDuplicatesTransformer()],
+		});
+		expect(matcher.hasMatch('spittt!!!')).toBe(false);
+		expect(matcher.getAllMatches('spittt!!!')).toStrictEqual([]);
+	});
+
+	it('should censor the full repeated suffix with the English preset', () => {
+		const matcher = new RegExpMatcher({ ...englishDataset.build(), ...englishRecommendedTransformers });
+		const censor = new TextCensor().setStrategy(fixedPhraseCensorStrategy('[censored]'));
+		const input = 'what the fuckkkk!!! ok';
+		expect(censor.applyTo(input, matcher.getAllMatches(input))).toBe('what the [censored]!!! ok');
+	});
+});
+
+describe('reported match boundaries with UTF-16 transformations', () => {
+	it.each([
+		['x🌉', 'x🌉🌉 y', 4, 2],
+		['x🌉', 'x🌉🌉', 4, 2],
+		['x?', 'x🌉🌉 y', 4, 2],
+		['x?', 'x🌉🌉', 4, 2],
+		['x?', 'x\ud83c', 1, 2],
+	])('should cover the whole source character for %s in %s', (term, input, endIndex, matchLength) => {
+		const matcher = new RegExpMatcher({
+			blacklistedTerms: [{ id: 1, pattern: parseRawPattern(term) }],
+			blacklistMatcherTransformers: [collapseDuplicatesTransformer()],
+		});
+		expect(matcher.getAllMatches(input)).toStrictEqual([{ termId: 1, startIndex: 0, endIndex, matchLength }]);
+	});
+
+	it.each([
+		['x🌉🌉 y', 0x1f309, 97, 4],
+		['xaa y', 97, 0x1f309, 2],
+	])('should support transformations that change UTF-16 width in %s', (input, from, to, endIndex) => {
+		const matcher = new RegExpMatcher({
+			blacklistedTerms: [{ id: 1, pattern: pattern`x?` }],
+			blacklistMatcherTransformers: [
+				createSimpleTransformer((c) => (c === from ? to : c)),
+				collapseDuplicatesTransformer(),
+			],
+		});
+		expect(matcher.getAllMatches(input)).toStrictEqual([{ termId: 1, startIndex: 0, endIndex, matchLength: 2 }]);
+	});
+
+	it('should include dropped characters even without a duplicate-collapsing transformer', () => {
+		const matcher = new RegExpMatcher({
+			blacklistedTerms: [{ id: 1, pattern: pattern`pit` }],
+			blacklistMatcherTransformers: [skipNonAlphabeticTransformer()],
+		});
+		expect(matcher.getAllMatches('pit!!! b')).toStrictEqual([
+			{ termId: 1, startIndex: 0, endIndex: 6, matchLength: 3 },
+		]);
 	});
 });
 

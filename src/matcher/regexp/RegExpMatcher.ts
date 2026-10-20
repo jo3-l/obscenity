@@ -86,10 +86,7 @@ export class RegExpMatcher implements Matcher {
 
 	public getAllMatches(input: string, sorted = false) {
 		const whitelistedIntervals = this.getWhitelistedIntervals(input);
-		const [transformedToOrigIndex, transformed, transformedToOrigEndIndex] = this.applyTransformers(
-			input,
-			this.blacklistMatcherTransformers,
-		);
+		const [transformedToOrigIndex, transformed] = this.applyTransformers(input, this.blacklistMatcherTransformers);
 
 		const matches: MatchPayload[] = [];
 		for (const blacklistedTerm of this.blacklistedTerms) {
@@ -106,12 +103,21 @@ export class RegExpMatcher implements Matcher {
 				}
 
 				if (!whitelistedIntervals.query(origStartIndex, origEndIndex)) {
+					// A dropped character belongs to the preceding transformed character.
+					// Skip any remaining UTF-16 units from the same source character first:
+					// a wildcard can match only one half of a transformed surrogate pair.
+					let nextIndex = match.index + match[0].length;
+					while (
+						nextIndex < transformed.length &&
+						transformedToOrigIndex[nextIndex] === transformedToOrigIndex[nextIndex - 1]
+					) {
+						nextIndex++;
+					}
+
 					matches.push({
 						termId: blacklistedTerm.id,
 						startIndex: origStartIndex,
-						// Report the span up to the last character that was folded into the end of
-						// the match, so that "pittt" is covered in full when duplicates are collapsed.
-						endIndex: transformedToOrigEndIndex[match.index + match[0].length - 1],
+						endIndex: (transformedToOrigIndex[nextIndex] ?? input.length) - 1,
 						matchLength: [...match[0]].length,
 					});
 				}
@@ -176,28 +182,20 @@ export class RegExpMatcher implements Matcher {
 	private applyTransformers(
 		input: string,
 		transformers: TransformerSet,
-	): [transformedToOrigIndex: number[], transformed: string, transformedToOrigEndIndex: number[]] {
+	): [transformedToOrigIndex: number[], transformed: string] {
 		const transformedToOrigIndex: number[] = [];
-		// The (inclusive) index of the last input character represented by each transformed
-		// character, which is past its own index if repeats of it were dropped after it.
-		const transformedToOrigEndIndex: number[] = [];
 		let transformed = '';
 		const iter = new CharacterIterator(input);
 		for (const char of iter) {
 			const transformedChar = transformers.applyTo(char);
 			if (transformedChar !== undefined) {
 				transformed += String.fromCodePoint(transformedChar);
-				while (transformedToOrigIndex.length < transformed.length) {
-					transformedToOrigIndex.push(iter.position);
-					transformedToOrigEndIndex.push(iter.position + iter.lastWidth - 1);
-				}
-			} else if (transformed.length > 0 && transformers.lastCharWasDroppedAsRepeat()) {
-				transformedToOrigEndIndex[transformed.length - 1] = iter.position + iter.lastWidth - 1;
+				while (transformedToOrigIndex.length < transformed.length) transformedToOrigIndex.push(iter.position);
 			}
 		}
 
 		transformers.resetAll();
-		return [transformedToOrigIndex, transformed, transformedToOrigEndIndex];
+		return [transformedToOrigIndex, transformed];
 	}
 
 	private compileTerms(terms: BlacklistedTerm[]) {
